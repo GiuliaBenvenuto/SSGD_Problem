@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Mesh_scale_space.dir/all
+all: CMakeFiles/SSGD_dist.dir/all
 all: CMakeFiles/smooth_shape.dir/all
 all: imgui/all
 all: STB/all
@@ -75,7 +75,7 @@ preinstall: STB/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Mesh_scale_space.dir/clean
+clean: CMakeFiles/SSGD_dist.dir/clean
 clean: CMakeFiles/smooth_shape.dir/clean
 clean: imgui/clean
 clean: STB/clean
@@ -145,32 +145,32 @@ imgui/glfw/src/clean: imgui/glfw/src/CMakeFiles/glfw.dir/clean
 .PHONY : imgui/glfw/src/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Mesh_scale_space.dir
+# Target rules for target CMakeFiles/SSGD_dist.dir
 
 # All Build rule for target.
-CMakeFiles/Mesh_scale_space.dir/all: imgui/CMakeFiles/imgui.dir/all
-CMakeFiles/Mesh_scale_space.dir/all: imgui/glfw/src/CMakeFiles/glfw.dir/all
-CMakeFiles/Mesh_scale_space.dir/all: STB/CMakeFiles/STB.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target Mesh_scale_space"
-.PHONY : CMakeFiles/Mesh_scale_space.dir/all
+CMakeFiles/SSGD_dist.dir/all: imgui/CMakeFiles/imgui.dir/all
+CMakeFiles/SSGD_dist.dir/all: imgui/glfw/src/CMakeFiles/glfw.dir/all
+CMakeFiles/SSGD_dist.dir/all: STB/CMakeFiles/STB.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target SSGD_dist"
+.PHONY : CMakeFiles/SSGD_dist.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Mesh_scale_space.dir/rule: cmake_check_build_system
+CMakeFiles/SSGD_dist.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles 31
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Mesh_scale_space.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SSGD_dist.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles 0
-.PHONY : CMakeFiles/Mesh_scale_space.dir/rule
+.PHONY : CMakeFiles/SSGD_dist.dir/rule
 
 # Convenience name for target.
-Mesh_scale_space: CMakeFiles/Mesh_scale_space.dir/rule
-.PHONY : Mesh_scale_space
+SSGD_dist: CMakeFiles/SSGD_dist.dir/rule
+.PHONY : SSGD_dist
 
 # clean rule for target.
-CMakeFiles/Mesh_scale_space.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/clean
-.PHONY : CMakeFiles/Mesh_scale_space.dir/clean
+CMakeFiles/SSGD_dist.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/clean
+.PHONY : CMakeFiles/SSGD_dist.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/smooth_shape.dir

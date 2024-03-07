@@ -20,18 +20,16 @@ struct State {
   vector<vector<uint>> VV;  // its VV relation
   // View
   bool show_m, show_wf;  // show mesh, wire-frame
+  // Wireframe
+  float wireframe_width;  // Wireframe width
+  float wireframe_alpha;  // Wireframe transparency
 
   State() : MESH_IS_LOADED(false), show_m(true), show_wf(false) {
     // Initialize state with default values
+    wireframe_width = 1.0;
+    wireframe_alpha = 1.0;
   }
 };
-
-
-//::::::::::::::::::::::::::::::::::::GUI utilities ::::::::::::::::::::::::::::::::::::
-// functions to  render vertices as spheres
-inline void remove_points(const vector<DrawableSphere> &cp, GLcanvas &gui) {
-  for (auto &point : cp) gui.pop(&point);
-}
 
 
 //::::::::::::::::::::::::::::::::::::I/O ::::::::::::::::::::::::::::::::::::
@@ -111,6 +109,18 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs) {
       gs.m.show_wireframe(true);
     } else {
       gs.m.show_wireframe(false);
+    }
+
+    // Wireframe settings
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    if (ImGui::TreeNode("Wireframe")) {
+      if (ImGui::Checkbox("Show", &gs.show_wf)) gs.m.show_wireframe(gs.show_wf);
+      if (ImGui::SliderFloat("Width", &gs.wireframe_width, 1.f, 10.f)) gs.m.show_wireframe_width(gs.wireframe_width);
+      // Note: If DrawableTrimesh does not support wireframe transparency directly, this will not work.
+      // This line is only useful if you have a method to set wireframe transparency in DrawableTrimesh.
+      if (ImGui::SliderFloat("Transparency", &gs.wireframe_alpha, 0.f, 1.f)) {} // Placeholder for transparency control
+
+      ImGui::TreePop();
     }
 
     if (gs.MESH_IS_LOADED) gs.m.updateGL();

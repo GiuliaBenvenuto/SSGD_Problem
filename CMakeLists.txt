@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(Mesh_scale_space)
+project(SSGD_dist)
 
 add_executable(${PROJECT_NAME} main.cpp diff_geo.h diff_geo.cpp utilities.h utilities.cpp drawing_circle.h drawing_circle.cpp)
 set_target_properties(${PROJECT_NAME}     PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)

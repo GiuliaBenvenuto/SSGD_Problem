@@ -221,7 +221,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Mesh_scale_space
+CMAKE_PROJECT_NAME:STATIC=SSGD_dist
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=3.3.8
@@ -353,15 +353,6 @@ GLFW_USE_OSMESA:BOOL=OFF
 //Assume the Vulkan loader is linked with the application
 GLFW_VULKAN_STATIC:BOOL=OFF
 
-//Value Computed by CMake
-Mesh_scale_space_BINARY_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build
-
-//Value Computed by CMake
-Mesh_scale_space_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Mesh_scale_space_SOURCE_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem
-
 //Include for OpenGL on OS X
 OPENGL_INCLUDE_DIR:PATH=/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework
 
@@ -370,6 +361,15 @@ OPENGL_gl_LIBRARY:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.s
 
 //GLU library for OS X (usually same as OpenGL library)
 OPENGL_glu_LIBRARY:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework
+
+//Value Computed by CMake
+SSGD_dist_BINARY_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build
+
+//Value Computed by CMake
+SSGD_dist_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+SSGD_dist_SOURCE_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem
 
 //Dependencies for the target
 imgui_LIB_DEPENDS:STATIC=general;glfw;

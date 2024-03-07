@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Mesh_scale_space
+# Target rules for targets named SSGD_dist
 
 # Build rule for target.
-Mesh_scale_space: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Mesh_scale_space
-.PHONY : Mesh_scale_space
+SSGD_dist: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SSGD_dist
+.PHONY : SSGD_dist
 
 # fast build rule for target.
-Mesh_scale_space/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/build
-.PHONY : Mesh_scale_space/fast
+SSGD_dist/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/build
+.PHONY : SSGD_dist/fast
 
 #=============================================================================
 # Target rules for targets named smooth_shape
@@ -199,7 +199,7 @@ diff_geo.o: diff_geo.cpp.o
 
 # target to build an object file
 diff_geo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/diff_geo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/diff_geo.cpp.o
 .PHONY : diff_geo.cpp.o
 
@@ -208,7 +208,7 @@ diff_geo.i: diff_geo.cpp.i
 
 # target to preprocess a source file
 diff_geo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/diff_geo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/diff_geo.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/diff_geo.cpp.i
 .PHONY : diff_geo.cpp.i
 
@@ -217,7 +217,7 @@ diff_geo.s: diff_geo.cpp.s
 
 # target to generate assembly for a file
 diff_geo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/diff_geo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/diff_geo.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/diff_geo.cpp.s
 .PHONY : diff_geo.cpp.s
 
@@ -226,7 +226,7 @@ drawing_circle.o: drawing_circle.cpp.o
 
 # target to build an object file
 drawing_circle.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/drawing_circle.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o
 .PHONY : drawing_circle.cpp.o
 
@@ -235,7 +235,7 @@ drawing_circle.i: drawing_circle.cpp.i
 
 # target to preprocess a source file
 drawing_circle.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/drawing_circle.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/drawing_circle.cpp.i
 .PHONY : drawing_circle.cpp.i
 
@@ -244,7 +244,7 @@ drawing_circle.s: drawing_circle.cpp.s
 
 # target to generate assembly for a file
 drawing_circle.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/drawing_circle.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/drawing_circle.cpp.s
 .PHONY : drawing_circle.cpp.s
 
@@ -253,7 +253,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -261,7 +261,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -269,7 +269,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 mean_curv.o: mean_curv.cpp.o
@@ -301,7 +301,7 @@ utilities.o: utilities.cpp.o
 
 # target to build an object file
 utilities.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/utilities.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/utilities.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/utilities.cpp.o
 .PHONY : utilities.cpp.o
 
@@ -310,7 +310,7 @@ utilities.i: utilities.cpp.i
 
 # target to preprocess a source file
 utilities.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/utilities.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/utilities.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/utilities.cpp.i
 .PHONY : utilities.cpp.i
 
@@ -319,7 +319,7 @@ utilities.s: utilities.cpp.s
 
 # target to generate assembly for a file
 utilities.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Mesh_scale_space.dir/build.make CMakeFiles/Mesh_scale_space.dir/utilities.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/utilities.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/utilities.cpp.s
 .PHONY : utilities.cpp.s
 
@@ -332,7 +332,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... update_mappings"
-	@echo "... Mesh_scale_space"
+	@echo "... SSGD_dist"
 	@echo "... STB"
 	@echo "... glfw"
 	@echo "... imgui"
