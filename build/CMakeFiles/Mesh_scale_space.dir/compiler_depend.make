@@ -675,6 +675,7 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cctype \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cerrno \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cfloat \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/chrono \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/climits \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cmath \
@@ -723,6 +724,7 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/ratio \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/set \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/sstream \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/stack \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/stddef.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/stdexcept \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/stdint.h \
@@ -881,6 +883,35 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdint.h \
+  _deps/spectra-src/include/Spectra/GenEigsBase.h \
+  _deps/spectra-src/include/Spectra/GenEigsRealShiftSolver.h \
+  _deps/spectra-src/include/Spectra/MatOp/internal/ArnoldiOp.h \
+  _deps/spectra-src/include/Spectra/Util/CompInfo.h \
+  _deps/spectra-src/include/Spectra/Util/SimpleRandom.h \
+  _deps/spectra-src/include/Spectra/Util/TypeTraits.h \
+  _deps/spectra-src/include/Spectra/LinAlg/Arnoldi.h \
+  _deps/spectra-src/include/Spectra/LinAlg/DoubleShiftQR.h \
+  _deps/spectra-src/include/Spectra/LinAlg/Lanczos.h \
+  _deps/spectra-src/include/Spectra/LinAlg/TridiagEigen.h \
+  _deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergEigen.h \
+  _deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergQR.h \
+  _deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergSchur.h \
+  _deps/spectra-src/include/Spectra/LinAlg/BKLDLT.h \
+  _deps/spectra-src/include/Spectra/Util/CompInfo.h \
+  _deps/spectra-src/include/Spectra/MatOp/DenseGenRealShiftSolve.h \
+  _deps/spectra-src/include/Spectra/MatOp/DenseSymShiftSolve.h \
+  _deps/spectra-src/include/Spectra/MatOp/SparseGenRealShiftSolve.h \
+  _deps/spectra-src/include/Spectra/MatOp/SparseSymShiftSolve.h \
+  _deps/spectra-src/include/Spectra/MatOp/internal/ArnoldiOp.h \
+  _deps/spectra-src/include/Spectra/SymEigsBase.h \
+  _deps/spectra-src/include/Spectra/SymEigsShiftSolver.h \
+  _deps/spectra-src/include/Spectra/Util/CompInfo.h \
+  _deps/spectra-src/include/Spectra/Util/SelectionRule.h \
+  _deps/spectra-src/include/Spectra/Util/SimpleRandom.h \
+  _deps/spectra-src/include/Spectra/Util/TypeTraits.h \
+  _deps/spectra-src/include/Spectra/Util/Version.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/drawing_circle.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Cholesky \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Core \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Dense \
@@ -1128,9 +1159,18 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/Image.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/Kernel.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/RealSvd2x2.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_base.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact_elements.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_constants_and_simple_functions.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_memory.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh_elements.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/stdafx.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/glfw/include/GLFW/glfw3.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imconfig.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui_impl_glfw.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui_impl_opengl2.h \
@@ -1138,8 +1178,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ANSI_color_codes.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/Moller_Trumbore_intersection.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/Moller_Trumbore_intersection.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ambient_occlusion.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ambient_occlusion.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/arrow.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/arrow.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cino_inline.h \
@@ -1154,11 +1192,10 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/deg_rad.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/deg_rad.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_arrow.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_isocontour.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_isocontour.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_object.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_segment_soup.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_segment_soup.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_sphere.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_vector_field.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_vector_field.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/earcut.cpp \
@@ -1170,12 +1207,16 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/aabb.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/plane.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/plane.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/point.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/point.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/segment.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/segment.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/spatial_data_structure_item.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/spatial_data_structure_item.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/sphere.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/sphere.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron_utils.cpp \
@@ -1208,11 +1249,7 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glunproject.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/load_texture.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/load_texture.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/offline_gl_context.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/offline_gl_context.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/side_bar_item.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/surface_mesh_controls.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/surface_mesh_controls.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/trackball.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/trackball.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.cpp \
@@ -1221,8 +1258,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/how_many_seconds.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/interval.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/interval.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/io_utilities.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/io_utilities.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_CSV.cpp \
@@ -1280,12 +1315,14 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_VTU.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ipair.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ipair.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/isocontour.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/isocontour.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/linear_solvers.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/linear_solvers.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/matrix_eigenfunctions.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/matrix_eigenfunctions.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polyhedralmesh.cpp \
@@ -1319,6 +1356,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/trimesh.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/trimesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/min_max_inf.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/octree.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/octree.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/parallel_for.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/parallel_for.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/pi.h \
@@ -1336,14 +1375,14 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serializable.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serialize_index.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serialize_index.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/sphere_coverage.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/sphere_coverage.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/standard_elements_tables.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/stl_container_utilities.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/stl_container_utilities.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/string_utilities.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/string_utilities.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/symbols.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tetgen_wrap.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tetgen_wrap.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/textures/texture_hsv.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/textures/texture_hsv_w_isolines.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/textures/texture_parula.h \
@@ -1352,6 +1391,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/to_openGL_unified_verts.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tree.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tree.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vector_field.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vector_field.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vector_serialization.cpp \
@@ -1380,15 +1421,15 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/textures/texture_hsv_w_isolines.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tetgen_wrap.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tetgen_wrap.cpp:
+
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/stl_container_utilities.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/standard_elements_tables.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/sphere_coverage.cpp:
-
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serialize_index.cpp:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/sphere_coverage.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.cpp:
 
@@ -1409,6 +1450,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/parallel_for.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/parallel_for.cpp:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/octree.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/tetmesh.h:
 
@@ -1432,15 +1475,13 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.cpp:
 
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.h:
+
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/linear_solvers.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.cpp:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/isocontour.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/isocontour.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ipair.h:
 
@@ -1490,8 +1531,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_CSV.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/interval.cpp:
-
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/io_utilities.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.h:
@@ -1499,10 +1538,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/how_many_seconds.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/surface_mesh_controls.cpp:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/offline_gl_context.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/load_texture.cpp:
 
@@ -1536,9 +1571,9 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron_utils.cpp:
 
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/offline_gl_context.h:
-
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/sphere.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/spatial_data_structure_item.h:
 
@@ -1547,6 +1582,10 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.cpp:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/point.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/point.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/plane.cpp:
 
@@ -1559,8 +1598,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/fonts/droid_sans.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_object.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_isocontour.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_arrow.h:
 
@@ -1589,6 +1626,16 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imconfig.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/glfw/include/GLFW/glfw3.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/stdafx.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact_elements.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/RealSvd2x2.h:
 
@@ -1659,6 +1706,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseCore/CompressedStorage.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_base.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseCholesky/SimplicialCholesky.h:
 
@@ -1810,8 +1859,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/Dot.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DiagonalProduct.h:
-
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DiagonalMatrix.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_VTK.cpp:
@@ -1884,6 +1931,36 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Core:
 
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.h:
+
+_deps/spectra-src/include/Spectra/Util/Version.h:
+
+_deps/spectra-src/include/Spectra/Util/SelectionRule.h:
+
+_deps/spectra-src/include/Spectra/MatOp/DenseSymShiftSolve.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/BKLDLT.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergSchur.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergEigen.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/DoubleShiftQR.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/Arnoldi.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DiagonalProduct.h:
+
+_deps/spectra-src/include/Spectra/Util/SimpleRandom.h:
+
+_deps/spectra-src/include/Spectra/Util/CompInfo.h:
+
+_deps/spectra-src/include/Spectra/MatOp/internal/ArnoldiOp.h:
+
+_deps/spectra-src/include/Spectra/GenEigsRealShiftSolver.h:
+
+_deps/spectra-src/include/Spectra/GenEigsBase.h:
+
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/products/TriangularMatrixMatrix.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stddef.h:
@@ -1893,6 +1970,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/Transpositions.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/arm_bf16.h:
+
+_deps/spectra-src/include/Spectra/MatOp/SparseGenRealShiftSolve.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/__stddef_max_align_t.h:
 
@@ -1998,6 +2077,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_fd_clr.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_dev_t.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_clock_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_caddr_t.h:
@@ -2027,6 +2108,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/strings.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/stdlib.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/octree.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/stdint.h:
 
@@ -2078,6 +2161,10 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/stddef.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__utility/forward.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/stack:
+
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_IV.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__chrono/year_month_day.h:
@@ -2120,6 +2207,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/ios:
 
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/matrix_eigenfunctions.cpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__functional/weak_result_type.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/iomanip:
@@ -2142,8 +2231,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/ctype.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/surface_mesh_controls.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/copy.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cstdlib:
@@ -2151,8 +2238,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cstdio:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cstdint:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/interval.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle_utils.h:
 
@@ -2167,6 +2252,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/next_permutation.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/errno.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/concepts:
 
@@ -2214,8 +2301,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__utility/unreachable.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__utility/forward.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_implicitly_default_constructible.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__utility/exception_guard.h:
@@ -2260,6 +2345,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/noexcept_move_assign_container.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.cpp:
+
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_tetmesh.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_off_t.h:
@@ -2283,6 +2370,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/_types.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_union.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_constants_and_simple_functions.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_move_constructible.h:
 
@@ -2329,6 +2418,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_same.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_referenceable.h:
+
+_deps/spectra-src/include/Spectra/SymEigsShiftSolver.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/errno.h:
 
@@ -2572,6 +2663,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/student_t_distribution.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh_elements.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_partition_point.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/shuffle_order_engine.h:
@@ -2650,6 +2743,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/discrete_distribution.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_memory.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/discard_block_engine.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/binomial_distribution.h:
@@ -2665,6 +2760,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__iterator/reverse_access.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__numeric/iota.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_sphere.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Geometry/Hyperplane.h:
 
@@ -2854,6 +2951,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__iterator/iter_move.h:
 
+_deps/spectra-src/include/Spectra/LinAlg/Lanczos.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/sort.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__functional/hash.h:
@@ -2871,8 +2970,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/AvailabilityInternal.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/exception:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ambient_occlusion.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__iterator/next.h:
 
@@ -2981,6 +3078,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_all_of.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__functional/perfect_forward.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/drawing_circle.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/locale.h:
 
@@ -3204,6 +3303,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__chrono/month_weekday.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/sphere.cpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/runetype.h:
@@ -3392,6 +3493,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serializable.h:
 
+_deps/spectra-src/include/Spectra/MatOp/SparseSymShiftSolve.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/replace_if.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__format/format_parse_context.h:
@@ -3421,6 +3524,10 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/shuffle.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/remove.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/matrix_eigenfunctions.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/side_bar_item.h:
 
@@ -3490,8 +3597,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/uniform_random_bit_generator_adaptor.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ambient_occlusion.cpp:
-
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Jacobi/Jacobi.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_reverse_copy.h:
@@ -3500,7 +3605,7 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/_types/_uint64_t.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_isocontour.h:
+_deps/spectra-src/include/Spectra/SymEigsBase.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/max.h:
 
@@ -3535,6 +3640,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/polyhedralmesh.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__availability:
+
+_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergQR.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_prev_permutation.h:
 
@@ -3628,6 +3735,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__iterator/prev.h:
 
+_deps/spectra-src/include/Spectra/Util/TypeTraits.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h:
@@ -3688,6 +3797,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_find_if_not.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cfloat:
+
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/PlainObjectBase.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_find.h:
@@ -3709,6 +3820,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_equal_range.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__iterator/wrap_iter.h:
+
+_deps/spectra-src/include/Spectra/MatOp/DenseGenRealShiftSolve.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_nothrow_copy_constructible.h:
 
@@ -3753,8 +3866,6 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/map:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/_ctermid.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_dev_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/minmax_element.h:
 
@@ -3884,6 +3995,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__chrono/file_clock.h:
 
+_deps/spectra-src/include/Spectra/LinAlg/TridiagEigen.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/istream:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdarg.h:
@@ -3961,6 +4074,8 @@ CMakeFiles/Mesh_scale_space.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/Git
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/is_sorted.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/set_union.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle.h:
 
