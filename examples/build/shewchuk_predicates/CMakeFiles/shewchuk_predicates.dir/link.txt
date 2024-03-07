@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libshewchuk_predicates.a CMakeFiles/shewchuk_predicates.dir/shewchuk.c.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib libshewchuk_predicates.a

@@ -1,0 +1,16 @@
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/Mesh_scale_space.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/smooth_shape.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/edit_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/rebuild_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/CMakeFiles/imgui.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/CMakeFiles/edit_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/CMakeFiles/rebuild_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/glfw/CMakeFiles/edit_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/glfw/CMakeFiles/rebuild_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/glfw/src/CMakeFiles/update_mappings.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/glfw/src/CMakeFiles/glfw.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/glfw/src/CMakeFiles/edit_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/glfw/src/CMakeFiles/rebuild_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/STB/CMakeFiles/STB.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/STB/CMakeFiles/edit_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/STB/CMakeFiles/rebuild_cache.dir

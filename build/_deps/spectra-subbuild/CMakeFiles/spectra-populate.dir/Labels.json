@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/CMakeFiles/spectra-populate"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/CMakeFiles/spectra-populate.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/CMakeFiles/spectra-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-build.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-download.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-install.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-test.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-subbuild/spectra-populate-prefix/src/spectra-populate-stamp/spectra-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"spectra-populate"
+		],
+		"name" : "spectra-populate"
+	}
+}

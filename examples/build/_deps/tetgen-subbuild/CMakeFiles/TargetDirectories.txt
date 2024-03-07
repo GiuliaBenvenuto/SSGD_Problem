@@ -1,3 +1,0 @@
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/examples/build/_deps/tetgen-subbuild/CMakeFiles/tetgen-populate.dir
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/examples/build/_deps/tetgen-subbuild/CMakeFiles/edit_cache.dir
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/examples/build/_deps/tetgen-subbuild/CMakeFiles/rebuild_cache.dir
