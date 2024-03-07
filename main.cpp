@@ -14,18 +14,24 @@ using namespace cinolib;
 struct State {
   // Program state
   bool MESH_IS_LOADED;
+  bool SHOW_MESH;
+  bool SHOW_WIREFRAME;
+
   // Input
   DrawableTrimesh<> m;  // the input mesh
   uint nverts;          // its #vertices
   vector<vector<uint>> VV;  // its VV relation
   // View
-  bool show_m, show_wf;  // show mesh, wire-frame
+  // bool show_m, show_wf;  // show mesh, wire-frame
   // Wireframe
   float wireframe_width;  // Wireframe width
   float wireframe_alpha;  // Wireframe transparency
 
-  State() : MESH_IS_LOADED(false), show_m(true), show_wf(false) {
-    // Initialize state with default values
+  State() {
+    MESH_IS_LOADED = false;
+    SHOW_MESH = true;
+    SHOW_WIREFRAME = false;
+
     wireframe_width = 1.0;
     wireframe_alpha = 1.0;
   }
@@ -45,8 +51,8 @@ void Load_mesh(string filename, GLcanvas & gui, State &gs) {
 
     gs.m.normalize_bbox(); // Rescale mesh to fit [0,1]^3 box
     gs.m.center_bbox();
-    gs.m.show_wireframe(gs.show_wf);
-    gs.m.show_mesh(gs.show_m);
+    gs.m.show_wireframe(gs.SHOW_WIREFRAME);
+    gs.m.show_mesh(gs.SHOW_MESH);
     gs.m.updateGL();
 
     if (!gs.MESH_IS_LOADED) {
@@ -97,15 +103,15 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs) {
       ImGui::EndPopup();
     }
 
-    ImGui::Checkbox("Show Mesh", &gs.show_m);
-    if (gs.show_m) {
+    ImGui::Checkbox("Show Mesh", &gs.SHOW_MESH);
+    if (gs.SHOW_MESH) {
       gs.m.show_mesh(true);
     } else {
       gs.m.show_mesh(false);
     }
 
-    ImGui::Checkbox("Show Wireframe", &gs.show_wf);
-    if (gs.show_wf) {
+    ImGui::Checkbox("Show Wireframe", &gs.SHOW_WIREFRAME);
+    if (gs.SHOW_WIREFRAME) {
       gs.m.show_wireframe(true);
     } else {
       gs.m.show_wireframe(false);
@@ -114,7 +120,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs) {
     // Wireframe settings
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Wireframe")) {
-      if (ImGui::Checkbox("Show", &gs.show_wf)) gs.m.show_wireframe(gs.show_wf);
+      if (ImGui::Checkbox("Show", &gs.SHOW_WIREFRAME)) gs.m.show_wireframe(gs.SHOW_WIREFRAME);
       if (ImGui::SliderFloat("Width", &gs.wireframe_width, 1.f, 10.f)) gs.m.show_wireframe_width(gs.wireframe_width);
       // Note: If DrawableTrimesh does not support wireframe transparency directly, this will not work.
       // This line is only useful if you have a method to set wireframe transparency in DrawableTrimesh.
