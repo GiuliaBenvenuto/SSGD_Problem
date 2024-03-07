@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libindirectPredicates.a CMakeFiles/indirectPredicates.dir/implicit_point.cpp.o CMakeFiles/indirectPredicates.dir/numerics.cpp.o CMakeFiles/indirectPredicates.dir/predicates/indirect_predicates.cpp.o CMakeFiles/indirectPredicates.dir/predicates/hand_optimized_predicates.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libindirectPredicates.a
