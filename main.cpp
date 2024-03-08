@@ -1,7 +1,6 @@
 #include "utilities.h"
 #include <cinolib/drawable_vector_field.h>
 #include <cinolib/drawable_sphere.h>
-#include <cinolib/geodesics.h>
 #include <cinolib/gl/glcanvas.h>
 #include <cinolib/gl/file_dialog_open.h>
 #include <cinolib/gl/file_dialog_save.h>
@@ -9,6 +8,9 @@
 #include <cinolib/io/write_OBJ.h>
 #include <cinolib/mean_curv_flow.h>
 #include <fstream>
+
+// SSDG with Heat method
+#include <cinolib/geodesics.h>
 
 
 using namespace std;
