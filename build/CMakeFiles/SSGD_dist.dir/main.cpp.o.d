@@ -1367,14 +1367,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_arrow.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glcanvas.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/side_bar_item.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/camera.h \
@@ -1395,5 +1387,13 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_open.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_save.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_save.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.cpp
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.cpp

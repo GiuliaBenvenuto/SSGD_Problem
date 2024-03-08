@@ -113,7 +113,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
 {
   gui.callback_app_controls = [&]() {
     // Files
-    ImGui::SeparatorText("Files");
+    ImGui::SeparatorText("Single Source Geodesic Distance Computation");
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("IO")) {
       if (ImGui::Button("Load mesh")) {
