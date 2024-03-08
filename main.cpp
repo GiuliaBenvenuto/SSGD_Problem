@@ -179,30 +179,77 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::SeparatorText("Exact Polyhedral Methods");
       if(ImGui::RadioButton("VTP ", gs.ssgd_method == State::VTP)) {
         gs.ssgd_method = State::VTP;
-        // cout << "VTP Method" << endl;
+        cout << "VTP Method" << endl;
       }
       // PDE-Based Methods
       ImGui::SeparatorText("PDE-Based Methods");
       if(ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
         gs.ssgd_method = State::HEAT;
-        // cout << "HEAT Method" << endl;
+        cout << "HEAT Method" << endl;
       }
       if(ImGui::RadioButton("FMM  ", gs.ssgd_method == State::FMM)) {
         gs.ssgd_method = State::FMM;
-        // cout << "FMM Method" << endl;
+        cout << "FMM Method" << endl;
       }
       // Graph-Based Methods
       ImGui::SeparatorText("Graph-Based Methods");
       if(ImGui::RadioButton("GeoTangle  ", gs.ssgd_method == State::GEOTANGLE)) {
         gs.ssgd_method = State::GEOTANGLE;
-        // cout << "GeoTangle Method" << endl;
+        cout << "GeoTangle Method" << endl;
       }
       if(ImGui::RadioButton("Edge  ", gs.ssgd_method == State::EDGE)) {
         gs.ssgd_method = State::EDGE;
-        // cout << "Edge Method" << endl;
+        cout << "Edge Method" << endl;
       }
 
       ImGui::TreePop();
+    }
+
+    // Button for Compute SSGD
+    if (ImGui::Button("Compute SSGD")) {
+      // Based on the selected SSGD method, perform different actions
+      switch (gs.ssgd_method) {
+
+        case State::VTP:
+          cout << "Computing SSGD with VTP Method" << endl;
+          // Add your code for VTP method here
+          break;
+
+        case State::HEAT:
+          cout << "Computing SSGD with HEAT Method" << endl;
+          // Add your code for HEAT method here
+          compute_geodesics_amortized(gs.m, gs.prefactored_matrices, gs.sources).copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+
+        case State::FMM:
+          cout << "Computing SSGD with FMM Method" << endl;
+          // Add your code for FMM method here
+          break;
+
+        case State::GEOTANGLE:
+          cout << "Computing SSGD with GeoTangle Method" << endl;
+          // Add your code for GeoTangle method here
+          break;
+
+        case State::EDGE:
+          cout << "Computing SSGD with Edge Method" << endl;
+          // Add your code for Edge method here
+          break;
+
+        default:
+          cout << "No SSGD method selected" << endl;
+          break;
+      }
+    }
+    // Reset button
+    if(ImGui::SmallButton("Reset")){
+        // Reset heat sources
+        gs.sources.clear();
+        for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+          gs.m.vert_data(vid).color = Color::WHITE(); // Replace `original_color` with the actual color
+        }
+        gs.m.show_vert_color();
     }
 
     /* Vector field
@@ -266,12 +313,17 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
             if(gui.unproject(click, p)) {
                 uint vid = gs.m.pick_vert(p);
                 gs.sources.push_back(vid);
+                cout << "Source vertex: " << vid << endl;
+
+                // Color the selected vertex in red
+                gs.m.vert_data(vid).color = Color::RED();
+                gs.m.show_vert_color();
 
                 // You might need to replace "profiler" with your own profiling method or remove it
                 // profiler.push("compute_geodesics");
-                compute_geodesics_amortized(gs.m, gs.prefactored_matrices, gs.sources).copy_to_mesh(gs.m);
+                //compute_geodesics_amortized(gs.m, gs.prefactored_matrices, gs.sources).copy_to_mesh(gs.m);
                 // profiler.pop();
-                gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+                //gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
             }
         }
         return false;
