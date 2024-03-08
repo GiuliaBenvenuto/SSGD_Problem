@@ -1,4 +1,5 @@
 #include "utilities.h"
+#include <cinolib/drawable_vector_field.h>
 #include <cinolib/drawable_sphere.h>
 #include <cinolib/geodesics.h>
 #include <cinolib/gl/glcanvas.h>
@@ -8,6 +9,8 @@
 #include <cinolib/io/write_OBJ.h>
 #include <cinolib/mean_curv_flow.h>
 #include <fstream>
+
+
 using namespace std;
 using namespace cinolib;
 
@@ -30,6 +33,20 @@ struct State {
   float wireframe_alpha;  // Wireframe transparency
   // Shading
   enum MeshRenderMode { RENDER_POINTS, RENDER_FLAT, RENDER_SMOOTH } render_mode;
+  // Vector field
+  DrawableVectorField vec_field;
+  bool show_vecfield;
+  float vecfield_size;
+  // vec3d vec_color;
+  Color vec_color;
+
+  // SSGD Method
+  // enum SSGDMethod { EXACT_POLYHEDRAL, PDE_BASED, GRAPH_BASED } ssgd_method;
+  enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE} ssgd_method;
+
+  // Selection of the source vertex
+  std::vector<uint> sources;
+  GeodesicsCache prefactored_matrices;
 
 
 
@@ -41,16 +58,18 @@ struct State {
 
     wireframe_width = 1.0;
     wireframe_alpha = 1.0;
+
+    // vector field
+    show_vecfield = false;
+    vecfield_size = 2;
+    // vec_color = vec3d(1.0, 0.0, 0.0);
+    vec_color = Color(1.0, 0.0, 0.0, 1.0);
   }
 };
-
-//::::::::::::::::::::::::::::::::::::GUI utilities ::::::::::::::::::::::::::::::::::::
-
 
 
 
 //::::::::::::::::::::::::::::::::::::I/O ::::::::::::::::::::::::::::::::::::
-
 void Load_mesh(string filename, GLcanvas & gui, State &gs)
 {
   gs.m = DrawableTrimesh<>(filename.c_str());
@@ -79,23 +98,7 @@ void Load_mesh(GLcanvas & gui, State &gs)
 
 
 
-
-
-//====================== GENERAL UTILITIES =============================================
-
-
-
-//==================== FIELD GENERATORS ========================
-
-
-//=============================== INPUT FIELD ==================================
-
-
-//=========================== SCALE-SPACE FUNCTIONS =============================
-
-
 //::::::::::::::::::::::::::::::::: GUI ::::::::::::::::::::::::::::::::::::::::::::::::
-
 GLcanvas Init_GUI()
 {
   GLcanvas gui(1500,700);
@@ -166,16 +169,114 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         gs.render_mode = State::RENDER_SMOOTH;
         gs.m.show_mesh_smooth(); // Assuming you have a method to display smooth shaded mesh
       }
+      ImGui::TreePop();
+    }
 
+    // SSGD Method
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    if (ImGui::TreeNode("SSGD Method")) {
+      // Exact Polyhedral Methods
+      ImGui::SeparatorText("Exact Polyhedral Methods");
+      if(ImGui::RadioButton("VTP ", gs.ssgd_method == State::VTP)) {
+        gs.ssgd_method = State::VTP;
+        // cout << "VTP Method" << endl;
+      }
+      // PDE-Based Methods
+      ImGui::SeparatorText("PDE-Based Methods");
+      if(ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
+        gs.ssgd_method = State::HEAT;
+        // cout << "HEAT Method" << endl;
+      }
+      if(ImGui::RadioButton("FMM  ", gs.ssgd_method == State::FMM)) {
+        gs.ssgd_method = State::FMM;
+        // cout << "FMM Method" << endl;
+      }
+      // Graph-Based Methods
+      ImGui::SeparatorText("Graph-Based Methods");
+      if(ImGui::RadioButton("GeoTangle  ", gs.ssgd_method == State::GEOTANGLE)) {
+        gs.ssgd_method = State::GEOTANGLE;
+        // cout << "GeoTangle Method" << endl;
+      }
+      if(ImGui::RadioButton("Edge  ", gs.ssgd_method == State::EDGE)) {
+        gs.ssgd_method = State::EDGE;
+        // cout << "Edge Method" << endl;
+      }
 
       ImGui::TreePop();
     }
 
+    /* Vector field
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    if (ImGui::TreeNode("Vector Field")) {
+      if (ImGui::Checkbox("Show Vector Field", &gs.show_vecfield)) {
+        cout << "Show vector field: " << gs.show_vecfield << endl;
+        if (gs.show_vecfield) {
+            cout << "Qui: " << endl;
+            if (gs.vec_field.size() == 0) { // Initialize the vector field if it's not already
+                cout << "Vector field size before initialization: " << gs.vec_field.size() << endl;
+                cout << "Vector field arrow size: " << gs.vecfield_size << endl;
 
-   };
+                gs.vec_field = DrawableVectorField(gs.m);
+                ScalarField f(gs.m.serialize_uvw(3)); // Assuming U_param is defined somewhere relevant
+  
+                cout << "Scalar field size: " << f.size() << endl;
+
+                gs.vec_field = gradient_matrix(gs.m) * f;
+                gs.vec_field.normalize();
+
+                cout << "Prova" << float(gs.m.edge_avg_length()) * gs.vecfield_size << endl;
+                gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) * gs.vecfield_size);
+                //gs.vec_field.set_arrow_color(Color(gs.vec_color.x(), gs.vec_color.y(), gs.vec_color.z()));
+                gs.vec_field.set_arrow_color(gs.vec_color);
+                cout << "color" << gs.vec_color << endl;
+
+                cout << "Vector field size after initialization: " << gs.vec_field.size() << endl;
+
+            }
+            cout << "Push" << endl;
+            gui.push(&gs.vec_field, false);
+        } else {
+            cout << "Pop" << endl;
+            gui.pop(&gs.vec_field);
+        }
+      }
+      // Slider to adjust the vector field arrow size
+      if (ImGui::SliderFloat("Size", &gs.vecfield_size, 0.1f, 5.f)) {
+          gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) * gs.vecfield_size *5);
+          cout << "Arrow size: " << float(gs.m.edge_avg_length()) * gs.vecfield_size << endl;
+      }
+
+      if (ImGui::ColorEdit4("Color##vec", (float*)&gs.vec_color)) {
+          gs.vec_field.set_arrow_color(gs.vec_color);
+      }
+
+      ImGui::TreePop();
+    }*/
+
+    
+  };
 }
 
+// Compute the geodesic distances from a single source vertex
+void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
+    gui.callback_mouse_left_click = [&](int modifiers) -> bool {
+        if(modifiers & GLFW_MOD_SUPER) {
+            vec3d p;
+            vec2d click = gui.cursor_pos();
+            if(gui.unproject(click, p)) {
+                uint vid = gs.m.pick_vert(p);
+                gs.sources.push_back(vid);
 
+                // You might need to replace "profiler" with your own profiling method or remove it
+                // profiler.push("compute_geodesics");
+                compute_geodesics_amortized(gs.m, gs.prefactored_matrices, gs.sources).copy_to_mesh(gs.m);
+                // profiler.pop();
+                gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+            }
+        }
+        return false;
+    };
+}
 
 //=============================== MAIN =========================================
 
@@ -185,6 +286,7 @@ int main(int argc, char **argv) {
   State gs;
   GLcanvas gui = Init_GUI();
   Setup_GUI_Callbacks(gui, gs);
+  Setup_Mouse_Callback(gui, gs);
 
   //Load mesh
   if (argc>1) {
