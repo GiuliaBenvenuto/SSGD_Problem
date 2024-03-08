@@ -205,6 +205,18 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::TreePop();
     }
 
+
+    ImGui::Text("");
+    ImGui::Text("Pick a source vertex: shift + left click");
+
+    // Display the label "Sources"
+    ImGui::Text("Sources:");
+    // Iterate over the gs.sources to display each source vertex ID
+    for (uint i = 0; i < gs.sources.size(); ++i) {
+        ImGui::Text("Vertex ID: %u", gs.sources[i]);
+    }
+    ImGui::Text("");
+
     // Button for Compute SSGD
     if (ImGui::Button("Compute SSGD")) {
       // Based on the selected SSGD method, perform different actions
@@ -307,7 +319,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
 // Compute the geodesic distances from a single source vertex
 void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
     gui.callback_mouse_left_click = [&](int modifiers) -> bool {
-        if(modifiers & GLFW_MOD_SUPER) {
+        if(modifiers & GLFW_MOD_SHIFT) {
             vec3d p;
             vec2d click = gui.cursor_pos();
             if(gui.unproject(click, p)) {
