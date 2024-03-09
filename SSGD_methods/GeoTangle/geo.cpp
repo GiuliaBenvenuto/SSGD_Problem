@@ -222,3 +222,16 @@ void update_geodesic_distances_geo(vector<double> &distances,
   visit_geodesic_graph_geo(distances, solver, sources, type, update, stop, exit);
 }
 // Useful: ---------------------------------------------------
+
+vector<double> compute_geodesic_distances_geo(const geodesic_solver &solver,
+                                          const vector<int> &sources,
+                                          const int type) {
+
+  auto field = vector<double>(solver.graph.size(), DBL_MAX);
+  for (auto source : sources)
+    field[source] = 0.0;
+
+  update_geodesic_distances(field, solver, sources, type);
+
+  return field;
+}

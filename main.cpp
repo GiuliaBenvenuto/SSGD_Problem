@@ -316,13 +316,27 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
               */
               vector<double> distances_geo;
               // type = 0 for geodesic, 1 for isophotic
-              // int type = 0;
-              // update_geodesic_distances_geo(distances_geo, solver_geo, gs.sources_geo, type);
+              int type = 0;
+              distances_geo = compute_geodesic_distances_geo(solver_geo, gs.sources_geo, type);
+              /*
+              if (distances_geo.empty()) {
+                  // Container is empty
+                  std::cout << "distances_geo is empty." << std::endl;
+              } else {
+                  // Container is not empty
+                  std::cout << "distances_geo contains:" << std::endl;
+                  for (const auto& element : distances_geo) {
+                      std::cout << element << std::endl; // Assuming elements are printable
+                  }
+              }
+              */
 
-              //gs.field_geo = ScalarField(distances_geo);
-              //gs.field_geo.normalize_in_01();
-              //gs.field_geo.copy_to_mesh(gs.m);
-              //gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+              update_geodesic_distances_geo(distances_geo, solver_geo, gs.sources_geo, type);
+
+              gs.field_geo = ScalarField(distances_geo);
+              gs.field_geo.normalize_in_01();
+              gs.field_geo.copy_to_mesh(gs.m);
+              gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
               break;
             }
