@@ -3,7 +3,6 @@
 #include <cinolib/drawable_segment_soup.h>
 #include <cinolib/drawable_sphere.h>
 #include <cinolib/gl/glcanvas.h>
-// #include <cinolib/gl/surface_mesh_controls.h>
 #include <cinolib/gl/file_dialog_open.h>
 #include <cinolib/gl/file_dialog_save.h>
 #include <cinolib/gradient.h>
@@ -116,6 +115,7 @@ void Load_mesh(GLcanvas & gui, State &gs)
   if (filename.size()!=0) Load_mesh(filename,gui,gs);
 }
 
+
 //::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION ::::::::::::::::::::::::::::::::::
 void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vector<uint> &sources) {
   // Method inside: #include <cinolib/geodesics.h>
@@ -124,7 +124,8 @@ void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vecto
 }
 
 void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &field_data, ScalarField &field, vector<int> &sources) {
-  vector<patch> quadrics = patch_fitting(m, 10);
+  vector<patch> quadrics = patch_fitting(m, 5);
+  // Method inside: #include "SSGD_methods/VTP/diff_geo.cpp"
   solver = compute_geodesic_solver(m, quadrics);
   // Geodesic = 0, Isophotic = 1
   const int type_of_metric = 0;
@@ -265,42 +266,61 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
     // Button for Compute SSGD
     if (ImGui::Button("Compute SSGD")) {
       // Based on the selected SSGD method, perform different actions
-      switch (gs.ssgd_method) {
-        
-        case State::VTP: {
-          SSGD_VTP(gs.m, gs.solver, gs.field_data, gs.field, gs.voronoi_centers);
-          break;
-        }
+      if (gs.sources.empty() && gs.voronoi_centers.empty()) {
+            // Open a warning popup if no source is selected
+            cout << "No source selected" << endl;
+            ImGui::OpenPopup("Warning");
+        } else {
 
-        case State::HEAT: {
-          cout << "Computing SSGD with HEAT Method" << endl;
-          SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources);
-          break;
-        }
+          switch (gs.ssgd_method) {
+      
+            case State::VTP: {
+              cout << "Computing SSGD with VTP Method" << endl;
+              SSGD_VTP(gs.m, gs.solver, gs.field_data, gs.field, gs.voronoi_centers);
+              break;
+            }
 
-        case State::FMM: {
-          cout << "Computing SSGD with FMM Method" << endl;
-          // Add your code for FMM method here
-          break;
-        }
+            case State::HEAT: {
+              cout << "Computing SSGD with HEAT Method" << endl;
+              SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources);
+              break;
+            }
 
-        case State::GEOTANGLE: {
-          cout << "Computing SSGD with GeoTangle Method" << endl;
-          // Add your code for GeoTangle method here
-          break;
-        }
+            case State::FMM: {
+              cout << "Computing SSGD with FMM Method" << endl;
+              // Add your code for FMM method here
+              break;
+            }
 
-        case State::EDGE: {
-          cout << "Computing SSGD with Edge Method" << endl;
-          // Add your code for Edge method here
-          break;
-        }
+            case State::GEOTANGLE: {
+              cout << "Computing SSGD with GeoTangle Method" << endl;
+              // Add your code for GeoTangle method here
+              break;
+            }
 
-        default:
-          cout << "No SSGD method selected" << endl;
-          break;
+            case State::EDGE: {
+              cout << "Computing SSGD with Edge Method" << endl;
+              // Add your code for Edge method here
+              break;
+            }
+
+            default:
+              cout << "No SSGD method selected" << endl;
+              break;
+          }
       }
     }
+
+    // Popup modal for warning if no source is selected
+    if (ImGui::BeginPopupModal("Warning", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("Select a source vertex before computing SSGD");
+        ImGui::Text("shift + left click");
+        if (ImGui::Button("OK")) {
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::EndPopup();
+    }
+
     // Reset button
     if(ImGui::SmallButton("Reset")){
         // Reset HEAT sources
