@@ -181,30 +181,6 @@ STB/fast:
 	$(MAKE) $(MAKESILENT) -f STB/CMakeFiles/STB.dir/build.make STB/CMakeFiles/STB.dir/build
 .PHONY : STB/fast
 
-drawing_circle.o: drawing_circle.cpp.o
-.PHONY : drawing_circle.o
-
-# target to build an object file
-drawing_circle.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o
-.PHONY : drawing_circle.cpp.o
-
-drawing_circle.i: drawing_circle.cpp.i
-.PHONY : drawing_circle.i
-
-# target to preprocess a source file
-drawing_circle.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.i
-.PHONY : drawing_circle.cpp.i
-
-drawing_circle.s: drawing_circle.cpp.s
-.PHONY : drawing_circle.s
-
-# target to generate assembly for a file
-drawing_circle.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.s
-.PHONY : drawing_circle.cpp.s
-
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -242,9 +218,6 @@ help:
 	@echo "... STB"
 	@echo "... glfw"
 	@echo "... imgui"
-	@echo "... drawing_circle.o"
-	@echo "... drawing_circle.i"
-	@echo "... drawing_circle.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

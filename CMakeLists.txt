@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(SSGD_dist)
 
 # add_executable(${PROJECT_NAME} main.cpp diff_geo.h diff_geo.cpp utilities.h utilities.cpp drawing_circle.h drawing_circle.cpp)
-add_executable(${PROJECT_NAME} main.cpp drawing_circle.h drawing_circle.cpp)
+add_executable(${PROJECT_NAME} main.cpp)
 set_target_properties(${PROJECT_NAME}     PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
 include_directories(${CMAKE_SOURCE_DIR}/libs/Eigen)
 include_directories(${CMAKE_SOURCE_DIR}/libs/ann_1.1.2/include)

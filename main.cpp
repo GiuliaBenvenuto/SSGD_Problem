@@ -53,7 +53,7 @@ struct State {
 
   // SSGD Method
   // enum SSGDMethod { EXACT_POLYHEDRAL, PDE_BASED, GRAPH_BASED } ssgd_method;
-  enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE} ssgd_method;
+  enum SSGDMethod {VTP, HEAT, FMM, GEOTANGLE, EDGE} ssgd_method;
 
   //-------- HEAT method --------
   // sources
@@ -89,7 +89,7 @@ struct State {
 
 
 
-//::::::::::::::::::::::::::::::::::::I/O ::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
 void Load_mesh(string filename, GLcanvas & gui, State &gs)
 {
   gs.m = DrawableTrimesh<>(filename.c_str());
@@ -118,7 +118,7 @@ void Load_mesh(GLcanvas & gui, State &gs)
 
 
 
-//::::::::::::::::::::::::::::::::: GUI ::::::::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::: GUI ::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI()
 {
   GLcanvas gui(1500,700);
@@ -290,11 +290,15 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
     }
     // Reset button
     if(ImGui::SmallButton("Reset")){
-        // Reset heat sources
+        // Reset HEAT sources
         gs.sources.clear();
+        // Reset VTP sources
+        gs.voronoi_centers.clear();
+        // Reset the scalar field
         for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
           gs.m.vert_data(vid).color = Color::WHITE(); // Replace `original_color` with the actual color
         }
+
         gs.m.show_vert_color();
     }
 
@@ -367,7 +371,6 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
                 gs.m.show_vert_color();
 
                 //------ VTP SOURCES ------
-
                 int selected_vid = gs.m.pick_vert(p);
                 gs.voronoi_centers.push_back(selected_vid);
                 std::cout << "Selected vid VTP = " << selected_vid << std::endl;
@@ -383,6 +386,7 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
         return false;
     };
 }
+
 
 //=============================== MAIN =========================================
 
