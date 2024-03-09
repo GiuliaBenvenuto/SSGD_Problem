@@ -250,6 +250,12 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
           // Geodesic = 0, Isophotic = 1
           const int type_of_metric = 0;
           gs.field_data = compute_geodesic_distances(gs.solver, gs.voronoi_centers, type_of_metric);
+
+          // Invert the color mapping
+          for (auto& value : gs.field_data) {
+            value = 1.0 - value;
+          }
+
           gs.field = ScalarField(gs.field_data);
           gs.field.normalize_in_01();
           gs.field.copy_to_mesh(gs.m);
