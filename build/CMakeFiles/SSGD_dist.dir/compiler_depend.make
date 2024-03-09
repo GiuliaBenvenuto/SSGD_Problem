@@ -884,7 +884,7 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNperf.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNx.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/geo.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/GeoTangle.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.h \
   _deps/spectra-src/include/Spectra/GenEigsBase.h \
@@ -1834,8 +1834,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/SparseCholesky:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Sparse:
-
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/symbols.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/LU:
@@ -1881,6 +1879,10 @@ _deps/spectra-src/include/Spectra/GenEigsSolver.h:
 _deps/spectra-src/include/Spectra/GenEigsBase.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.cpp:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Sparse:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/GeoTangle.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_VTK.cpp:
 
@@ -2257,8 +2259,6 @@ _deps/spectra-src/include/Spectra/GenEigsBase.h:
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_sort.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/remove_pointer.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/geo.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/promote.h:
 

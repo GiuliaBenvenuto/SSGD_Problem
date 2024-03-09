@@ -1334,7 +1334,7 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/geo.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/GeoTangle.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/GenEigsSolver.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/GenEigsBase.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/Util/Version.h \

@@ -22,7 +22,7 @@
 
 // SSGD with GeoTangle 
 //#include "SSGD_methods/GeoTangle/GeoTangle.cpp"
-#include "SSGD_methods/GeoTangle/geo.cpp"
+#include "SSGD_methods/GeoTangle/GeoTangle.cpp"
 
 
 
@@ -75,6 +75,8 @@ struct State {
 
   // -------- GeoTangle method --------
   ScalarField field_geo;
+  geodesic_solver solver_geo;
+  // sources
   vector<int> sources_geo;
 
 
@@ -149,6 +151,25 @@ void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &fie
   field = ScalarField(field_data);
   field.normalize_in_01();
   field.copy_to_mesh(m);
+  m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+}
+
+void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &field_geo, vector<int> &sources) {
+  solver = make_geodesic_solver(m);
+  vector<double> distances_geo;
+  // type = 0 for geodesic, 1 for isophotic
+  int type = 0;
+  distances_geo = compute_geodesic_distances_geo(solver, sources, type);
+  update_geodesic_distances_geo(distances_geo, solver, sources, type);
+
+  // Invert the color mapping
+  for (auto& value : distances_geo) {
+    value = 1.0 - value;
+  }
+
+  field_geo = ScalarField(distances_geo);
+  field_geo.normalize_in_01();
+  field_geo.copy_to_mesh(m);
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 }
 
@@ -302,35 +323,16 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
               break;
             }
 
+            /*
             case State::GEOTANGLE: {
               cout << "Computing SSGD with GeoTangle Method" << endl;
               // Add your code for GeoTangle method here
               geodesic_solver solver_geo;
               solver_geo = make_geodesic_solver(gs.m);
-              /*
-              if (solver_geo.graph.empty()) {
-                  std::cout << "Solver graph is empty." << std::endl;
-              } else {
-                  std::cout << "Solver graph contains " << solver_geo.graph.size() << " vertices." << std::endl;
-              }
-              */
               vector<double> distances_geo;
               // type = 0 for geodesic, 1 for isophotic
               int type = 0;
               distances_geo = compute_geodesic_distances_geo(solver_geo, gs.sources_geo, type);
-              /*
-              if (distances_geo.empty()) {
-                  // Container is empty
-                  std::cout << "distances_geo is empty." << std::endl;
-              } else {
-                  // Container is not empty
-                  std::cout << "distances_geo contains:" << std::endl;
-                  for (const auto& element : distances_geo) {
-                      std::cout << element << std::endl; // Assuming elements are printable
-                  }
-              }
-              */
-
               update_geodesic_distances_geo(distances_geo, solver_geo, gs.sources_geo, type);
 
               gs.field_geo = ScalarField(distances_geo);
@@ -338,6 +340,11 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
               gs.field_geo.copy_to_mesh(gs.m);
               gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
+              break;
+            }*/
+            case State::GEOTANGLE: {
+              cout << "Computing SSGD with GeoTangle Method" << endl;
+              SSGD_GeoTangle(gs.m, gs.solver_geo, gs.field_geo, gs.sources_geo);
               break;
             }
 
