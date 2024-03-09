@@ -20,6 +20,12 @@
 #include "SSGD_methods/VTP/diff_geo.h"
 #include "SSGD_methods/VTP/diff_geo.cpp"
 
+// SSGD with GeoTangle 
+//#include "SSGD_methods/GeoTangle/GeoTangle.cpp"
+#include "SSGD_methods/GeoTangle/geo.cpp"
+
+
+
 
 using namespace std;
 using namespace cinolib;
@@ -295,6 +301,16 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
             case State::GEOTANGLE: {
               cout << "Computing SSGD with GeoTangle Method" << endl;
               // Add your code for GeoTangle method here
+              geodesic_solver solver_geo;
+              solver_geo = make_geodesic_solver(gs.m);
+              /*
+              if (solver_geo.graph.empty()) {
+                  std::cout << "Solver graph is empty." << std::endl;
+              } else {
+                  std::cout << "Solver graph contains " << solver_geo.graph.size() << " vertices." << std::endl;
+              }
+              */
+
               break;
             }
 
