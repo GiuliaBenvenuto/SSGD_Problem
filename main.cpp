@@ -73,6 +73,10 @@ struct State {
   vector<int> voronoi_centers;
   vector<string> metric_names = {"Geodesic", "Isophotic"};
 
+  // -------- GeoTangle method --------
+  ScalarField field_geo;
+  vector<int> sources_geo;
+
 
 
   State() {
@@ -310,6 +314,15 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
                   std::cout << "Solver graph contains " << solver_geo.graph.size() << " vertices." << std::endl;
               }
               */
+              vector<double> distances_geo;
+              // type = 0 for geodesic, 1 for isophotic
+              // int type = 0;
+              // update_geodesic_distances_geo(distances_geo, solver_geo, gs.sources_geo, type);
+
+              //gs.field_geo = ScalarField(distances_geo);
+              //gs.field_geo.normalize_in_01();
+              //gs.field_geo.copy_to_mesh(gs.m);
+              //gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
               break;
             }
@@ -423,6 +436,10 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
                 int selected_vid = gs.m.pick_vert(p);
                 gs.voronoi_centers.push_back(selected_vid);
                 std::cout << "Selected vid VTP = " << selected_vid << std::endl;
+
+                // GeoTangle sources
+                gs.sources_geo.push_back(selected_vid);
+                std::cout << "Selected vid GEO = " << selected_vid << std::endl;
 
 
                 // You might need to replace "profiler" with your own profiling method or remove it

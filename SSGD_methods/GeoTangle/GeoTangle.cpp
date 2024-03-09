@@ -1816,6 +1816,8 @@ void visit_geodesic_graph(vector<double> &field, const geodesic_solver &solver,
     }
   }
 }
+//----------------------------------------------------------------
+
 template <typename Update, typename Stop, typename Exit>
 void visit_geodesic_graph_blended(vector<double> &field,
                                   const geodesic_solver &solver,
@@ -1926,6 +1928,7 @@ void update_geodesic_distances(vector<double> &distances,
     distances[source] = 0.0;
   visit_geodesic_graph(distances, solver, sources, type, update, stop, exit);
 }
+// Useful: ---------------------------------------------------
 
 void update_euclidean_distances(vector<double> &distances,
                                 const vector<int> &sources,
