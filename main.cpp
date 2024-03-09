@@ -116,6 +116,31 @@ void Load_mesh(GLcanvas & gui, State &gs)
   if (filename.size()!=0) Load_mesh(filename,gui,gs);
 }
 
+//::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION ::::::::::::::::::::::::::::::::::
+void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vector<uint> &sources) {
+  // Method inside: #include <cinolib/geodesics.h>
+  compute_geodesics_amortized(m, prefactored_matrices, sources).copy_to_mesh(m);
+  m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+}
+
+void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &field_data, ScalarField &field, vector<int> &sources) {
+  vector<patch> quadrics = patch_fitting(m, 10);
+  solver = compute_geodesic_solver(m, quadrics);
+  // Geodesic = 0, Isophotic = 1
+  const int type_of_metric = 0;
+  field_data = compute_geodesic_distances(solver, sources, type_of_metric);
+
+  // Invert the color mapping
+  for (auto& value : field_data) {
+    value = 1.0 - value;
+  }
+
+  field = ScalarField(field_data);
+  field.normalize_in_01();
+  field.copy_to_mesh(m);
+  m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+}
+
 
 
 //::::::::::::::::::::::::::::::::::::: GUI ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -241,33 +266,15 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
     if (ImGui::Button("Compute SSGD")) {
       // Based on the selected SSGD method, perform different actions
       switch (gs.ssgd_method) {
-
+        
         case State::VTP: {
-          cout << "Computing SSGD with VTP Method" << endl;
-          // Add your code for VTP method here
-          vector<patch> quadrics = patch_fitting(gs.m, 10);
-          gs.solver = compute_geodesic_solver(gs.m, quadrics);
-          // Geodesic = 0, Isophotic = 1
-          const int type_of_metric = 0;
-          gs.field_data = compute_geodesic_distances(gs.solver, gs.voronoi_centers, type_of_metric);
-
-          // Invert the color mapping
-          for (auto& value : gs.field_data) {
-            value = 1.0 - value;
-          }
-
-          gs.field = ScalarField(gs.field_data);
-          gs.field.normalize_in_01();
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          SSGD_VTP(gs.m, gs.solver, gs.field_data, gs.field, gs.voronoi_centers);
           break;
         }
 
         case State::HEAT: {
           cout << "Computing SSGD with HEAT Method" << endl;
-          // Method inside: #include <cinolib/geodesics.h>
-          compute_geodesics_amortized(gs.m, gs.prefactored_matrices, gs.sources).copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources);
           break;
         }
 
