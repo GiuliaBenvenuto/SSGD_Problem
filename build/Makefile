@@ -130,19 +130,6 @@ SSGD_dist/fast:
 .PHONY : SSGD_dist/fast
 
 #=============================================================================
-# Target rules for targets named smooth_shape
-
-# Build rule for target.
-smooth_shape: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 smooth_shape
-.PHONY : smooth_shape
-
-# fast build rule for target.
-smooth_shape/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/build
-.PHONY : smooth_shape/fast
-
-#=============================================================================
 # Target rules for targets named imgui
 
 # Build rule for target.
@@ -194,40 +181,12 @@ STB/fast:
 	$(MAKE) $(MAKESILENT) -f STB/CMakeFiles/STB.dir/build.make STB/CMakeFiles/STB.dir/build
 .PHONY : STB/fast
 
-diff_geo.o: diff_geo.cpp.o
-.PHONY : diff_geo.o
-
-# target to build an object file
-diff_geo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/diff_geo.cpp.o
-.PHONY : diff_geo.cpp.o
-
-diff_geo.i: diff_geo.cpp.i
-.PHONY : diff_geo.i
-
-# target to preprocess a source file
-diff_geo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/diff_geo.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/diff_geo.cpp.i
-.PHONY : diff_geo.cpp.i
-
-diff_geo.s: diff_geo.cpp.s
-.PHONY : diff_geo.s
-
-# target to generate assembly for a file
-diff_geo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/diff_geo.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/diff_geo.cpp.s
-.PHONY : diff_geo.cpp.s
-
 drawing_circle.o: drawing_circle.cpp.o
 .PHONY : drawing_circle.o
 
 # target to build an object file
 drawing_circle.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o
 .PHONY : drawing_circle.cpp.o
 
 drawing_circle.i: drawing_circle.cpp.i
@@ -236,7 +195,6 @@ drawing_circle.i: drawing_circle.cpp.i
 # target to preprocess a source file
 drawing_circle.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/drawing_circle.cpp.i
 .PHONY : drawing_circle.cpp.i
 
 drawing_circle.s: drawing_circle.cpp.s
@@ -245,7 +203,6 @@ drawing_circle.s: drawing_circle.cpp.s
 # target to generate assembly for a file
 drawing_circle.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/drawing_circle.cpp.s
 .PHONY : drawing_circle.cpp.s
 
 main.o: main.cpp.o
@@ -272,57 +229,6 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-mean_curv.o: mean_curv.cpp.o
-.PHONY : mean_curv.o
-
-# target to build an object file
-mean_curv.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/mean_curv.cpp.o
-.PHONY : mean_curv.cpp.o
-
-mean_curv.i: mean_curv.cpp.i
-.PHONY : mean_curv.i
-
-# target to preprocess a source file
-mean_curv.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/mean_curv.cpp.i
-.PHONY : mean_curv.cpp.i
-
-mean_curv.s: mean_curv.cpp.s
-.PHONY : mean_curv.s
-
-# target to generate assembly for a file
-mean_curv.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/mean_curv.cpp.s
-.PHONY : mean_curv.cpp.s
-
-utilities.o: utilities.cpp.o
-.PHONY : utilities.o
-
-# target to build an object file
-utilities.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/utilities.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/utilities.cpp.o
-.PHONY : utilities.cpp.o
-
-utilities.i: utilities.cpp.i
-.PHONY : utilities.i
-
-# target to preprocess a source file
-utilities.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/utilities.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/utilities.cpp.i
-.PHONY : utilities.cpp.i
-
-utilities.s: utilities.cpp.s
-.PHONY : utilities.s
-
-# target to generate assembly for a file
-utilities.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/utilities.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/utilities.cpp.s
-.PHONY : utilities.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -336,22 +242,12 @@ help:
 	@echo "... STB"
 	@echo "... glfw"
 	@echo "... imgui"
-	@echo "... smooth_shape"
-	@echo "... diff_geo.o"
-	@echo "... diff_geo.i"
-	@echo "... diff_geo.s"
 	@echo "... drawing_circle.o"
 	@echo "... drawing_circle.i"
 	@echo "... drawing_circle.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... mean_curv.o"
-	@echo "... mean_curv.i"
-	@echo "... mean_curv.s"
-	@echo "... utilities.o"
-	@echo "... utilities.i"
-	@echo "... utilities.s"
 .PHONY : help
 
 

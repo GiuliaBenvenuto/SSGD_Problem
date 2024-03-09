@@ -69,52 +69,10 @@ include CMakeFiles/smooth_shape.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/smooth_shape.dir/flags.make
 
-CMakeFiles/smooth_shape.dir/mean_curv.cpp.o: CMakeFiles/smooth_shape.dir/flags.make
-CMakeFiles/smooth_shape.dir/mean_curv.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/mean_curv.cpp
-CMakeFiles/smooth_shape.dir/mean_curv.cpp.o: CMakeFiles/smooth_shape.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/smooth_shape.dir/mean_curv.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/smooth_shape.dir/mean_curv.cpp.o -MF CMakeFiles/smooth_shape.dir/mean_curv.cpp.o.d -o CMakeFiles/smooth_shape.dir/mean_curv.cpp.o -c /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/mean_curv.cpp
-
-CMakeFiles/smooth_shape.dir/mean_curv.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/smooth_shape.dir/mean_curv.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/mean_curv.cpp > CMakeFiles/smooth_shape.dir/mean_curv.cpp.i
-
-CMakeFiles/smooth_shape.dir/mean_curv.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/smooth_shape.dir/mean_curv.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/mean_curv.cpp -o CMakeFiles/smooth_shape.dir/mean_curv.cpp.s
-
-CMakeFiles/smooth_shape.dir/diff_geo.cpp.o: CMakeFiles/smooth_shape.dir/flags.make
-CMakeFiles/smooth_shape.dir/diff_geo.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp
-CMakeFiles/smooth_shape.dir/diff_geo.cpp.o: CMakeFiles/smooth_shape.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/smooth_shape.dir/diff_geo.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/smooth_shape.dir/diff_geo.cpp.o -MF CMakeFiles/smooth_shape.dir/diff_geo.cpp.o.d -o CMakeFiles/smooth_shape.dir/diff_geo.cpp.o -c /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp
-
-CMakeFiles/smooth_shape.dir/diff_geo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/smooth_shape.dir/diff_geo.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp > CMakeFiles/smooth_shape.dir/diff_geo.cpp.i
-
-CMakeFiles/smooth_shape.dir/diff_geo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/smooth_shape.dir/diff_geo.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp -o CMakeFiles/smooth_shape.dir/diff_geo.cpp.s
-
-CMakeFiles/smooth_shape.dir/utilities.cpp.o: CMakeFiles/smooth_shape.dir/flags.make
-CMakeFiles/smooth_shape.dir/utilities.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp
-CMakeFiles/smooth_shape.dir/utilities.cpp.o: CMakeFiles/smooth_shape.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/smooth_shape.dir/utilities.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/smooth_shape.dir/utilities.cpp.o -MF CMakeFiles/smooth_shape.dir/utilities.cpp.o.d -o CMakeFiles/smooth_shape.dir/utilities.cpp.o -c /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp
-
-CMakeFiles/smooth_shape.dir/utilities.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/smooth_shape.dir/utilities.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp > CMakeFiles/smooth_shape.dir/utilities.cpp.i
-
-CMakeFiles/smooth_shape.dir/utilities.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/smooth_shape.dir/utilities.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp -o CMakeFiles/smooth_shape.dir/utilities.cpp.s
-
 CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o: CMakeFiles/smooth_shape.dir/flags.make
 CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/drawing_circle.cpp
 CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o: CMakeFiles/smooth_shape.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o -MF CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o.d -o CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o -c /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/drawing_circle.cpp
 
 CMakeFiles/smooth_shape.dir/drawing_circle.cpp.i: cmake_force
@@ -127,17 +85,11 @@ CMakeFiles/smooth_shape.dir/drawing_circle.cpp.s: cmake_force
 
 # Object files for target smooth_shape
 smooth_shape_OBJECTS = \
-"CMakeFiles/smooth_shape.dir/mean_curv.cpp.o" \
-"CMakeFiles/smooth_shape.dir/diff_geo.cpp.o" \
-"CMakeFiles/smooth_shape.dir/utilities.cpp.o" \
 "CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o"
 
 # External object files for target smooth_shape
 smooth_shape_EXTERNAL_OBJECTS =
 
-smooth_shape: CMakeFiles/smooth_shape.dir/mean_curv.cpp.o
-smooth_shape: CMakeFiles/smooth_shape.dir/diff_geo.cpp.o
-smooth_shape: CMakeFiles/smooth_shape.dir/utilities.cpp.o
 smooth_shape: CMakeFiles/smooth_shape.dir/drawing_circle.cpp.o
 smooth_shape: CMakeFiles/smooth_shape.dir/build.make
 smooth_shape: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/lib/libANN.a
@@ -146,7 +98,7 @@ smooth_shape: imgui/libimgui.a
 smooth_shape: imgui/glfw/src/libglfw3.a
 smooth_shape: STB/libSTB.a
 smooth_shape: CMakeFiles/smooth_shape.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable smooth_shape"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable smooth_shape"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/smooth_shape.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

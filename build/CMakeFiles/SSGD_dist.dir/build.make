@@ -83,38 +83,10 @@ CMakeFiles/SSGD_dist.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SSGD_dist.dir/main.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/main.cpp -o CMakeFiles/SSGD_dist.dir/main.cpp.s
 
-CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o: CMakeFiles/SSGD_dist.dir/flags.make
-CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp
-CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o: CMakeFiles/SSGD_dist.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o -MF CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o.d -o CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o -c /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp
-
-CMakeFiles/SSGD_dist.dir/diff_geo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SSGD_dist.dir/diff_geo.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp > CMakeFiles/SSGD_dist.dir/diff_geo.cpp.i
-
-CMakeFiles/SSGD_dist.dir/diff_geo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SSGD_dist.dir/diff_geo.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.cpp -o CMakeFiles/SSGD_dist.dir/diff_geo.cpp.s
-
-CMakeFiles/SSGD_dist.dir/utilities.cpp.o: CMakeFiles/SSGD_dist.dir/flags.make
-CMakeFiles/SSGD_dist.dir/utilities.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp
-CMakeFiles/SSGD_dist.dir/utilities.cpp.o: CMakeFiles/SSGD_dist.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SSGD_dist.dir/utilities.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SSGD_dist.dir/utilities.cpp.o -MF CMakeFiles/SSGD_dist.dir/utilities.cpp.o.d -o CMakeFiles/SSGD_dist.dir/utilities.cpp.o -c /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp
-
-CMakeFiles/SSGD_dist.dir/utilities.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/SSGD_dist.dir/utilities.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp > CMakeFiles/SSGD_dist.dir/utilities.cpp.i
-
-CMakeFiles/SSGD_dist.dir/utilities.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/SSGD_dist.dir/utilities.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.cpp -o CMakeFiles/SSGD_dist.dir/utilities.cpp.s
-
 CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o: CMakeFiles/SSGD_dist.dir/flags.make
 CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/drawing_circle.cpp
 CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o: CMakeFiles/SSGD_dist.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o -MF CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o.d -o CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o -c /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/drawing_circle.cpp
 
 CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.i: cmake_force
@@ -128,16 +100,12 @@ CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.s: cmake_force
 # Object files for target SSGD_dist
 SSGD_dist_OBJECTS = \
 "CMakeFiles/SSGD_dist.dir/main.cpp.o" \
-"CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o" \
-"CMakeFiles/SSGD_dist.dir/utilities.cpp.o" \
 "CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o"
 
 # External object files for target SSGD_dist
 SSGD_dist_EXTERNAL_OBJECTS =
 
 SSGD_dist: CMakeFiles/SSGD_dist.dir/main.cpp.o
-SSGD_dist: CMakeFiles/SSGD_dist.dir/diff_geo.cpp.o
-SSGD_dist: CMakeFiles/SSGD_dist.dir/utilities.cpp.o
 SSGD_dist: CMakeFiles/SSGD_dist.dir/drawing_circle.cpp.o
 SSGD_dist: CMakeFiles/SSGD_dist.dir/build.make
 SSGD_dist: /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/lib/libANN.a
@@ -146,7 +114,7 @@ SSGD_dist: imgui/libimgui.a
 SSGD_dist: imgui/glfw/src/libglfw3.a
 SSGD_dist: STB/libSTB.a
 SSGD_dist: CMakeFiles/SSGD_dist.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable SSGD_dist"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable SSGD_dist"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SSGD_dist.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

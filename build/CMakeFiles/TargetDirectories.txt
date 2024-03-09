@@ -1,5 +1,4 @@
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/SSGD_dist.dir
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/smooth_shape.dir
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/edit_cache.dir
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles/rebuild_cache.dir
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/imgui/CMakeFiles/imgui.dir

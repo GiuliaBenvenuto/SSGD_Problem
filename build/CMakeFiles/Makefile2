@@ -64,7 +64,6 @@ CMAKE_BINARY_DIR = /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build
 
 # The main recursive "all" target.
 all: CMakeFiles/SSGD_dist.dir/all
-all: CMakeFiles/smooth_shape.dir/all
 all: imgui/all
 all: STB/all
 .PHONY : all
@@ -76,7 +75,6 @@ preinstall: STB/preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/SSGD_dist.dir/clean
-clean: CMakeFiles/smooth_shape.dir/clean
 clean: imgui/clean
 clean: STB/clean
 .PHONY : clean
@@ -153,12 +151,12 @@ CMakeFiles/SSGD_dist.dir/all: imgui/glfw/src/CMakeFiles/glfw.dir/all
 CMakeFiles/SSGD_dist.dir/all: STB/CMakeFiles/STB.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SSGD_dist.dir/build.make CMakeFiles/SSGD_dist.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target SSGD_dist"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=1,2,3 "Built target SSGD_dist"
 .PHONY : CMakeFiles/SSGD_dist.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/SSGD_dist.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles 31
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles 29
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SSGD_dist.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles 0
 .PHONY : CMakeFiles/SSGD_dist.dir/rule
@@ -173,41 +171,13 @@ CMakeFiles/SSGD_dist.dir/clean:
 .PHONY : CMakeFiles/SSGD_dist.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/smooth_shape.dir
-
-# All Build rule for target.
-CMakeFiles/smooth_shape.dir/all: imgui/CMakeFiles/imgui.dir/all
-CMakeFiles/smooth_shape.dir/all: imgui/glfw/src/CMakeFiles/glfw.dir/all
-CMakeFiles/smooth_shape.dir/all: STB/CMakeFiles/STB.dir/all
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=32,33,34,35,36 "Built target smooth_shape"
-.PHONY : CMakeFiles/smooth_shape.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/smooth_shape.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles 31
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/smooth_shape.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles 0
-.PHONY : CMakeFiles/smooth_shape.dir/rule
-
-# Convenience name for target.
-smooth_shape: CMakeFiles/smooth_shape.dir/rule
-.PHONY : smooth_shape
-
-# clean rule for target.
-CMakeFiles/smooth_shape.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/smooth_shape.dir/build.make CMakeFiles/smooth_shape.dir/clean
-.PHONY : CMakeFiles/smooth_shape.dir/clean
-
-#=============================================================================
 # Target rules for target imgui/CMakeFiles/imgui.dir
 
 # All Build rule for target.
 imgui/CMakeFiles/imgui.dir/all: imgui/glfw/src/CMakeFiles/glfw.dir/all
 	$(MAKE) $(MAKESILENT) -f imgui/CMakeFiles/imgui.dir/build.make imgui/CMakeFiles/imgui.dir/depend
 	$(MAKE) $(MAKESILENT) -f imgui/CMakeFiles/imgui.dir/build.make imgui/CMakeFiles/imgui.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=24,25,26,27,28,29,30,31 "Built target imgui"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=22,23,24,25,26,27,28,29 "Built target imgui"
 .PHONY : imgui/CMakeFiles/imgui.dir/all
 
 # Build rule for subdir invocation for target.
@@ -233,7 +203,7 @@ imgui/CMakeFiles/imgui.dir/clean:
 imgui/glfw/src/CMakeFiles/update_mappings.dir/all:
 	$(MAKE) $(MAKESILENT) -f imgui/glfw/src/CMakeFiles/update_mappings.dir/build.make imgui/glfw/src/CMakeFiles/update_mappings.dir/depend
 	$(MAKE) $(MAKESILENT) -f imgui/glfw/src/CMakeFiles/update_mappings.dir/build.make imgui/glfw/src/CMakeFiles/update_mappings.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=37 "Built target update_mappings"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=30 "Built target update_mappings"
 .PHONY : imgui/glfw/src/CMakeFiles/update_mappings.dir/all
 
 # Build rule for subdir invocation for target.
@@ -259,7 +229,7 @@ imgui/glfw/src/CMakeFiles/update_mappings.dir/clean:
 imgui/glfw/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) $(MAKESILENT) -f imgui/glfw/src/CMakeFiles/glfw.dir/build.make imgui/glfw/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) $(MAKESILENT) -f imgui/glfw/src/CMakeFiles/glfw.dir/build.make imgui/glfw/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21 "Built target glfw"
 .PHONY : imgui/glfw/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.
@@ -285,7 +255,7 @@ imgui/glfw/src/CMakeFiles/glfw.dir/clean:
 STB/CMakeFiles/STB.dir/all:
 	$(MAKE) $(MAKESILENT) -f STB/CMakeFiles/STB.dir/build.make STB/CMakeFiles/STB.dir/depend
 	$(MAKE) $(MAKESILENT) -f STB/CMakeFiles/STB.dir/build.make STB/CMakeFiles/STB.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=6,7 "Built target STB"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/CMakeFiles --progress-num=4,5 "Built target STB"
 .PHONY : STB/CMakeFiles/STB.dir/all
 
 # Build rule for subdir invocation for target.

@@ -1,16 +1,25 @@
-#include "utilities.h"
+// #include "utilities.h"
 #include <cinolib/drawable_vector_field.h>
+#include <cinolib/drawable_segment_soup.h>
 #include <cinolib/drawable_sphere.h>
 #include <cinolib/gl/glcanvas.h>
+// #include <cinolib/gl/surface_mesh_controls.h>
 #include <cinolib/gl/file_dialog_open.h>
 #include <cinolib/gl/file_dialog_save.h>
 #include <cinolib/gradient.h>
+#include <cinolib/meshes/drawable_tetmesh.h>
+#include <cinolib/vector_serialization.h>
 #include <cinolib/io/write_OBJ.h>
 #include <cinolib/mean_curv_flow.h>
+#include <Eigen/SparseCholesky>
 #include <fstream>
 
 // SSDG with Heat method
 #include <cinolib/geodesics.h>
+
+// SSDG with VTP method
+#include "SSGD_methods/VTP/diff_geo.h"
+#include "SSGD_methods/VTP/diff_geo.cpp"
 
 
 using namespace std;
@@ -46,9 +55,18 @@ struct State {
   // enum SSGDMethod { EXACT_POLYHEDRAL, PDE_BASED, GRAPH_BASED } ssgd_method;
   enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE} ssgd_method;
 
-  // Selection of the source vertex
+  //-------- HEAT method --------
+  // sources
   std::vector<uint> sources;
   GeodesicsCache prefactored_matrices;
+
+  //-------- VTP method --------
+  vector<double> field_data;
+  ScalarField field;
+  geodesic_solver solver;
+  // sources
+  vector<int> voronoi_centers;
+  vector<string> metric_names = {"Geodesic", "Isophotic"};
 
 
 
@@ -224,32 +242,46 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       // Based on the selected SSGD method, perform different actions
       switch (gs.ssgd_method) {
 
-        case State::VTP:
+        case State::VTP: {
           cout << "Computing SSGD with VTP Method" << endl;
           // Add your code for VTP method here
+          vector<patch> quadrics = patch_fitting(gs.m, 10);
+          gs.solver = compute_geodesic_solver(gs.m, quadrics);
+          // Geodesic = 0, Isophotic = 1
+          const int type_of_metric = 0;
+          gs.field_data = compute_geodesic_distances(gs.solver, gs.voronoi_centers, type_of_metric);
+          gs.field = ScalarField(gs.field_data);
+          gs.field.normalize_in_01();
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
+        }
 
-        case State::HEAT:
+        case State::HEAT: {
           cout << "Computing SSGD with HEAT Method" << endl;
-          // Add your code for HEAT method here
+          // Method inside: #include <cinolib/geodesics.h>
           compute_geodesics_amortized(gs.m, gs.prefactored_matrices, gs.sources).copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
+        }
 
-        case State::FMM:
+        case State::FMM: {
           cout << "Computing SSGD with FMM Method" << endl;
           // Add your code for FMM method here
           break;
+        }
 
-        case State::GEOTANGLE:
+        case State::GEOTANGLE: {
           cout << "Computing SSGD with GeoTangle Method" << endl;
           // Add your code for GeoTangle method here
           break;
+        }
 
-        case State::EDGE:
+        case State::EDGE: {
           cout << "Computing SSGD with Edge Method" << endl;
           // Add your code for Edge method here
           break;
+        }
 
         default:
           cout << "No SSGD method selected" << endl;
@@ -325,6 +357,7 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
             vec3d p;
             vec2d click = gui.cursor_pos();
             if(gui.unproject(click, p)) {
+                //----- HEAT SOURCES -----
                 uint vid = gs.m.pick_vert(p);
                 gs.sources.push_back(vid);
                 cout << "Source vertex: " << vid << endl;
@@ -332,6 +365,13 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
                 // Color the selected vertex in red
                 gs.m.vert_data(vid).color = Color::RED();
                 gs.m.show_vert_color();
+
+                //------ VTP SOURCES ------
+
+                int selected_vid = gs.m.pick_vert(p);
+                gs.voronoi_centers.push_back(selected_vid);
+                std::cout << "Selected vid VTP = " << selected_vid << std::endl;
+
 
                 // You might need to replace "profiler" with your own profiling method or remove it
                 // profiler.push("compute_geodesics");

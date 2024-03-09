@@ -1,9 +1,7 @@
 CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/main.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/utilities.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/diff_geo.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/drawing_circle.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle_utils.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_vector_field.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vector_field.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/vec_mat.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/ostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__assert \
@@ -984,14 +982,33 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/symbols.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/vec_mat.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle_utils.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/standard_elements_tables.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/min_max_inf.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serializable.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vector_field.cpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/fstream \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/filesystem \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/copy_options.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/directory_entry.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/file_status.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/file_type.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/perms.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/file_time_type.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/filesystem_error.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/path.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/iomanip \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/operations.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/perm_options.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/space_info.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/directory_iterator.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/directory_options.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_object.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_mesh.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/set \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__tree \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_mesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/aabb.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/min_max_inf.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/aabb.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/color.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/color.cpp \
@@ -1053,6 +1070,54 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/weibull_distribution.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/unordered_set \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_vector_field.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/arrow.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/arrow.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_arrow.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_arrow.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/gl_glfw.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/glfw/include/GLFW/glfw3.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gltypes.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/os/availability.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_segment_soup.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_segment_soup.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_sphere.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_cylinder.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cylinder.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cylinder.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_sphere.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glcanvas.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/side_bar_item.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/camera.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/camera.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cot.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cot.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glcanvas.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/trackball.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/trackball.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/how_many_seconds.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/how_many_seconds.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/fonts/droid_sans.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/../external/imgui/imgui_impl_opengl2.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imconfig.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/float.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/float.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/float.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/../external/imgui/imgui_impl_glfw.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glproject.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glproject.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glunproject.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glunproject.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_open.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_open.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_save.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_save.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Sparse \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/SparseCore \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseCore/SparseUtil.h \
@@ -1129,43 +1194,28 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/list \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/linear_solvers.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/linear_solvers.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/matrix_eigenfunctions.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/matrix_eigenfunctions.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/MatOp/SparseSymShiftSolve.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/MatOp/SparseGenRealShiftSolve.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/GenEigsRealShiftSolver.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/GenEigsBase.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/Util/Version.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/Util/TypeTraits.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/Util/SelectionRule.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/Util/CompInfo.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/Util/SimpleRandom.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/MatOp/internal/ArnoldiOp.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergQR.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/../Util/TypeTraits.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/DoubleShiftQR.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergEigen.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergSchur.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/Arnoldi.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/../MatOp/internal/ArnoldiOp.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/../Util/SimpleRandom.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/MatOp/DenseGenRealShiftSolve.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/SymEigsShiftSolver.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/SymEigsBase.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/TridiagEigen.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/Lanczos.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/MatOp/DenseSymShiftSolve.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/MatOp/../LinAlg/BKLDLT.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/LinAlg/../Util/CompInfo.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/spectra-src/include/Spectra/MatOp/../Util/CompInfo.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/octree.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_polyhedralmesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_polyhedralmesh.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/spatial_data_structure_item.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/spatial_data_structure_item.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/meshes.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/trimesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/Moller_Trumbore_intersection.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/Moller_Trumbore_intersection.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/predicates.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/predicates.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle_utils.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle_utils.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/standard_elements_tables.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/plane.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/plane.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/earcut.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/earcut.cpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/queue \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/deque \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ANSI_color_codes.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_polygonmesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_polygonmesh.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/to_openGL_unified_verts.h \
@@ -1175,25 +1225,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_OBJ.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/string_utilities.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/string_utilities.cpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/fstream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/filesystem \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/copy_options.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/directory_entry.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/file_status.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/file_type.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/perms.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/file_time_type.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/filesystem_error.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/path.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/iomanip \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/operations.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/perm_options.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/space_info.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/directory_iterator.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/directory_options.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_OFF.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_OFF.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_IV.h \
@@ -1237,25 +1268,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_VTK.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_VTK.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_OVM.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_polyhedralmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_polyhedralmesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/triangle.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/Moller_Trumbore_intersection.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/Moller_Trumbore_intersection.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/predicates.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/predicates.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/polygon_utils.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/plane.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/plane.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/earcut.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/earcut.cpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/queue \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/deque \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/how_many_seconds.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/how_many_seconds.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/ANSI_color_codes.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_OVM.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_LIVESU2012.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_LIVESU2012.cpp \
@@ -1272,25 +1284,22 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/quality_tet.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/quality_hex.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/quality_hex.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_tetmesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/tetmesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/trimesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/trimesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cot.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cot.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/quadmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/quadmesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/polygonmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/polygonmesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_trimesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/tetmesh.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron_utils.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron_utils.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/segment.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/segment.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polyhedralmesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/mesh_slicer.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/mesh_slicer.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_object.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_lines_tris.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/gl_glfw.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/glfw/include/GLFW/glfw3.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gltypes.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/os/availability.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/load_texture.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/load_texture.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/textures/texture_hsv_w_isolines.h \
@@ -1299,46 +1308,20 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serialize_index.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/../external/stb/stb_image.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_lines_tris.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_quadmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_polygonmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/tetmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/tetmesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron_utils.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/tetrahedron_utils.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/segment.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/segment.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/hexmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/hexmesh.cpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/float.h \
-  /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/float.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/float.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/polyhedralmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/polyhedralmesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_tetmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polyhedralmesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polyhedralmesh.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_hexmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_polyhedralmesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/octree.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/parallel_for.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/parallel_for.cpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/thread \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/point.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/point.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/sphere.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geometry/sphere.cpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/stack \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/profiler.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tree.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tree.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/profiler.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tetgen_wrap.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/tetgen_wrap.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cfloat \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/laplacian.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/linear_solvers.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/linear_solvers.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_base.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact_elements.h \
@@ -1347,53 +1330,7 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh_elements.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_constants_and_simple_functions.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_sphere.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_sphere.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/icosphere.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_segment_soup.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_segment_soup.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_cylinder.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cylinder.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/cylinder.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_vector_field.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vector_field.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/serializable.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vector_field.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_vector_field.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/arrow.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/arrow.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/drawable_arrow.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/draw_arrow.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/triangle_wrap.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glcanvas.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/side_bar_item.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/camera.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/camera.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glcanvas.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/trackball.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/trackball.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/fonts/droid_sans.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/../external/imgui/imgui_impl_opengl2.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imconfig.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/../external/imgui/imgui_impl_glfw.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glproject.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glproject.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glunproject.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/glunproject.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_open.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_open.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_save.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gl/file_dialog_save.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/gradient.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/mean_curv_flow.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/vertex_mass.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.h \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.cpp \
-  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.cpp
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_trimesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.cpp
