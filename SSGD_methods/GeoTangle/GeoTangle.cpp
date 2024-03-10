@@ -21,7 +21,7 @@ using namespace std::complex_literals;
 #include "../../libs/ann_1.1.2/include/ANN/ANNperf.h"
 
 
-// Useful: ---------------------------- Graph Construction ----------------------------
+//---------------------------- Graph Construction ----------------------------
 void connect_nodes(geodesic_solver &solver, int a, int b, float length) {
   solver.graph[a].push_back({b, length});
   solver.graph[b].push_back({a, length});
@@ -109,9 +109,9 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m) {
   std::cout << "Number of edges GEOTANGLE: " << edge_count << std::endl;
   return solver;
 }
-// ----------------------------------------------------------
 
-// Useful: ------------- Dijkstra navigation ----------------
+
+//---------------------------- Dijkstra Navigation ----------------------------
 template <typename Update, typename Stop, typename Exit>
 void visit_geodesic_graph_geo(vector<double> &field, const geodesic_solver &solver,
                           const vector<int> &sources, const int type,
@@ -211,9 +211,8 @@ void visit_geodesic_graph_geo(vector<double> &field, const geodesic_solver &solv
     }
   }
 }
-//----------------------------------------------------------------
 
-// Useful: ------------- Initialization and call to the solver ----------------
+// ---------------------------- Init and call to the Solver ----------------------------
 void update_geodesic_distances_geo(vector<double> &distances,
                                const geodesic_solver &solver,
                                const vector<int> &sources, const int type,

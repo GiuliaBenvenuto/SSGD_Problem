@@ -39,7 +39,7 @@ struct State {
   DrawableTrimesh<> m;            // the input mesh
   uint nverts;                    // its #vertices
   vector<vector<uint>> VV;        // its VV relation
-  
+
   // GUI state ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
   // View
@@ -58,7 +58,7 @@ struct State {
 
   // SSGD Method
   // enum SSGDMethod { EXACT_POLYHEDRAL, PDE_BASED, GRAPH_BASED } ssgd_method;
-  enum SSGDMethod {VTP, HEAT, FMM, GEOTANGLE, EDGE} ssgd_method;
+  enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE } ssgd_method;
 
   //-------- HEAT method --------
   // sources
@@ -101,6 +101,9 @@ struct State {
     vecfield_size = 2;
     // vec_color = vec3d(1.0, 0.0, 0.0);
     vec_color = Color(1.0, 0.0, 0.0, 1.0);
+
+    render_mode = State::RENDER_SMOOTH;
+    ssgd_method = State::VTP;
   }
 };
 
@@ -391,6 +394,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         gs.sources_geo.clear();
         // Reset Edge sources
         gs.sources_edge.clear();
+
         // Reset the scalar field
         for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
           gs.m.vert_data(vid).color = Color::WHITE(); // Replace `original_color` with the actual color
@@ -446,8 +450,6 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
 
       ImGui::TreePop();
     }*/
-
-    
   };
 }
 
@@ -506,6 +508,9 @@ int main(int argc, char **argv) {
   //Load mesh
   if (argc>1) {
     string s = "../data/" + string(argv[1]);
+    Load_mesh(s, gui, gs);
+  } else {
+    string s = "../data/cinolib/3holes.obj";
     Load_mesh(s, gui, gs);
   }
 
