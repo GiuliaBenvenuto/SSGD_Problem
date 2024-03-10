@@ -1357,4 +1357,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cfloat \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/../../libs/ann_1.1.2/include/ANN/ANNx.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/../../libs/ann_1.1.2/include/ANN/ANNperf.h
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/../../libs/ann_1.1.2/include/ANN/ANNperf.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/edge.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/../../libs/ann_1.1.2/include/ANN/ANN.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/../../libs/ann_1.1.2/include/ANN/ANNx.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/../../libs/ann_1.1.2/include/ANN/ANNperf.h

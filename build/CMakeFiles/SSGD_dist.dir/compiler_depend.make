@@ -884,6 +884,10 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNperf.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNx.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/edge.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNperf.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNx.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/GeoTangle.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.h \
@@ -2415,6 +2419,8 @@ _deps/spectra-src/include/Spectra/GenEigsBase.h:
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_arithmetic.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui_impl_opengl2.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/edge.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/xlocale/_wchar.h:
 

@@ -22,12 +22,12 @@ using namespace std::complex_literals;
 
 
 // Useful: ---------------------------- Graph Construction ----------------------------
-void connect_nodes(geodesic_solver &solver, int a, int b, float length) {
+void connect_nodes_edge(geodesic_solver &solver, int a, int b, float length) {
   solver.graph[a].push_back({b, length});
   solver.graph[b].push_back({a, length});
 }
 
-double opposite_nodes_arc_length(const vector<vec3d> &positions, int a, int c,
+/* double opposite_nodes_arc_length_edge(const vector<vec3d> &positions, int a, int c,
                                  const vec2i &edge) {
   // Triangles (a, b, d) and (b, d, c) are connected by (b, d) edge
   // Nodes a and c must be connected.
@@ -59,9 +59,9 @@ double opposite_nodes_arc_length(const vector<vec3d> &positions, int a, int c,
     return DBL_MAX;
   else
     return sqrt(len);
-}
+} */
 
-static void connect_opposite_nodes(geodesic_solver &solver,
+/* static void connect_opposite_nodes(geodesic_solver &solver,
                                    const vector<vec3d> &positions,
                                    const vector<uint> &tr0,
                                    const vector<uint> &tr1, const vec2i &edge) {
@@ -77,11 +77,11 @@ static void connect_opposite_nodes(geodesic_solver &solver,
   auto v1 = opposite_vertex(tr1, edge);
   if (v0 == -1 || v1 == -1)
     return;
-  auto length = opposite_nodes_arc_length(positions, v0, v1, edge);
+  auto length = opposite_nodes_arc_length_edge(positions, v0, v1, edge);
   connect_nodes(solver, v0, v1, length);
-}
+} */
 
-geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m) {
+geodesic_solver make_geodesic_solver_edge(const DrawableTrimesh<> &m) {
   auto solver = geodesic_solver{};
   solver.graph.resize(m.num_verts());
 
@@ -95,25 +95,24 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m) {
       // connect mesh edges
       auto len = (m.vert(a) - m.vert(b)).norm();
       if (a < b)
-        connect_nodes(solver, a, b, len);
+        connect_nodes_edge(solver, a, b, len);
         edge_count++;
       // connect opposite nodes
-      auto neighbor = m.adj_p2p(face)[k];
+      /* auto neighbor = m.adj_p2p(face)[k];
       if (face < neighbor) {
         connect_opposite_nodes(solver, m.vector_verts(), m.adj_p2v(face),
                                m.adj_p2v(neighbor), vec2i{(int)a, (int)b});
-        edge_count++;
-      }
+      } */
     }
   }
-  std::cout << "Number of edges GEOTANGLE: " << edge_count << std::endl;
+  std::cout << "Number of edges EDGE " << edge_count << std::endl;
   return solver;
 }
 // ----------------------------------------------------------
 
 // Useful: ------------- Dijkstra navigation ----------------
 template <typename Update, typename Stop, typename Exit>
-void visit_geodesic_graph_geo(vector<double> &field, const geodesic_solver &solver,
+void visit_geodesic_graph_edge(vector<double> &field, const geodesic_solver &solver,
                           const vector<int> &sources, const int type,
                           Update &&update, Stop &&stop, Exit &&exit) {
   /*
@@ -214,7 +213,7 @@ void visit_geodesic_graph_geo(vector<double> &field, const geodesic_solver &solv
 //----------------------------------------------------------------
 
 // Useful: ------------- Initialization and call to the solver ----------------
-void update_geodesic_distances_geo(vector<double> &distances,
+void update_geodesic_distances_edge(vector<double> &distances,
                                const geodesic_solver &solver,
                                const vector<int> &sources, const int type,
                                double max_distance = __DBL_MAX__) {
@@ -224,11 +223,11 @@ void update_geodesic_distances_geo(vector<double> &distances,
   auto exit = [](int node) { return false; };
   for (auto source : sources)
     distances[source] = 0.0;
-  visit_geodesic_graph_geo(distances, solver, sources, type, update, stop, exit);
+  visit_geodesic_graph_edge(distances, solver, sources, type, update, stop, exit);
 }
 // Useful: ---------------------------------------------------
 
-vector<double> compute_geodesic_distances_geo(const geodesic_solver &solver,
+vector<double> compute_geodesic_distances_edge(const geodesic_solver &solver,
                                           const vector<int> &sources,
                                           const int type) {
 
@@ -236,7 +235,7 @@ vector<double> compute_geodesic_distances_geo(const geodesic_solver &solver,
   for (auto source : sources)
     field[source] = 0.0;
 
-  update_geodesic_distances(field, solver, sources, type);
+  update_geodesic_distances_edge(field, solver, sources, type);
 
   return field;
 }

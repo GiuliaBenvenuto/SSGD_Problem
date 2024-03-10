@@ -24,8 +24,8 @@
 //#include "SSGD_methods/GeoTangle/GeoTangle.cpp"
 #include "SSGD_methods/GeoTangle/GeoTangle.cpp"
 
-
-
+// SSGD with Edge method
+#include "SSGD_methods/Edge/edge.cpp"
 
 using namespace std;
 using namespace cinolib;
@@ -78,6 +78,12 @@ struct State {
   geodesic_solver solver_geo;
   // sources
   vector<int> sources_geo;
+
+  // -------- Edge method --------
+  ScalarField field_edge;
+  geodesic_solver solver_edge;
+  // sources
+  vector<int> sources_edge;
 
 
 
@@ -135,6 +141,7 @@ void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vecto
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 }
 
+
 void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &field_data, ScalarField &field, vector<int> &sources) {
   vector<patch> quadrics = patch_fitting(m, 5);
   // Method inside: #include "SSGD_methods/VTP/diff_geo.cpp"
@@ -154,6 +161,7 @@ void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &fie
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 }
 
+
 void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &field_geo, vector<int> &sources) {
   solver = make_geodesic_solver(m);
   vector<double> distances_geo;
@@ -170,6 +178,27 @@ void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &
   field_geo = ScalarField(distances_geo);
   field_geo.normalize_in_01();
   field_geo.copy_to_mesh(m);
+  m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+}
+
+
+void SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &field_edge, vector<int> &sources) {
+  solver = make_geodesic_solver_edge(m);
+  vector<double> distances_edge;
+  // type = 0 for geodesic, 1 for isophotic
+  int type = 0;
+  distances_edge = compute_geodesic_distances_edge(solver, sources, type);
+  cout << "Distances edge size: " << distances_edge.size() << endl;
+  update_geodesic_distances_edge(distances_edge, solver, sources, type);
+
+  // Invert the color mapping
+  for (auto& value : distances_edge) {
+    value = 1.0 - value;
+  }
+
+  field_edge = ScalarField(distances_edge);
+  field_edge.normalize_in_01();
+  field_edge.copy_to_mesh(m);
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 }
 
@@ -323,25 +352,6 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
               break;
             }
 
-            /*
-            case State::GEOTANGLE: {
-              cout << "Computing SSGD with GeoTangle Method" << endl;
-              // Add your code for GeoTangle method here
-              geodesic_solver solver_geo;
-              solver_geo = make_geodesic_solver(gs.m);
-              vector<double> distances_geo;
-              // type = 0 for geodesic, 1 for isophotic
-              int type = 0;
-              distances_geo = compute_geodesic_distances_geo(solver_geo, gs.sources_geo, type);
-              update_geodesic_distances_geo(distances_geo, solver_geo, gs.sources_geo, type);
-
-              gs.field_geo = ScalarField(distances_geo);
-              gs.field_geo.normalize_in_01();
-              gs.field_geo.copy_to_mesh(gs.m);
-              gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-              break;
-            }*/
             case State::GEOTANGLE: {
               cout << "Computing SSGD with GeoTangle Method" << endl;
               SSGD_GeoTangle(gs.m, gs.solver_geo, gs.field_geo, gs.sources_geo);
@@ -350,7 +360,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
 
             case State::EDGE: {
               cout << "Computing SSGD with Edge Method" << endl;
-              // Add your code for Edge method here
+              SSGD_Edge(gs.m, gs.solver_edge, gs.field_edge, gs.sources_edge);
               break;
             }
 
@@ -377,6 +387,10 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         gs.sources.clear();
         // Reset VTP sources
         gs.voronoi_centers.clear();
+        // Reset GeoTangle sources
+        gs.sources_geo.clear();
+        // Reset Edge sources
+        gs.sources_edge.clear();
         // Reset the scalar field
         for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
           gs.m.vert_data(vid).color = Color::WHITE(); // Replace `original_color` with the actual color
@@ -461,6 +475,10 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
                 // GeoTangle sources
                 gs.sources_geo.push_back(selected_vid);
                 std::cout << "Selected vid GEO = " << selected_vid << std::endl;
+
+                // Edge sources
+                gs.sources_edge.push_back(selected_vid);
+                std::cout << "Selected vid EDGE = " << selected_vid << std::endl;
 
 
                 // You might need to replace "profiler" with your own profiling method or remove it
