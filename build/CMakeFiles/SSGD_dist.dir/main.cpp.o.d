@@ -1322,14 +1322,14 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/scalar_field.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_base.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact_elements.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_memory.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/stdafx.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh_elements.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_constants_and_simple_functions.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_exact.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_base.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_exact_elements.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_memory.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/stdafx.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_mesh_elements.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_constants_and_simple_functions.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_mesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/drawable_trimesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polygonmesh.cpp \
