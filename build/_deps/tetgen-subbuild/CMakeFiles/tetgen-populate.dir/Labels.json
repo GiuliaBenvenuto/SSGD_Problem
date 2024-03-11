@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/CMakeFiles/tetgen-populate"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/CMakeFiles/tetgen-populate.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/CMakeFiles/tetgen-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-build.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-download.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-install.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-test.rule"
+		},
+		{
+			"file" : "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-subbuild/tetgen-populate-prefix/src/tetgen-populate-stamp/tetgen-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"tetgen-populate"
+		],
+		"name" : "tetgen-populate"
+	}
+}

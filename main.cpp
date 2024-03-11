@@ -6,6 +6,7 @@
 #include <cinolib/gl/file_dialog_open.h>
 #include <cinolib/gl/file_dialog_save.h>
 #include <cinolib/gradient.h>
+#include <cinolib/scalar_field.h>
 #include <cinolib/meshes/drawable_tetmesh.h>
 #include <cinolib/vector_serialization.h>
 #include <cinolib/io/write_OBJ.h>
@@ -103,9 +104,8 @@ struct State {
 
     // vector field
     show_vecfield = false;
-    vecfield_size = 2;
-    // vec_color = vec3d(1.0, 0.0, 0.0);
-    vec_color = Color(1.0, 0.0, 0.0, 1.0);
+    vecfield_size = 0.9f;
+    vec_color = Color::RED();
 
     vert_color = Color::WHITE();
     poly_color = Color::WHITE();
@@ -323,28 +323,26 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         ImGui::TreePop();
     }
 
-    // TO DO :: Fix it 
-    /* Vector field visualization
+    // TO DO :: It is working if i run and change the object picking the ball
+    // Then the field is not updated is I change the mesh
+    // TO DO :: FIX
+    // Vector field visualization
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Vector Field")) {
         if (ImGui::Checkbox("Show Vector Field", &gs.show_vecfield)) {
-            cout << "Not checked" << endl;
             if (gs.show_vecfield) {
-                cout << "Checked" << endl;
                 if (gs.vec_field.size() == 0) { // Initialize the vector field if not already
-                    cout << "Initializing vector field..." << endl;
                     gs.vec_field = DrawableVectorField(gs.m);
                     ScalarField f(gs.m.serialize_uvw(3)); // Adjust U_param if needed
                     gs.vec_field = gradient_matrix(gs.m) * f;
                     gs.vec_field.normalize();
-                    cout << "vector field: " << gs.vec_field.size() << endl;
-                    gs.vec_field.set_arrow_size(1.0f);
+                    gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length())*gs.vecfield_size);
                     gs.vec_field.set_arrow_color(gs.vec_color);
-                    
+                    gs.m.updateGL();
                 }
                 gui.push(&gs.vec_field, false);
             } else {
-                gui.pop(&gs.vec_field);
+                gui.pop(&gs.vec_field); 
             }
         }
 
@@ -359,7 +357,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         }
 
         ImGui::TreePop();
-    }*/
+    }
 
 
 
