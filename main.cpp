@@ -44,23 +44,25 @@ struct State {
 
   // View
   bool SHOW_MESH, SHOW_WIREFRAME;
+  
   // Wireframe
   float wireframe_width;  // Wireframe width
   float wireframe_alpha;  // Wireframe transparency
+  
   // Shading
   enum MeshRenderMode { RENDER_POINTS, RENDER_FLAT, RENDER_SMOOTH } render_mode;
+  
   // Vector field
   DrawableVectorField vec_field;
   bool show_vecfield;
   float vecfield_size;
-  // vec3d vec_color;
   Color vec_color;
 
+  // Colors
   Color vert_color;
   Color poly_color;
 
   // SSGD Method
-  // enum SSGDMethod { EXACT_POLYHEDRAL, PDE_BASED, GRAPH_BASED } ssgd_method;
   enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE } ssgd_method;
 
   //-------- HEAT method --------
@@ -266,6 +268,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::TreePop();
     }
 
+
     // Mesh shading
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Shading")) {
@@ -287,6 +290,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::TreePop();
     }
 
+    // Mesh colors
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Colors")) {
         if (ImGui::BeginTable("Color by:", 2)) {
@@ -297,10 +301,6 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
             }
             ImGui::TableNextColumn();
             if (ImGui::ColorEdit4("Vertex Color", gs.vert_color.rgba)) {
-                // Apply vertex color
-                /* for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
-                    gs.m.vert_data(vid).color = gs.vert_color;
-                } */
                 gs.m.vert_set_color(gs.vert_color);
                 gs.m.show_vert_color();
                 gs.m.updateGL();
@@ -313,10 +313,6 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
             }
             ImGui::TableNextColumn();
             if (ImGui::ColorEdit4("Polygon Color", gs.poly_color.rgba)) {
-                // Apply polygon color
-                /* for (uint fid = 0; fid < gs.m.num_polys(); ++fid) {
-                    gs.m.poly_data(fid).color = gs.poly_color;
-                } */
                 gs.m.poly_set_color(gs.poly_color);
                 gs.m.show_poly_color();
                 gs.m.updateGL();
@@ -327,6 +323,43 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         ImGui::TreePop();
     }
 
+    // TO DO :: Fix it 
+    /* Vector field visualization
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    if (ImGui::TreeNode("Vector Field")) {
+        if (ImGui::Checkbox("Show Vector Field", &gs.show_vecfield)) {
+            cout << "Not checked" << endl;
+            if (gs.show_vecfield) {
+                cout << "Checked" << endl;
+                if (gs.vec_field.size() == 0) { // Initialize the vector field if not already
+                    cout << "Initializing vector field..." << endl;
+                    gs.vec_field = DrawableVectorField(gs.m);
+                    ScalarField f(gs.m.serialize_uvw(3)); // Adjust U_param if needed
+                    gs.vec_field = gradient_matrix(gs.m) * f;
+                    gs.vec_field.normalize();
+                    cout << "vector field: " << gs.vec_field.size() << endl;
+                    gs.vec_field.set_arrow_size(1.0f);
+                    gs.vec_field.set_arrow_color(gs.vec_color);
+                    
+                }
+                gui.push(&gs.vec_field, false);
+            } else {
+                gui.pop(&gs.vec_field);
+            }
+        }
+
+        // Vector field size control
+        if (ImGui::SliderFloat("Size", &gs.vecfield_size, 0.1f, 5.f)) {
+            gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) * gs.vecfield_size);
+        }
+
+        // Vector field color control
+        if (ImGui::ColorEdit4("Color##vec", gs.vec_color.rgba)) {
+            gs.vec_field.set_arrow_color(gs.vec_color);
+        }
+
+        ImGui::TreePop();
+    }*/
 
 
 
@@ -448,57 +481,9 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
           gs.m.vert_data(vid).color = Color::WHITE(); // Replace `original_color` with the actual color
         }
-
         gs.m.show_vert_color();
     }
 
-    /* Vector field
-    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-    if (ImGui::TreeNode("Vector Field")) {
-      if (ImGui::Checkbox("Show Vector Field", &gs.show_vecfield)) {
-        cout << "Show vector field: " << gs.show_vecfield << endl;
-        if (gs.show_vecfield) {
-            cout << "Qui: " << endl;
-            if (gs.vec_field.size() == 0) { // Initialize the vector field if it's not already
-                cout << "Vector field size before initialization: " << gs.vec_field.size() << endl;
-                cout << "Vector field arrow size: " << gs.vecfield_size << endl;
-
-                gs.vec_field = DrawableVectorField(gs.m);
-                ScalarField f(gs.m.serialize_uvw(3)); // Assuming U_param is defined somewhere relevant
-  
-                cout << "Scalar field size: " << f.size() << endl;
-
-                gs.vec_field = gradient_matrix(gs.m) * f;
-                gs.vec_field.normalize();
-
-                cout << "Prova" << float(gs.m.edge_avg_length()) * gs.vecfield_size << endl;
-                gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) * gs.vecfield_size);
-                //gs.vec_field.set_arrow_color(Color(gs.vec_color.x(), gs.vec_color.y(), gs.vec_color.z()));
-                gs.vec_field.set_arrow_color(gs.vec_color);
-                cout << "color" << gs.vec_color << endl;
-
-                cout << "Vector field size after initialization: " << gs.vec_field.size() << endl;
-
-            }
-            cout << "Push" << endl;
-            gui.push(&gs.vec_field, false);
-        } else {
-            cout << "Pop" << endl;
-            gui.pop(&gs.vec_field);
-        }
-      }
-      // Slider to adjust the vector field arrow size
-      if (ImGui::SliderFloat("Size", &gs.vecfield_size, 0.1f, 5.f)) {
-          gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) * gs.vecfield_size *5);
-          cout << "Arrow size: " << float(gs.m.edge_avg_length()) * gs.vecfield_size << endl;
-      }
-
-      if (ImGui::ColorEdit4("Color##vec", (float*)&gs.vec_color)) {
-          gs.vec_field.set_arrow_color(gs.vec_color);
-      }
-
-      ImGui::TreePop();
-    }*/
   };
 }
 
