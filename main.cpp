@@ -56,6 +56,9 @@ struct State {
   // vec3d vec_color;
   Color vec_color;
 
+  Color vert_color;
+  Color poly_color;
+
   // SSGD Method
   // enum SSGDMethod { EXACT_POLYHEDRAL, PDE_BASED, GRAPH_BASED } ssgd_method;
   enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE } ssgd_method;
@@ -101,6 +104,9 @@ struct State {
     vecfield_size = 2;
     // vec_color = vec3d(1.0, 0.0, 0.0);
     vec_color = Color(1.0, 0.0, 0.0, 1.0);
+
+    vert_color = Color::WHITE();
+    poly_color = Color::WHITE();
 
     render_mode = State::RENDER_SMOOTH;
     ssgd_method = State::VTP;
@@ -280,6 +286,49 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       }
       ImGui::TreePop();
     }
+
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    if (ImGui::TreeNode("Colors")) {
+        if (ImGui::BeginTable("Color by:", 2)) {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            if (ImGui::RadioButton("Vert", gs.m.drawlist.draw_mode & DRAW_TRI_VERTCOLOR)) {
+                gs.m.show_vert_color();
+            }
+            ImGui::TableNextColumn();
+            if (ImGui::ColorEdit4("Vertex Color", gs.vert_color.rgba)) {
+                // Apply vertex color
+                /* for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+                    gs.m.vert_data(vid).color = gs.vert_color;
+                } */
+                gs.m.vert_set_color(gs.vert_color);
+                gs.m.show_vert_color();
+                gs.m.updateGL();
+            }
+
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            if (ImGui::RadioButton("Poly", gs.m.drawlist.draw_mode & DRAW_TRI_FACECOLOR)) {
+                gs.m.show_poly_color();
+            }
+            ImGui::TableNextColumn();
+            if (ImGui::ColorEdit4("Polygon Color", gs.poly_color.rgba)) {
+                // Apply polygon color
+                /* for (uint fid = 0; fid < gs.m.num_polys(); ++fid) {
+                    gs.m.poly_data(fid).color = gs.poly_color;
+                } */
+                gs.m.poly_set_color(gs.poly_color);
+                gs.m.show_poly_color();
+                gs.m.updateGL();
+            }
+
+            ImGui::EndTable();
+        }
+        ImGui::TreePop();
+    }
+
+
+
 
     // SSGD Method
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
