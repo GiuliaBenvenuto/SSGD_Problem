@@ -173,7 +173,7 @@ void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vecto
   if (prefactored_matrices.heat_flow_cache != NULL) {
     cache = true;
   }
-  // Time
+  // Timer
   auto start = chrono::high_resolution_clock::now();
   // Method inside: #include <cinolib/geodesics.h>
   compute_geodesics_amortized(m, prefactored_matrices, sources).copy_to_mesh(m);
@@ -191,12 +191,18 @@ void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vecto
 
 
 void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &field_data, ScalarField &field, vector<int> &sources) {
+  // Timer 
+  auto start_graph = chrono::high_resolution_clock::now();
   vector<patch> quadrics = patch_fitting(m, 5);
   // Method inside: #include "SSGD_methods/VTP/diff_geo.cpp"
   solver = compute_geodesic_solver(m, quadrics);
+  auto stop_graph = chrono::high_resolution_clock::now();
+
   // Geodesic = 0, Isophotic = 1
   const int type_of_metric = 0;
+  auto start_geodesic = chrono::high_resolution_clock::now();
   field_data = compute_geodesic_distances(solver, sources, type_of_metric);
+  auto stop_geodesic = chrono::high_resolution_clock::now();
 
   // Invert the color mapping
   for (auto& value : field_data) {
@@ -207,6 +213,11 @@ void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &fie
   field.normalize_in_01();
   field.copy_to_mesh(m);
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+  auto duration_graph = chrono::duration_cast<chrono::milliseconds>(stop_graph - start_graph);
+  auto duration_geodesic = chrono::duration_cast<chrono::milliseconds>(stop_geodesic - start_geodesic);
+  cout << "Graph construction: " << duration_graph.count() << " milliseconds" << endl;
+  cout << "Geodesic computation: " << duration_geodesic.count() << " milliseconds" << endl;
 }
 
 
