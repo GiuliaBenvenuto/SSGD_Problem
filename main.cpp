@@ -257,6 +257,22 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       }
       ImGui::TreePop();
     }
+
+    // Mesh Information
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    if (ImGui::TreeNode("Mesh Information")) {
+        
+        // Assuming Load_mesh successfully loads the mesh into gs.m
+        int numVertices = gs.m.num_verts();
+        int numFaces = gs.m.num_polys(); // or num_faces() depending on your mesh type
+
+        ImGui::Text("Number of vertices: %d", numVertices);
+        ImGui::Text("Number of faces: %d", numFaces);
+
+        // Your existing vector field visualization code goes here...
+        
+        ImGui::TreePop();
+    }
     
 
     // Wireframe settings
@@ -336,7 +352,11 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
                     ScalarField f(gs.m.serialize_uvw(3)); // Adjust U_param if needed
                     gs.vec_field = gradient_matrix(gs.m) * f;
                     gs.vec_field.normalize();
+                    // print the values inside vec_field
+                    // Print the number of elements in the vector field
+                    std::cout << "Number of elements in vector field: " << gs.vec_field.size() << std::endl;
                     gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length())*gs.vecfield_size);
+                    cout << "Vector field ARROW size: " << float(gs.m.edge_avg_length())*gs.vecfield_size << endl;
                     gs.vec_field.set_arrow_color(gs.vec_color);
                     gs.m.updateGL();
                 }
@@ -542,7 +562,7 @@ int main(int argc, char **argv) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
-    string s = "../data/cinolib/3holes.obj";
+    string s = "../data/cinolib/soccerball.obj";
     Load_mesh(s, gui, gs);
   }
 
