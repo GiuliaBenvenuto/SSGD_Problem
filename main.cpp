@@ -14,7 +14,7 @@
 #include <Eigen/SparseCholesky>
 #include <fstream>
 #include <imgui.h>
-
+#include <chrono>
 
 // SSDG with Heat method
 #include <cinolib/geodesics.h>
@@ -24,7 +24,6 @@
 #include "SSGD_methods/VTP/diff_geo.cpp"
 
 // SSGD with GeoTangle 
-//#include "SSGD_methods/GeoTangle/GeoTangle.cpp"
 #include "SSGD_methods/GeoTangle/GeoTangle.cpp"
 
 // SSGD with Edge method
@@ -33,10 +32,12 @@
 using namespace std;
 using namespace cinolib;
 
-// Global variable
+//------ Global variable ------
+// Fonts
 ImFont* lato_bold = nullptr;
 ImFont* lato_regular = nullptr;
 ImFont* lato_bold_title = nullptr;
+
 
 //:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR GUI) ::::::::::::::::::::::::::::::
 
@@ -161,9 +162,24 @@ void Load_mesh(GLcanvas & gui, State &gs)
 
 //::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION ::::::::::::::::::::::::::::::::::
 void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vector<uint> &sources) {
+  bool cache = false;
+  if (prefactored_matrices.heat_flow_cache != NULL) {
+    cache = true;
+  }
+  // Time
+  auto start = chrono::high_resolution_clock::now();
   // Method inside: #include <cinolib/geodesics.h>
   compute_geodesics_amortized(m, prefactored_matrices, sources).copy_to_mesh(m);
+  auto stop = chrono::high_resolution_clock::now();
+  auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+  
+  if (cache) {
+    cout << "Heat computation with cache: " << duration.count() << " milliseconds" << endl;
+  } else {
+    cout << "Heat computation without cache: " << duration.count() << " milliseconds" << endl;
+  }
 }
 
 
@@ -396,9 +412,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
                     gs.vec_field.normalize();
                     // print the values inside vec_field
                     // Print the number of elements in the vector field
-                    std::cout << "Number of elements in vector field: " << gs.vec_field.size() << std::endl;
                     gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length())*gs.vecfield_size);
-                    cout << "Vector field ARROW size: " << float(gs.m.edge_avg_length())*gs.vecfield_size << endl;
                     gs.vec_field.set_arrow_color(gs.vec_color);
                     gs.m.updateGL();
                 }
@@ -437,7 +451,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::PopFont();
       if(ImGui::RadioButton("VTP ", gs.ssgd_method == State::VTP)) {
         gs.ssgd_method = State::VTP;
-        cout << "VTP Method" << endl;
+        //cout << "VTP Method" << endl;
       }
       // PDE-Based Methods
       ImGui::PushFont(lato_bold);
@@ -445,11 +459,11 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::PopFont();
       if(ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
         gs.ssgd_method = State::HEAT;
-        cout << "HEAT Method" << endl;
+        //cout << "HEAT Method" << endl;
       }
       if(ImGui::RadioButton("FMM  ", gs.ssgd_method == State::FMM)) {
         gs.ssgd_method = State::FMM;
-        cout << "FMM Method" << endl;
+        //cout << "FMM Method" << endl;
       }
       // Graph-Based Methods
       ImGui::PushFont(lato_bold);
@@ -457,11 +471,11 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::PopFont();
       if(ImGui::RadioButton("GeoTangle  ", gs.ssgd_method == State::GEOTANGLE)) {
         gs.ssgd_method = State::GEOTANGLE;
-        cout << "GeoTangle Method" << endl;
+        //cout << "GeoTangle Method" << endl;
       }
       if(ImGui::RadioButton("Edge  ", gs.ssgd_method == State::EDGE)) {
         gs.ssgd_method = State::EDGE;
-        cout << "Edge Method" << endl;
+        //cout << "Edge Method" << endl;
       }
 
       ImGui::TreePop();
@@ -486,44 +500,44 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       // Based on the selected SSGD method, perform different actions
       if (gs.sources.empty() && gs.voronoi_centers.empty()) {
             // Open a warning popup if no source is selected
-            cout << "No source selected" << endl;
+            //cout << "No source selected" << endl;
             ImGui::OpenPopup("Warning");
         } else {
 
           switch (gs.ssgd_method) {
       
             case State::VTP: {
-              cout << "Computing SSGD with VTP Method" << endl;
+              //cout << "Computing SSGD with VTP Method" << endl;
               SSGD_VTP(gs.m, gs.solver, gs.field_data, gs.field, gs.voronoi_centers);
               break;
             }
 
             case State::HEAT: {
-              cout << "Computing SSGD with HEAT Method" << endl;
+              //cout << "Computing SSGD with HEAT Method" << endl;
               SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources);
               break;
             }
 
             case State::FMM: {
-              cout << "Computing SSGD with FMM Method" << endl;
+              //cout << "Computing SSGD with FMM Method" << endl;
               // Add your code for FMM method here
               break;
             }
 
             case State::GEOTANGLE: {
-              cout << "Computing SSGD with GeoTangle Method" << endl;
+              //cout << "Computing SSGD with GeoTangle Method" << endl;
               SSGD_GeoTangle(gs.m, gs.solver_geo, gs.field_geo, gs.sources_geo);
               break;
             }
 
             case State::EDGE: {
-              cout << "Computing SSGD with Edge Method" << endl;
+              //cout << "Computing SSGD with Edge Method" << endl;
               SSGD_Edge(gs.m, gs.solver_edge, gs.field_edge, gs.sources_edge);
               break;
             }
 
             default:
-              cout << "No SSGD method selected" << endl;
+              //cout << "No SSGD method selected" << endl;
               break;
           }
       }
@@ -579,15 +593,15 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
                 //------ VTP SOURCES ------
                 int selected_vid = gs.m.pick_vert(p);
                 gs.voronoi_centers.push_back(selected_vid);
-                std::cout << "Selected vid VTP = " << selected_vid << std::endl;
+                //std::cout << "Selected vid VTP = " << selected_vid << std::endl;
 
                 // GeoTangle sources
                 gs.sources_geo.push_back(selected_vid);
-                std::cout << "Selected vid GEO = " << selected_vid << std::endl;
+                //std::cout << "Selected vid GEO = " << selected_vid << std::endl;
 
                 // Edge sources
                 gs.sources_edge.push_back(selected_vid);
-                std::cout << "Selected vid EDGE = " << selected_vid << std::endl;
+                //std::cout << "Selected vid EDGE = " << selected_vid << std::endl;
 
 
                 // You might need to replace "profiler" with your own profiling method or remove it
