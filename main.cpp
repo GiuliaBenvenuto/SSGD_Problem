@@ -13,6 +13,8 @@
 #include <cinolib/mean_curv_flow.h>
 #include <Eigen/SparseCholesky>
 #include <fstream>
+#include <imgui.h>
+
 
 // SSDG with Heat method
 #include <cinolib/geodesics.h>
@@ -132,6 +134,7 @@ void Load_mesh(string filename, GLcanvas & gui, State &gs)
   gs.m.show_mesh(gs.SHOW_MESH);    
   gs.m.updateGL();  
   // gs.point_size = gs.m.edge_avg_length()/2; // set initial radius of spheres for critical points
+
   if (gs.MESH_IS_LOADED) {
     // Clear and reinitialize the vector field for the new mesh
     gs.vec_field = DrawableVectorField();
@@ -244,6 +247,15 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
           Load_mesh(gui,gs);
         }
       }
+      ImGui::SameLine();
+      if(ImGui::SmallButton("Save"))
+      {
+          std::string filename = file_dialog_save();
+          if(!filename.empty())
+          {
+              gs.m.save(filename.c_str());
+          }
+      }
 
       ImGui::SeparatorText("Mesh Information");
       // Assuming Load_mesh successfully loads the mesh into gs.m
@@ -288,6 +300,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
 
     // Mesh shading
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    //ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("Shading")) {
       // Point rendering mode
       if(ImGui::RadioButton("Point ", gs.render_mode == State::RENDER_POINTS)) {
@@ -340,9 +353,6 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         ImGui::TreePop();
     }
 
-    // TO DO :: It is working if i run and change the object picking the ball
-    // Then the field is not updated is I change the mesh
-    // TO DO :: FIX
     // Vector field visualization
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::TreeNode("Vector Field")) {
@@ -557,6 +567,15 @@ int main(int argc, char **argv) {
   GLcanvas gui = Init_GUI();
   Setup_GUI_Callbacks(gui, gs);
   Setup_Mouse_Callback(gui, gs);
+
+  // Setup font
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO();
+  io.Fonts->Clear(); // Clear any existing fonts
+  ImFont* lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
+  if (lato_bold == NULL) {
+    cout << "Could not load font" << endl;
+  }
 
   //Load mesh
   if (argc>1) {
