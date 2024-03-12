@@ -247,19 +247,24 @@ void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &
 
   auto duration_graph_GeoTangle = chrono::duration_cast<chrono::milliseconds>(stop_graph_GeoTangle - start_graph_GeoTangle);
   auto duration_geodesic_GeoTangle = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_GeoTangle - start_geodesic_GeoTangle);
-  cout << "Graph construction: " << duration_graph_GeoTangle.count() << " milliseconds" << endl;
-  cout << "Geodesic computation: " << duration_geodesic_GeoTangle.count() << " milliseconds" << endl;
+  cout << "Graph construction with GeoTangle: " << duration_graph_GeoTangle.count() << " milliseconds" << endl;
+  cout << "Geodesic computation with GeoTangle: " << duration_geodesic_GeoTangle.count() << " milliseconds" << endl;
 }
 
 
 void SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &field_edge, vector<int> &sources) {
+  auto start_graph_edge = chrono::high_resolution_clock::now();
   solver = make_geodesic_solver_edge(m);
+  auto stop_graph_edge = chrono::high_resolution_clock::now();
+
   vector<double> distances_edge;
   // type = 0 for geodesic, 1 for isophotic
   int type = 0;
+
+  auto start_geodesic_edge = chrono::high_resolution_clock::now();
   distances_edge = compute_geodesic_distances_edge(solver, sources, type);
-  cout << "Distances edge size: " << distances_edge.size() << endl;
-  update_geodesic_distances_edge(distances_edge, solver, sources, type);
+  // update_geodesic_distances_edge(distances_edge, solver, sources, type);
+  auto stop_geodesic_edge = chrono::high_resolution_clock::now();
 
   // Invert the color mapping
   for (auto& value : distances_edge) {
@@ -270,6 +275,11 @@ void SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &field
   field_edge.normalize_in_01();
   field_edge.copy_to_mesh(m);
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+  auto duration_graph_edge = chrono::duration_cast<chrono::milliseconds>(stop_graph_edge - start_graph_edge);
+  auto duration_geodesic_edge = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_edge - start_geodesic_edge);
+  cout << "Graph construction with Edge: " << duration_graph_edge.count() << " milliseconds" << endl;
+  cout << "Geodesic computation with Edge: " << duration_geodesic_edge.count() << " milliseconds" << endl;
 }
 
 
