@@ -132,6 +132,12 @@ void Load_mesh(string filename, GLcanvas & gui, State &gs)
   gs.m.show_mesh(gs.SHOW_MESH);    
   gs.m.updateGL();  
   // gs.point_size = gs.m.edge_avg_length()/2; // set initial radius of spheres for critical points
+  if (gs.MESH_IS_LOADED) {
+    // Clear and reinitialize the vector field for the new mesh
+    gs.vec_field = DrawableVectorField();
+    gs.show_vecfield = false; // Reset the flag to not show the old vector field
+  }
+
   if (!gs.MESH_IS_LOADED) {
     gui.push(&gs.m);
     gs.MESH_IS_LOADED = true;
@@ -238,6 +244,16 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
           Load_mesh(gui,gs);
         }
       }
+
+      ImGui::SeparatorText("Mesh Information");
+      // Assuming Load_mesh successfully loads the mesh into gs.m
+      int numVertices = gs.m.num_verts();
+      int numFaces = gs.m.num_polys(); // or num_faces() depending on your mesh type
+
+      ImGui::Text("Number of vertices: %d", numVertices);
+      ImGui::Text("Number of faces: %d", numFaces);
+
+
       // Modal popup for loading files
       ImVec2 center = ImGui::GetMainViewport()->GetCenter();
       ImGui::SetNextWindowPos(center,ImGuiCond_Appearing,ImVec2(0.5f,0.5f));
@@ -258,21 +274,6 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       ImGui::TreePop();
     }
 
-    // Mesh Information
-    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-    if (ImGui::TreeNode("Mesh Information")) {
-        
-        // Assuming Load_mesh successfully loads the mesh into gs.m
-        int numVertices = gs.m.num_verts();
-        int numFaces = gs.m.num_polys(); // or num_faces() depending on your mesh type
-
-        ImGui::Text("Number of vertices: %d", numVertices);
-        ImGui::Text("Number of faces: %d", numFaces);
-
-        // Your existing vector field visualization code goes here...
-        
-        ImGui::TreePop();
-    }
     
 
     // Wireframe settings
@@ -562,7 +563,7 @@ int main(int argc, char **argv) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
-    string s = "../data/cinolib/soccerball.obj";
+    string s = "../data/cinolib/bunny.obj";
     Load_mesh(s, gui, gs);
   }
 
