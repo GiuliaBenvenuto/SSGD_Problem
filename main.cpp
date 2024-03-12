@@ -145,6 +145,13 @@ void Load_mesh(string filename, GLcanvas & gui, State &gs)
     // Clear and reinitialize the vector field for the new mesh
     gs.vec_field = DrawableVectorField();
     gs.show_vecfield = false; // Reset the flag to not show the old vector field
+    // Clear the sources for the new mesh
+    gs.sources.clear(); // Reset the sources for the new mesh
+    gs.voronoi_centers.clear(); // Reset the sources for the new mesh
+    gs.sources_geo.clear(); // Reset the sources for the new mesh
+    gs.sources_edge.clear(); // Reset the sources for the new mesh
+    // Clear cache for Heat method 
+    gs.prefactored_matrices.heat_flow_cache = NULL; // Reset the heat flow cache
   }
 
   if (!gs.MESH_IS_LOADED) {
