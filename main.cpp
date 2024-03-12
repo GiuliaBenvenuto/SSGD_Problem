@@ -33,6 +33,11 @@
 using namespace std;
 using namespace cinolib;
 
+// Global variable
+ImFont* lato_bold = nullptr;
+ImFont* lato_regular = nullptr;
+ImFont* lato_bold_title = nullptr;
+
 //:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR GUI) ::::::::::::::::::::::::::::::
 
 struct State {
@@ -228,7 +233,7 @@ void SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &field
 GLcanvas Init_GUI()
 {
   GLcanvas gui(1500,700);
-  gui.side_bar_width = 0.25;
+  gui.side_bar_width = 0.28;
   gui.show_side_bar = true;
   return gui;
 }
@@ -237,9 +242,14 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
 {
   gui.callback_app_controls = [&]() {
     // Files
+    ImGui::PushFont(lato_bold_title);
     ImGui::SeparatorText("Single Source Geodesic Distance Computation");
+    ImGui::PopFont();
+
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("IO")) {
+      ImGui::PopFont();
       if (ImGui::Button("Load mesh")) {
         if (gs.MESH_IS_LOADED) {
           ImGui::OpenPopup("Load mesh?");
@@ -257,13 +267,16 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
           }
       }
 
+      ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Mesh Information");
+      ImGui::PopFont();
       // Assuming Load_mesh successfully loads the mesh into gs.m
       int numVertices = gs.m.num_verts();
       int numFaces = gs.m.num_polys(); // or num_faces() depending on your mesh type
 
       ImGui::Text("Number of vertices: %d", numVertices);
       ImGui::Text("Number of faces: %d", numFaces);
+      ImGui::Text("");
 
 
       // Modal popup for loading files
@@ -284,24 +297,32 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         ImGui::EndPopup();
       }
       ImGui::TreePop();
+    } else {
+      ImGui::PopFont(); 
     }
 
     
 
     // Wireframe settings
-    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+    ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("Wireframe")) {
+      ImGui::PopFont();
       if (ImGui::Checkbox("Show", &gs.SHOW_WIREFRAME)) gs.m.show_wireframe(gs.SHOW_WIREFRAME);
       if (ImGui::SliderFloat("Width", &gs.wireframe_width, 1.f, 10.f)) gs.m.show_wireframe_width(gs.wireframe_width);
       if (ImGui::SliderFloat("Transparency", &gs.wireframe_alpha, 0.f, 1.f)) gs.m.show_wireframe_transparency(gs.wireframe_alpha);
+      ImGui::Text("");
       ImGui::TreePop();
+    } else {
+      ImGui::PopFont(); 
     }
 
 
     // Mesh shading
-    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-    //ImGui::PushFont(lato_bold);
+    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+    ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("Shading")) {
+      ImGui::PopFont();
       // Point rendering mode
       if(ImGui::RadioButton("Point ", gs.render_mode == State::RENDER_POINTS)) {
         gs.render_mode = State::RENDER_POINTS;
@@ -317,12 +338,17 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         gs.render_mode = State::RENDER_SMOOTH;
         gs.m.show_mesh_smooth(); // Assuming you have a method to display smooth shaded mesh
       }
+      ImGui::Text("");
       ImGui::TreePop();
+    } else {
+      ImGui::PopFont(); 
     }
 
     // Mesh colors
-    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+    ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("Colors")) {
+        ImGui::PopFont();
         if (ImGui::BeginTable("Color by:", 2)) {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
@@ -350,12 +376,17 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
 
             ImGui::EndTable();
         }
+        ImGui::Text("");
         ImGui::TreePop();
+    } else {
+        ImGui::PopFont(); 
     }
 
     // Vector field visualization
-    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    ImGui::SetNextItemOpen(false, ImGuiCond_Once);
+    ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("Vector Field")) {
+        ImGui::PopFont();
         if (ImGui::Checkbox("Show Vector Field", &gs.show_vecfield)) {
             if (gs.show_vecfield) {
                 if (gs.vec_field.size() == 0) { // Initialize the vector field if not already
@@ -374,6 +405,7 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
                 gui.push(&gs.vec_field, false);
             } else {
                 gui.pop(&gs.vec_field); 
+                gs.m.updateGL();
             }
         }
 
@@ -386,23 +418,31 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         if (ImGui::ColorEdit4("Color##vec", gs.vec_color.rgba)) {
             gs.vec_field.set_arrow_color(gs.vec_color);
         }
-
+        ImGui::Text("");
         ImGui::TreePop();
+    } else {
+        ImGui::PopFont(); 
     }
 
 
 
     // SSGD Method
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+    ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("SSGD Method")) {
+      ImGui::PopFont();
       // Exact Polyhedral Methods
+      ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Exact Polyhedral Methods");
+      ImGui::PopFont();
       if(ImGui::RadioButton("VTP ", gs.ssgd_method == State::VTP)) {
         gs.ssgd_method = State::VTP;
         cout << "VTP Method" << endl;
       }
       // PDE-Based Methods
+      ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("PDE-Based Methods");
+      ImGui::PopFont();
       if(ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
         gs.ssgd_method = State::HEAT;
         cout << "HEAT Method" << endl;
@@ -412,7 +452,9 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
         cout << "FMM Method" << endl;
       }
       // Graph-Based Methods
+      ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Graph-Based Methods");
+      ImGui::PopFont();
       if(ImGui::RadioButton("GeoTangle  ", gs.ssgd_method == State::GEOTANGLE)) {
         gs.ssgd_method = State::GEOTANGLE;
         cout << "GeoTangle Method" << endl;
@@ -423,6 +465,8 @@ void Setup_GUI_Callbacks(GLcanvas & gui, State &gs)
       }
 
       ImGui::TreePop();
+    } else {
+      ImGui::PopFont(); 
     }
 
 
@@ -572,10 +616,14 @@ int main(int argc, char **argv) {
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
   io.Fonts->Clear(); // Clear any existing fonts
-  ImFont* lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
-  if (lato_bold == NULL) {
-    cout << "Could not load font" << endl;
+  lato_regular = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
+  lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
+  lato_bold_title = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
+  if(lato_regular == NULL || lato_bold == NULL) {
+      std::cerr << "Failed to load font" << std::endl;
   }
+
+
 
   //Load mesh
   if (argc>1) {
