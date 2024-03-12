@@ -174,35 +174,35 @@ void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vecto
     cache = true;
   }
   // Timer
-  auto start = chrono::high_resolution_clock::now();
+  auto start_heat = chrono::high_resolution_clock::now();
   // Method inside: #include <cinolib/geodesics.h>
   compute_geodesics_amortized(m, prefactored_matrices, sources).copy_to_mesh(m);
-  auto stop = chrono::high_resolution_clock::now();
-  auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+  auto stop_heat = chrono::high_resolution_clock::now();
+  auto duration_heat = chrono::duration_cast<chrono::milliseconds>(stop_heat - start_heat);
 
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
   
   if (cache) {
-    cout << "Heat computation with cache: " << duration.count() << " milliseconds" << endl;
+    cout << "Heat computation with cache: " << duration_heat.count() << " milliseconds" << endl;
   } else {
-    cout << "Heat computation without cache: " << duration.count() << " milliseconds" << endl;
+    cout << "Heat computation without cache: " << duration_heat.count() << " milliseconds" << endl;
   }
 }
 
 
 void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &field_data, ScalarField &field, vector<int> &sources) {
   // Timer 
-  auto start_graph = chrono::high_resolution_clock::now();
+  auto start_graph_VTP = chrono::high_resolution_clock::now();
   vector<patch> quadrics = patch_fitting(m, 5);
   // Method inside: #include "SSGD_methods/VTP/diff_geo.cpp"
   solver = compute_geodesic_solver(m, quadrics);
-  auto stop_graph = chrono::high_resolution_clock::now();
+  auto stop_graph_VTP = chrono::high_resolution_clock::now();
 
   // Geodesic = 0, Isophotic = 1
   const int type_of_metric = 0;
-  auto start_geodesic = chrono::high_resolution_clock::now();
+  auto start_geodesic_VTP = chrono::high_resolution_clock::now();
   field_data = compute_geodesic_distances(solver, sources, type_of_metric);
-  auto stop_geodesic = chrono::high_resolution_clock::now();
+  auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
 
   // Invert the color mapping
   for (auto& value : field_data) {
@@ -214,20 +214,26 @@ void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver, vector<double> &fie
   field.copy_to_mesh(m);
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
-  auto duration_graph = chrono::duration_cast<chrono::milliseconds>(stop_graph - start_graph);
-  auto duration_geodesic = chrono::duration_cast<chrono::milliseconds>(stop_geodesic - start_geodesic);
-  cout << "Graph construction: " << duration_graph.count() << " milliseconds" << endl;
-  cout << "Geodesic computation: " << duration_geodesic.count() << " milliseconds" << endl;
+  auto duration_graph_VTP = chrono::duration_cast<chrono::milliseconds>(stop_graph_VTP - start_graph_VTP);
+  auto duration_geodesic_VTP = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP);
+  cout << "Graph construction with VTP: " << duration_graph_VTP.count() << " milliseconds" << endl;
+  cout << "Geodesic computation with VTP: " << duration_geodesic_VTP.count() << " milliseconds" << endl;
 }
 
 
 void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &field_geo, vector<int> &sources) {
+  auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
   solver = make_geodesic_solver(m);
+  auto stop_graph_GeoTangle = chrono::high_resolution_clock::now();
+
   vector<double> distances_geo;
   // type = 0 for geodesic, 1 for isophotic
   int type = 0;
+
+  auto start_geodesic_GeoTangle = chrono::high_resolution_clock::now();
   distances_geo = compute_geodesic_distances_geo(solver, sources, type);
-  update_geodesic_distances_geo(distances_geo, solver, sources, type);
+  // update_geodesic_distances_geo(distances_geo, solver, sources, type);
+  auto stop_geodesic_GeoTangle = chrono::high_resolution_clock::now();
 
   // Invert the color mapping
   for (auto& value : distances_geo) {
@@ -238,6 +244,11 @@ void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, ScalarField &
   field_geo.normalize_in_01();
   field_geo.copy_to_mesh(m);
   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+  auto duration_graph_GeoTangle = chrono::duration_cast<chrono::milliseconds>(stop_graph_GeoTangle - start_graph_GeoTangle);
+  auto duration_geodesic_GeoTangle = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_GeoTangle - start_geodesic_GeoTangle);
+  cout << "Graph construction: " << duration_graph_GeoTangle.count() << " milliseconds" << endl;
+  cout << "Geodesic computation: " << duration_geodesic_GeoTangle.count() << " milliseconds" << endl;
 }
 
 
