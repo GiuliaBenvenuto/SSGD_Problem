@@ -14,6 +14,12 @@
 # EXTERNAL cache entries
 ########################
 
+//Build triangle executable
+BUILD_EXECUTABLE:BOOL=OFF
+
+//Build libtriangle library
+BUILD_LIBRARY:BOOL=ON
+
 //Build shared libraries
 BUILD_SHARED_LIBS:BOOL=OFF
 
@@ -317,11 +323,25 @@ FETCHCONTENT_QUIET:BOOL=ON
 // for spectra
 FETCHCONTENT_SOURCE_DIR_SPECTRA:PATH=
 
+//When not empty, overrides where to find pre-populated content
+// for tetgen
+FETCHCONTENT_SOURCE_DIR_TETGEN:PATH=
+
+//When not empty, overrides where to find pre-populated content
+// for triangle
+FETCHCONTENT_SOURCE_DIR_TRIANGLE:PATH=
+
 //Enables UPDATE_DISCONNECTED behavior for all content population
 FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
 
 //Enables UPDATE_DISCONNECTED behavior just for population of spectra
 FETCHCONTENT_UPDATES_DISCONNECTED_SPECTRA:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of tetgen
+FETCHCONTENT_UPDATES_DISCONNECTED_TETGEN:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of triangle
+FETCHCONTENT_UPDATES_DISCONNECTED_TRIANGLE:BOOL=OFF
 
 //Git command line client
 GIT_EXECUTABLE:FILEPATH=/usr/bin/git
@@ -373,6 +393,24 @@ SSGD_dist_SOURCE_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem
 
 //Dependencies for the target
 imgui_LIB_DEPENDS:STATIC=general;glfw;
+
+//Value Computed by CMake
+tetgen_BINARY_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-build
+
+//Value Computed by CMake
+tetgen_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+tetgen_SOURCE_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/tetgen-src
+
+//Value Computed by CMake
+triangle_BINARY_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/triangle-build
+
+//Value Computed by CMake
+triangle_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+triangle_SOURCE_DIR:STATIC=/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build/_deps/triangle-src
 
 
 ########################

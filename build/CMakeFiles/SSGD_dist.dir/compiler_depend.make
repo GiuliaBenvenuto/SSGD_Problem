@@ -675,6 +675,7 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cctype \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cerrno \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cfloat \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/chrono \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/climits \
   /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cmath \
@@ -880,8 +881,42 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include/stdint.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNperf.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNx.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/edge.cpp \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNperf.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNx.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/GeoTangle.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.cpp \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_base.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_exact.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_exact_elements.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_constants_and_simple_functions.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_memory.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_mesh.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_mesh_elements.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/stdafx.h \
+  _deps/spectra-src/include/Spectra/GenEigsBase.h \
+  _deps/spectra-src/include/Spectra/GenEigsSolver.h \
+  _deps/spectra-src/include/Spectra/MatOp/internal/ArnoldiOp.h \
+  _deps/spectra-src/include/Spectra/Util/SimpleRandom.h \
+  _deps/spectra-src/include/Spectra/Util/TypeTraits.h \
+  _deps/spectra-src/include/Spectra/LinAlg/Arnoldi.h \
+  _deps/spectra-src/include/Spectra/LinAlg/DoubleShiftQR.h \
+  _deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergEigen.h \
+  _deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergQR.h \
+  _deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergSchur.h \
+  _deps/spectra-src/include/Spectra/MatOp/DenseGenMatProd.h \
+  _deps/spectra-src/include/Spectra/MatOp/SparseGenMatProd.h \
+  _deps/spectra-src/include/Spectra/MatOp/internal/ArnoldiOp.h \
+  _deps/spectra-src/include/Spectra/Util/CompInfo.h \
+  _deps/spectra-src/include/Spectra/Util/SelectionRule.h \
+  _deps/spectra-src/include/Spectra/Util/SimpleRandom.h \
+  _deps/spectra-src/include/Spectra/Util/TypeTraits.h \
+  _deps/spectra-src/include/Spectra/Util/Version.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Cholesky \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Core \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Dense \
@@ -1129,14 +1164,7 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/Image.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/Kernel.h \
   /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/RealSvd2x2.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_base.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact_elements.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_constants_and_simple_functions.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_memory.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh_elements.h \
-  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/stdafx.h \
+  /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/glfw/include/GLFW/glfw3.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imconfig.h \
   /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui.h \
@@ -1380,8 +1408,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/mesh_slicer.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/mesh_attributes.h:
-
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_polyhedralmesh.cpp:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/abstract_drawable_polyhedralmesh.h:
@@ -1534,12 +1560,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/glfw/include/GLFW/glfw3.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/stdafx.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact_elements.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_exact.h:
-
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/misc/RealSvd2x2.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseQR/SparseQR.h:
@@ -1609,8 +1629,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseCore/CompressedStorage.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_algorithm_base.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/SparseCholesky/SimplicialCholesky.h:
 
@@ -1722,10 +1740,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/Solve.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/LU/Determinant.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/SelfAdjointView.h:
-
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/Select.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h:
@@ -1760,13 +1774,7 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/Dot.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DiagonalProduct.h:
-
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DiagonalMatrix.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_VTK.cpp:
-
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DenseStorage.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DenseCoeffsBase.h:
 
@@ -1816,8 +1824,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/SparseCholesky:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Sparse:
-
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/symbols.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/LU:
@@ -1834,7 +1840,63 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Core:
 
+_deps/spectra-src/include/Spectra/Util/Version.h:
+
+_deps/spectra-src/include/Spectra/Util/SelectionRule.h:
+
+_deps/spectra-src/include/Spectra/Util/CompInfo.h:
+
+_deps/spectra-src/include/Spectra/MatOp/SparseGenMatProd.h:
+
+_deps/spectra-src/include/Spectra/MatOp/DenseGenMatProd.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergSchur.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergEigen.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/DoubleShiftQR.h:
+
+_deps/spectra-src/include/Spectra/LinAlg/Arnoldi.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DiagonalProduct.h:
+
+_deps/spectra-src/include/Spectra/Util/SimpleRandom.h:
+
+_deps/spectra-src/include/Spectra/MatOp/internal/ArnoldiOp.h:
+
+_deps/spectra-src/include/Spectra/GenEigsSolver.h:
+
+_deps/spectra-src/include/Spectra/GenEigsBase.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/stdafx.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/LU/Determinant.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/SelfAdjointView.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_mesh_elements.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/mesh_attributes.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_memory.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_exact.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_base.h:
+
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/diff_geo.cpp:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/Sparse:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/GeoTangle/GeoTangle.cpp:
+
+/Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/write_VTK.cpp:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/DenseStorage.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNx.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANN.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/products/TriangularMatrixMatrix.h:
 
@@ -1947,6 +2009,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/geodesics.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_fd_copy.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_fd_clr.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_clock_t.h:
 
@@ -2112,8 +2176,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/errno.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/concepts:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cmath:
@@ -2230,13 +2292,13 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_union.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_constants_and_simple_functions.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_move_constructible.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_move_assignable.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/io/read_HYBRID.cpp:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_algorithm_exact_elements.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_trivially_default_constructible.h:
 
@@ -2357,6 +2419,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/is_arithmetic.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/external/imgui/imgui_impl_opengl2.h:
+
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/Edge/edge.cpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/xlocale/_wchar.h:
 
@@ -2514,8 +2578,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/student_t_distribution.h:
 
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_mesh_elements.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_partition_point.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/shuffle_order_engine.h:
@@ -2593,8 +2655,6 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cstddef:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/discrete_distribution.h:
-
-/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/VTP/geodesic_memory.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__random/discard_block_engine.h:
 
@@ -3148,6 +3208,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__chrono/month_weekday.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_constants_and_simple_functions.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/runetype.h:
@@ -3472,6 +3534,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__availability:
 
+_deps/spectra-src/include/Spectra/LinAlg/UpperHessenbergQR.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_prev_permutation.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/util/XprHelper.h:
@@ -3552,6 +3616,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_move.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/ann_1.1.2/include/ANN/ANNperf.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_minmax.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/cinolib/include/cinolib/meshes/tetmesh.cpp:
@@ -3564,13 +3630,13 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__iterator/prev.h:
 
+_deps/spectra-src/include/Spectra/Util/TypeTraits.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_pthread/_pthread_mutex_t.h:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_count.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/sys/_types/_fd_clr.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/lower_bound.h:
 
@@ -3608,6 +3674,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_generate_n.h:
 
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/SSGD_methods/VTP/geodesic_mesh.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__functional/unwrap_ref.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/shift_right.h:
@@ -3623,6 +3691,8 @@ CMakeFiles/SSGD_dist.dir/main.cpp.o: /Users/giuliabenvenuto/Documents/GitHub/SSG
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__type_traits/integral_constant.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/__algorithm/ranges_find_if_not.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk/usr/include/c++/v1/cfloat:
 
 /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen/src/Core/PlainObjectBase.h:
 

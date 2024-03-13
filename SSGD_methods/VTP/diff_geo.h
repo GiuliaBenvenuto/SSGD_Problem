@@ -1,9 +1,7 @@
 #ifndef DIFF_GEO_H
 #define DIFF_GEO_H
-#include "VTP/geodesic_algorithm_exact.h"
-// #include "../../libs/VTP/geodesic_algorithm_exact.h"
-#include "VTP/geodesic_mesh.h"
-// #include "../../libs/VTP/geodesic_mesh.h"
+#include "geodesic_algorithm_exact.h"
+#include "geodesic_mesh.h"
 #include <Eigen/Dense>
 #include <cinolib/meshes/drawable_trimesh.h>
 using namespace std;
