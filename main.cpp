@@ -101,12 +101,9 @@ struct State {
 
   // ----- Timer -----
   double time_heat;
-  double vtp_graph_time;
-  double vtp_geodesic_time;
-  double geotangle_graph_time;
-  double geotangle_geodesic_time;
-  double edge_graph_time;
-  double edge_geodesic_time;
+  double vtp_graph_time, vtp_geodesic_time;
+  double geotangle_graph_time, geotangle_geodesic_time;
+  double edge_graph_time, edge_geodesic_time;
 
 
   State() {
@@ -131,12 +128,9 @@ struct State {
 
     // ----- Timer -----
     time_heat = 0.0;
-    vtp_graph_time = 0.0;
-    vtp_geodesic_time = 0.0;
-    geotangle_graph_time = 0.0;
-    geotangle_geodesic_time = 0.0;
-    edge_graph_time = 0.0;
-    edge_geodesic_time = 0.0;
+    vtp_graph_time = vtp_geodesic_time = 0.0;
+    geotangle_graph_time = geotangle_geodesic_time = 0.0;
+    edge_graph_time = edge_geodesic_time = 0.0;
   }
 };
 
