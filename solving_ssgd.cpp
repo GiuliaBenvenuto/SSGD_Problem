@@ -1,5 +1,6 @@
 #include "solving_ssgd.h"
 
+
 ScalarField SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vector<uint> &sources, double &time_heat) {
   
     bool cache = false;
@@ -54,3 +55,58 @@ ScalarField SSGD_VTP(DrawableTrimesh<> &m, vector<int> &sources, double &vtp_geo
 
     return sc_vtp;
 } 
+
+
+ScalarField SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int> &sources, double &geotangle_geodesic_time) {
+
+  vector<double> distances_geo;
+  ScalarField sc_geotangle;
+
+  auto start_geodesic_GeoTangle = chrono::high_resolution_clock::now();
+  distances_geo = compute_geodesic_distances(solver, sources);
+  auto stop_geodesic_GeoTangle = chrono::high_resolution_clock::now();
+
+  // Invert the color mapping
+  for (auto &value : distances_geo) {
+    value = 1.0 - value;
+  }
+
+  sc_geotangle = ScalarField(distances_geo);
+  sc_geotangle.normalize_in_01();
+  //field_geo.copy_to_mesh(m);
+  //m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+  auto duration_geodesic_GeoTangle = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_GeoTangle - start_geodesic_GeoTangle);
+  geotangle_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_GeoTangle - start_geodesic_GeoTangle).count();
+  cout << "Geodesic computation with GeoTangle: " << duration_geodesic_GeoTangle.count() << " milliseconds" << endl;
+
+  return sc_geotangle;
+}
+
+
+ScalarField SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int> &sources, double &edge_geodesic_time) {
+
+  vector<double> distances_edge;
+  ScalarField sc_edge;
+
+  auto start_geodesic_edge = chrono::high_resolution_clock::now();
+  distances_edge = compute_geodesic_distances(solver, sources);
+  auto stop_geodesic_edge = chrono::high_resolution_clock::now();
+
+  // Invert the color mapping
+  for (auto &value : distances_edge) {
+    value = 1.0 - value;
+  }
+
+  sc_edge = ScalarField(distances_edge);
+  sc_edge.normalize_in_01();
+  //field_edge.copy_to_mesh(m);
+  //m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+  auto duration_geodesic_edge = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_edge - start_geodesic_edge);
+  edge_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_edge - start_geodesic_edge).count();
+  cout << "Geodesic computation with Edge: " << duration_geodesic_edge.count()
+       << " milliseconds" << endl;
+
+    return sc_edge;
+}

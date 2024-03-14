@@ -68,26 +68,23 @@ struct State {
 
   // SSGD Method
   enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE } ssgd_method;
+  ScalarField field;
 
   //-------- HEAT method --------
+  GeodesicsCache prefactored_matrices;
   // sources
   std::vector<uint> sources;
-  GeodesicsCache prefactored_matrices;
 
   //-------- VTP method --------
-  vector<double> field_data;
-  ScalarField field;
   // sources
   vector<int> voronoi_centers;
 
   // -------- GeoTangle method --------
-  ScalarField field_geo;
   geodesic_solver solver_geo;
   // sources
   vector<int> sources_geo;
 
   // -------- Edge method --------
-  ScalarField field_edge;
   geodesic_solver solver_edge;
   // sources
   vector<int> sources_edge;
@@ -125,6 +122,7 @@ struct State {
     edge_graph_time = edge_geodesic_time = 0.0;
   }
 };
+
 
 //:::::::::::::::::: GRAPH CONSTRUCTION :::::::::::::::::::::::::::::::::::::
 void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo, geodesic_solver &solver_edge,
@@ -197,60 +195,6 @@ void Load_mesh(GLcanvas &gui, State &gs) {
 
 
 //::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION :::::::::::::::::::::::::::::::::::
-/* void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices,
-               vector<uint> &sources, double &time_heat) {
-  bool cache = false;
-  if (prefactored_matrices.heat_flow_cache != NULL) {
-    cache = true;
-  }
-  // Timer
-  auto start_heat = chrono::high_resolution_clock::now();
-  // Method inside: #include <cinolib/geodesics.h>
-  compute_geodesics_amortized(m, prefactored_matrices, sources).copy_to_mesh(m);
-  auto stop_heat = chrono::high_resolution_clock::now();
-  auto duration_heat =
-      chrono::duration_cast<chrono::milliseconds>(stop_heat - start_heat);
-  time_heat =
-      chrono::duration_cast<chrono::milliseconds>(stop_heat - start_heat)
-          .count();
-  cout << "Time heat" << time_heat << endl;
-
-  m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-  if (cache) {
-    cout << "Heat computation with cache: " << duration_heat.count()
-         << " milliseconds" << endl;
-  } else {
-    cout << "Heat computation without cache: " << duration_heat.count()
-         << " milliseconds" << endl;
-  }
-} */
-
-/* void SSGD_VTP(DrawableTrimesh<> &m,
-              vector<double> &field_data, ScalarField &field,
-              vector<int> &sources,
-              double &vtp_geodesic_time) {
-
-    auto start_geodesic_VTP = chrono::high_resolution_clock::now();
-    field_data = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), sources[0]);
-    auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
-
-    // Invert the color mapping
-    for (auto &value : field_data) {
-        value = 1.0 - value;
-    }
-
-    field = ScalarField(field_data);
-    field.normalize_in_01();
-    field.copy_to_mesh(m);
-    m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-    auto duration_geodesic_VTP = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP);
-    vtp_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP).count();
-    cout << "Geodesic computation with VTP: " << duration_geodesic_VTP.count()
-        << " milliseconds" << endl;
-} */
-
 // void SSGD_Extended(DrawableTrimesh<> &m, geodesic_solver &solver,
 //                    ScalarField &field_geo, vector<int> &sources, const int k,
 //                    double &extended_graph_time,
@@ -298,58 +242,6 @@ void Load_mesh(GLcanvas &gui, State &gs) {
 // }
 
 
-void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver,
-                    ScalarField &field_geo, vector<int> &sources,
-                    double &geotangle_graph_time,
-                    double &geotangle_geodesic_time) {
-
-  vector<double> distances_geo;
-
-  auto start_geodesic_GeoTangle = chrono::high_resolution_clock::now();
-  distances_geo = compute_geodesic_distances(solver, sources);
-  auto stop_geodesic_GeoTangle = chrono::high_resolution_clock::now();
-
-  // Invert the color mapping
-  for (auto &value : distances_geo) {
-    value = 1.0 - value;
-  }
-
-  field_geo = ScalarField(distances_geo);
-  field_geo.normalize_in_01();
-  field_geo.copy_to_mesh(m);
-  m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-  auto duration_geodesic_GeoTangle = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_GeoTangle - start_geodesic_GeoTangle);
-  geotangle_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_GeoTangle - start_geodesic_GeoTangle).count();
-  cout << "Geodesic computation with GeoTangle: " << duration_geodesic_GeoTangle.count() << " milliseconds" << endl;
-}
-
-
-void SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver,
-               ScalarField &field_edge, vector<int> &sources,
-               double &edge_graph_time, double &edge_geodesic_time) {
-
-  vector<double> distances_edge;
-
-  auto start_geodesic_edge = chrono::high_resolution_clock::now();
-  distances_edge = compute_geodesic_distances(solver, sources);
-  auto stop_geodesic_edge = chrono::high_resolution_clock::now();
-
-  // Invert the color mapping
-  for (auto &value : distances_edge) {
-    value = 1.0 - value;
-  }
-
-  field_edge = ScalarField(distances_edge);
-  field_edge.normalize_in_01();
-  field_edge.copy_to_mesh(m);
-  m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-  auto duration_geodesic_edge = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_edge - start_geodesic_edge);
-  edge_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_edge - start_geodesic_edge).count();
-  cout << "Geodesic computation with Edge: " << duration_geodesic_edge.count()
-       << " milliseconds" << endl;
-}
 
 //::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
@@ -358,6 +250,7 @@ GLcanvas Init_GUI() {
   gui.show_side_bar = true;
   return gui;
 }
+
 
 void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
   gui.callback_app_controls = [&]() {
@@ -661,7 +554,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       // Based on the selected SSGD method, perform different actions
       if (gs.sources.empty() && gs.voronoi_centers.empty()) {
         // Open a warning popup if no source is selected
-        // cout << "No source selected" << endl;
         ImGui::OpenPopup("Warning");
       } else {
 
@@ -669,23 +561,17 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::VTP: {
           // cout << "Computing SSGD with VTP Method" << endl;
-          gs.field_data.clear();
           gs.field = SSGD_VTP(gs.m, gs.voronoi_centers, gs.vtp_geodesic_time);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          // OLD:
-          // SSGD_VTP(gs.m, gs.field_data, gs.field, gs.voronoi_centers, gs.vtp_geodesic_time);
           break;
         }
 
         case State::HEAT: {
           // cout << "Computing SSGD with HEAT Method" << endl;
-          gs.field_data.clear();
           gs.field = SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources, gs.time_heat);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          // SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources, gs.time_heat);
           break;
         }
 
@@ -697,13 +583,17 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::GEOTANGLE: {
           // cout << "Computing SSGD with GeoTangle Method" << endl;
-          SSGD_GeoTangle(gs.m, gs.solver_geo, gs.field_geo, gs.sources_geo, gs.geotangle_graph_time, gs.geotangle_geodesic_time);
+          gs.field = SSGD_GeoTangle(gs.m, gs.solver_geo, gs.sources_geo, gs.geotangle_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::EDGE: {
           // cout << "Computing SSGD with Edge Method" << endl;
-          SSGD_Edge(gs.m, gs.solver_edge, gs.field_edge, gs.sources_edge, gs.edge_graph_time, gs.edge_geodesic_time);
+          gs.field = SSGD_Edge(gs.m, gs.solver_edge, gs.sources_edge, gs.edge_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
