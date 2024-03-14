@@ -1,4 +1,4 @@
-// #include "utilities.h"
+
 #include <Eigen/SparseCholesky>
 #include <chrono>
 #include <cinolib/drawable_segment_soup.h>
@@ -9,8 +9,6 @@
 #include <cinolib/gl/glcanvas.h>
 #include <cinolib/gradient.h>
 #include <cinolib/io/write_OBJ.h>
-#include <cinolib/mean_curv_flow.h>
-#include <cinolib/meshes/drawable_tetmesh.h>
 #include <cinolib/scalar_field.h>
 #include <cinolib/vector_serialization.h>
 #include <fstream>
@@ -20,18 +18,10 @@
 #include <cinolib/geodesics.h>
 
 // SSDG with VTP method
-#include "SSGD_methods/VTP/diff_geo.cpp"
-#include "SSGD_methods/VTP/diff_geo.h"
+#include "SSGD_methods/VTP/vtp_wrapper.h"
 
-// SSGD with extended solver
-#include "SSGD_methods/ExtendedSolver/extended_solver.h"
-
-// SSGD with GeoTangle
-#include "SSGD_methods/GeoTangle/GeoTangle.cpp"
-
-// SSGD with Edge method
-#include "SSGD_methods/Edge/edge.cpp"
-
+// SSGD with graph-based methods
+#include "SSGD_methods/Graph-based_methods/extended_solver.h"
 using namespace std;
 using namespace cinolib;
 
@@ -88,7 +78,6 @@ struct State {
   geodesic_solver solver;
   // sources
   vector<int> voronoi_centers;
-  vector<string> metric_names = {"Geodesic", "Isophotic"};
 
   // -------- GeoTangle method --------
   ScalarField field_geo;
@@ -218,19 +207,10 @@ void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver,
               vector<double> &field_data, ScalarField &field,
               vector<int> &sources, double &vtp_graph_time,
               double &vtp_geodesic_time) {
-  // Timer
-  // auto start_graph_VTP = chrono::high_resolution_clock::now();
-  // vector<patch> quadrics = patch_fitting(m, 5);
-  // // Method inside: #include "SSGD_methods/VTP/diff_geo.cpp"
-  // solver = compute_geodesic_solver(m, quadrics);
-  // auto stop_graph_VTP = chrono::high_resolution_clock::now();
 
-  // Geodesic = 0, Isophotic = 1
-  // const int type_of_metric = 0;
   auto start_geodesic_VTP = chrono::high_resolution_clock::now();
   field_data =
       exact_geodesic_distance(m.vector_polys(), m.vector_verts(), sources[0]);
-  // compute_geodesic_distances(solver, sources, type_of_metric);
   auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
 
   // Invert the color mapping
@@ -310,7 +290,7 @@ void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver,
                     double &geotangle_graph_time,
                     double &geotangle_geodesic_time) {
   auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
-  solver = make_geodesic_solver(m);
+  solver = make_geodesic_solver(m, true);
   auto stop_graph_GeoTangle = chrono::high_resolution_clock::now();
 
   vector<double> distances_geo;
@@ -318,7 +298,7 @@ void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver,
   int type = 0;
 
   auto start_geodesic_GeoTangle = chrono::high_resolution_clock::now();
-  distances_geo = compute_geodesic_distances_geo(solver, sources, type);
+  distances_geo = compute_geodesic_distances(solver, sources);
   // update_geodesic_distances_geo(distances_geo, solver, sources, type);
   auto stop_geodesic_GeoTangle = chrono::high_resolution_clock::now();
 
@@ -354,7 +334,7 @@ void SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver,
                ScalarField &field_edge, vector<int> &sources,
                double &edge_graph_time, double &edge_geodesic_time) {
   auto start_graph_edge = chrono::high_resolution_clock::now();
-  solver = make_geodesic_solver_edge(m);
+  solver = make_geodesic_solver(m, false);
   auto stop_graph_edge = chrono::high_resolution_clock::now();
 
   vector<double> distances_edge;
@@ -362,7 +342,7 @@ void SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver,
   int type = 0;
 
   auto start_geodesic_edge = chrono::high_resolution_clock::now();
-  distances_edge = compute_geodesic_distances_edge(solver, sources, type);
+  distances_edge = compute_geodesic_distances(solver, sources);
   // update_geodesic_distances_edge(distances_edge, solver, sources, type);
   auto stop_geodesic_edge = chrono::high_resolution_clock::now();
 
