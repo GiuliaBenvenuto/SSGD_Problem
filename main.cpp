@@ -166,12 +166,9 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.prefactored_matrices.heat_flow_cache = NULL; // Reset the heat flow cache
 
     gs.time_heat = 0.0;
-    gs.vtp_graph_time = 0.0;
-    gs.vtp_geodesic_time = 0.0;
-    gs.geotangle_graph_time = 0.0;
-    gs.geotangle_geodesic_time = 0.0;
-    gs.edge_graph_time = 0.0;
-    gs.edge_geodesic_time = 0.0;
+    gs.vtp_graph_time = gs.vtp_geodesic_time = 0.0;
+    gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
+    gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
   }
 
   if (!gs.MESH_IS_LOADED) {
@@ -442,6 +439,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::SeparatorText("PDE-Based Methods");
       ImGui::Text("Heat time: %.2f ms", gs.time_heat);
 
+<<<<<<< Updated upstream
       ImGui::SeparatorText("Graph-Based Methods");
       ImGui::Text("GeoTangle graph time: %.2f ms", gs.geotangle_graph_time);
       ImGui::Text("GeoTangle geodesic time: %.2f ms",
@@ -450,6 +448,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::Text("Edge geodesic time: %.2f ms", gs.edge_geodesic_time);
 
       ImGui::End();
+=======
+        ImGui::End();
+>>>>>>> Stashed changes
     }
 
     // Files
@@ -766,6 +767,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     }
 
     // Reset button
+<<<<<<< Updated upstream
     if (ImGui::SmallButton("Reset")) {
       // Reset HEAT sources
       gs.sources.clear();
@@ -775,6 +777,28 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources_geo.clear();
       // Reset Edge sources
       gs.sources_edge.clear();
+=======
+    if(ImGui::SmallButton("Reset")){
+        // Reset HEAT sources
+        gs.sources.clear();
+        // Reset VTP sources
+        gs.voronoi_centers.clear();
+        // Reset GeoTangle sources
+        gs.sources_geo.clear();
+        // Reset Edge sources
+        gs.sources_edge.clear();
+
+        gs.time_heat = 0.0;
+        gs.vtp_graph_time = gs.vtp_geodesic_time = 0.0;
+        gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
+        gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
+
+        // Reset the scalar field
+        for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+          gs.m.vert_data(vid).color = Color::WHITE(); // Replace `original_color` with the actual color
+        }
+        gs.m.show_vert_color();
+>>>>>>> Stashed changes
 
       gs.time_heat = 0.0;
       gs.vtp_graph_time = 0.0;
@@ -796,6 +820,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
 // Compute the geodesic distances from a single source vertex
 void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
+<<<<<<< Updated upstream
   gui.callback_mouse_left_click = [&](int modifiers) -> bool {
     if (modifiers & GLFW_MOD_SHIFT) {
       vec3d p;
@@ -805,11 +830,23 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
         uint vid = gs.m.pick_vert(p);
         gs.sources.push_back(vid);
         cout << "Source vertex: " << vid << endl;
+=======
+    gui.callback_mouse_left_click = [&](int modifiers) -> bool {
+        if(modifiers & GLFW_MOD_SHIFT) {
+            vec3d p;
+            vec2d click = gui.cursor_pos();
+            if(gui.unproject(click, p)) {
+                // ----- HEAT SOURCES -----
+                uint vid = gs.m.pick_vert(p);
+                gs.sources.push_back(vid);
+                cout << "Source vertex: " << vid << endl;
+>>>>>>> Stashed changes
 
         // Color the selected vertex in red
         gs.m.vert_data(vid).color = Color::RED();
         gs.m.show_vert_color();
 
+<<<<<<< Updated upstream
         //------ VTP SOURCES ------
         int selected_vid = gs.m.pick_vert(p);
         gs.voronoi_centers.push_back(selected_vid);
@@ -833,6 +870,24 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
     }
     return false;
   };
+=======
+                // ------ VTP SOURCES ------
+                int selected_vid = gs.m.pick_vert(p);
+                gs.voronoi_centers.push_back(selected_vid);
+                //std::cout << "Selected vid VTP = " << selected_vid << std::endl;
+
+                // ------ GEOTANGLE SOURCES ------
+                gs.sources_geo.push_back(selected_vid);
+                //std::cout << "Selected vid GEO = " << selected_vid << std::endl;
+
+                // ------ EDGE SOURCES ------
+                gs.sources_edge.push_back(selected_vid);
+                //std::cout << "Selected vid EDGE = " << selected_vid << std::endl;
+            }
+        }
+        return false;
+    };
+>>>>>>> Stashed changes
 }
 
 //=============================== MAIN =========================================
@@ -849,6 +904,7 @@ int main(int argc, char **argv) {
   ImGui::CreateContext();
   ImGuiIO &io = ImGui::GetIO();
   io.Fonts->Clear(); // Clear any existing fonts
+<<<<<<< Updated upstream
   lato_regular =
       io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
   lato_bold =
@@ -861,6 +917,17 @@ int main(int argc, char **argv) {
 
   // Load mesh
   if (argc > 1) {
+=======
+  lato_regular = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
+  lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
+  lato_bold_title = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
+  if(lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
+      std::cerr << "Failed to load font" << std::endl;
+  }
+
+  //Load mesh
+  if (argc>1) {
+>>>>>>> Stashed changes
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
