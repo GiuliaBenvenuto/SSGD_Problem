@@ -1,11 +1,14 @@
 #ifndef GEODESIC_SOLVER_H
 #define GEODESIC_SOLVER_H
-
+#pragma once
 #include <float.h>
 #include <iostream>
 #include <vector>
 
+#include <cinolib/geometry/vec_mat.h>
+#include <cinolib/meshes/drawable_trimesh.h>
 using namespace std;
+using namespace cinolib;
 
 struct geodesic_solver {
   struct graph_edge {
@@ -21,6 +24,9 @@ struct dual_geodesic_solver {
   };
   vector<array<edge, 3>> graph = {};
 };
+
+geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m,
+                                     const bool geo_tangle);
 
 void update_geodesic_distances(vector<double> &distances,
                                const geodesic_solver &solver,
