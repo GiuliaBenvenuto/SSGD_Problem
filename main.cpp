@@ -22,6 +22,10 @@
 
 // SSGD with graph-based methods
 #include "SSGD_methods/Graph-based_methods/extended_solver.h"
+
+// Compute SSGD
+#include "solving_ssgd.h"
+
 using namespace std;
 using namespace cinolib;
 
@@ -193,7 +197,7 @@ void Load_mesh(GLcanvas &gui, State &gs) {
 
 
 //::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION :::::::::::::::::::::::::::::::::::
-void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices,
+/* void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices,
                vector<uint> &sources, double &time_heat) {
   bool cache = false;
   if (prefactored_matrices.heat_flow_cache != NULL) {
@@ -220,9 +224,9 @@ void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices,
     cout << "Heat computation without cache: " << duration_heat.count()
          << " milliseconds" << endl;
   }
-}
+} */
 
-void SSGD_VTP(DrawableTrimesh<> &m,
+/* void SSGD_VTP(DrawableTrimesh<> &m,
               vector<double> &field_data, ScalarField &field,
               vector<int> &sources,
               double &vtp_geodesic_time) {
@@ -245,7 +249,7 @@ void SSGD_VTP(DrawableTrimesh<> &m,
     vtp_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP).count();
     cout << "Geodesic computation with VTP: " << duration_geodesic_VTP.count()
         << " milliseconds" << endl;
-}
+} */
 
 // void SSGD_Extended(DrawableTrimesh<> &m, geodesic_solver &solver,
 //                    ScalarField &field_geo, vector<int> &sources, const int k,
@@ -665,13 +669,23 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::VTP: {
           // cout << "Computing SSGD with VTP Method" << endl;
-          SSGD_VTP(gs.m, gs.field_data, gs.field, gs.voronoi_centers, gs.vtp_geodesic_time);
+          gs.field_data.clear();
+          gs.field = SSGD_VTP(gs.m, gs.voronoi_centers, gs.vtp_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          // OLD:
+          // SSGD_VTP(gs.m, gs.field_data, gs.field, gs.voronoi_centers, gs.vtp_geodesic_time);
           break;
         }
 
         case State::HEAT: {
           // cout << "Computing SSGD with HEAT Method" << endl;
-          SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources, gs.time_heat);
+          gs.field_data.clear();
+          gs.field = SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources, gs.time_heat);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          // SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources, gs.time_heat);
           break;
         }
 
