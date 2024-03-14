@@ -1,6 +1,4 @@
 // #include "diff_geo.h"
-#include <Spectra/GenEigsSolver.h>
-#include <Spectra/MatOp/SparseGenMatProd.h>
 #include <algorithm>
 #include <cinolib/cino_inline.h>
 #include <cinolib/geometry/triangle_utils.h>
@@ -15,11 +13,6 @@ using namespace cinolib;
 using namespace Eigen;
 using namespace std;
 using namespace std::complex_literals;
-
-#include "../../libs/ann_1.1.2/include/ANN/ANN.h"
-#include "../../libs/ann_1.1.2/include/ANN/ANNx.h"
-#include "../../libs/ann_1.1.2/include/ANN/ANNperf.h"
-
 
 //---------------------------- Graph Construction ----------------------------
 void connect_nodes(geodesic_solver &solver, int a, int b, float length) {
@@ -96,7 +89,7 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m) {
       auto len = (m.vert(a) - m.vert(b)).norm();
       if (a < b)
         connect_nodes(solver, a, b, len);
-        edge_count++;
+      edge_count++;
       // connect opposite nodes
       auto neighbor = m.adj_p2p(face)[k];
       if (face < neighbor) {
@@ -110,12 +103,12 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m) {
   return solver;
 }
 
-
 //---------------------------- Dijkstra Navigation ----------------------------
 template <typename Update, typename Stop, typename Exit>
-void visit_geodesic_graph_geo(vector<double> &field, const geodesic_solver &solver,
-                          const vector<int> &sources, const int type,
-                          Update &&update, Stop &&stop, Exit &&exit) {
+void visit_geodesic_graph_geo(vector<double> &field,
+                              const geodesic_solver &solver,
+                              const vector<int> &sources, const int type,
+                              Update &&update, Stop &&stop, Exit &&exit) {
   /*
      This algortithm uses the heuristic Small Label Fisrt and Large Label Last
      https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm
@@ -212,24 +205,26 @@ void visit_geodesic_graph_geo(vector<double> &field, const geodesic_solver &solv
   }
 }
 
-// ---------------------------- Init and call to the Solver ----------------------------
+// ---------------------------- Init and call to the Solver
+// ----------------------------
 void update_geodesic_distances_geo(vector<double> &distances,
-                               const geodesic_solver &solver,
-                               const vector<int> &sources, const int type,
-                               double max_distance = __DBL_MAX__) {
+                                   const geodesic_solver &solver,
+                                   const vector<int> &sources, const int type,
+                                   double max_distance = __DBL_MAX__) {
 
   auto update = [](int node) {};
   auto stop = [&](int node) { return distances[node] > max_distance; };
   auto exit = [](int node) { return false; };
   for (auto source : sources)
     distances[source] = 0.0;
-  visit_geodesic_graph_geo(distances, solver, sources, type, update, stop, exit);
+  visit_geodesic_graph_geo(distances, solver, sources, type, update, stop,
+                           exit);
 }
 // Useful: ---------------------------------------------------
 
 vector<double> compute_geodesic_distances_geo(const geodesic_solver &solver,
-                                          const vector<int> &sources,
-                                          const int type) {
+                                              const vector<int> &sources,
+                                              const int type) {
 
   auto field = vector<double>(solver.graph.size(), DBL_MAX);
   for (auto source : sources)

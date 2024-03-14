@@ -1,6 +1,4 @@
 // #include "diff_geo.h"
-#include <Spectra/GenEigsSolver.h>
-#include <Spectra/MatOp/SparseGenMatProd.h>
 #include <algorithm>
 #include <cinolib/cino_inline.h>
 #include <cinolib/geometry/triangle_utils.h>
@@ -16,11 +14,6 @@ using namespace Eigen;
 using namespace std;
 using namespace std::complex_literals;
 
-#include "../../libs/ann_1.1.2/include/ANN/ANN.h"
-#include "../../libs/ann_1.1.2/include/ANN/ANNx.h"
-#include "../../libs/ann_1.1.2/include/ANN/ANNperf.h"
-
-
 //---------------------------- Graph Construction ----------------------------
 void connect_nodes_edge(geodesic_solver &solver, int a, int b, float length) {
   solver.graph[a].push_back({b, length});
@@ -28,36 +21,36 @@ void connect_nodes_edge(geodesic_solver &solver, int a, int b, float length) {
 }
 
 geodesic_solver make_geodesic_solver_edge(const DrawableTrimesh<> &m) {
-    auto solver = geodesic_solver{};
-    solver.graph.resize(m.num_verts());
+  auto solver = geodesic_solver{};
+  solver.graph.resize(m.num_verts());
 
-    int edge_count = 0;
+  int edge_count = 0;
 
-    for (auto face = 0; face < m.num_polys(); face++) {
-        for (auto k = 0; k < 3; k++) {
-            auto a = m.poly_vert_id(face, k);
-            auto b = m.poly_vert_id(face, (k + 1) % 3);
+  for (auto face = 0; face < m.num_polys(); face++) {
+    for (auto k = 0; k < 3; k++) {
+      auto a = m.poly_vert_id(face, k);
+      auto b = m.poly_vert_id(face, (k + 1) % 3);
 
-            // connect mesh edges
-            auto len = (m.vert(a) - m.vert(b)).norm();
-            if (a < b)
-            connect_nodes_edge(solver, a, b, len);
-            edge_count++;
+      // connect mesh edges
+      auto len = (m.vert(a) - m.vert(b)).norm();
+      if (a < b)
+        connect_nodes_edge(solver, a, b, len);
+      edge_count++;
 
-            // WITHOUT OPPOSITE EDGES
-            // connect opposite nodes
-        }
+      // WITHOUT OPPOSITE EDGES
+      // connect opposite nodes
     }
-    std::cout << "Number of edges EDGE " << edge_count << std::endl;
-    return solver;
+  }
+  std::cout << "Number of edges EDGE " << edge_count << std::endl;
+  return solver;
 }
-
 
 //---------------------------- Dijkstra Navigation ----------------------------
 template <typename Update, typename Stop, typename Exit>
-void visit_geodesic_graph_edge(vector<double> &field, const geodesic_solver &solver,
-                          const vector<int> &sources, const int type,
-                          Update &&update, Stop &&stop, Exit &&exit) {
+void visit_geodesic_graph_edge(vector<double> &field,
+                               const geodesic_solver &solver,
+                               const vector<int> &sources, const int type,
+                               Update &&update, Stop &&stop, Exit &&exit) {
   /*
      This algortithm uses the heuristic Small Label Fisrt and Large Label Last
      https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm
@@ -115,14 +108,8 @@ void visit_geodesic_graph_edge(vector<double> &field, const geodesic_solver &sol
     for (auto i = 0; i < (int)solver.graph[node].size(); i++) {
       // Distance of neighbor through this node
       double new_distance;
-      if (type == geodesic)
-        new_distance = field[node] + solver.graph[node][i].length;
-      else if (type == isophotic)
-        new_distance = field[node] + solver.graph[node][i].isophotic_length;
-      else
-        new_distance =
-            field[node] + std::abs(solver.graph[node][i].isophotic_length -
-                                   solver.graph[node][i].length);
+
+      new_distance = field[node] + solver.graph[node][i].length;
 
       auto neighbor = solver.graph[node][i].node;
 
@@ -154,24 +141,25 @@ void visit_geodesic_graph_edge(vector<double> &field, const geodesic_solver &sol
   }
 }
 
-
-//---------------------------- Init and call to the Solver ----------------------------
+//---------------------------- Init and call to the Solver
+//----------------------------
 void update_geodesic_distances_edge(vector<double> &distances,
-                               const geodesic_solver &solver,
-                               const vector<int> &sources, const int type,
-                               double max_distance = __DBL_MAX__) {
+                                    const geodesic_solver &solver,
+                                    const vector<int> &sources, const int type,
+                                    double max_distance = __DBL_MAX__) {
 
   auto update = [](int node) {};
   auto stop = [&](int node) { return distances[node] > max_distance; };
   auto exit = [](int node) { return false; };
   for (auto source : sources)
     distances[source] = 0.0;
-  visit_geodesic_graph_edge(distances, solver, sources, type, update, stop, exit);
+  visit_geodesic_graph_edge(distances, solver, sources, type, update, stop,
+                            exit);
 }
 
 vector<double> compute_geodesic_distances_edge(const geodesic_solver &solver,
-                                          const vector<int> &sources,
-                                          const int type) {
+                                               const vector<int> &sources,
+                                               const int type) {
 
   auto field = vector<double>(solver.graph.size(), DBL_MAX);
   for (auto source : sources)
