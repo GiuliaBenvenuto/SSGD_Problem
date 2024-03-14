@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.2)
+project(SSGD_dist)
+
+add_executable(${PROJECT_NAME} main.cpp)
+set_target_properties(${PROJECT_NAME}     PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
+
+set(cinolib_DIR /Users/giuliabenvenuto/Documents/GitHub/cinolib)
+set(CINOLIB_USES_OPENGL_GLFW_IMGUI ON)
+find_package(cinolib REQUIRED)
+target_link_libraries(${PROJECT_NAME} cinolib)
+target_include_directories(${PROJECT_NAME} PUBLIC ${cinolib_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/libs)
+include_directories(${CMAKE_SOURCE_DIR}/libs/Eigen)
+
+
+

@@ -75,6 +75,7 @@ struct State {
   //-------- VTP method --------
   vector<double> field_data;
   ScalarField field;
+  geodesic_solver solver;
   // sources
   vector<int> voronoi_centers;
 
@@ -171,16 +172,8 @@ void Load_mesh(GLcanvas &gui, State &gs) {
     Load_mesh(filename, gui, gs);
 }
 
-//:::::::::::::::::: GRAPH CONSTRUCTION :::::::::::::::::::::::::::::::::::::
-void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo, geodesic_solver &solver_edge) {
-    // GeoTangle solver
-    solver_geo = make_geodesic_solver(m, true);
-    // Edge solver
-    solver_edge = make_geodesic_solver(m, false);
-}
-
-
-//::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION :::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION
+//:::::::::::::::::::::::::::::::::::
 void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices,
                vector<uint> &sources, double &time_heat) {
   bool cache = false;
@@ -210,7 +203,7 @@ void SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices,
   }
 }
 
-void SSGD_VTP(DrawableTrimesh<> &m,
+void SSGD_VTP(DrawableTrimesh<> &m, geodesic_solver &solver,
               vector<double> &field_data, ScalarField &field,
               vector<int> &sources, double &vtp_graph_time,
               double &vtp_geodesic_time) {
@@ -292,8 +285,6 @@ void SSGD_VTP(DrawableTrimesh<> &m,
 //   cout << "Geodesic computation with extended: "
 //        << duration_geodesic_extended.count() << " milliseconds" << endl;
 // }
-
-
 void SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver,
                     ScalarField &field_geo, vector<int> &sources,
                     double &geotangle_graph_time,
@@ -702,7 +693,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::VTP: {
           // cout << "Computing SSGD with VTP Method" << endl;
-          SSGD_VTP(gs.m, gs.field_data, gs.field, gs.voronoi_centers,
+          SSGD_VTP(gs.m, gs.solver, gs.field_data, gs.field, gs.voronoi_centers,
                    gs.vtp_graph_time, gs.vtp_geodesic_time);
           break;
         }
@@ -814,41 +805,38 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
 
 int main(int argc, char **argv) {
 
-    // SETUP GLOBAL STATE AND GUI:::::::::::::::::::::::
-    State gs;
-    GLcanvas gui = Init_GUI();
-    Setup_GUI_Callbacks(gui, gs);
-    Setup_Mouse_Callback(gui, gs);
+  // SETUP GLOBAL STATE AND GUI:::::::::::::::::::::::
+  State gs;
+  GLcanvas gui = Init_GUI();
+  Setup_GUI_Callbacks(gui, gs);
+  Setup_Mouse_Callback(gui, gs);
 
-    // Setup font
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    io.Fonts->Clear(); // Clear any existing fonts
-    lato_regular = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
-    lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
-    lato_bold_title = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
-    if(lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
-        std::cerr << "Failed to load font" << std::endl;
-    }
+  // Setup font
+  ImGui::CreateContext();
+  ImGuiIO &io = ImGui::GetIO();
+  io.Fonts->Clear(); // Clear any existing fonts
+  lato_regular = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
+  lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
+  lato_bold_title = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
+  if(lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
+      std::cerr << "Failed to load font" << std::endl;
+  }
 
-    //Load mesh
-    if (argc>1) {
+  //Load mesh
+  if (argc>1) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
-    } else {
+  } else {
     string s = "../data/cinolib/bunny.obj";
     Load_mesh(s, gui, gs);
-    }
+  }
 
-    // Construct the graph for geotangle and edge methods
-    graph_construction(gs.m, gs.solver_geo, gs.solver_edge);
+  // // // GENERATE FIELD:::::::::::::::::::::::::::::::
+  // Generate_field(gui,gs);
 
-    // // // GENERATE FIELD:::::::::::::::::::::::::::::::
-    // Generate_field(gui,gs);
+  // // COMPUTE DISCRETE SCALE SPACE:::::::::::::::::
+  // Build_disc_ss(gui,gs);
 
-    // // COMPUTE DISCRETE SCALE SPACE:::::::::::::::::
-    // Build_disc_ss(gui,gs);
-
-    // render the mesh
-    return gui.launch();
+  // render the mesh
+  return gui.launch();
 }
