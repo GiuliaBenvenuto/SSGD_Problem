@@ -20,7 +20,7 @@
 // SSDG with VTP method
 #include "SSGD_methods/VTP/vtp_wrapper.h"
 
-// SSGD with extended solver
+// SSGD with graph-based methods
 #include "SSGD_methods/Graph-based_methods/extended_solver.h"
 using namespace std;
 using namespace cinolib;
@@ -78,7 +78,6 @@ struct State {
   geodesic_solver solver;
   // sources
   vector<int> voronoi_centers;
-  vector<string> metric_names = {"Geodesic", "Isophotic"};
 
   // -------- GeoTangle method --------
   ScalarField field_geo;
