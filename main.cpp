@@ -215,56 +215,6 @@ void Load_mesh(GLcanvas &gui, State &gs) {
 }
 
 
-
-//::::::::::::::::::::::::::::::::::::: SSGD COMPUTATION :::::::::::::::::::::::::::::::::::
-// void SSGD_Extended(DrawableTrimesh<> &m, geodesic_solver &solver,
-//                    ScalarField &field_geo, vector<int> &sources, const int k,
-//                    double &extended_graph_time,
-//                    double &extended_geodesic_time) {
-//   auto start_graph_extended = chrono::high_resolution_clock::now();
-
-//   solver = extended_solver(m, solver, k);
-
-//   auto stop_graph_extended = chrono::high_resolution_clock::now();
-
-//   vector<double> distances_geo;
-//   // type = 0 for geodesic, 1 for isophotic
-//   int type = 0;
-
-//   auto start_geodesic_extended = chrono::high_resolution_clock::now();
-//   distances_geo = compute_geodesic_distances_geo(solver, sources, type);
-//   // update_geodesic_distances_geo(distances_geo, solver, sources, type);
-//   auto stop_geodesic_extended = chrono::high_resolution_clock::now();
-
-//   // Invert the color mapping
-//   for (auto &value : distances_geo) {
-//     value = 1.0 - value;
-//   }
-
-//   field_geo = ScalarField(distances_geo);
-//   field_geo.normalize_in_01();
-//   field_geo.copy_to_mesh(m);
-//   m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-//   auto duration_graph_extended = chrono::duration_cast<chrono::milliseconds>(
-//       stop_graph_extended - start_graph_extended);
-//   extended_graph_time = chrono::duration_cast<chrono::milliseconds>(
-//                             stop_graph_extended - start_graph_extended)
-//                             .count();
-//   auto duration_geodesic_extended =
-//   chrono::duration_cast<chrono::milliseconds>(
-//       stop_geodesic_extended - start_geodesic_extended);
-//   extended_geodesic_time = chrono::duration_cast<chrono::milliseconds>(
-//                                stop_geodesic_extended -
-//                                start_geodesic_extended) .count();
-//   cout << "Graph construction with extended: "
-//        << duration_graph_extended.count() << " milliseconds" << endl;
-//   cout << "Geodesic computation with extended: "
-//        << duration_geodesic_extended.count() << " milliseconds" << endl;
-// }
-
-
-
 //::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
   GLcanvas gui(1500, 700);
