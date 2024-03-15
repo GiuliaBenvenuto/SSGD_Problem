@@ -148,6 +148,7 @@ ScalarField SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int>
   return sc_edge;
 }
 
+
 ScalarField SSGD_Extended(DrawableTrimesh<> &m, dual_geodesic_solver &solver, vector<int> &sources, double &extended_geodesic_time) {
     vector<double> distances(m.num_verts(), std::numeric_limits<double>::max());  // Initialize with max double value
     ScalarField sc_extended;
