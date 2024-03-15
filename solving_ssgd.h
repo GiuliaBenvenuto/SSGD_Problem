@@ -35,7 +35,7 @@ ScalarField SSGD_Edge(DrawableTrimesh<> &m,
 
 // Extended method
 ScalarField SSGD_Extended(DrawableTrimesh<> &m,
-                        dual_geodesic_solver &solver,
+                        geodesic_solver &solver,
                         vector<int> &sources, 
                         double &extended_geodesic_time);
 

@@ -142,45 +142,63 @@ ScalarField SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int>
 
   auto duration_geodesic_edge = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_edge - start_geodesic_edge);
   edge_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_edge - start_geodesic_edge).count();
-  cout << "Geodesic computation with Edge: " << duration_geodesic_edge.count()
-       << " milliseconds" << endl;
+  cout << "Geodesic computation with Edge: " << duration_geodesic_edge.count() << " milliseconds" << endl;
 
   return sc_edge;
 }
 
 
-ScalarField SSGD_Extended(DrawableTrimesh<> &m, dual_geodesic_solver &solver, vector<int> &sources, double &extended_geodesic_time) {
+ScalarField SSGD_Extended(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int> &sources, double &extended_geodesic_time) {
     vector<double> distances(m.num_verts(), std::numeric_limits<double>::max());  // Initialize with max double value
     ScalarField sc_extended;
 
-    auto start_time = chrono::high_resolution_clock::now();
+    // Usa primal_solver qui dentro:
+    // distances_edge = compute_geodesic_distances(solver, sources);
+    // Esattamente uguale a SSGD_Edge
+    auto start_geodesic_extended = chrono::high_resolution_clock::now();
+    distances = compute_geodesic_distances(solver, sources);
+    auto stop_geodesic_extended = chrono::high_resolution_clock::now();
 
-    // Iterate over all vertices in the mesh as potential targets
-    for (uint i = 0; i < m.num_verts(); ++i) {
-        mesh_point tgt = get_point_from_vert(m, i);
-
-        // Check the distance from each source to the current target
-        for (int source_vid : sources) {
-            mesh_point src = get_point_from_vert(m, source_vid);
-            vector<vec3d> path = shortest_path(src, tgt, m, solver);
-            double path_len = path_length(path);
-
-            // Update the distance if the new path is shorter
-            if (path_len < distances[i]) {
-                distances[i] = path_len;
-            }
-        }
-    }
     // Invert the color mapping
     for (auto &value : distances) {
       value = 1.0 - value;
     }
 
-    auto end_time = chrono::high_resolution_clock::now();
-    extended_geodesic_time = chrono::duration_cast<chrono::milliseconds>(end_time - start_time).count();
-
     sc_extended = ScalarField(distances);
     sc_extended.normalize_in_01();
+
+    auto duration_geodesic_extended = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_extended - start_geodesic_extended);
+    extended_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_extended - start_geodesic_extended).count();
+    cout << "Geodesic computation with Extended: " << duration_geodesic_extended.count() << " milliseconds" << endl;
+
+    // auto start_time = chrono::high_resolution_clock::now();
+
+    // // Iterate over all vertices in the mesh as potential targets
+    // for (uint i = 0; i < m.num_verts(); ++i) {
+    //     mesh_point tgt = get_point_from_vert(m, i);
+
+    //     // Check the distance from each source to the current target
+    //     for (int source_vid : sources) {
+    //         mesh_point src = get_point_from_vert(m, source_vid);
+    //         vector<vec3d> path = shortest_path(src, tgt, m, solver);
+    //         double path_len = path_length(path);
+
+    //         // Update the distance if the new path is shorter
+    //         if (path_len < distances[i]) {
+    //             distances[i] = path_len;
+    //         }
+    //     }
+    // }
+    // // Invert the color mapping
+    // for (auto &value : distances) {
+    //   value = 1.0 - value;
+    // }
+
+    // auto end_time = chrono::high_resolution_clock::now();
+    // extended_geodesic_time = chrono::duration_cast<chrono::milliseconds>(end_time - start_time).count();
+
+    // sc_extended = ScalarField(distances);
+    // sc_extended.normalize_in_01();
 
     return sc_extended;
 }

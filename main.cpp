@@ -156,7 +156,7 @@ void graph_construction(DrawableTrimesh<> &m,
     auto start_graph_extended = chrono::high_resolution_clock::now();
     dual_geodesic_solver = make_dual_geodesic_solver(m);
     progress = 0.66;
-    primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 1);
+    primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 3);
     progress = 0.99;
     auto stop_graph_extended = chrono::high_resolution_clock::now();
     extended_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_extended - start_graph_extended).count();
@@ -566,7 +566,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::EXTENDED: {
-          gs.field = SSGD_Extended(gs.m, gs.dual_solver_extended, gs.sources, gs.extended_geodesic_time);
+          gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources, gs.extended_geodesic_time);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
@@ -704,7 +704,8 @@ int main(int argc, char **argv) {
         string s = "../data/" + string(argv[1]);
         Load_mesh(s, gui, gs);
     } else {
-        string s = "../data/bi-torus_10k.obj";
+        // string s = "../data/bi-torus_10k.obj";
+        string s = "../data/cinolib/bunny.obj";
         Load_mesh(s, gui, gs);
     }
 
