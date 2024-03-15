@@ -13,6 +13,7 @@
 #include <cinolib/vector_serialization.h>
 #include <fstream>
 #include <imgui.h>
+#include <thread>
 
 // SSDG with Heat method
 #include <cinolib/geodesics.h>
@@ -35,6 +36,8 @@ using namespace cinolib;
 ImFont *lato_bold = nullptr;
 ImFont *lato_regular = nullptr;
 ImFont *lato_bold_title = nullptr;
+atomic<float> progress(0.0f);
+
 
 //:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR GUI):::::::::::::::::::::::::::::::
 struct State {
@@ -130,7 +133,8 @@ void graph_construction(DrawableTrimesh<> &m,
                         dual_geodesic_solver &dual_geodesic_solver,
                         double &geotangle_graph_time, 
                         double &edge_graph_time,
-                        double &extended_graph_time) {
+                        double &extended_graph_time,
+                        atomic<float>& progress) {
 
     cout << "----- Constructing graph for geodesic computation -----" << endl;
     // GeoTangle solver
@@ -146,14 +150,18 @@ void graph_construction(DrawableTrimesh<> &m,
     auto stop_graph_edge = chrono::high_resolution_clock::now();
     edge_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_edge - start_graph_edge).count();
     cout << "Edge graph time: " << edge_graph_time << " milliseconds" << endl;
+    progress = 0.33;
 
     // Extended solver
     auto start_graph_extended = chrono::high_resolution_clock::now();
     dual_geodesic_solver = make_dual_geodesic_solver(m);
+    progress = 0.66;
     primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 1);
+    progress = 0.99;
     auto stop_graph_extended = chrono::high_resolution_clock::now();
     extended_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_extended - start_graph_extended).count();
     cout << "Extended graph time: " << extended_graph_time << " milliseconds" << endl;
+    progress = 1.0;
 }
 
 
@@ -191,7 +199,7 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.extended_graph_time = gs.extended_geodesic_time = 0.0;
 
     graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended, 
-                        gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time);
+                        gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time, progress);
   }
 
   if (!gs.MESH_IS_LOADED) {
@@ -307,6 +315,19 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::Text("Extended graph time: %.2f ms", gs.extended_graph_time);
       ImGui::Text("Extended geodesic time: %.2f ms", gs.extended_geodesic_time);
 
+      ImGui::End();
+    }
+
+    // In your main function or GUI rendering loop
+    if (progress < 1.0f) {
+      ImVec2 window_size = ImVec2(250, 60);  // Width, Height in pixels
+      ImVec2 window_pos = ImVec2(1225, 400);    // X, Y position in pixels
+
+      ImGui::SetNextWindowSize(window_size, ImGuiCond_Always);
+      ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
+      
+      ImGui::Begin("Graph Construction Progress");
+      ImGui::ProgressBar(progress.load(), ImVec2(-1.0f, 0.0f), progress > 1.0f ? "Done" : "Loading...");
       ImGui::End();
     }
 
@@ -637,6 +658,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       }
       gs.m.show_vert_color();
     }
+
   };
 }
 
@@ -666,9 +688,51 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
 
 //=============================== MAIN =========================================
 
-int main(int argc, char **argv) {
+// int main(int argc, char **argv) {
 
-    // SETUP GLOBAL STATE AND GUI:::::::::::::::::::::::
+//     // SETUP GLOBAL STATE AND GUI:::::::::::::::::::::::
+//     State gs;
+//     GLcanvas gui = Init_GUI();
+//     Setup_GUI_Callbacks(gui, gs);
+//     Setup_Mouse_Callback(gui, gs);
+
+//     // Setup font
+//     ImGui::CreateContext();
+//     ImGuiIO &io = ImGui::GetIO();
+//     io.Fonts->Clear(); // Clear any existing fonts
+//     lato_regular = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
+//     lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
+//     lato_bold_title = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
+//     if(lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
+//         std::cerr << "Failed to load font" << std::endl;
+//     }
+
+//     //Load mesh
+//     if (argc>1) {
+//       string s = "../data/" + string(argv[1]);
+//       Load_mesh(s, gui, gs);
+//     } else {
+//       //string s = "../data/cinolib/cactus.off";
+//       string s = "../data/bi-torus_10k.obj";
+//       Load_mesh(s, gui, gs);
+//     }
+
+//     // Construct the graph for geotangle and edge methods
+//     graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended,
+//                          gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time);
+
+//     // // // GENERATE FIELD:::::::::::::::::::::::::::::::
+//     // Generate_field(gui,gs);
+
+//     // // COMPUTE DISCRETE SCALE SPACE:::::::::::::::::
+//     // Build_disc_ss(gui,gs);
+
+//     // render the mesh
+//     return gui.launch();
+// }
+
+int main(int argc, char **argv) {
+    // SETUP GLOBAL STATE AND GUI
     State gs;
     GLcanvas gui = Init_GUI();
     Setup_GUI_Callbacks(gui, gs);
@@ -681,30 +745,31 @@ int main(int argc, char **argv) {
     lato_regular = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
     lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
     lato_bold_title = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
-    if(lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
+    if (lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
         std::cerr << "Failed to load font" << std::endl;
     }
 
-    //Load mesh
-    if (argc>1) {
-      string s = "../data/" + string(argv[1]);
-      Load_mesh(s, gui, gs);
+    // Load mesh
+    if (argc > 1) {
+        string s = "../data/" + string(argv[1]);
+        Load_mesh(s, gui, gs);
     } else {
-      //string s = "../data/cinolib/cactus.off";
-      string s = "../data/bi-torus_10k.obj";
-      Load_mesh(s, gui, gs);
+        string s = "../data/bi-torus_10k.obj";
+        Load_mesh(s, gui, gs);
     }
 
-    // Construct the graph for geotangle and edge methods
-    graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended,
-                         gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time);
+    // Start the graph construction in a separate thread
+    std::thread graph_thread([&]() {
+        graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended,
+                         gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time, progress);
+    });
 
-    // // // GENERATE FIELD:::::::::::::::::::::::::::::::
-    // Generate_field(gui,gs);
+    // Launch the GUI
+    gui.launch();
 
-    // // COMPUTE DISCRETE SCALE SPACE:::::::::::::::::
-    // Build_disc_ss(gui,gs);
+    // Wait for the thread to complete
+    graph_thread.join();
 
-    // render the mesh
-    return gui.launch();
+    return 0;
 }
+
