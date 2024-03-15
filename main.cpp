@@ -22,6 +22,7 @@
 
 // SSGD with graph-based methods
 #include "SSGD_methods/Graph-based_methods/extended_solver.h"
+#include "SSGD_methods/Graph-based_methods/shortest_path.h"
 
 // Compute SSGD
 #include "solving_ssgd.h"
@@ -67,7 +68,7 @@ struct State {
   Color poly_color;
 
   // SSGD Method
-  enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE } ssgd_method;
+  enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED } ssgd_method;
   ScalarField field;
 
   //-------- HEAT method --------
@@ -89,11 +90,16 @@ struct State {
   // sources
   vector<int> sources_edge;
 
+  // -------- Extended method --------
+  geodesic_solver primal_solver_extended;
+  dual_geodesic_solver dual_solver_extended;
+
   // ----- Timer -----
   double time_heat;
   double vtp_geodesic_time;
   double geotangle_graph_time, geotangle_geodesic_time;
   double edge_graph_time, edge_geodesic_time;
+  double extended_graph_time, extended_geodesic_time;
 
   State() {
     MESH_IS_LOADED = false;
@@ -120,13 +126,20 @@ struct State {
     vtp_geodesic_time = 0.0;
     geotangle_graph_time = geotangle_geodesic_time = 0.0;
     edge_graph_time = edge_geodesic_time = 0.0;
+    extended_graph_time = extended_geodesic_time = 0.0;
   }
 };
 
 
 //:::::::::::::::::: GRAPH CONSTRUCTION :::::::::::::::::::::::::::::::::::::
-void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo, geodesic_solver &solver_edge,
-                        double &geotangle_graph_time, double &edge_graph_time) {
+void graph_construction(DrawableTrimesh<> &m, 
+                        geodesic_solver &solver_geo, 
+                        geodesic_solver &solver_edge, 
+                        geodesic_solver &primal_geodesic_solver, 
+                        dual_geodesic_solver &dual_geodesic_solver,
+                        double &geotangle_graph_time, 
+                        double &edge_graph_time,
+                        double &extended_graph_time) {
     // GeoTangle solver
     auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
     solver_geo = make_geodesic_solver(m, true);
@@ -140,6 +153,15 @@ void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo, geode
     auto stop_graph_edge = chrono::high_resolution_clock::now();
     edge_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_edge - start_graph_edge).count();
     cout << "Graph construction with Edge: " << edge_graph_time << " milliseconds" << endl;
+
+    // Extended solver
+    auto start_graph_extended = chrono::high_resolution_clock::now();
+    dual_geodesic_solver = make_dual_geodesic_solver(m);
+    primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 1);
+    auto stop_graph_extended = chrono::high_resolution_clock::now();
+    extended_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_extended - start_graph_extended).count();
+    cout << "Graph construction with extended: " << extended_graph_time << " milliseconds" << endl;
+
 }
 
 
@@ -177,7 +199,8 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
     gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
 
-    graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.geotangle_graph_time, gs.edge_graph_time);
+    graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended, 
+                        gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time);
   }
 
   if (!gs.MESH_IS_LOADED) {
@@ -532,6 +555,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         gs.ssgd_method = State::EDGE;
         // cout << "Edge Method" << endl;
       }
+      if (ImGui::RadioButton("Extended  ", gs.ssgd_method == State::EXTENDED)) {
+        gs.ssgd_method = State::EXTENDED;
+        // cout << "Edge Method" << endl;
+      }
 
       ImGui::TreePop();
     } else {
@@ -597,6 +624,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           break;
         }
 
+        case State::EXTENDED: {
+          // cout << "Computing SSGD with Extended Method" << endl;
+          gs.field = SSGD_Extended(gs.m, gs.dual_solver_extended, gs.sources_geo, gs.extended_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
+
         default:
           // cout << "No SSGD method selected" << endl;
           break;
@@ -630,6 +665,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.vtp_geodesic_time = 0.0;
       gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
       gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
+      gs.extended_graph_time = gs.extended_geodesic_time = 0.0;
 
       // Reset the scalar field
       for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
@@ -697,15 +733,17 @@ int main(int argc, char **argv) {
 
     //Load mesh
     if (argc>1) {
-    string s = "../data/" + string(argv[1]);
-    Load_mesh(s, gui, gs);
+      string s = "../data/" + string(argv[1]);
+      Load_mesh(s, gui, gs);
     } else {
-    string s = "../data/cinolib/bunny.obj";
-    Load_mesh(s, gui, gs);
+      //string s = "../data/cinolib/cactus.off";
+      string s = "../data/bi-torus_10k.obj";
+      Load_mesh(s, gui, gs);
     }
 
     // Construct the graph for geotangle and edge methods
-    graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.geotangle_graph_time, gs.edge_graph_time);
+    graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended,
+                         gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time);
 
     // // // GENERATE FIELD:::::::::::::::::::::::::::::::
     // Generate_field(gui,gs);

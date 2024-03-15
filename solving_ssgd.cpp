@@ -1,4 +1,5 @@
 #include "solving_ssgd.h"
+#include "SSGD_methods/Graph-based_methods/shortest_path.h"
 
 
 ScalarField SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vector<uint> &sources, double &time_heat) {
@@ -108,5 +109,41 @@ ScalarField SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int>
   cout << "Geodesic computation with Edge: " << duration_geodesic_edge.count()
        << " milliseconds" << endl;
 
-    return sc_edge;
+  return sc_edge;
+}
+
+ScalarField SSGD_Extended(DrawableTrimesh<> &m, dual_geodesic_solver &solver, vector<int> &sources, double &extended_geodesic_time) {
+    vector<double> distances(m.num_verts(), std::numeric_limits<double>::max());  // Initialize with max double value
+    ScalarField sc_extended;
+
+    auto start_time = chrono::high_resolution_clock::now();
+
+    // Iterate over all vertices in the mesh as potential targets
+    for (uint i = 0; i < m.num_verts(); ++i) {
+        mesh_point tgt = get_point_from_vert(m, i);
+
+        // Check the distance from each source to the current target
+        for (int source_vid : sources) {
+            mesh_point src = get_point_from_vert(m, source_vid);
+            vector<vec3d> path = shortest_path(src, tgt, m, solver);
+            double path_len = path_length(path);
+
+            // Update the distance if the new path is shorter
+            if (path_len < distances[i]) {
+                distances[i] = path_len;
+            }
+        }
+    }
+    // Invert the color mapping
+    for (auto &value : distances) {
+      value = 1.0 - value;
+    }
+
+    auto end_time = chrono::high_resolution_clock::now();
+    extended_geodesic_time = chrono::duration_cast<chrono::milliseconds>(end_time - start_time).count();
+
+    sc_extended = ScalarField(distances);
+    sc_extended.normalize_in_01();
+
+    return sc_extended;
 }
