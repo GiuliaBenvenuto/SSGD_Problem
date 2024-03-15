@@ -31,12 +31,51 @@ ScalarField SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices
 }
 
 
+// ScalarField SSGD_VTP(DrawableTrimesh<> &m, vector<int> &sources, double &vtp_geodesic_time) {
+//     vector<double> field_data;
+//     ScalarField sc_vtp;
+
+//     auto start_geodesic_VTP = chrono::high_resolution_clock::now();
+//     field_data = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), sources[0]);
+//     auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
+
+//     // Invert the color mapping
+//     for (auto &value : field_data) {
+//         value = 1.0 - value;
+//     }
+
+//     sc_vtp = ScalarField(field_data);
+//     sc_vtp.normalize_in_01();
+//     //field.copy_to_mesh(m);
+//     //m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+//     auto duration_geodesic_VTP = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP);
+//     vtp_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP).count();
+//     cout << "Geodesic computation with VTP: " << duration_geodesic_VTP.count()
+//         << " milliseconds" << endl;
+
+//     return sc_vtp;
+// } 
+
+// SSGD_VTP method with multiple sources
 ScalarField SSGD_VTP(DrawableTrimesh<> &m, vector<int> &sources, double &vtp_geodesic_time) {
-    vector<double> field_data;
+    if (sources.empty()) return ScalarField(); // Handle empty sources
+
+    vector<double> field_data(m.num_verts(), std::numeric_limits<double>::max());
     ScalarField sc_vtp;
 
     auto start_geodesic_VTP = chrono::high_resolution_clock::now();
-    field_data = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), sources[0]);
+
+    // Iterate over each source
+    for (int source : sources) {
+        vector<double> current_distances = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), source);
+
+        // Update the minimum distance for each vertex
+        for (size_t i = 0; i < field_data.size(); ++i) {
+            field_data[i] = std::min(field_data[i], current_distances[i]);
+        }
+    }
+
     auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
 
     // Invert the color mapping
@@ -46,16 +85,13 @@ ScalarField SSGD_VTP(DrawableTrimesh<> &m, vector<int> &sources, double &vtp_geo
 
     sc_vtp = ScalarField(field_data);
     sc_vtp.normalize_in_01();
-    //field.copy_to_mesh(m);
-    //m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
-    auto duration_geodesic_VTP = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP);
     vtp_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP).count();
-    cout << "Geodesic computation with VTP: " << duration_geodesic_VTP.count()
-        << " milliseconds" << endl;
+    cout << "Geodesic computation with VTP: " << vtp_geodesic_time << " milliseconds" << endl;
 
     return sc_vtp;
-} 
+}
+
 
 
 ScalarField SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int> &sources, double &geotangle_geodesic_time) {
