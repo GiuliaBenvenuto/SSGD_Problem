@@ -231,12 +231,19 @@ void clean_strip(vector<int> &strip, mesh_point &src, mesh_point &tgt,
   if (target_is_vert) {
     auto last_face = strip.end();
     uint vid = m.poly_vert_id(tgt.tid, kvt);
-    for (auto rit = strip.rbegin(); rit != strip.rend() - 1; ++rit) {
-      int k = vert_offset(m, *(rit + 1), vid);
-      if (k == -1)
+    for (auto rit = strip.rbegin(); rit != strip.rend(); ++rit) {
+      if (rit == strip.rend() - 1) {
+        kvt = vert_offset(m, *rit, vid);
+        assert(kvt != -1);
+        strip.clear();
+        return;
+      }
+      kvt = vert_offset(m, *(rit + 1), vid);
+      if (kvt == -1)
         break;
       --last_face;
     }
+
     strip.erase(last_face, strip.end());
 
     if (strip.empty())
@@ -549,7 +556,8 @@ void straighten_path(vector<array<vec2d, 2>> &portals, vector<double> &lerps,
     tmp.insert(tmp.end(), strip.begin() + curr_index, strip.end());
     strip.swap(tmp);
     clean_strip(strip, src, tgt, m);
-
+    if (strip.size() == 0)
+      return;
     portals = unfold_strip(m, strip, src, tgt);
     lerps = funnel(portals, index);
     assert(lerps.size() == strip.size() - 1);
@@ -672,8 +680,8 @@ vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
 
   vector<vec3d> result(strip.size() + 1);
   result[0] = mesh_point_pos(m, src);
-  for (uint i = 0; i < strip.size() - 1; ++i)
-    result[i + 1] = get_point_pos(lerps[i], strip[i], strip[i + 1]);
+  for (uint i = 1; i < strip.size(); ++i)
+    result[i] = get_point_pos(lerps[i - 1], strip[i - 1], strip[i]);
 
   result.back() = mesh_point_pos(m, tgt);
 
