@@ -1,3 +1,3 @@
-/Users/claudiomancinelli/Downloads/geodesic-source-propagation-supplemental/build/CMakeFiles/InstantGeodesics.dir
-/Users/claudiomancinelli/Downloads/geodesic-source-propagation-supplemental/build/CMakeFiles/edit_cache.dir
-/Users/claudiomancinelli/Downloads/geodesic-source-propagation-supplemental/build/CMakeFiles/rebuild_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geodesic-source-propagation-supplemental/build/CMakeFiles/InstantGeodesics.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geodesic-source-propagation-supplemental/build/CMakeFiles/edit_cache.dir
+/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geodesic-source-propagation-supplemental/build/CMakeFiles/rebuild_cache.dir

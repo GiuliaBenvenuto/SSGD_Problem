@@ -4,66 +4,66 @@
 
 ScalarField SSGD_Heat(DrawableTrimesh<> &m, GeodesicsCache &prefactored_matrices, vector<uint> &sources, double &time_heat) {
   
-    bool cache = false;
-    if (prefactored_matrices.heat_flow_cache != NULL) {
-      cache = true;
-    }
-    ScalarField sc_heat;
-    // Timer
-    auto start_heat = chrono::high_resolution_clock::now();
-    // Method inside: #include <cinolib/geodesics.h>
-    sc_heat = compute_geodesics_amortized(m, prefactored_matrices, sources);
-    auto stop_heat = chrono::high_resolution_clock::now();
-    time_heat = chrono::duration_cast<chrono::milliseconds>(stop_heat - start_heat).count();
+  bool cache = false;
+  if (prefactored_matrices.heat_flow_cache != NULL) {
+    cache = true;
+  }
+  ScalarField sc_heat;
+  // Timer
+  auto start_heat = chrono::high_resolution_clock::now();
+  // Method inside: #include <cinolib/geodesics.h>
+  sc_heat = compute_geodesics_amortized(m, prefactored_matrices, sources);
+  auto stop_heat = chrono::high_resolution_clock::now();
+  time_heat = chrono::duration_cast<chrono::milliseconds>(stop_heat - start_heat).count();
 
 
-    if (cache) {
-    cout << "Heat computation with cache: " << time_heat << " milliseconds" << endl;
-    } else {
-    cout << "Heat computation without cache: " << time_heat << " milliseconds" << endl;
-    }
+  if (cache) {
+  cout << "Heat computation with cache: " << time_heat << " milliseconds" << endl;
+  } else {
+  cout << "Heat computation without cache: " << time_heat << " milliseconds" << endl;
+  }
 
-    //return compute_geodesics_amortized(m, prefactored_matrices, sources);
-    return sc_heat;
+  //return compute_geodesics_amortized(m, prefactored_matrices, sources);
+  return sc_heat;
 }
 
 
 // SSGD_VTP method with multiple sources
 ScalarField SSGD_VTP(DrawableTrimesh<> &m, vector<int> &sources, double &vtp_geodesic_time) {
 
-    vector<double> field_data(m.num_verts(), std::numeric_limits<double>::max());
-    ScalarField sc_vtp;
+  vector<double> field_data(m.num_verts(), std::numeric_limits<double>::max());
+  ScalarField sc_vtp;
 
-    // Only one source
-    //auto start_geodesic_VTP = chrono::high_resolution_clock::now();
-    //field_data = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), sources[0]);
-    //auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
+  // Only one source
+  //auto start_geodesic_VTP = chrono::high_resolution_clock::now();
+  //field_data = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), sources[0]);
+  //auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
 
-    auto start_geodesic_VTP = chrono::high_resolution_clock::now();
-    // Iterate over each source
-    for (int source : sources) {
-        vector<double> current_distances = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), source);
+  auto start_geodesic_VTP = chrono::high_resolution_clock::now();
+  // Iterate over each source
+  for (int source : sources) {
+      vector<double> current_distances = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), source);
 
-        // Update the minimum distance for each vertex
-        for (size_t i = 0; i < field_data.size(); ++i) {
-            field_data[i] = std::min(field_data[i], current_distances[i]);
-        }
-    }
+      // Update the minimum distance for each vertex
+      for (size_t i = 0; i < field_data.size(); ++i) {
+          field_data[i] = std::min(field_data[i], current_distances[i]);
+      }
+  }
 
-    auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
+  auto stop_geodesic_VTP = chrono::high_resolution_clock::now();
 
-    // Invert the color mapping
-    for (auto &value : field_data) {
-        value = 1.0 - value;
-    }
+  // Invert the color mapping
+  for (auto &value : field_data) {
+      value = 1.0 - value;
+  }
 
-    sc_vtp = ScalarField(field_data);
-    sc_vtp.normalize_in_01();
+  sc_vtp = ScalarField(field_data);
+  sc_vtp.normalize_in_01();
 
-    vtp_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP).count();
-    cout << "Geodesic computation with VTP: " << vtp_geodesic_time << " milliseconds" << endl;
+  vtp_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_VTP - start_geodesic_VTP).count();
+  cout << "Geodesic computation with VTP: " << vtp_geodesic_time << " milliseconds" << endl;
 
-    return sc_vtp;
+  return sc_vtp;
 }
 
 
@@ -120,24 +120,26 @@ ScalarField SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int>
 
 ScalarField SSGD_Extended(DrawableTrimesh<> &m, geodesic_solver &solver, vector<int> &sources, double &extended_geodesic_time) {
 
-    vector<double> distances_ext(m.num_verts(), std::numeric_limits<double>::max());  // Initialize with max double value
-    ScalarField sc_extended;
+  vector<double> distances_ext(m.num_verts(), std::numeric_limits<double>::max());  // Initialize with max double value
+  ScalarField sc_extended;
 
-    auto start_geodesic_extended = chrono::high_resolution_clock::now();
-    distances_ext = compute_geodesic_distances(solver, sources);
-    auto stop_geodesic_extended = chrono::high_resolution_clock::now();
+  auto start_geodesic_extended = chrono::high_resolution_clock::now();
+  distances_ext = compute_geodesic_distances(solver, sources);
+  auto stop_geodesic_extended = chrono::high_resolution_clock::now();
 
-    // Invert the color mapping
-    for (auto &value : distances_ext) {
-      value = 1.0 - value;
-    }
+  // Invert the color mapping
+  for (auto &value : distances_ext) {
+    value = 1.0 - value;
+  }
 
-    sc_extended = ScalarField(distances_ext);
-    sc_extended.normalize_in_01();
+  sc_extended = ScalarField(distances_ext);
+  sc_extended.normalize_in_01();
 
-    auto duration_geodesic_extended = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_extended - start_geodesic_extended);
-    extended_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_extended - start_geodesic_extended).count();
-    cout << "Geodesic computation with Extended: " << duration_geodesic_extended.count() << " milliseconds" << endl;
+  auto duration_geodesic_extended = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_extended - start_geodesic_extended);
+  extended_geodesic_time = chrono::duration_cast<chrono::milliseconds>(stop_geodesic_extended - start_geodesic_extended).count();
+  cout << "Geodesic computation with Extended: " << duration_geodesic_extended.count() << " milliseconds" << endl;
 
-    return sc_extended;
+  return sc_extended;
 }
+
+

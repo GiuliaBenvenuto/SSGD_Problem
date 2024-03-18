@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/Users/claudiomancinelli/Downloads/geodesic-source-propagation-supplemental/build",
-  "command": "/usr/bin/clang++   -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.4.sdk -mmacosx-version-min=14.3 -ffast-math -march=native -o CMakeFiles/InstantGeodesics.dir/main.cc.o -c /Users/claudiomancinelli/Downloads/geodesic-source-propagation-supplemental/main.cc",
-  "file": "/Users/claudiomancinelli/Downloads/geodesic-source-propagation-supplemental/main.cc",
-  "output": "CMakeFiles/InstantGeodesics.dir/main.cc.o"
-}
-]
