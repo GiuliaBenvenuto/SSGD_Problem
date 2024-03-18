@@ -1,16 +1,5 @@
 #include "trettner.h"
 
-// struct HalfEdge {
-//     vector<pos3> vertex_pos;  // Use vec3d from cinolib for vertices
-//     vector<triangle> faces;  // Ensure 'triangle' is defined or included
-//     vector<int> halfedge_to_vertex;
-//     vector<int> halfedge_to_face;
-//     vector<int> halfedge_to_next;
-//     vector<int> halfedge_to_prev;
-//     vector<int> vertex_to_outgoing_halfedge;
-//     vector<float> edge_lengths;
-//     float avg_edge_length;
-// };
 
 // ---------- HalfEdge structure Initialization ----------
 HalfEdge HEInit(const string& file, vector<int> &sources) {
@@ -18,12 +7,11 @@ HalfEdge HEInit(const string& file, vector<int> &sources) {
     cout << "String: " << file << endl;
     cout << "Sources: " << sources[0] << endl;
 
-
     auto load_start = std::chrono::system_clock::now();
 
     std::ifstream obj(file);
     if (!obj.good()) {
-        cerr << "unable to open " << file << endl;
+        cerr << "Unable to open" << file << endl;
     } else {
         cout << "File opened successfully" << endl;
     }
@@ -199,13 +187,12 @@ HalfEdge HEInit(const string& file, vector<int> &sources) {
 
 
 // ---------- Compute the distance field ----------
-ScalarField distance_field_trettner(const HalfEdge &mesh, const vector<int> &sources) {
+ScalarField distance_field_trettner(const HalfEdge &mesh, const vector<int> &sources, double &trettner_geodesic_time) {
     auto f_cnt = mesh.faces.size();
     auto v_cnt = mesh.vertex_pos.size();
     auto h_cnt = mesh.halfedge_to_face.size();
 
     // instant geodesics
-    
     auto ig_start = std::chrono::system_clock::now();
 
     // Keep track of #iters and #expansions
@@ -465,13 +452,15 @@ ScalarField distance_field_trettner(const HalfEdge &mesh, const vector<int> &sou
     }
 
     auto ig_end = std::chrono::system_clock::now();
+    trettner_geodesic_time = std::chrono::duration<double>(ig_end - ig_start).count() * 1000;
+    
     cerr << "GSP computed geodesics in " << std::chrono::duration<double>(ig_end - ig_start).count() * 1000 << " ms" << endl;
     cerr << "  .. " << iteration << " iterations" << endl;
     cerr << "  .. " << expansions << " halfedge expansions" << endl;
     cerr << "  .. " << updates << " triangle updates" << endl;
 
     // output geodesics
-    std::vector<float> min_vertex_dis(v_cnt, std::numeric_limits<float>::max());
+    std::vector<double> min_vertex_dis(v_cnt, std::numeric_limits<double>::max());
     for (size_t h = 0; h < h_cnt; ++h)
     {
         auto v = mesh.halfedge_to_vertex[h];
@@ -486,26 +475,23 @@ ScalarField distance_field_trettner(const HalfEdge &mesh, const vector<int> &sou
         if (v_sqr < 0)
             continue; // not reached
 
-        auto dis = sigma + std::sqrt(v_sqr);
+        auto dis = static_cast<double>(sigma) + std::sqrt(static_cast<double>(v_sqr));
         min_vertex_dis[size_t(v)] = std::min(dis, min_vertex_dis[size_t(v)]);
+
     }
 
-    // for (size_t v = 0; v < mesh.vertex_pos.size(); ++v)
-    //     cout << min_vertex_dis[size_t(v)] * mesh.avg_edge_length << endl;
+    vector<double> dist_trettner;
+    for (size_t v = 0; v < mesh.vertex_pos.size(); ++v)
+        dist_trettner.push_back(min_vertex_dis[size_t(v)] * mesh.avg_edge_length);
 
-
-    vector<double> distances(v_cnt);
-    for (size_t i = 0; i < v_cnt; ++i) {
-        distances[i] = static_cast<double>(min_vertex_dis[i] * mesh.avg_edge_length);
-    }
 
     // Invert the color mapping
-    for (auto &value : distances) {
+    for (auto &value : dist_trettner) {
         value = 1.0 - value;
     }
 
     ScalarField sc_trettner;
-    sc_trettner = ScalarField(distances);
+    sc_trettner = ScalarField(dist_trettner);
     sc_trettner.normalize_in_01();
     
     return sc_trettner;

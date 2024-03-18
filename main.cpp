@@ -86,6 +86,7 @@ struct State {
 
   // Trettner
   string mesh_path;
+  HalfEdge mesh;
 
   // Solvers
   geodesic_solver solver_geo;
@@ -99,6 +100,7 @@ struct State {
   double geotangle_graph_time, geotangle_geodesic_time;
   double edge_graph_time, edge_geodesic_time;
   double extended_graph_time, extended_geodesic_time;
+  double trettner_geodesic_time;
 
   State() {
     MESH_IS_LOADED = false;
@@ -126,6 +128,10 @@ struct State {
     geotangle_graph_time = geotangle_geodesic_time = 0.0;
     edge_graph_time = edge_geodesic_time = 0.0;
     extended_graph_time = extended_geodesic_time = 0.0;
+    trettner_geodesic_time = 0.0;
+
+    mesh_path = "";
+    mesh = HalfEdge();
   }
 };
 
@@ -202,6 +208,10 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
     gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
     gs.extended_graph_time = gs.extended_geodesic_time = 0.0;
+    gs.trettner_geodesic_time = 0.0;
+
+    gs.mesh_path = filename;
+    gs.mesh = HEInit(filename, gs.sources);
 
     graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended, 
                         gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time, progress);
@@ -216,6 +226,7 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
 void Load_mesh(GLcanvas &gui, State &gs) {
   string filename = file_dialog_open();
   if (filename.size() != 0)
+    gs.mesh_path = filename;
     Load_mesh(filename, gui, gs);
 }
 
@@ -257,6 +268,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
       ImGui::SeparatorText("Exact Polyhedral Methods");
       ImGui::Text("VTP geodesic time: %.2f ms", gs.vtp_geodesic_time);
+      ImGui::Text("Trettner geodesic time: %.2f ms", gs.trettner_geodesic_time);
 
       ImGui::SeparatorText("PDE-Based Methods");
       ImGui::Text("Heat time: %.2f ms", gs.time_heat);
@@ -552,7 +564,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             //gs.field.copy_to_mesh(gs.m);
             //gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
             HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
-            gs.field = distance_field_trettner(mesh, gs.sources);
+            gs.field = distance_field_trettner(mesh, gs.sources, gs.trettner_geodesic_time);
             gs.field.copy_to_mesh(gs.m);
             gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
             break;
@@ -620,6 +632,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.geotangle_geodesic_time = 0.0;
       gs.edge_geodesic_time = 0.0;
       gs.extended_geodesic_time = 0.0;
+      gs.trettner_geodesic_time = 0.0;
 
       // Reset the scalar field
       for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
@@ -680,8 +693,8 @@ int main(int argc, char **argv) {
         string s = "../data/" + string(argv[1]);
         Load_mesh(s, gui, gs);
     } else {
-        // string s = "../data/bi-torus_10k.obj";
         string s = "../data/cinolib/bunny.obj";
+        // string s = "../data/Trettner/69930.obj";
         gs.mesh_path = s;
         Load_mesh(s, gui, gs);
     }

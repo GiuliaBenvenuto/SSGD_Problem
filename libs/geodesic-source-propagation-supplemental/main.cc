@@ -41,20 +41,6 @@ struct triangle
 
 int main(int argc, char** argv)
 {
-    // Print the number of arguments
-    std::cout << "Number of command-line arguments: " << argc << std::endl;
-
-    // Loop through each argument and print its contents
-    for (int i = 0; i < argc; ++i) {
-        std::cout << "argv[" << i << "]: " << argv[i] << std::endl;
-    }
-    // Output:
-    // Number of command-line arguments: 3
-    // argv[0]: ./InstantGeodesics
-    // argv[1]: ../../../data/cinolib/bunny.obj
-    // argv[2]: 4
-    // source index: 4
-
     // usage
     if (argc != 3)
     {
@@ -252,6 +238,7 @@ int main(int argc, char** argv)
         auto load_end = std::chrono::system_clock::now();
         cerr << "  .. loaded in " << std::chrono::duration<double>(load_end - load_start).count() * 1000 << " ms" << endl;
     }
+    
     auto f_cnt = faces.size();
     auto v_cnt = vertex_pos.size();
     auto h_cnt = halfedge_to_face.size();
