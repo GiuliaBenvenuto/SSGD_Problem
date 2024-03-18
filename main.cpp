@@ -25,6 +25,9 @@
 #include "SSGD_methods/Graph-based_methods/extended_solver.h"
 #include "SSGD_methods/Graph-based_methods/shortest_path.h"
 
+// SSGD with Trettner method
+#include "SSGD_methods/Trettner/trettner.h"
+
 // Compute SSGD
 #include "solving_ssgd.h"
 
@@ -71,7 +74,7 @@ struct State {
   Color poly_color;
 
   // SSGD Method
-  enum SSGDMethod { VTP, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED } ssgd_method;
+  enum SSGDMethod { VTP, TRETTNER, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED } ssgd_method;
   ScalarField field;
 
   // Cache for Heat method
@@ -80,6 +83,9 @@ struct State {
   // Sources for SSGD
   std::vector<uint> sources_heat;
   vector<int> sources;
+
+  // Trettner
+  string mesh_path;
 
   // Solvers
   geodesic_solver solver_geo;
@@ -471,6 +477,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("SSGD Method")) {
       ImGui::PopFont();
+
       // Exact Polyhedral Methods
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Exact Polyhedral Methods");
@@ -478,6 +485,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       if (ImGui::RadioButton("VTP ", gs.ssgd_method == State::VTP)) {
         gs.ssgd_method = State::VTP;
       }
+      if (ImGui::RadioButton("Trettner ", gs.ssgd_method == State::TRETTNER)) {
+        gs.ssgd_method = State::TRETTNER;
+      }
+
       // PDE-Based Methods
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("PDE-Based Methods");
@@ -488,6 +499,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       if (ImGui::RadioButton("FMM  ", gs.ssgd_method == State::FMM)) {
         gs.ssgd_method = State::FMM;
       }
+
       // Graph-Based Methods
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Graph-Based Methods");
@@ -530,6 +542,17 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
           case State::VTP: {
             gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+            gs.field.copy_to_mesh(gs.m);
+            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+            break;
+          }
+
+          case State::TRETTNER: {
+            //gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+            //gs.field.copy_to_mesh(gs.m);
+            //gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+            HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
+            gs.field = distance_field_trettner(mesh, gs.sources);
             gs.field.copy_to_mesh(gs.m);
             gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
             break;
@@ -659,6 +682,7 @@ int main(int argc, char **argv) {
     } else {
         // string s = "../data/bi-torus_10k.obj";
         string s = "../data/cinolib/bunny.obj";
+        gs.mesh_path = s;
         Load_mesh(s, gui, gs);
     }
 
