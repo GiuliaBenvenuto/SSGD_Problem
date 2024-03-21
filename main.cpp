@@ -41,8 +41,8 @@ ImFont *lato_regular = nullptr;
 ImFont *lato_bold_title = nullptr;
 atomic<float> progress(0.0f);
 
-
-//:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR GUI):::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR
+//: GUI):::::::::::::::::::::::::::::::
 struct State {
   // Program state ::::::::::::::::::::::::::::::::::::::::::::::::::::::
   bool MESH_IS_LOADED;
@@ -74,7 +74,15 @@ struct State {
   Color poly_color;
 
   // SSGD Method
-  enum SSGDMethod { VTP, TRETTNER, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED } ssgd_method;
+  enum SSGDMethod {
+    VTP,
+    TRETTNER,
+    HEAT,
+    FMM,
+    GEOTANGLE,
+    EDGE,
+    EXTENDED
+  } ssgd_method;
   ScalarField field;
 
   // Cache for Heat method
@@ -135,46 +143,49 @@ struct State {
   }
 };
 
-
 //:::::::::::::::::: GRAPH CONSTRUCTION :::::::::::::::::::::::::::::::::::::
-void graph_construction(DrawableTrimesh<> &m, 
-                        geodesic_solver &solver_geo, 
-                        geodesic_solver &solver_edge, 
-                        geodesic_solver &primal_geodesic_solver, 
+void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo,
+                        geodesic_solver &solver_edge,
+                        geodesic_solver &primal_geodesic_solver,
                         dual_geodesic_solver &dual_geodesic_solver,
-                        double &geotangle_graph_time, 
-                        double &edge_graph_time,
-                        double &extended_graph_time,
-                        atomic<float>& progress) {
+                        double &geotangle_graph_time, double &edge_graph_time,
+                        double &extended_graph_time, atomic<float> &progress) {
 
-    cout << "----- Constructing graph for geodesic computation -----" << endl;
-    // GeoTangle solver
-    auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
-    solver_geo = make_geodesic_solver(m, true);
-    auto stop_graph_GeoTangle = chrono::high_resolution_clock::now();
-    geotangle_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_GeoTangle - start_graph_GeoTangle).count();
-    cout << "GeoTangle graph time: " << geotangle_graph_time << " milliseconds" << endl;
-    
-    // Edge solver
-    auto start_graph_edge = chrono::high_resolution_clock::now();
-    solver_edge = make_geodesic_solver(m, false);
-    auto stop_graph_edge = chrono::high_resolution_clock::now();
-    edge_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_edge - start_graph_edge).count();
-    cout << "Edge graph time: " << edge_graph_time << " milliseconds" << endl;
-    progress = 0.33;
+  cout << "----- Constructing graph for geodesic computation -----" << endl;
+  // GeoTangle solver
+  auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
+  solver_geo = make_geodesic_solver(m, true);
+  auto stop_graph_GeoTangle = chrono::high_resolution_clock::now();
+  geotangle_graph_time = chrono::duration_cast<chrono::milliseconds>(
+                             stop_graph_GeoTangle - start_graph_GeoTangle)
+                             .count();
+  cout << "GeoTangle graph time: " << geotangle_graph_time << " milliseconds"
+       << endl;
 
-    // Extended solver
-    auto start_graph_extended = chrono::high_resolution_clock::now();
-    dual_geodesic_solver = make_dual_geodesic_solver(m);
-    progress = 0.66;
-    primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 3);
-    progress = 0.99;
-    auto stop_graph_extended = chrono::high_resolution_clock::now();
-    extended_graph_time = chrono::duration_cast<chrono::milliseconds>(stop_graph_extended - start_graph_extended).count();
-    cout << "Extended graph time: " << extended_graph_time << " milliseconds" << endl;
-    progress = 1.0;
+  // Edge solver
+  auto start_graph_edge = chrono::high_resolution_clock::now();
+  solver_edge = make_geodesic_solver(m, false);
+  auto stop_graph_edge = chrono::high_resolution_clock::now();
+  edge_graph_time = chrono::duration_cast<chrono::milliseconds>(
+                        stop_graph_edge - start_graph_edge)
+                        .count();
+  cout << "Edge graph time: " << edge_graph_time << " milliseconds" << endl;
+  progress = 0.33;
+
+  // Extended solver
+  auto start_graph_extended = chrono::high_resolution_clock::now();
+  dual_geodesic_solver = make_dual_geodesic_solver(m);
+  progress = 0.66;
+  primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 3);
+  progress = 0.99;
+  auto stop_graph_extended = chrono::high_resolution_clock::now();
+  extended_graph_time = chrono::duration_cast<chrono::milliseconds>(
+                            stop_graph_extended - start_graph_extended)
+                            .count();
+  cout << "Extended graph time: " << extended_graph_time << " milliseconds"
+       << endl;
+  progress = 1.0;
 }
-
 
 //:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
 void Load_mesh(string filename, GLcanvas &gui, State &gs) {
@@ -198,8 +209,8 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.vec_field = DrawableVectorField();
     gs.show_vecfield = false; // Reset the flag to not show the old vector field
     // Clear the sources for the new mesh
-    gs.sources_heat.clear();         // Reset the sources for the new mesh
-    gs.sources.clear(); // Reset the sources for the new mesh
+    gs.sources_heat.clear(); // Reset the sources for the new mesh
+    gs.sources.clear();      // Reset the sources for the new mesh
     // Clear cache for Heat method
     gs.prefactored_matrices.heat_flow_cache = NULL; // Reset the heat flow cache
 
@@ -211,10 +222,12 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.trettner_geodesic_time = 0.0;
 
     gs.mesh_path = filename;
-    gs.mesh = HEInit(filename, gs.sources);
+    // gs.mesh = HEInit(filename, gs.sources);
 
-    graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended, 
-                        gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time, progress);
+    graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
+                       gs.primal_solver_extended, gs.dual_solver_extended,
+                       gs.geotangle_graph_time, gs.edge_graph_time,
+                       gs.extended_graph_time, progress);
   }
 
   if (!gs.MESH_IS_LOADED) {
@@ -227,18 +240,17 @@ void Load_mesh(GLcanvas &gui, State &gs) {
   string filename = file_dialog_open();
   if (filename.size() != 0)
     gs.mesh_path = filename;
-    Load_mesh(filename, gui, gs);
+  Load_mesh(filename, gui, gs);
 }
 
-
-//::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::::
+//: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
   GLcanvas gui(1500, 700);
   gui.side_bar_width = 0.28;
   gui.show_side_bar = true;
   return gui;
 }
-
 
 void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
   gui.callback_app_controls = [&]() {
@@ -247,8 +259,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     if (show_new_window) {
       // Assuming the main window is positioned at (0, 0) and covers the whole
       // screen and considering the sidebar width
-      float sidebar_width = gui.side_bar_width * 1500; // Adjust this if side_bar_width is not a ratio
-      ImVec2 new_window_pos = ImVec2(sidebar_width + 800, 25); // Top-right corner of the main GUI, right after the sidebar
+      float sidebar_width =
+          gui.side_bar_width *
+          1500; // Adjust this if side_bar_width is not a ratio
+      ImVec2 new_window_pos = ImVec2(
+          sidebar_width + 800,
+          25); // Top-right corner of the main GUI, right after the sidebar
 
       ImGui::SetNextWindowPos(new_window_pos, ImGuiCond_FirstUseEver);
       ImVec2 window_size = ImVec2(250, 330); // Example size, change as needed
@@ -275,7 +291,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
       ImGui::SeparatorText("Graph-Based Methods");
       ImGui::Text("GeoTangle graph time: %.2f ms", gs.geotangle_graph_time);
-      ImGui::Text("GeoTangle geodesic time: %.2f ms", gs.geotangle_geodesic_time);
+      ImGui::Text("GeoTangle geodesic time: %.2f ms",
+                  gs.geotangle_geodesic_time);
       ImGui::Text("Edge graph time: %.2f ms", gs.edge_graph_time);
       ImGui::Text("Edge geodesic time: %.2f ms", gs.edge_geodesic_time);
       ImGui::Text("Extended graph time: %.2f ms", gs.extended_graph_time);
@@ -287,13 +304,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     // In your main function or GUI rendering loop
     if (progress < 1.0f) {
       ImVec2 window_size = ImVec2(250, 60);  // Width, Height in pixels
-      ImVec2 window_pos = ImVec2(1225, 400);    // X, Y position in pixels
+      ImVec2 window_pos = ImVec2(1225, 400); // X, Y position in pixels
 
       ImGui::SetNextWindowSize(window_size, ImGuiCond_Always);
       ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
-      
+
       ImGui::Begin("Graph Construction Progress");
-      ImGui::ProgressBar(progress.load(), ImVec2(-1.0f, 0.0f), progress > 1.0f ? "Done" : "Loading...");
+      ImGui::ProgressBar(progress.load(), ImVec2(-1.0f, 0.0f),
+                         progress > 1.0f ? "Done" : "Loading...");
       ImGui::End();
     }
 
@@ -326,7 +344,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PopFont();
       // Assuming Load_mesh successfully loads the mesh into gs.m
       int numVertices = gs.m.num_verts();
-      int numFaces = gs.m.num_polys(); // or num_faces() depending on your mesh type
+      int numFaces =
+          gs.m.num_polys(); // or num_faces() depending on your mesh type
 
       ImGui::Text("Number of vertices: %d", numVertices);
       ImGui::Text("Number of faces: %d", numFaces);
@@ -335,7 +354,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       // Modal popup for loading files
       ImVec2 center = ImGui::GetMainViewport()->GetCenter();
       ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-      if (ImGui::BeginPopupModal("Load mesh?", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse)) {
+      if (ImGui::BeginPopupModal("Load mesh?", NULL,
+                                 ImGuiWindowFlags_AlwaysAutoResize |
+                                     ImGuiWindowFlags_NoCollapse)) {
         static bool dont_ask_me_next_time = false;
 
         if (dont_ask_me_next_time) {
@@ -385,7 +406,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     if (ImGui::TreeNode("Shading")) {
       ImGui::PopFont();
       // Point rendering mode
-      if (ImGui::RadioButton("Point ", gs.render_mode == State::RENDER_POINTS)) {
+      if (ImGui::RadioButton("Point ",
+                             gs.render_mode == State::RENDER_POINTS)) {
         gs.render_mode = State::RENDER_POINTS;
         gs.m.show_mesh_points();
       }
@@ -395,9 +417,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         gs.m.show_mesh_flat();
       }
       // Smooth shading mode
-      if (ImGui::RadioButton("Smooth", gs.render_mode == State::RENDER_SMOOTH)) {
+      if (ImGui::RadioButton("Smooth",
+                             gs.render_mode == State::RENDER_SMOOTH)) {
         gs.render_mode = State::RENDER_SMOOTH;
-        gs.m.show_mesh_smooth(); // Assuming you have a method to display smooth       
+        gs.m.show_mesh_smooth(); // Assuming you have a method to display smooth
       }
       ImGui::Text("");
       ImGui::TreePop();
@@ -413,7 +436,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       if (ImGui::BeginTable("Color by:", 2)) {
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        if (ImGui::RadioButton("Vert", gs.m.drawlist.draw_mode & DRAW_TRI_VERTCOLOR)) {
+        if (ImGui::RadioButton("Vert",
+                               gs.m.drawlist.draw_mode & DRAW_TRI_VERTCOLOR)) {
           gs.m.show_vert_color();
         }
         ImGui::TableNextColumn();
@@ -425,7 +449,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        if (ImGui::RadioButton("Poly", gs.m.drawlist.draw_mode & DRAW_TRI_FACECOLOR)) {
+        if (ImGui::RadioButton("Poly",
+                               gs.m.drawlist.draw_mode & DRAW_TRI_FACECOLOR)) {
           gs.m.show_poly_color();
         }
         ImGui::TableNextColumn();
@@ -458,7 +483,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             gs.vec_field.normalize();
             // print the values inside vec_field
             // Print the number of elements in the vector field
-            gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) * gs.vecfield_size);
+            gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) *
+                                        gs.vecfield_size);
             gs.vec_field.set_arrow_color(gs.vec_color);
             gs.m.updateGL();
           }
@@ -471,7 +497,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
       // Vector field size control
       if (ImGui::SliderFloat("Size", &gs.vecfield_size, 0.1f, 5.f)) {
-        gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) * gs.vecfield_size);
+        gs.vec_field.set_arrow_size(float(gs.m.edge_avg_length()) *
+                                    gs.vecfield_size);
       }
 
       // Vector field color control
@@ -516,7 +543,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Graph-Based Methods");
       ImGui::PopFont();
-      if (ImGui::RadioButton("GeoTangle  ", gs.ssgd_method == State::GEOTANGLE)) {
+      if (ImGui::RadioButton("GeoTangle  ",
+                             gs.ssgd_method == State::GEOTANGLE)) {
         gs.ssgd_method = State::GEOTANGLE;
       }
       if (ImGui::RadioButton("Edge  ", gs.ssgd_method == State::EDGE)) {
@@ -552,60 +580,64 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         switch (gs.ssgd_method) {
 
-          case State::VTP: {
-            gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-            break;
-          }
+        case State::VTP: {
+          gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
 
-          case State::TRETTNER: {
-            //gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
-            //gs.field.copy_to_mesh(gs.m);
-            //gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-            HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
-            gs.field = distance_field_trettner(mesh, gs.sources, gs.trettner_geodesic_time);
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-            break;
-          }
+        case State::TRETTNER: {
+          // gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          //  HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
+          //  gs.field = distance_field_trettner(mesh, gs.sources,
+          //  gs.trettner_geodesic_time); gs.field.copy_to_mesh(gs.m);
+          //  gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
 
-          case State::HEAT: {
-            gs.field = SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources_heat, gs.time_heat);
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-            break;
-          }
+        case State::HEAT: {
+          gs.field = SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources_heat,
+                               gs.time_heat);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
 
-          case State::FMM: {
-            // cout << "Computing SSGD with FMM Method" << endl;
-            break;
-          }
+        case State::FMM: {
+          // cout << "Computing SSGD with FMM Method" << endl;
+          break;
+        }
 
-          case State::GEOTANGLE: {
-            gs.field = SSGD_GeoTangle(gs.m, gs.solver_geo, gs.sources, gs.geotangle_geodesic_time);
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-            break;
-          }
+        case State::GEOTANGLE: {
+          gs.field = SSGD_GeoTangle(gs.m, gs.solver_geo, gs.sources,
+                                    gs.geotangle_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
 
-          case State::EDGE: {
-            gs.field = SSGD_Edge(gs.m, gs.solver_edge, gs.sources, gs.edge_geodesic_time);
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-            break;
-          }
+        case State::EDGE: {
+          gs.field = SSGD_Edge(gs.m, gs.solver_edge, gs.sources,
+                               gs.edge_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
 
-          case State::EXTENDED: {
-            gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources, gs.extended_geodesic_time);
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-            break;
-          }
+        case State::EXTENDED: {
+          gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources,
+                                   gs.extended_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
 
-          default:
-            // cout << "No SSGD method selected" << endl;
-            break;
+        default:
+          // cout << "No SSGD method selected" << endl;
+          break;
         }
       }
     }
@@ -622,7 +654,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     }
 
     // Reset button
-    if(ImGui::SmallButton("Reset")){
+    if (ImGui::SmallButton("Reset")) {
       // Reset sources
       gs.sources_heat.clear();
       gs.sources.clear();
@@ -635,22 +667,22 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.trettner_geodesic_time = 0.0;
 
       // Reset the scalar field
-      for(uint vid = 0; vid < gs.m.num_verts(); ++vid) {
-        gs.m.vert_data(vid).color = Color::WHITE(); // Replace `original_color` with the actual color
+      for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+        gs.m.vert_data(vid).color =
+            Color::WHITE(); // Replace `original_color` with the actual color
       }
       gs.m.show_vert_color();
     }
-
   };
 }
 
 // Compute the geodesic distances from a single source vertex
 void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
   gui.callback_mouse_left_click = [&](int modifiers) -> bool {
-    if(modifiers & GLFW_MOD_SHIFT) {
+    if (modifiers & GLFW_MOD_SHIFT) {
       vec3d p;
       vec2d click = gui.cursor_pos();
-      if(gui.unproject(click, p)) {
+      if (gui.unproject(click, p)) {
         // ----- HEAT SOURCES -----
         uint vid = gs.m.pick_vert(p);
         gs.sources_heat.push_back(vid);
@@ -671,50 +703,56 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
 //=============================== MAIN =========================================
 
 int main(int argc, char **argv) {
-    // SETUP GLOBAL STATE AND GUI
-    State gs;
-    GLcanvas gui = Init_GUI();
-    Setup_GUI_Callbacks(gui, gs);
-    Setup_Mouse_Callback(gui, gs);
+  // SETUP GLOBAL STATE AND GUI
+  State gs;
+  GLcanvas gui = Init_GUI();
+  Setup_GUI_Callbacks(gui, gs);
+  Setup_Mouse_Callback(gui, gs);
 
-    // Setup font
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    io.Fonts->Clear(); // Clear any existing fonts
-    lato_regular = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
-    lato_bold = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
-    lato_bold_title = io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
-    if (lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
-        std::cerr << "Failed to load font" << std::endl;
-    }
+  // Setup font
+  ImGui::CreateContext();
+  ImGuiIO &io = ImGui::GetIO();
+  io.Fonts->Clear(); // Clear any existing fonts
+  lato_regular =
+      io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Regular.ttf", 160.0f);
+  lato_bold =
+      io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 160.0f);
+  lato_bold_title =
+      io.Fonts->AddFontFromFileTTF("../font/Lato/Lato-Bold.ttf", 180.0f);
+  if (lato_regular == NULL || lato_bold == NULL || lato_bold_title == NULL) {
+    std::cerr << "Failed to load font" << std::endl;
+  }
 
-    // Load mesh
-    if (argc > 1) {
-        string s = "../data/" + string(argv[1]);
-        Load_mesh(s, gui, gs);
-    } else {
-        string s = "../data/cinolib/bunny.obj";
-        // string s = "../data/Trettner/69930.obj";
-        gs.mesh_path = s;
-        Load_mesh(s, gui, gs);
-    }
+  // Load mesh
+  if (argc > 1) {
+    string s = "../data/" + string(argv[1]);
+    Load_mesh(s, gui, gs);
+  } else {
+    string s = "../data/cinolib/bunny.obj";
+    // string s = "../data/Trettner/69930.obj";
+    gs.mesh_path = s;
+    Load_mesh(s, gui, gs);
+  }
 
-    // Construct the graph for geotangle and edge methods without threading
-    // graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended,
-    //                    gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time);
+  // Construct the graph for geotangle and edge methods without threading
+  // graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
+  // gs.primal_solver_extended, gs.dual_solver_extended,
+  //                    gs.geotangle_graph_time, gs.edge_graph_time,
+  //                    gs.extended_graph_time);
 
-    // Start the graph construction in a separate thread
-    std::thread graph_thread([&]() {
-        graph_construction(gs.m, gs.solver_geo, gs.solver_edge, gs.primal_solver_extended, gs.dual_solver_extended,
-                         gs.geotangle_graph_time, gs.edge_graph_time, gs.extended_graph_time, progress);
-    });
+  // Start the graph construction in a separate thread
+  std::thread graph_thread([&]() {
+    graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
+                       gs.primal_solver_extended, gs.dual_solver_extended,
+                       gs.geotangle_graph_time, gs.edge_graph_time,
+                       gs.extended_graph_time, progress);
+  });
 
-    // Launch the GUI
-    gui.launch();
+  // Launch the GUI
+  gui.launch();
 
-    // Wait for the thread to complete
-    graph_thread.join();
+  // Wait for the thread to complete
+  graph_thread.join();
 
-    return 0;
+  return 0;
 }
-
