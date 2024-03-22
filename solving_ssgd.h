@@ -2,13 +2,16 @@
 #define SOLVING_SSGD_H
 
 #include "SSGD_methods/Graph-based_methods/extended_solver.h"
+#include "SSGD_methods/Trettner/trettner.h"
 #include "SSGD_methods/VTP/vtp_wrapper.h"
 #include <cinolib/geodesics.h>
+
 #include <cinolib/geometry/vec_mat.h>
 #include <cinolib/how_many_seconds.h>
 #include <cinolib/meshes/drawable_trimesh.h>
 #include <functional>
 #include <sys/types.h>
+
 
 using namespace std;
 using namespace cinolib;
@@ -49,7 +52,154 @@ public:
   virtual void query(const int vid, std::vector<double> &res, ScalarField &sc) = 0;
 };
 
-////// INSTANCE OF A SPECIFIC ALGORITHM //////
+// ---------- VTP ----------
+class VTPSolver : public GeodesicMethod {
+public:
+  VTPSolver() {}
+  ~VTPSolver() {}
+
+  DrawableTrimesh<> m;
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    m = DrawableTrimesh(coords, tris);
+  }
+
+  void preprocess() override {}
+
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    res = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), vid);
+    for (auto &value : res) {
+      value = 1.0 - value;
+    }
+    sc = ScalarField(res);
+    sc.normalize_in_01();
+  }
+};
+
+
+// ---------- Trettner ----------
+class TrettnerSolver : public GeodesicMethod {
+public:
+  TrettnerSolver() {}
+  ~TrettnerSolver() {}
+
+  DrawableTrimesh<> m;
+  HalfEdge half_edge;
+  string mesh_path;
+  double time;
+
+  explicit TrettnerSolver(const std::string &path) : mesh_path(path) {}
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    m = DrawableTrimesh(coords, tris);
+  }
+
+  void preprocess() override {}
+
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    vector<int> vids = {vid};
+    half_edge = HEInit(mesh_path, vids);
+    sc = distance_field_trettner(half_edge, vids, time); 
+  }
+
+};
+
+
+// ---------- Heat ----------
+class HeatSolver : public GeodesicMethod {
+public:
+  HeatSolver() {}
+  ~HeatSolver() {}
+
+  DrawableTrimesh<> m;
+  GeodesicsCache prefactored_matrices;
+  bool cache = false;
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    m = DrawableTrimesh(coords, tris);
+  }
+
+  void preprocess() override {}
+
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    if (prefactored_matrices.heat_flow_cache != NULL) {
+      cache = true;
+    }
+    std::vector<uint> vids;
+    vids.push_back(static_cast<uint>(vid));
+    sc = compute_geodesics_amortized(m, prefactored_matrices, vids);
+    if (cache) {
+    cout << "Heat computation with cache." << endl;
+    } else {
+      cout << "Heat computation without cache." << endl;
+    }
+  }
+
+};
+
+// ---------- Geotangle ----------
+class GeotangleSolver : public GeodesicMethod {
+public:
+  GeotangleSolver() {}
+  ~GeotangleSolver() {}
+
+  DrawableTrimesh<> m;
+  geodesic_solver solver;
+  bool solver_computed = false;
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    m = DrawableTrimesh(coords, tris);
+  }
+
+  void preprocess() override {
+    solver = make_geodesic_solver(m, true);
+    solver_computed = true;
+  }
+
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    res = compute_geodesic_distances(solver, {vid});
+    for (auto &value : res) {
+      value = 1.0 - value;
+    }
+    sc = ScalarField(res);
+    sc.normalize_in_01();
+  }
+
+
+};
+
+// ---------- Edge ----------
+class EdgeSolver : public GeodesicMethod {
+public:
+  EdgeSolver() {}
+  ~EdgeSolver() {}
+
+  DrawableTrimesh<> m;
+  geodesic_solver solver;
+  bool solver_computed = false;
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    m = DrawableTrimesh(coords, tris);
+  }
+
+  void preprocess() override {
+    solver = make_geodesic_solver(m, false);
+    solver_computed = true;
+  }
+
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+
+    res = compute_geodesic_distances(solver, {vid});
+    for (auto &value : res) {
+      value = 1.0 - value;
+    }
+    sc = ScalarField(res);
+    sc.normalize_in_01();
+  }
+};
+
+
+// ---------- Extended ----------
 class ExtendedSolver : public GeodesicMethod {
 public:
   ExtendedSolver() {}
@@ -94,10 +244,6 @@ public:
    // but the solver is empty " and stuff like that
 
 
-class VTPSolver : public GeodesicMethod {
-public:
-
-};
 
 
 #endif

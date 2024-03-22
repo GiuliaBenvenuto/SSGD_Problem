@@ -86,6 +86,7 @@ struct State {
     EDGE,
     EXTENDED
   } ssgd_method;
+  
   ScalarField field;
 
   // Cache for Heat method
@@ -193,31 +194,25 @@ void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo,
 
 // ------ Helper functions ------
 vector<double> extract_coords(const DrawableTrimesh<> &mesh) {
-    vector<double> coords;
-    auto verts = mesh.vector_verts();
-    for (const auto& vert : verts) {
-        coords.push_back(vert.x());
-        coords.push_back(vert.y());
-        coords.push_back(vert.z());
-        cout << "Coords: " << vert.x() << ", " << vert.y() << ", " << vert.z() << endl;
-    }
-    return coords;
+  vector<double> coords;
+  auto verts = mesh.vector_verts();
+  for (const auto& vert : verts) {
+      coords.push_back(vert.x());
+      coords.push_back(vert.y());
+      coords.push_back(vert.z());
+  }
+  return coords;
 }
 
 vector<uint> extract_tris(const DrawableTrimesh<> &mesh) {
-    vector<uint> tris;
-    auto polys = mesh.vector_polys();
-    for (const auto& poly : polys) {
-        for (auto vid : poly) {
-            tris.push_back(vid);
-        }
-    }
-    std::cout << "Faces of the mesh:" << std::endl;
-    for (size_t i = 0; i < tris.size(); i += 3) {
-        std::cout << "Face " << (i / 3) << ": " << tris[i] << ", " << tris[i + 1] << ", " << tris[i + 2] << std::endl;
-    }
-
-    return tris;
+  vector<uint> tris;
+  auto polys = mesh.vector_polys();
+  for (const auto& poly : polys) {
+      for (auto vid : poly) {
+          tris.push_back(vid);
+      }
+  }
+  return tris;
 }
 
 
@@ -620,26 +615,43 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         switch (gs.ssgd_method) {
 
         case State::VTP: {
-          gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+          // gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          VTPSolver solver;
+          solver.load(gs.coords, gs.tris);
+          vector<double> res;
+          solver.query(gs.sources[0], res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::TRETTNER: {
-          gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+          // HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
+          // gs.field = distance_field_trettner(mesh, gs.sources, gs.trettner_geodesic_time); 
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          TrettnerSolver solver(gs.mesh_path);
+          solver.load(gs.coords, gs.tris);
+          vector<double> res;
+          solver.query(gs.sources[0], res, gs.field);
           gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
-          gs.field = distance_field_trettner(mesh, gs.sources,
-          gs.trettner_geodesic_time); gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::HEAT: {
-          gs.field = SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources_heat,
-                               gs.time_heat);
+          // gs.field = SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources_heat, gs.time_heat);
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          HeatSolver solver;
+          solver.load(gs.coords, gs.tris);
+          vector<double> res;
+          solver.query(gs.sources[0], res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
@@ -651,35 +663,45 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::GEOTANGLE: {
-          gs.field = SSGD_GeoTangle(gs.m, gs.solver_geo, gs.sources,
-                                    gs.geotangle_geodesic_time);
+          // gs.field = SSGD_GeoTangle(gs.m, gs.solver_geo, gs.sources, gs.geotangle_geodesic_time);
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          GeotangleSolver solver;
+          solver.load(gs.coords, gs.tris);
+          solver.preprocess();
+          vector<double> res;
+          solver.query(gs.sources[0], res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::EDGE: {
-          gs.field = SSGD_Edge(gs.m, gs.solver_edge, gs.sources,
-                               gs.edge_geodesic_time);
+          // gs.field = SSGD_Edge(gs.m, gs.solver_edge, gs.sources, gs.edge_geodesic_time);
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          EdgeSolver solver;
+          solver.load(gs.coords, gs.tris);
+          solver.preprocess();
+          vector<double> res;
+          solver.query(gs.sources[0], res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::EXTENDED: {
-          // gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources,
-          //                          gs.extended_geodesic_time);
+          // gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources, gs.extended_geodesic_time);
           // gs.field.copy_to_mesh(gs.m);
           // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
-          // CON LA STRUCT
           ExtendedSolver solver;
           solver.load(gs.coords, gs.tris);
           solver.set_k(3);
           vector<double> res;
-          for (int vid : gs.sources) {
-            solver.query(vid, res, gs.field);
-          }
+          solver.query(gs.sources[0], res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
