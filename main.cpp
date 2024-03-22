@@ -215,6 +215,45 @@ vector<uint> extract_tris(const DrawableTrimesh<> &mesh) {
   return tris;
 }
 
+void init(GeodesicMethod &m, State &gs, string name) {
+  // Coordinates: gs.coords
+  // Faces: gs.tris
+  std::chrono::steady_clock::time_point tic;
+  std::chrono::steady_clock::time_point toc;
+
+  cout << "---------- Initializing method: " << name << " ----------" << endl;
+
+  // load
+  tic = std::chrono::steady_clock::now();
+  m.load(gs.coords, gs.tris);
+  toc = std::chrono::steady_clock::now();
+  double load = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
+  cout << "Load time: " << load << " milliseconds" << endl;
+
+  // preprocess
+  tic = std::chrono::steady_clock::now();
+  m.preprocess();
+  toc = std::chrono::steady_clock::now();
+  double preprocess = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
+  cout << "Preprocess time: " << preprocess << " milliseconds" << endl;
+}
+
+
+void init_methods(State &gs) {
+  VTPSolver vtp_solver;
+  TrettnerSolver trettner_solver(gs.mesh_path); // Assuming constructor expects a mesh_path
+  HeatSolver heat_solver;
+  GeotangleSolver geotangle_solver;
+  EdgeSolver edge_solver;
+  ExtendedSolver extended_solver;
+
+  init(vtp_solver, gs, "VTP");
+  init(trettner_solver, gs, "Trettner");
+  init(heat_solver, gs, "Heat");
+  init(geotangle_solver, gs, "Geotangle");
+  init(edge_solver, gs, "Edge");
+  init(extended_solver, gs, "Extended");
+}
 
 //:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
 void Load_mesh(string filename, GLcanvas &gui, State &gs) {
@@ -258,10 +297,11 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.mesh_path = filename;
     // gs.mesh = HEInit(filename, gs.sources);
 
-    graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
-                       gs.primal_solver_extended, gs.dual_solver_extended,
-                       gs.geotangle_graph_time, gs.edge_graph_time,
-                       gs.extended_graph_time, progress);
+    // graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
+    //                    gs.primal_solver_extended, gs.dual_solver_extended,
+    //                    gs.geotangle_graph_time, gs.edge_graph_time,
+    //                    gs.extended_graph_time, progress);
+    init_methods(gs);
   }
 
   if (!gs.MESH_IS_LOADED) {
@@ -814,12 +854,13 @@ int main(int argc, char **argv) {
   //                    gs.extended_graph_time);
 
   // Start the graph construction in a separate thread
-  std::thread graph_thread([&]() {
-    graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
-                       gs.primal_solver_extended, gs.dual_solver_extended,
-                       gs.geotangle_graph_time, gs.edge_graph_time,
-                       gs.extended_graph_time, progress);
-  });
+  // std::thread graph_thread([&]() {
+  //   graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
+  //                      gs.primal_solver_extended, gs.dual_solver_extended,
+  //                      gs.geotangle_graph_time, gs.edge_graph_time,
+  //                      gs.extended_graph_time, progress);
+  // });
+  std::thread graph_thread([&]() { init_methods(gs); });
 
   // Launch the GUI
   gui.launch();
