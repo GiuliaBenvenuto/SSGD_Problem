@@ -14,6 +14,7 @@
 #include <fstream>
 #include <imgui.h>
 #include <thread>
+#include <typeinfo>
 
 // SSDG with Heat method
 #include <cinolib/geodesics.h>
@@ -50,6 +51,8 @@ struct State {
   DrawableTrimesh<> m;     // the input mesh
   uint nverts;             // its #vertices
   vector<vector<uint>> VV; // its VV relation
+  vector<double> coords;   // vertex coordinates
+  vector<uint> tris;       // triangle indices
 
   // GUI state ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -187,11 +190,47 @@ void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo,
   progress = 1.0;
 }
 
+
+// ------ Helper functions ------
+vector<double> extract_coords(const DrawableTrimesh<> &mesh) {
+    vector<double> coords;
+    auto verts = mesh.vector_verts();
+    for (const auto& vert : verts) {
+        coords.push_back(vert.x());
+        coords.push_back(vert.y());
+        coords.push_back(vert.z());
+        cout << "Coords: " << vert.x() << ", " << vert.y() << ", " << vert.z() << endl;
+    }
+    return coords;
+}
+
+vector<uint> extract_tris(const DrawableTrimesh<> &mesh) {
+    vector<uint> tris;
+    auto polys = mesh.vector_polys();
+    for (const auto& poly : polys) {
+        for (auto vid : poly) {
+            tris.push_back(vid);
+        }
+    }
+    std::cout << "Faces of the mesh:" << std::endl;
+    for (size_t i = 0; i < tris.size(); i += 3) {
+        std::cout << "Face " << (i / 3) << ": " << tris[i] << ", " << tris[i + 1] << ", " << tris[i + 2] << std::endl;
+    }
+
+    return tris;
+}
+
+
 //:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
 void Load_mesh(string filename, GLcanvas &gui, State &gs) {
   gs.m = DrawableTrimesh<>(filename.c_str());
   gs.nverts = gs.m.num_verts();
   gs.VV.resize(gs.nverts); // fill in Vertex-Vertex relation
+
+  gs.coords = extract_coords(gs.m);
+  gs.tris = extract_tris(gs.m);
+
+
   for (auto i = 0; i < gs.nverts; i++)
     gs.VV[i] = gs.m.vert_ordered_verts_link(i);
   // uncomment the following and adjust parameters if you want a smoother mesh
@@ -588,13 +627,13 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::TRETTNER: {
-          // gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          //  HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
-          //  gs.field = distance_field_trettner(mesh, gs.sources,
-          //  gs.trettner_geodesic_time); gs.field.copy_to_mesh(gs.m);
-          //  gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
+          gs.field = distance_field_trettner(mesh, gs.sources,
+          gs.trettner_geodesic_time); gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
@@ -628,15 +667,26 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::EXTENDED: {
-          gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources,
-                                   gs.extended_geodesic_time);
+          // gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources,
+          //                          gs.extended_geodesic_time);
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          // CON LA STRUCT
+          ExtendedSolver solver;
+          solver.load(gs.coords, gs.tris);
+          solver.set_k(3);
+          vector<double> res;
+          for (int vid : gs.sources) {
+            solver.query(vid, res, gs.field);
+          }
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         default:
-          // cout << "No SSGD method selected" << endl;
+          cout << "No SSGD method selected" << endl;
           break;
         }
       }
@@ -699,6 +749,7 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
     return false;
   };
 }
+
 
 //=============================== MAIN =========================================
 

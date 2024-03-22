@@ -46,7 +46,7 @@ public:
   virtual void load(const std::vector<double> &coords,
                     const std::vector<uint> &tris) = 0;
   virtual void preprocess() = 0;
-  virtual void query(const int vid, std::vector<double> &res) = 0;
+  virtual void query(const int vid, std::vector<double> &res, ScalarField &sc) = 0;
 };
 
 ////// INSTANCE OF A SPECIFIC ALGORITHM //////
@@ -60,10 +60,11 @@ public:
   dual_geodesic_solver dual_solver;
   bool dual_solver_computed = false;
   int k = 3;
-  void load(const std::vector<double> &coords,
-            const std::vector<uint> &tris) override {
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
     m = DrawableTrimesh(coords, tris);
   }
+  
   void set_k(const int new_k, const bool compute_solver = true) {
     k = new_k;
     if (compute_solver) {
@@ -81,12 +82,22 @@ public:
     dual_solver_computed = true;
   }
 
-  void query(const int vid, std::vector<double> &res) override {
-    res = compute_geodesic_distances(solver,
-                                     {vid}); // TODO change the code so that the
-                                             // input is an uint and not a in
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    res = compute_geodesic_distances(solver, {vid}); // TODO change the code so that the // input is an uint and not a in
+    for (auto &value : res) {
+      value = 1.0 - value;
+    }
+    sc = ScalarField(res);
+    sc.normalize_in_01();
   }
 }; // TODO: add some checks such as "compute the solver if the query is called
    // but the solver is empty " and stuff like that
+
+
+class VTPSolver : public GeodesicMethod {
+public:
+
+};
+
 
 #endif

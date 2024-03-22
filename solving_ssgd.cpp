@@ -46,8 +46,7 @@ ScalarField SSGD_VTP(DrawableTrimesh<> &m, vector<int> &sources,
   auto start_geodesic_VTP = chrono::high_resolution_clock::now();
   // Iterate over each source
   for (int source : sources) {
-    vector<double> current_distances =
-        exact_geodesic_distance(m.vector_polys(), m.vector_verts(), source);
+    vector<double> current_distances = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), source);
 
     // Update the minimum distance for each vertex
     for (size_t i = 0; i < field_data.size(); ++i) {
