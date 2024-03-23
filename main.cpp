@@ -14,12 +14,11 @@
 #include <fstream>
 #include <imgui.h>
 #include <thread>
+using namespace std;
+using namespace cinolib;
 
 // Compute SSGD
 #include "solving_ssgd.h"
-
-using namespace std;
-using namespace cinolib;
 
 //------ Global variable ------
 // Fonts
@@ -85,14 +84,16 @@ struct State {
   EdgeSolver        edge_solver;
   ExtendedSolver    extended_solver;
 
-  // Timers
-    // Timing for VTP method
+  // Timer
+  std::chrono::steady_clock::time_point tic;
+  std::chrono::steady_clock::time_point toc;
   double vtp_load, vtp_preprocess, vtp_query;
   double trettner_load, trettner_preprocess, trettner_query;
   double heat_load, heat_preprocess, heat_query;
   double geotangle_load, geotangle_preprocess, geotangle_query;
   double edge_load, edge_preprocess, edge_query;
   double extended_load, extended_preprocess, extended_query;
+
 
   State() {
     MESH_IS_LOADED = false;
@@ -115,12 +116,12 @@ struct State {
     ssgd_method = State::VTP;
 
     // Timer
-    // time_heat = 0.0;
-    // vtp_geodesic_time = 0.0;
-    // geotangle_graph_time = geotangle_geodesic_time = 0.0;
-    // edge_graph_time = edge_geodesic_time = 0.0;
-    // extended_graph_time = extended_geodesic_time = 0.0;
-    // trettner_geodesic_time = 0.0;
+    vtp_load, vtp_preprocess, vtp_query = 0.0;
+    trettner_load, trettner_preprocess, trettner_query = 0.0;
+    heat_load, heat_preprocess, heat_query = 0.0;
+    geotangle_load, geotangle_preprocess, geotangle_query = 0.0;
+    edge_load, edge_preprocess, edge_query = 0.0;
+    extended_load, extended_preprocess, extended_query = 0.0;
 
     res = vector<double>();
 
@@ -128,50 +129,6 @@ struct State {
     mesh = HalfEdge();
   }
 };
-
-// //:::::::::::::::::: GRAPH CONSTRUCTION :::::::::::::::::::::::::::::::::::::
-// void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo,
-//                         geodesic_solver &solver_edge,
-//                         geodesic_solver &primal_geodesic_solver,
-//                         dual_geodesic_solver &dual_geodesic_solver,
-//                         double &geotangle_graph_time, double &edge_graph_time,
-//                         double &extended_graph_time, atomic<float> &progress) {
-
-//   cout << "----- Constructing graph for geodesic computation -----" << endl;
-//   // GeoTangle solver
-//   auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
-//   solver_geo = make_geodesic_solver(m, true);
-//   auto stop_graph_GeoTangle = chrono::high_resolution_clock::now();
-//   geotangle_graph_time = chrono::duration_cast<chrono::milliseconds>(
-//                              stop_graph_GeoTangle - start_graph_GeoTangle)
-//                              .count();
-//   cout << "GeoTangle graph time: " << geotangle_graph_time << " milliseconds"
-//        << endl;
-
-//   // Edge solver
-//   auto start_graph_edge = chrono::high_resolution_clock::now();
-//   solver_edge = make_geodesic_solver(m, false);
-//   auto stop_graph_edge = chrono::high_resolution_clock::now();
-//   edge_graph_time = chrono::duration_cast<chrono::milliseconds>(
-//                         stop_graph_edge - start_graph_edge)
-//                         .count();
-//   cout << "Edge graph time: " << edge_graph_time << " milliseconds" << endl;
-//   progress = 0.33;
-
-//   // Extended solver
-//   auto start_graph_extended = chrono::high_resolution_clock::now();
-//   dual_geodesic_solver = make_dual_geodesic_solver(m);
-//   progress = 0.66;
-//   primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 3);
-//   progress = 0.99;
-//   auto stop_graph_extended = chrono::high_resolution_clock::now();
-//   extended_graph_time = chrono::duration_cast<chrono::milliseconds>(
-//                             stop_graph_extended - start_graph_extended)
-//                             .count();
-//   cout << "Extended graph time: " << extended_graph_time << " milliseconds"
-//        << endl;
-//   progress = 1.0;
-// }
 
 
 // ------ Helper functions ------
@@ -197,29 +154,54 @@ vector<uint> extract_tris(const DrawableTrimesh<> &mesh) {
   return tris;
 }
 
-void init(GeodesicMethod &m, State &gs, string name) {
-  // Coordinates: gs.coords
-  // Faces: gs.tris
-  std::chrono::steady_clock::time_point tic;
-  std::chrono::steady_clock::time_point toc;
+void fillTimeTable(State &gs, const string& method_name, double load_time, double preprocess_time, double query_time) {
+  if (method_name == "VTP") {
+    gs.vtp_load = load_time;
+    gs.vtp_preprocess = preprocess_time;
+    gs.vtp_query = query_time;
+  } else if (method_name == "Trettner") {
+    gs.trettner_load = load_time;
+    gs.trettner_preprocess = preprocess_time;
+    gs.trettner_query = query_time;
+  } else if (method_name == "Heat") {
+    gs.heat_load = load_time;
+    gs.heat_preprocess = preprocess_time;
+    gs.heat_query = query_time;
+  } else if (method_name == "Geotangle") {
+    gs.geotangle_load = load_time;
+    gs.geotangle_preprocess = preprocess_time;
+    gs.geotangle_query = query_time;
+  } else if (method_name == "Edge") {
+    gs.edge_load = load_time;
+    gs.edge_preprocess = preprocess_time;
+    gs.edge_query = query_time;
+  } else if (method_name == "Extended") {
+    gs.extended_load = load_time;
+    gs.extended_preprocess = preprocess_time;
+    gs.extended_query = query_time;
+  }
+}
 
+
+void init(GeodesicMethod &m, State &gs, string name) {
   cout << "---------- Initializing method: " << name << " ----------" << endl;
 
   // load
-  tic = std::chrono::steady_clock::now();
+  gs.tic = std::chrono::steady_clock::now();
   m.load(gs.coords, gs.tris);
-  toc = std::chrono::steady_clock::now();
-  double load = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
+  gs.toc = std::chrono::steady_clock::now();
+  double load = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
   cout << "Load time: " << load << " milliseconds" << endl;
 
   // preprocess
-  tic = std::chrono::steady_clock::now();
+  gs.tic = std::chrono::steady_clock::now();
   m.preprocess();
-  toc = std::chrono::steady_clock::now();
-  double preprocess = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
+  gs.toc = std::chrono::steady_clock::now();
+  double preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
   cout << "Preprocess time: " << preprocess << " milliseconds" << endl;
 
   // fill time table
+  fillTimeTable(gs, name, load, preprocess, 0.0);
 
 }
 
@@ -264,12 +246,12 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     // Clear cache for Heat method
     gs.prefactored_matrices.heat_flow_cache = NULL; // Reset the heat flow cache
 
-    // gs.time_heat = 0.0;
-    // gs.vtp_geodesic_time = 0.0;
-    // gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
-    // gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
-    // gs.extended_graph_time = gs.extended_geodesic_time = 0.0;
-    // gs.trettner_geodesic_time = 0.0;
+    gs.vtp_load, gs.vtp_preprocess, gs.vtp_query = 0.0;
+    gs.trettner_load, gs.trettner_preprocess, gs.trettner_query = 0.0;
+    gs.heat_load, gs.heat_preprocess, gs.heat_query = 0.0;
+    gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query = 0.0;
+    gs.edge_load, gs.edge_preprocess, gs.edge_query = 0.0;
+    gs.extended_load, gs.extended_preprocess, gs.extended_query = 0.0;
     gs.res = vector<double>();
 
     gs.mesh_path = filename;
@@ -305,48 +287,8 @@ GLcanvas Init_GUI() {
 void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
   gui.callback_app_controls = [&]() {
     // New detached window
-    bool show_new_window = true; // Control the visibility with a variable
-    // if (show_new_window) {
-    //   // Assuming the main window is positioned at (0, 0) and covers the whole
-    //   // screen and considering the sidebar width
-    //   float sidebar_width = gui.side_bar_width * 1500; // Adjust this if side_bar_width is not a ratio
-    //   ImVec2 new_window_pos = ImVec2(sidebar_width + 800, 25); // Top-right corner of the main GUI, right after the sidebar
-
-    //   ImGui::SetNextWindowPos(new_window_pos, ImGuiCond_FirstUseEver);
-    //   ImVec2 window_size = ImVec2(250, 330); // Example size, change as needed
-    //   ImGui::SetNextWindowSize(window_size, ImGuiCond_FirstUseEver);
-
-    //   ImGui::Begin("SSGD Methods Timing Results", &show_new_window);
-
-    //   // Display the label "Sources"
-    //   ImGui::PushFont(lato_bold);
-    //   ImGui::Text("Sources:");
-    //   ImGui::PopFont();
-    //   // Iterate over the gs.sources to display each source vertex ID
-    //   for (uint i = 0; i < gs.sources_heat.size(); ++i) {
-    //     ImGui::Text("Vertex ID: %u", gs.sources_heat[i]);
-    //   }
-    //   ImGui::Text("");
-
-    //   ImGui::SeparatorText("Exact Polyhedral Methods");
-    //   ImGui::Text("VTP geodesic time: %.2f ms", gs.vtp_geodesic_time);
-    //   ImGui::Text("Trettner geodesic time: %.2f ms", gs.trettner_geodesic_time);
-
-    //   ImGui::SeparatorText("PDE-Based Methods");
-    //   ImGui::Text("Heat time: %.2f ms", gs.time_heat);
-
-    //   ImGui::SeparatorText("Graph-Based Methods");
-    //   ImGui::Text("GeoTangle graph time: %.2f ms", gs.geotangle_graph_time);
-    //   ImGui::Text("GeoTangle geodesic time: %.2f ms",
-    //               gs.geotangle_geodesic_time);
-    //   ImGui::Text("Edge graph time: %.2f ms", gs.edge_graph_time);
-    //   ImGui::Text("Edge geodesic time: %.2f ms", gs.edge_geodesic_time);
-    //   ImGui::Text("Extended graph time: %.2f ms", gs.extended_graph_time);
-    //   ImGui::Text("Extended geodesic time: %.2f ms", gs.extended_geodesic_time);
-
-    //   ImGui::End();
-    // }
-
+    bool show_new_window = true; 
+    
     if (show_new_window) {
       float sidebar_width = gui.side_bar_width * 1500;
       ImVec2 new_window_pos = ImVec2(sidebar_width + 600, 25);
@@ -717,21 +659,36 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::VTP: {
           // load() and preprocess() in init_methods()
+          gs.tic = std::chrono::steady_clock::now();
           gs.vtp_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.vtp_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess, gs.vtp_query);
+
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::TRETTNER: {
+          gs.tic = std::chrono::steady_clock::now();
           gs.trettner_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.trettner_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Trettner", gs.trettner_load, gs.trettner_preprocess, gs.trettner_query);
+
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::HEAT: {
+          gs.tic = std::chrono::steady_clock::now();
           gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
+
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
@@ -743,21 +700,36 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::GEOTANGLE: {
+          gs.tic = std::chrono::steady_clock::now();
           gs.geotangle_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.geotangle_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Geotangle", gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query);
+
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::EDGE: {
+          gs.tic = std::chrono::steady_clock::now();
           gs.edge_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.edge_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Edge", gs.edge_load, gs.edge_preprocess, gs.edge_query);
+
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::EXTENDED: {
+          gs.tic = std::chrono::steady_clock::now();
           gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
@@ -787,12 +759,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources_heat.clear();
       gs.sources.clear();
 
-      // gs.time_heat = 0.0;
-      // gs.vtp_geodesic_time = 0.0;
-      // gs.geotangle_geodesic_time = 0.0;
-      // gs.edge_geodesic_time = 0.0;
-      // gs.extended_geodesic_time = 0.0;
-      // gs.trettner_geodesic_time = 0.0;
+      gs.vtp_query = 0.0;
+      gs.trettner_query = 0.0;
+      gs.heat_query = 0.0;
+      gs.geotangle_query = 0.0;
+      gs.edge_query = 0.0;
+      gs.extended_query = 0.0;
 
       gs.res = vector<double>();
 
