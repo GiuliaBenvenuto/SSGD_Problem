@@ -87,12 +87,12 @@ struct State {
   // Timer
   std::chrono::steady_clock::time_point tic;
   std::chrono::steady_clock::time_point toc;
-  double vtp_load, vtp_preprocess, vtp_query;
-  double trettner_load, trettner_preprocess, trettner_query;
-  double heat_load, heat_preprocess, heat_query;
-  double geotangle_load, geotangle_preprocess, geotangle_query;
-  double edge_load, edge_preprocess, edge_query;
-  double extended_load, extended_preprocess, extended_query;
+  double vtp_load,        vtp_preprocess,         vtp_query;
+  double trettner_load,   trettner_preprocess,    trettner_query;
+  double heat_load,       heat_preprocess,        heat_query;
+  double geotangle_load,  geotangle_preprocess,   geotangle_query;
+  double edge_load,       edge_preprocess,        edge_query;
+  double extended_load,   extended_preprocess,    extended_query;
 
 
   State() {
@@ -116,12 +116,12 @@ struct State {
     ssgd_method = State::VTP;
 
     // Timer
-    vtp_load, vtp_preprocess, vtp_query = 0.0;
-    trettner_load, trettner_preprocess, trettner_query = 0.0;
-    heat_load, heat_preprocess, heat_query = 0.0;
+    vtp_load,       vtp_preprocess,       vtp_query = 0.0;
+    trettner_load,  trettner_preprocess,  trettner_query = 0.0;
+    heat_load,      heat_preprocess,      heat_query = 0.0;
     geotangle_load, geotangle_preprocess, geotangle_query = 0.0;
-    edge_load, edge_preprocess, edge_query = 0.0;
-    extended_load, extended_preprocess, extended_query = 0.0;
+    edge_load,      edge_preprocess,       edge_query = 0.0;
+    extended_load,  extended_preprocess,  extended_query = 0.0;
 
     res = vector<double>();
 
@@ -202,17 +202,27 @@ void init(GeodesicMethod &m, State &gs, string name) {
 
   // fill time table
   fillTimeTable(gs, name, load, preprocess, 0.0);
-
 }
 
 
-void init_methods(State &gs) {
+void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
+  progress.store(1.0f / 6.0f);  
+
   init(gs.trettner_solver, gs, "Trettner");
+  progress.store(2.0f / 6.0f); 
+
   init(gs.heat_solver, gs, "Heat");
+  progress.store(3.0f / 6.0f);  
+
   init(gs.geotangle_solver, gs, "Geotangle");
+  progress.store(4.0f / 6.0f);  
+
   init(gs.edge_solver, gs, "Edge");
+  progress.store(5.0f / 6.0f);  
+
   init(gs.extended_solver, gs, "Extended");
+  progress.store(1.0f);         
 }
 
 
@@ -246,18 +256,18 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     // Clear cache for Heat method
     gs.prefactored_matrices.heat_flow_cache = NULL; // Reset the heat flow cache
 
-    gs.vtp_load, gs.vtp_preprocess, gs.vtp_query = 0.0;
-    gs.trettner_load, gs.trettner_preprocess, gs.trettner_query = 0.0;
-    gs.heat_load, gs.heat_preprocess, gs.heat_query = 0.0;
-    gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query = 0.0;
-    gs.edge_load, gs.edge_preprocess, gs.edge_query = 0.0;
-    gs.extended_load, gs.extended_preprocess, gs.extended_query = 0.0;
+    gs.vtp_load,        gs.vtp_preprocess,        gs.vtp_query = 0.0;
+    gs.trettner_load,   gs.trettner_preprocess,   gs.trettner_query = 0.0;
+    gs.heat_load,       gs.heat_preprocess,       gs.heat_query = 0.0;
+    gs.geotangle_load,  gs.geotangle_preprocess,  gs.geotangle_query = 0.0;
+    gs.edge_load,       gs.edge_preprocess,       gs.edge_query = 0.0;
+    gs.extended_load,   gs.extended_preprocess,   gs.extended_query = 0.0;
     gs.res = vector<double>();
 
     gs.mesh_path = filename;
     gs.trettner_solver = TrettnerSolver(gs.mesh_path);
 
-    init_methods(gs);
+    init_methods(gs, progress);
   }
 
   if (!gs.MESH_IS_LOADED) {
@@ -291,7 +301,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     
     if (show_new_window) {
       float sidebar_width = gui.side_bar_width * 1500;
-      ImVec2 new_window_pos = ImVec2(sidebar_width + 600, 25);
+      ImVec2 new_window_pos = ImVec2(sidebar_width + 650, 25);
       ImVec2 window_size = ImVec2(400, 200); 
 
       ImGui::SetNextWindowPos(new_window_pos, ImGuiCond_FirstUseEver);
@@ -383,7 +393,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     // In your main function or GUI rendering loop
     if (progress < 1.0f) {
       ImVec2 window_size = ImVec2(250, 60);  // Width, Height in pixels
-      ImVec2 window_pos = ImVec2(1225, 400); // X, Y position in pixels
+      ImVec2 window_pos = ImVec2(1225, 300); // X, Y position in pixels
 
       ImGui::SetNextWindowSize(window_size, ImGuiCond_Always);
       ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
@@ -837,7 +847,7 @@ int main(int argc, char **argv) {
     Load_mesh(s, gui, gs);
   }
 
-  std::thread graph_thread([&]() { init_methods(gs); });
+  std::thread graph_thread([&]() { init_methods(gs, progress); });
 
   // Launch the GUI
   gui.launch();
