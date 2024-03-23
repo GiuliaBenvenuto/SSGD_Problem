@@ -1,3 +1,4 @@
+// Old implementation of the SSGD methods
 #include "solving_ssgd.h"
 #include "SSGD_methods/Graph-based_methods/shortest_path.h"
 

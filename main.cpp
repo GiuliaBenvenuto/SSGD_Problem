@@ -14,20 +14,6 @@
 #include <fstream>
 #include <imgui.h>
 #include <thread>
-#include <typeinfo>
-
-// SSDG with Heat method
-#include <cinolib/geodesics.h>
-
-// SSDG with VTP method
-#include "SSGD_methods/VTP/vtp_wrapper.h"
-
-// SSGD with graph-based methods
-#include "SSGD_methods/Graph-based_methods/extended_solver.h"
-#include "SSGD_methods/Graph-based_methods/shortest_path.h"
-
-// SSGD with Trettner method
-#include "SSGD_methods/Trettner/trettner.h"
 
 // Compute SSGD
 #include "solving_ssgd.h"
@@ -42,10 +28,10 @@ ImFont *lato_regular = nullptr;
 ImFont *lato_bold_title = nullptr;
 atomic<float> progress(0.0f);
 
-//:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR
-//: GUI):::::::::::::::::::::::::::::::
+
+//:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR GUI):::::::::::::::::::::::::::::::
 struct State {
-  // Program state ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  //-------- Program state --------
   bool MESH_IS_LOADED;
   // Input
   DrawableTrimesh<> m;     // the input mesh
@@ -53,9 +39,9 @@ struct State {
   vector<vector<uint>> VV; // its VV relation
   vector<double> coords;   // vertex coordinates
   vector<uint> tris;       // triangle indices
+  vector<double> res;
 
-  // GUI state ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
+  //-------- GUI state --------
   // View
   bool SHOW_MESH, SHOW_WIREFRAME;
 
@@ -64,7 +50,7 @@ struct State {
   float wireframe_alpha; // Wireframe transparency
 
   // Shading
-  enum MeshRenderMode { RENDER_POINTS, RENDER_FLAT, RENDER_SMOOTH } render_mode;
+  enum MeshRenderMode {RENDER_POINTS, RENDER_FLAT, RENDER_SMOOTH} render_mode;
 
   // Vector field
   DrawableVectorField vec_field;
@@ -77,15 +63,7 @@ struct State {
   Color poly_color;
 
   // SSGD Method
-  enum SSGDMethod {
-    VTP,
-    TRETTNER,
-    HEAT,
-    FMM,
-    GEOTANGLE,
-    EDGE,
-    EXTENDED
-  } ssgd_method;
+  enum SSGDMethod {VTP, TRETTNER, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED} ssgd_method;
   
   ScalarField field;
 
@@ -100,19 +78,21 @@ struct State {
   string mesh_path;
   HalfEdge mesh;
 
-  // Solvers
-  geodesic_solver solver_geo;
-  geodesic_solver solver_edge;
-  geodesic_solver primal_solver_extended;
-  dual_geodesic_solver dual_solver_extended;
+  VTPSolver         vtp_solver;
+  TrettnerSolver    trettner_solver; 
+  HeatSolver        heat_solver;
+  GeotangleSolver   geotangle_solver;
+  EdgeSolver        edge_solver;
+  ExtendedSolver    extended_solver;
 
   // Timers
-  double time_heat;
-  double vtp_geodesic_time;
-  double geotangle_graph_time, geotangle_geodesic_time;
-  double edge_graph_time, edge_geodesic_time;
-  double extended_graph_time, extended_geodesic_time;
-  double trettner_geodesic_time;
+    // Timing for VTP method
+  double vtp_load, vtp_preprocess, vtp_query;
+  double trettner_load, trettner_preprocess, trettner_query;
+  double heat_load, heat_preprocess, heat_query;
+  double geotangle_load, geotangle_preprocess, geotangle_query;
+  double edge_load, edge_preprocess, edge_query;
+  double extended_load, extended_preprocess, extended_query;
 
   State() {
     MESH_IS_LOADED = false;
@@ -135,61 +115,63 @@ struct State {
     ssgd_method = State::VTP;
 
     // Timer
-    time_heat = 0.0;
-    vtp_geodesic_time = 0.0;
-    geotangle_graph_time = geotangle_geodesic_time = 0.0;
-    edge_graph_time = edge_geodesic_time = 0.0;
-    extended_graph_time = extended_geodesic_time = 0.0;
-    trettner_geodesic_time = 0.0;
+    // time_heat = 0.0;
+    // vtp_geodesic_time = 0.0;
+    // geotangle_graph_time = geotangle_geodesic_time = 0.0;
+    // edge_graph_time = edge_geodesic_time = 0.0;
+    // extended_graph_time = extended_geodesic_time = 0.0;
+    // trettner_geodesic_time = 0.0;
+
+    res = vector<double>();
 
     mesh_path = "";
     mesh = HalfEdge();
   }
 };
 
-//:::::::::::::::::: GRAPH CONSTRUCTION :::::::::::::::::::::::::::::::::::::
-void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo,
-                        geodesic_solver &solver_edge,
-                        geodesic_solver &primal_geodesic_solver,
-                        dual_geodesic_solver &dual_geodesic_solver,
-                        double &geotangle_graph_time, double &edge_graph_time,
-                        double &extended_graph_time, atomic<float> &progress) {
+// //:::::::::::::::::: GRAPH CONSTRUCTION :::::::::::::::::::::::::::::::::::::
+// void graph_construction(DrawableTrimesh<> &m, geodesic_solver &solver_geo,
+//                         geodesic_solver &solver_edge,
+//                         geodesic_solver &primal_geodesic_solver,
+//                         dual_geodesic_solver &dual_geodesic_solver,
+//                         double &geotangle_graph_time, double &edge_graph_time,
+//                         double &extended_graph_time, atomic<float> &progress) {
 
-  cout << "----- Constructing graph for geodesic computation -----" << endl;
-  // GeoTangle solver
-  auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
-  solver_geo = make_geodesic_solver(m, true);
-  auto stop_graph_GeoTangle = chrono::high_resolution_clock::now();
-  geotangle_graph_time = chrono::duration_cast<chrono::milliseconds>(
-                             stop_graph_GeoTangle - start_graph_GeoTangle)
-                             .count();
-  cout << "GeoTangle graph time: " << geotangle_graph_time << " milliseconds"
-       << endl;
+//   cout << "----- Constructing graph for geodesic computation -----" << endl;
+//   // GeoTangle solver
+//   auto start_graph_GeoTangle = chrono::high_resolution_clock::now();
+//   solver_geo = make_geodesic_solver(m, true);
+//   auto stop_graph_GeoTangle = chrono::high_resolution_clock::now();
+//   geotangle_graph_time = chrono::duration_cast<chrono::milliseconds>(
+//                              stop_graph_GeoTangle - start_graph_GeoTangle)
+//                              .count();
+//   cout << "GeoTangle graph time: " << geotangle_graph_time << " milliseconds"
+//        << endl;
 
-  // Edge solver
-  auto start_graph_edge = chrono::high_resolution_clock::now();
-  solver_edge = make_geodesic_solver(m, false);
-  auto stop_graph_edge = chrono::high_resolution_clock::now();
-  edge_graph_time = chrono::duration_cast<chrono::milliseconds>(
-                        stop_graph_edge - start_graph_edge)
-                        .count();
-  cout << "Edge graph time: " << edge_graph_time << " milliseconds" << endl;
-  progress = 0.33;
+//   // Edge solver
+//   auto start_graph_edge = chrono::high_resolution_clock::now();
+//   solver_edge = make_geodesic_solver(m, false);
+//   auto stop_graph_edge = chrono::high_resolution_clock::now();
+//   edge_graph_time = chrono::duration_cast<chrono::milliseconds>(
+//                         stop_graph_edge - start_graph_edge)
+//                         .count();
+//   cout << "Edge graph time: " << edge_graph_time << " milliseconds" << endl;
+//   progress = 0.33;
 
-  // Extended solver
-  auto start_graph_extended = chrono::high_resolution_clock::now();
-  dual_geodesic_solver = make_dual_geodesic_solver(m);
-  progress = 0.66;
-  primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 3);
-  progress = 0.99;
-  auto stop_graph_extended = chrono::high_resolution_clock::now();
-  extended_graph_time = chrono::duration_cast<chrono::milliseconds>(
-                            stop_graph_extended - start_graph_extended)
-                            .count();
-  cout << "Extended graph time: " << extended_graph_time << " milliseconds"
-       << endl;
-  progress = 1.0;
-}
+//   // Extended solver
+//   auto start_graph_extended = chrono::high_resolution_clock::now();
+//   dual_geodesic_solver = make_dual_geodesic_solver(m);
+//   progress = 0.66;
+//   primal_geodesic_solver = extended_solver(m, dual_geodesic_solver, 3);
+//   progress = 0.99;
+//   auto stop_graph_extended = chrono::high_resolution_clock::now();
+//   extended_graph_time = chrono::duration_cast<chrono::milliseconds>(
+//                             stop_graph_extended - start_graph_extended)
+//                             .count();
+//   cout << "Extended graph time: " << extended_graph_time << " milliseconds"
+//        << endl;
+//   progress = 1.0;
+// }
 
 
 // ------ Helper functions ------
@@ -236,24 +218,21 @@ void init(GeodesicMethod &m, State &gs, string name) {
   toc = std::chrono::steady_clock::now();
   double preprocess = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
   cout << "Preprocess time: " << preprocess << " milliseconds" << endl;
+
+  // fill time table
+
 }
 
 
 void init_methods(State &gs) {
-  VTPSolver vtp_solver;
-  TrettnerSolver trettner_solver(gs.mesh_path); // Assuming constructor expects a mesh_path
-  HeatSolver heat_solver;
-  GeotangleSolver geotangle_solver;
-  EdgeSolver edge_solver;
-  ExtendedSolver extended_solver;
-
-  init(vtp_solver, gs, "VTP");
-  init(trettner_solver, gs, "Trettner");
-  init(heat_solver, gs, "Heat");
-  init(geotangle_solver, gs, "Geotangle");
-  init(edge_solver, gs, "Edge");
-  init(extended_solver, gs, "Extended");
+  init(gs.vtp_solver, gs, "VTP");
+  init(gs.trettner_solver, gs, "Trettner");
+  init(gs.heat_solver, gs, "Heat");
+  init(gs.geotangle_solver, gs, "Geotangle");
+  init(gs.edge_solver, gs, "Edge");
+  init(gs.extended_solver, gs, "Extended");
 }
+
 
 //:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
 void Load_mesh(string filename, GLcanvas &gui, State &gs) {
@@ -267,17 +246,15 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
 
   for (auto i = 0; i < gs.nverts; i++)
     gs.VV[i] = gs.m.vert_ordered_verts_link(i);
-  // uncomment the following and adjust parameters if you want a smoother mesh
-  // MCF(m,12,1e-5,true);
+
   gs.m.normalize_bbox(); // rescale mesh to fit [0,1]^3 box
   gs.m.center_bbox();
   gs.m.show_wireframe(gs.SHOW_WIREFRAME);
   gs.m.show_mesh(gs.SHOW_MESH);
   gs.m.updateGL();
-  // gs.point_size = gs.m.edge_avg_length()/2; // set initial radius of spheres
-  // for critical points
 
   if (gs.MESH_IS_LOADED) {
+    
     // Clear and reinitialize the vector field for the new mesh
     gs.vec_field = DrawableVectorField();
     gs.show_vecfield = false; // Reset the flag to not show the old vector field
@@ -287,24 +264,24 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     // Clear cache for Heat method
     gs.prefactored_matrices.heat_flow_cache = NULL; // Reset the heat flow cache
 
-    gs.time_heat = 0.0;
-    gs.vtp_geodesic_time = 0.0;
-    gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
-    gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
-    gs.extended_graph_time = gs.extended_geodesic_time = 0.0;
-    gs.trettner_geodesic_time = 0.0;
+    // gs.time_heat = 0.0;
+    // gs.vtp_geodesic_time = 0.0;
+    // gs.geotangle_graph_time = gs.geotangle_geodesic_time = 0.0;
+    // gs.edge_graph_time = gs.edge_geodesic_time = 0.0;
+    // gs.extended_graph_time = gs.extended_geodesic_time = 0.0;
+    // gs.trettner_geodesic_time = 0.0;
+    gs.res = vector<double>();
 
     gs.mesh_path = filename;
-    // gs.mesh = HEInit(filename, gs.sources);
+    gs.trettner_solver = TrettnerSolver(gs.mesh_path);
 
-    // graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
-    //                    gs.primal_solver_extended, gs.dual_solver_extended,
-    //                    gs.geotangle_graph_time, gs.edge_graph_time,
-    //                    gs.extended_graph_time, progress);
     init_methods(gs);
   }
 
   if (!gs.MESH_IS_LOADED) {
+    gs.mesh_path = filename;
+    gs.trettner_solver = TrettnerSolver(gs.mesh_path);
+
     gui.push(&gs.m);
     gs.MESH_IS_LOADED = true;
   }
@@ -317,8 +294,7 @@ void Load_mesh(GLcanvas &gui, State &gs) {
   Load_mesh(filename, gui, gs);
 }
 
-//:::::::::::::::::::::::::::::::::::::
-//: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
   GLcanvas gui(1500, 700);
   gui.side_bar_width = 0.28;
@@ -330,50 +306,137 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
   gui.callback_app_controls = [&]() {
     // New detached window
     bool show_new_window = true; // Control the visibility with a variable
+    // if (show_new_window) {
+    //   // Assuming the main window is positioned at (0, 0) and covers the whole
+    //   // screen and considering the sidebar width
+    //   float sidebar_width = gui.side_bar_width * 1500; // Adjust this if side_bar_width is not a ratio
+    //   ImVec2 new_window_pos = ImVec2(sidebar_width + 800, 25); // Top-right corner of the main GUI, right after the sidebar
+
+    //   ImGui::SetNextWindowPos(new_window_pos, ImGuiCond_FirstUseEver);
+    //   ImVec2 window_size = ImVec2(250, 330); // Example size, change as needed
+    //   ImGui::SetNextWindowSize(window_size, ImGuiCond_FirstUseEver);
+
+    //   ImGui::Begin("SSGD Methods Timing Results", &show_new_window);
+
+    //   // Display the label "Sources"
+    //   ImGui::PushFont(lato_bold);
+    //   ImGui::Text("Sources:");
+    //   ImGui::PopFont();
+    //   // Iterate over the gs.sources to display each source vertex ID
+    //   for (uint i = 0; i < gs.sources_heat.size(); ++i) {
+    //     ImGui::Text("Vertex ID: %u", gs.sources_heat[i]);
+    //   }
+    //   ImGui::Text("");
+
+    //   ImGui::SeparatorText("Exact Polyhedral Methods");
+    //   ImGui::Text("VTP geodesic time: %.2f ms", gs.vtp_geodesic_time);
+    //   ImGui::Text("Trettner geodesic time: %.2f ms", gs.trettner_geodesic_time);
+
+    //   ImGui::SeparatorText("PDE-Based Methods");
+    //   ImGui::Text("Heat time: %.2f ms", gs.time_heat);
+
+    //   ImGui::SeparatorText("Graph-Based Methods");
+    //   ImGui::Text("GeoTangle graph time: %.2f ms", gs.geotangle_graph_time);
+    //   ImGui::Text("GeoTangle geodesic time: %.2f ms",
+    //               gs.geotangle_geodesic_time);
+    //   ImGui::Text("Edge graph time: %.2f ms", gs.edge_graph_time);
+    //   ImGui::Text("Edge geodesic time: %.2f ms", gs.edge_geodesic_time);
+    //   ImGui::Text("Extended graph time: %.2f ms", gs.extended_graph_time);
+    //   ImGui::Text("Extended geodesic time: %.2f ms", gs.extended_geodesic_time);
+
+    //   ImGui::End();
+    // }
+
     if (show_new_window) {
-      // Assuming the main window is positioned at (0, 0) and covers the whole
-      // screen and considering the sidebar width
-      float sidebar_width =
-          gui.side_bar_width *
-          1500; // Adjust this if side_bar_width is not a ratio
-      ImVec2 new_window_pos = ImVec2(
-          sidebar_width + 800,
-          25); // Top-right corner of the main GUI, right after the sidebar
+      float sidebar_width = gui.side_bar_width * 1500;
+      ImVec2 new_window_pos = ImVec2(sidebar_width + 600, 25);
+      ImVec2 window_size = ImVec2(400, 200); 
 
       ImGui::SetNextWindowPos(new_window_pos, ImGuiCond_FirstUseEver);
-      ImVec2 window_size = ImVec2(250, 330); // Example size, change as needed
       ImGui::SetNextWindowSize(window_size, ImGuiCond_FirstUseEver);
 
       ImGui::Begin("SSGD Methods Timing Results", &show_new_window);
 
-      // Display the label "Sources"
-      ImGui::PushFont(lato_bold);
-      ImGui::Text("Sources:");
-      ImGui::PopFont();
-      // Iterate over the gs.sources to display each source vertex ID
-      for (uint i = 0; i < gs.sources_heat.size(); ++i) {
-        ImGui::Text("Vertex ID: %u", gs.sources_heat[i]);
+      // Define the table headers
+      if (ImGui::BeginTable("TimingResults", 4)) {
+          ImGui::TableSetupColumn("Method");
+          ImGui::TableSetupColumn("Load (ms)");
+          ImGui::TableSetupColumn("Preprocess (ms)");
+          ImGui::TableSetupColumn("Query (ms)");
+          ImGui::TableHeadersRow();
+
+          // VTP Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("VTP");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.vtp_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.vtp_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.vtp_query);
+
+          // Trettner Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("Trettner");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.trettner_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.trettner_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.trettner_query);
+
+          // Heat Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("Heat");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.heat_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.heat_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.heat_query);
+
+          // GeoTangle Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("GeoTangle");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.geotangle_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.geotangle_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.geotangle_query);
+
+          // Edge Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("Edge");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.edge_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.edge_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.edge_query);
+
+          // Extended Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("Extended");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.extended_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.extended_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.extended_query);
+
+          ImGui::EndTable();
       }
-      ImGui::Text("");
 
-      ImGui::SeparatorText("Exact Polyhedral Methods");
-      ImGui::Text("VTP geodesic time: %.2f ms", gs.vtp_geodesic_time);
-      ImGui::Text("Trettner geodesic time: %.2f ms", gs.trettner_geodesic_time);
+    ImGui::End();
+}
 
-      ImGui::SeparatorText("PDE-Based Methods");
-      ImGui::Text("Heat time: %.2f ms", gs.time_heat);
-
-      ImGui::SeparatorText("Graph-Based Methods");
-      ImGui::Text("GeoTangle graph time: %.2f ms", gs.geotangle_graph_time);
-      ImGui::Text("GeoTangle geodesic time: %.2f ms",
-                  gs.geotangle_geodesic_time);
-      ImGui::Text("Edge graph time: %.2f ms", gs.edge_graph_time);
-      ImGui::Text("Edge geodesic time: %.2f ms", gs.edge_geodesic_time);
-      ImGui::Text("Extended graph time: %.2f ms", gs.extended_graph_time);
-      ImGui::Text("Extended geodesic time: %.2f ms", gs.extended_geodesic_time);
-
-      ImGui::End();
-    }
 
     // In your main function or GUI rendering loop
     if (progress < 1.0f) {
@@ -384,8 +447,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
 
       ImGui::Begin("Graph Construction Progress");
-      ImGui::ProgressBar(progress.load(), ImVec2(-1.0f, 0.0f),
-                         progress > 1.0f ? "Done" : "Loading...");
+      ImGui::ProgressBar(progress.load(), ImVec2(-1.0f, 0.0f), progress > 1.0f ? "Done" : "Loading...");
       ImGui::End();
     }
 
@@ -418,8 +480,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PopFont();
       // Assuming Load_mesh successfully loads the mesh into gs.m
       int numVertices = gs.m.num_verts();
-      int numFaces =
-          gs.m.num_polys(); // or num_faces() depending on your mesh type
+      int numFaces = gs.m.num_polys(); // or num_faces() depending on your mesh type
 
       ImGui::Text("Number of vertices: %d", numVertices);
       ImGui::Text("Number of faces: %d", numFaces);
@@ -655,43 +716,22 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         switch (gs.ssgd_method) {
 
         case State::VTP: {
-          // gs.field = SSGD_VTP(gs.m, gs.sources, gs.vtp_geodesic_time);
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          VTPSolver solver;
-          solver.load(gs.coords, gs.tris);
-          vector<double> res;
-          solver.query(gs.sources[0], res, gs.field);
+          // load() and preprocess() in init_methods()
+          gs.vtp_solver.query(gs.sources[0], gs.res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::TRETTNER: {
-          // HalfEdge mesh = HEInit(gs.mesh_path, gs.sources);
-          // gs.field = distance_field_trettner(mesh, gs.sources, gs.trettner_geodesic_time); 
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          TrettnerSolver solver(gs.mesh_path);
-          solver.load(gs.coords, gs.tris);
-          vector<double> res;
-          solver.query(gs.sources[0], res, gs.field);
+          gs.trettner_solver.query(gs.sources[0], gs.res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::HEAT: {
-          // gs.field = SSGD_Heat(gs.m, gs.prefactored_matrices, gs.sources_heat, gs.time_heat);
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          HeatSolver solver;
-          solver.load(gs.coords, gs.tris);
-          vector<double> res;
-          solver.query(gs.sources[0], res, gs.field);
+          gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
@@ -703,45 +743,21 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::GEOTANGLE: {
-          // gs.field = SSGD_GeoTangle(gs.m, gs.solver_geo, gs.sources, gs.geotangle_geodesic_time);
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          GeotangleSolver solver;
-          solver.load(gs.coords, gs.tris);
-          solver.preprocess();
-          vector<double> res;
-          solver.query(gs.sources[0], res, gs.field);
+          gs.geotangle_solver.query(gs.sources[0], gs.res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::EDGE: {
-          // gs.field = SSGD_Edge(gs.m, gs.solver_edge, gs.sources, gs.edge_geodesic_time);
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          EdgeSolver solver;
-          solver.load(gs.coords, gs.tris);
-          solver.preprocess();
-          vector<double> res;
-          solver.query(gs.sources[0], res, gs.field);
+          gs.edge_solver.query(gs.sources[0], gs.res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::EXTENDED: {
-          // gs.field = SSGD_Extended(gs.m, gs.primal_solver_extended, gs.sources, gs.extended_geodesic_time);
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          ExtendedSolver solver;
-          solver.load(gs.coords, gs.tris);
-          solver.set_k(3);
-          vector<double> res;
-          solver.query(gs.sources[0], res, gs.field);
+          gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
@@ -771,12 +787,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources_heat.clear();
       gs.sources.clear();
 
-      gs.time_heat = 0.0;
-      gs.vtp_geodesic_time = 0.0;
-      gs.geotangle_geodesic_time = 0.0;
-      gs.edge_geodesic_time = 0.0;
-      gs.extended_geodesic_time = 0.0;
-      gs.trettner_geodesic_time = 0.0;
+      // gs.time_heat = 0.0;
+      // gs.vtp_geodesic_time = 0.0;
+      // gs.geotangle_geodesic_time = 0.0;
+      // gs.edge_geodesic_time = 0.0;
+      // gs.extended_geodesic_time = 0.0;
+      // gs.trettner_geodesic_time = 0.0;
+
+      gs.res = vector<double>();
 
       // Reset the scalar field
       for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
@@ -847,19 +865,6 @@ int main(int argc, char **argv) {
     Load_mesh(s, gui, gs);
   }
 
-  // Construct the graph for geotangle and edge methods without threading
-  // graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
-  // gs.primal_solver_extended, gs.dual_solver_extended,
-  //                    gs.geotangle_graph_time, gs.edge_graph_time,
-  //                    gs.extended_graph_time);
-
-  // Start the graph construction in a separate thread
-  // std::thread graph_thread([&]() {
-  //   graph_construction(gs.m, gs.solver_geo, gs.solver_edge,
-  //                      gs.primal_solver_extended, gs.dual_solver_extended,
-  //                      gs.geotangle_graph_time, gs.edge_graph_time,
-  //                      gs.extended_graph_time, progress);
-  // });
   std::thread graph_thread([&]() { init_methods(gs); });
 
   // Launch the GUI
