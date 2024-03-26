@@ -69,6 +69,9 @@ struct State {
   // Cache for Heat method
   GeodesicsCache prefactored_matrices;
 
+  // K for extended
+  int k;
+
   // Sources for SSGD
   std::vector<uint> sources_heat;
   vector<int> sources;
@@ -127,6 +130,8 @@ struct State {
 
     mesh_path = "";
     mesh = HalfEdge();
+
+    k = 3;
   }
 };
 
@@ -640,6 +645,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       if (ImGui::RadioButton("Extended  ", gs.ssgd_method == State::EXTENDED)) {
         gs.ssgd_method = State::EXTENDED;
       }
+      ImGui::SameLine();
+      float width = 100.0f;
+      ImGui::SetNextItemWidth(width);
+      ImGui::InputInt("k", &gs.k, 1, 10); // Add an input integer for parameter k
+      gs.k = std::max(gs.k, 1); // Ensure k is at least 1
+      // Every time I click on "+" in this input int print k 
+    
+
 
       ImGui::TreePop();
     } else {
