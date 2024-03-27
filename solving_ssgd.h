@@ -217,6 +217,7 @@ public:
   
   void set_k(const int new_k, const bool compute_solver = true) {
     k = new_k;
+    cout << "K in the function: " << k << endl;
     if (compute_solver) {
       if (!dual_solver_computed) {
         dual_solver = make_dual_geodesic_solver(m);

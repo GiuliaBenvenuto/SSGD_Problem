@@ -26,6 +26,9 @@ ImFont *lato_bold = nullptr;
 ImFont *lato_regular = nullptr;
 ImFont *lato_bold_title = nullptr;
 atomic<float> progress(0.0f);
+bool isSettingK = false;
+atomic<bool> isSolverThreadRunning(false);
+
 
 
 //:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR GUI):::::::::::::::::::::::::::::::
@@ -71,6 +74,7 @@ struct State {
 
   // K for extended
   int k;
+  int prev_k;
 
   // Sources for SSGD
   std::vector<uint> sources_heat;
@@ -132,6 +136,7 @@ struct State {
     mesh = HalfEdge();
 
     k = 3;
+    prev_k = 3;
   }
 };
 
@@ -651,7 +656,15 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::InputInt("k", &gs.k, 1, 10); // Add an input integer for parameter k
       gs.k = std::max(gs.k, 1); // Ensure k is at least 1
       // Every time I click on "+" in this input int print k 
-    
+      
+      // if(gs.k != gs.prev_k) {
+      //   cout << "k has changed to: " << gs.k << endl;
+      //   gs.prev_k = gs.k;
+      // }
+
+
+      
+
 
 
       ImGui::TreePop();
@@ -747,14 +760,49 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::EXTENDED: {
-          gs.tic = std::chrono::steady_clock::now();
-          gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
-          gs.toc = std::chrono::steady_clock::now();
-          gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+          if (gs.k != gs.prev_k) {
+            cout << "k has changed to: " << gs.k << endl;
+            isSettingK = true; // Show the popup
+            isSolverThreadRunning = true; // Solver thread is running
 
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+            // Start a new thread to update the solver
+            std::thread solver_thread([&gs, isSolverThreadRunningPtr = &isSolverThreadRunning]() {
+                gs.tic = std::chrono::steady_clock::now();
+                gs.extended_solver.set_k(gs.k); // This is the blocking call
+                gs.toc = std::chrono::steady_clock::now();
+
+                // Calculate the time taken for preprocessing
+                gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+                fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+                gs.prev_k = gs.k;
+              
+            });
+            isSettingK = false;
+            isSolverThreadRunning = false;
+
+            // Set the flag to false to hide the popup
+            solver_thread.join(); // Detach the thread to allow it to run independently
+
+            gs.tic = std::chrono::steady_clock::now();
+            gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
+            gs.toc = std::chrono::steady_clock::now();
+            gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+            
+            gs.field.copy_to_mesh(gs.m);
+            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          } else {
+            gs.tic = std::chrono::steady_clock::now();
+            gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
+            gs.toc = std::chrono::steady_clock::now();
+            gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+
+            gs.field.copy_to_mesh(gs.m);
+            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+          }
           break;
         }
 
@@ -764,6 +812,20 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
       }
     }
+
+    if (isSettingK) {
+            ImGui::OpenPopup("Updating Solver");
+        }
+
+        if (ImGui::BeginPopupModal("Updating Solver", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("Updating solver for k = %d", gs.k);
+            // Keep the popup open if isSettingK is true, close it otherwise
+            if (!isSettingK) {
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+
 
     // Popup modal for warning if no source is selected
     if (ImGui::BeginPopupModal("Warning", NULL,
