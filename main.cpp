@@ -14,6 +14,7 @@
 #include <fstream>
 #include <imgui.h>
 #include <thread>
+#include <future>
 using namespace std;
 using namespace cinolib;
 
@@ -28,6 +29,7 @@ ImFont *lato_bold_title = nullptr;
 atomic<float> progress(0.0f);
 bool isSettingK = false;
 atomic<bool> isSolverThreadRunning(false);
+std::future<void> solver_future;
 
 
 
@@ -64,6 +66,9 @@ struct State {
   Color vert_color;
   Color poly_color;
 
+  // Width of the Inputs
+  float width;
+
   // SSGD Method
   enum SSGDMethod {VTP, TRETTNER, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED} ssgd_method;
   
@@ -75,6 +80,10 @@ struct State {
   // K for extended
   int k;
   int prev_k;
+
+  // Time for heat
+  float heat_time;
+  float heat_time_prev;
 
   // Sources for SSGD
   std::vector<uint> sources_heat;
@@ -90,6 +99,7 @@ struct State {
   GeotangleSolver   geotangle_solver;
   EdgeSolver        edge_solver;
   ExtendedSolver    extended_solver;
+  
 
   // Timer
   std::chrono::steady_clock::time_point tic;
@@ -119,6 +129,8 @@ struct State {
     vert_color = Color::WHITE();
     poly_color = Color::WHITE();
 
+    width = 100.0f;
+
     render_mode = State::RENDER_SMOOTH;
     ssgd_method = State::VTP;
 
@@ -137,6 +149,8 @@ struct State {
 
     k = 3;
     prev_k = 3;
+    heat_time = 1.0;
+    heat_time_prev = 1.0;
   }
 };
 
@@ -629,9 +643,24 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("PDE-Based Methods");
       ImGui::PopFont();
+      // if (ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
+      //   gs.ssgd_method = State::HEAT;
+      // }
+      // ImGui::SameLine(0, 60);
+      // ImGui::SetNextItemWidth(gs.width);
+      // ImGui::InputFloat("param", &gs.heat_time, 0.1f, 1.0f, "%.3f");
+      // Define two columns
+      ImGui::Columns(2, nullptr, false);
+      // First column for the radio button
       if (ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
-        gs.ssgd_method = State::HEAT;
+          gs.ssgd_method = State::HEAT;
       }
+      ImGui::NextColumn();
+      // Second column for the InputFloat
+      ImGui::SetNextItemWidth(gs.width); 
+      ImGui::InputFloat("t", &gs.heat_time, 0.1f, 1.0f, "%.3f");
+      ImGui::Columns(1);
+
       if (ImGui::RadioButton("FMM  ", gs.ssgd_method == State::FMM)) {
         gs.ssgd_method = State::FMM;
       }
@@ -647,25 +676,18 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       if (ImGui::RadioButton("Edge  ", gs.ssgd_method == State::EDGE)) {
         gs.ssgd_method = State::EDGE;
       }
+
+      ImGui::Columns(2, nullptr, false);
+      // First column for the radio button
       if (ImGui::RadioButton("Extended  ", gs.ssgd_method == State::EXTENDED)) {
         gs.ssgd_method = State::EXTENDED;
       }
-      ImGui::SameLine();
-      float width = 100.0f;
-      ImGui::SetNextItemWidth(width);
+      ImGui::NextColumn();
+      // Second column for the InputFloat
+      ImGui::SetNextItemWidth(gs.width); 
       ImGui::InputInt("k", &gs.k, 1, 10); // Add an input integer for parameter k
-      gs.k = std::max(gs.k, 1); // Ensure k is at least 1
-      // Every time I click on "+" in this input int print k 
-      
-      // if(gs.k != gs.prev_k) {
-      //   cout << "k has changed to: " << gs.k << endl;
-      //   gs.prev_k = gs.k;
-      // }
-
-
-      
-
-
+      ImGui::Columns(1);
+      gs.k = std::max(gs.k, 1);
 
       ImGui::TreePop();
     } else {
@@ -719,6 +741,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::HEAT: {
+          if (gs.heat_time != gs.heat_time_prev) {
+            cout << "Heat time has changed to: " << gs.heat_time << endl;
+            gs.heat_solver.set_t(gs.heat_time);
+            gs.heat_time_prev = gs.heat_time;
+          }
+
           gs.tic = std::chrono::steady_clock::now();
           gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
           gs.toc = std::chrono::steady_clock::now();
@@ -762,9 +790,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         case State::EXTENDED: {
           if (gs.k != gs.prev_k) {
             cout << "k has changed to: " << gs.k << endl;
-            isSettingK = true; // Show the popup
-            isSolverThreadRunning = true; // Solver thread is running
-
+            isSettingK = true;
+            
             // Start a new thread to update the solver
             std::thread solver_thread([&gs, isSolverThreadRunningPtr = &isSolverThreadRunning]() {
                 gs.tic = std::chrono::steady_clock::now();
@@ -774,38 +801,27 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
                 // Calculate the time taken for preprocessing
                 gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
                 fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+
                 gs.prev_k = gs.k;
+                isSettingK = false;
+                *isSolverThreadRunningPtr = false;
               
             });
-            isSettingK = false;
-            isSolverThreadRunning = false;
-
-            // Set the flag to false to hide the popup
-            solver_thread.join(); // Detach the thread to allow it to run independently
-
-            gs.tic = std::chrono::steady_clock::now();
-            gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
-            gs.toc = std::chrono::steady_clock::now();
-            gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
-            
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
-          } else {
-            gs.tic = std::chrono::steady_clock::now();
-            gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
-            gs.toc = std::chrono::steady_clock::now();
-            gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
-
-            gs.field.copy_to_mesh(gs.m);
-            gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
+            solver_thread.join();
           }
+
+          gs.tic = std::chrono::steady_clock::now();
+          gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
           break;
         }
-
+        
         default:
           cout << "No SSGD method selected" << endl;
           break;
@@ -813,18 +829,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       }
     }
 
-    if (isSettingK) {
-            ImGui::OpenPopup("Updating Solver");
-        }
-
-        if (ImGui::BeginPopupModal("Updating Solver", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
-            ImGui::Text("Updating solver for k = %d", gs.k);
-            // Keep the popup open if isSettingK is true, close it otherwise
-            if (!isSettingK) {
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::EndPopup();
-        }
 
 
     // Popup modal for warning if no source is selected
