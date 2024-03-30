@@ -1,2 +1,2 @@
-add_subdirectory(libigl)
+add_subdirectory(geometry-central)
 
