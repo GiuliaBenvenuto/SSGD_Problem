@@ -741,6 +741,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::HEAT: {
+          
           if (gs.heat_time != gs.heat_time_prev) {
             cout << "Heat time has changed to: " << gs.heat_time << endl;
             gs.heat_solver.set_t(gs.heat_time);
