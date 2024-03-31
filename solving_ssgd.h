@@ -4,6 +4,7 @@
 #include "SSGD_methods/Graph-based_methods/extended_solver.h"
 #include "SSGD_methods/Trettner/trettner.h"
 #include "SSGD_methods/VTP/vtp_wrapper.h"
+#include "SSGD_methods/heat/gc_wrapper.h"
 #include <cinolib/geodesics.h>
 
 #include <cinolib/geometry/vec_mat.h>
@@ -141,6 +142,47 @@ public:
       cout << "Heat computation without cache." << endl;
     }
   }
+
+};
+
+// ---------- Heat GEOMETRY CENTRAL ----------
+class HeatSolverGC : public GeodesicMethod {
+public:
+  HeatSolverGC() {}
+  ~HeatSolverGC() {}
+
+  //DrawableTrimesh<> m;
+  //GeodesicsCache prefactored_matrices;
+  //bool cache = false;
+  //float time_scalar = 1.0;
+  flipout_mesh flipout_m;
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    // m = DrawableTrimesh(coords, tris);
+    flipout_m = make_flipout_mesh(tris, coords);
+  }
+
+  // void preprocess() override {}
+
+  // void set_t(const float new_t) {
+  //   time_scalar = new_t;
+  // }
+
+  // void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+  //   if (prefactored_matrices.heat_flow_cache != NULL) {
+  //     cache = true;
+  //   }
+  //   std::vector<uint> vids;
+  //   vids.push_back(static_cast<uint>(vid));
+  //   //sc = compute_geodesics_amortized(m, prefactored_matrices, vids);
+  //   sc = compute_geodesics_amortized(m, prefactored_matrices, vids, COTANGENT, time_scalar);
+
+  //   if (cache) {
+  //   cout << "Heat computation with cache." << endl;
+  //   } else {
+  //     cout << "Heat computation without cache." << endl;
+  //   }
+  // }
 
 };
 
