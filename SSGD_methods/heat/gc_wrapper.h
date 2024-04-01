@@ -1,6 +1,7 @@
-#ifndef GC_WRAPPER
-#define GC_WRAPPER
+#ifndef FLIPOUT_GC_WRAPPER_H
+#define FLIPOUT_GC_WRAPPER_H
 
+#pragma once
 #include <geometrycentral/surface/heat_method_distance.h>
 #include <geometrycentral/surface/edge_length_geometry.h>
 #include <geometrycentral/surface/flip_geodesics.h>
@@ -12,7 +13,6 @@
 #include <geometrycentral/utilities/timing.h>
 #include <cinolib/geometry/vec_mat.h>
 
-#endif
 
 //using namespace yocto;
 using namespace cinolib;
@@ -41,8 +41,8 @@ flipout_mesh make_flipout_mesh(
     const std::vector<vec3d>& positions);
 
 // Convert vector<uint> to and vector<vec3d> to vec3f
-std::vector<vec3i> convertIndicesToVec3i(const std::vector<uint>& indices);
-std::vector<vec3f> convertPositionsToVec3f(const std::vector<vec3d>& positions);
+//std::vector<vec3i> convertIndicesToVec3i(const std::vector<uint>& indices);
+//std::vector<vec3f> convertPositionsToVec3f(const std::vector<vec3d>& positions);
 
 
 flipout_mesh load_flipout_mesh(const std::string& filename);
@@ -74,3 +74,5 @@ flipout_mesh load_flipout_mesh(const std::string& filename);
 // }
 
 }
+
+#endif

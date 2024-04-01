@@ -16,6 +16,7 @@
 
 using namespace std;
 using namespace cinolib;
+using namespace flipout;
 
 // // Heat method
 // ScalarField SSGD_Heat(DrawableTrimesh<> &m,
@@ -158,17 +159,38 @@ public:
   flipout_mesh flipout_m;
 
   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
-    // m = DrawableTrimesh(coords, tris);
-    flipout_m = make_flipout_mesh(tris, coords);
+    cout << "Loading flipout mesh." << endl;
+    if (coords.size() % 3 != 0) {
+        throw std::runtime_error("Coordinates vector size is not a multiple of 3.");
+    }
+
+    std::vector<vec3d> converted_coords;
+    converted_coords.reserve(coords.size() / 3);
+
+    for (size_t i = 0; i < coords.size(); i += 3) {
+        // Assuming vec3d can be constructed from three doubles:
+        converted_coords.emplace_back(coords[i], coords[i + 1], coords[i + 2]);
+    }
+    cout << "Call to make_flipout_mesh." << endl;
+    flipout_m = make_flipout_mesh(tris, converted_coords);
+    cout << "Flipout mesh finished." << endl;
+
+    // Check if flipout_m is empty
+    if (!flipout_m.topology || flipout_m.topology->nVertices() == 0) {
+        cout << "Flipout mesh is empty." << endl;
+    } else {
+        cout << "Flipout mesh has vertices." << endl;
+    }
+    
   }
 
-  // void preprocess() override {}
+  void preprocess() override {}
 
   // void set_t(const float new_t) {
   //   time_scalar = new_t;
   // }
 
-  // void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
   //   if (prefactored_matrices.heat_flow_cache != NULL) {
   //     cache = true;
   //   }
@@ -182,7 +204,7 @@ public:
   //   } else {
   //     cout << "Heat computation without cache." << endl;
   //   }
-  // }
+  }
 
 };
 

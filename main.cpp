@@ -15,11 +15,16 @@
 #include <imgui.h>
 #include <thread>
 #include <future>
-using namespace std;
-using namespace cinolib;
 
 // Compute SSGD
 #include "solving_ssgd.h"
+#include "SSGD_methods/heat/gc_wrapper.h"
+
+using namespace std;
+using namespace cinolib;
+using namespace flipout;
+
+
 
 //------ Global variable ------
 // Fonts
@@ -96,9 +101,11 @@ struct State {
   VTPSolver         vtp_solver;
   TrettnerSolver    trettner_solver; 
   HeatSolver        heat_solver;
+  HeatSolverGC      heat_solver_gc;
   GeotangleSolver   geotangle_solver;
   EdgeSolver        edge_solver;
   ExtendedSolver    extended_solver;
+
   
 
   // Timer
@@ -741,21 +748,26 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::HEAT: {
+          // ----- HEAT WITH GEOMETRY CENTRAL -----
+          cout << "Load()" << endl;
+          gs.heat_solver_gc.load(gs.coords, gs.tris);
           
-          if (gs.heat_time != gs.heat_time_prev) {
-            cout << "Heat time has changed to: " << gs.heat_time << endl;
-            gs.heat_solver.set_t(gs.heat_time);
-            gs.heat_time_prev = gs.heat_time;
-          }
 
-          gs.tic = std::chrono::steady_clock::now();
-          gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
-          gs.toc = std::chrono::steady_clock::now();
-          gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
+          // ----- HEAT WITH CINOLIB -----
+          // if (gs.heat_time != gs.heat_time_prev) {
+          //   cout << "Heat time has changed to: " << gs.heat_time << endl;
+          //   gs.heat_solver.set_t(gs.heat_time);
+          //   gs.heat_time_prev = gs.heat_time;
+          // }
 
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          // gs.tic = std::chrono::steady_clock::now();
+          // gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
+          // gs.toc = std::chrono::steady_clock::now();
+          // gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          // fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
+
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
@@ -921,7 +933,7 @@ int main(int argc, char **argv) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
-    string s = "../data/cinolib/bunny.obj";
+    string s = "../data/cinolib/3holes.obj";
     // string s = "../data/Trettner/69930.obj";
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
