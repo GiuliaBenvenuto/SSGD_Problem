@@ -5,8 +5,10 @@
 #include "SSGD_methods/Trettner/trettner.h"
 #include "SSGD_methods/VTP/vtp_wrapper.h"
 #include "SSGD_methods/heat/gc_wrapper.h"
-#include <cinolib/geodesics.h>
+#include <geometrycentral/surface/heat_method_distance.h>
 
+#include <geometrycentral/surface/intrinsic_geometry_interface.h>
+#include <cinolib/geodesics.h>
 #include <cinolib/geometry/vec_mat.h>
 #include <cinolib/how_many_seconds.h>
 #include <cinolib/meshes/drawable_trimesh.h>
@@ -153,38 +155,42 @@ public:
   ~HeatSolverGC() {}
 
   //DrawableTrimesh<> m;
-  //GeodesicsCache prefactored_matrices;
-  //bool cache = false;
   //float time_scalar = 1.0;
   flipout_mesh flipout_m;
+  unique_ptr<HeatMethodDistanceSolver> heatSolverGC;
+
+  //IntrinsicGeometryInterface intrinsicGeometry;
 
   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
     cout << "Loading flipout mesh." << endl;
-    if (coords.size() % 3 != 0) {
-        throw std::runtime_error("Coordinates vector size is not a multiple of 3.");
-    }
 
+    // from vector<double> to vector<vec3d>
     std::vector<vec3d> converted_coords;
     converted_coords.reserve(coords.size() / 3);
 
     for (size_t i = 0; i < coords.size(); i += 3) {
-        // Assuming vec3d can be constructed from three doubles:
         converted_coords.emplace_back(coords[i], coords[i + 1], coords[i + 2]);
     }
+
     cout << "Call to make_flipout_mesh." << endl;
     flipout_m = make_flipout_mesh(tris, converted_coords);
     cout << "Flipout mesh finished." << endl;
 
-    // Check if flipout_m is empty
-    if (!flipout_m.topology || flipout_m.topology->nVertices() == 0) {
-        cout << "Flipout mesh is empty." << endl;
-    } else {
-        cout << "Flipout mesh has vertices." << endl;
-    }
-    
   }
 
-  void preprocess() override {}
+  void preprocess() override {
+    // Ensure that the mesh and geometry are loaded and valid
+    if (!flipout_m.topology || !flipout_m.geometry) {
+        cerr << "Mesh or geometry not initialized." << endl;
+        return;
+    } else {
+      cout << "OK GC." << endl;
+    }
+
+    // Initialize the heat method distance solver
+    // Assuming flipout_m.geometry is a valid IntrinsicGeometryInterface
+    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*flipout_m.geometry);
+  }
 
   // void set_t(const float new_t) {
   //   time_scalar = new_t;

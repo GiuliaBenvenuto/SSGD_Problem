@@ -60,41 +60,6 @@ flipout_mesh make_flipout_mesh(
   return result;
 }
 
-
-// ----------- VERSION WITH TWO FUNCTIONS TO CONVERT TO THE REQUIRED FORMAT ------------
-// // flip_out_mesh taking in vector<uint> and vector<vec3d>
-// flipout_mesh make_flipout_mesh(
-//     const std::vector<uint>& indices, 
-//     const std::vector<vec3d>& positions) {
-    
-//     // Convert indices and positions to the required format back with the 
-//     // two new functions 
-//     auto triangles = convertIndicesToVec3i(indices);
-//     auto positions_float = convertPositionsToVec3f(positions);
-
-//     auto result = flipout_mesh{};
-
-//     // Copy mesh data to compliant format
-//     auto polygons = std::vector<std::vector<size_t>>(triangles.size());
-//     auto vertex_coordinates = std::vector<Vector3>(positions_float.size());
-
-//     for (size_t i = 0; i < polygons.size(); i++) {
-//         auto& tr = triangles[i];
-//         polygons[i] = {(size_t)tr.x, (size_t)tr.y, (size_t)tr.z};
-//     }
-
-//     for (size_t i = 0; i < vertex_coordinates.size(); i++) {
-//         auto& p = positions_float[i];
-//         vertex_coordinates[i] = {p.x, p.y, p.z};
-//     }
-
-//     // Assuming makeManifoldSurfaceMeshAndGeometry is defined elsewhere
-//     std::tie(result.topology, result.geometry) =
-//         makeManifoldSurfaceMeshAndGeometry(polygons, vertex_coordinates);
-
-//     return result;
-// }
-
 // Convert vector<uint> to vector<vec3i>
 // std::vector<vec3i> convertIndicesToVec3i(const std::vector<uint>& indices) {
 //     std::vector<vec3i> triangles;

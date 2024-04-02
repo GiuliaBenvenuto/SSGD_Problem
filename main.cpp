@@ -751,6 +751,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           // ----- HEAT WITH GEOMETRY CENTRAL -----
           cout << "Load()" << endl;
           gs.heat_solver_gc.load(gs.coords, gs.tris);
+          cout << "Preprocess()" << endl;
+          gs.heat_solver_gc.preprocess();
           
 
           // ----- HEAT WITH CINOLIB -----
