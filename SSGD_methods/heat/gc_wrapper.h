@@ -19,14 +19,14 @@ using namespace cinolib;
 using namespace geometrycentral;
 using namespace geometrycentral::surface;
 
-namespace flipout {
+namespace gcHeatWrapper {
 
-struct flipout_mesh {
+struct gc_mesh {
   std::unique_ptr<ManifoldSurfaceMesh>    topology;
   std::unique_ptr<VertexPositionGeometry> geometry;
 };
 
-struct flipout_path_stats {
+struct gc_path_stats {
   double initial_guess = 0;
   double shortening    = 0;
 };
@@ -36,7 +36,7 @@ struct flipout_path_stats {
 // I have to change this function such that it takes in input vector<uint> and vector<vec3d>
 // flipout_mesh make_flipout_mesh(
 //     const std::vector<vec3i>& triangles, const std::vector<vec3f>& positions);
-flipout_mesh make_flipout_mesh(
+gc_mesh make_gc_mesh(
     const std::vector<uint>& indices, 
     const std::vector<vec3d>& positions);
 
@@ -45,7 +45,7 @@ flipout_mesh make_flipout_mesh(
 //std::vector<vec3f> convertPositionsToVec3f(const std::vector<vec3d>& positions);
 
 
-flipout_mesh load_flipout_mesh(const std::string& filename);
+gc_mesh load_gc_mesh(const std::string& filename);
 
 // Convert to world space positions.
 // std::vector<vec3f> path_positions(FlipEdgeNetwork* edge_network);

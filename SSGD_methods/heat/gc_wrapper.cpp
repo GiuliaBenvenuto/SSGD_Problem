@@ -8,7 +8,7 @@ using namespace cinolib;
 using namespace geometrycentral;
 using namespace geometrycentral::surface;
 
-namespace flipout {
+namespace gcHeatWrapper {
 
 // flipout_mesh make_flipout_mesh(
 //     const std::vector<vec3i>& triangles, const std::vector<vec3f>& positions) {
@@ -31,11 +31,11 @@ namespace flipout {
 //   return result;
 // }
 
-flipout_mesh make_flipout_mesh(
+gc_mesh make_gc_mesh(
     const std::vector<uint>& indices, 
     const std::vector<vec3d>& positions) {
   
-  auto result = flipout_mesh{};
+  auto result = gc_mesh{};
 
   // Assuming that every three indices in the 'indices' array form a triangle
   size_t numTriangles = indices.size() / 3;
@@ -83,8 +83,8 @@ flipout_mesh make_flipout_mesh(
 // }
 // --------------------------------------------------------------
 
-flipout_mesh load_flipout_mesh(const std::string& filename) {
-  auto result                                = flipout_mesh{};
+gc_mesh load_gc_mesh(const std::string& filename) {
+  auto result                                = gc_mesh{};
   std::tie(result.topology, result.geometry) = readManifoldSurfaceMesh(
       filename);
   return result;

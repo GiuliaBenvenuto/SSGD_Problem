@@ -18,7 +18,7 @@
 
 using namespace std;
 using namespace cinolib;
-using namespace flipout;
+using namespace gcHeatWrapper;
 
 // // Heat method
 // ScalarField SSGD_Heat(DrawableTrimesh<> &m,
@@ -156,15 +156,13 @@ public:
 
   //DrawableTrimesh<> m;
   //float time_scalar = 1.0;
-  flipout_mesh flipout_m;
+  gc_mesh gc_m;
   unique_ptr<HeatMethodDistanceSolver> heatSolverGC;
   double time_scalar = 1.0;
 
   //IntrinsicGeometryInterface intrinsicGeometry;
 
   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
-    cout << "Loading flipout mesh." << endl;
-
     // from vector<double> to vector<vec3d>
     std::vector<vec3d> converted_coords;
     converted_coords.reserve(coords.size() / 3);
@@ -172,30 +170,26 @@ public:
     for (size_t i = 0; i < coords.size(); i += 3) {
         converted_coords.emplace_back(coords[i], coords[i + 1], coords[i + 2]);
     }
-
-    cout << "Call to make_flipout_mesh." << endl;
-    flipout_m = make_flipout_mesh(tris, converted_coords);
-    cout << "Flipout mesh finished." << endl;
+    gc_m = make_gc_mesh(tris, converted_coords);
 
   }
 
   void preprocess() override {
     // Ensure that the mesh and geometry are loaded and valid
-    if (!flipout_m.topology || !flipout_m.geometry) {
+    if (!gc_m.topology || !gc_m.geometry) {
         cerr << "Mesh or geometry not initialized." << endl;
         return;
     }
 
     // Initialize the heat method distance solver
-    // Assuming flipout_m.geometry is a valid IntrinsicGeometryInterface
-    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*flipout_m.geometry);
+    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*gc_m.geometry);
   }
 
   void set_t(const float new_t) {
     time_scalar = new_t;
     // Create the solver considering the new time scalar
     cout << "Time scalar in set_t: " << time_scalar << endl;
-    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*flipout_m.geometry, time_scalar);
+    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*gc_m.geometry, time_scalar);
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
@@ -205,18 +199,18 @@ public:
         return;
     }
     // Check if the vertex ID is valid
-    if (vid < 0 || vid >= flipout_m.topology->nVertices()) {
+    if (vid < 0 || vid >= gc_m.topology->nVertices()) {
         cerr << "Invalid vertex ID." << endl;
         return;
     }
 
-    Vertex sourceVertex = Vertex(flipout_m.topology.get(), vid);  // Convert int vid to Vertex
+    Vertex sourceVertex = Vertex(gc_m.topology.get(), vid);  // Convert int vid to Vertex
     VertexData<double> distances = heatSolverGC->computeDistance(sourceVertex);
 
     // Process the distances and update the results and ScalarField
     res.clear(); 
     res.reserve(distances.size());
-    for (Vertex v : flipout_m.topology->vertices()) {
+    for (Vertex v : gc_m.topology->vertices()) {
         double value = distances[v];
         value = 1.0 - value;
         res.push_back(value);

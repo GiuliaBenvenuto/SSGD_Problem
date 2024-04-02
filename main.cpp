@@ -22,7 +22,7 @@
 
 using namespace std;
 using namespace cinolib;
-using namespace flipout;
+using namespace gcHeatWrapper;
 
 
 
