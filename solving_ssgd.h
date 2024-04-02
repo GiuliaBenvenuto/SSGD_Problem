@@ -158,6 +158,7 @@ public:
   //float time_scalar = 1.0;
   flipout_mesh flipout_m;
   unique_ptr<HeatMethodDistanceSolver> heatSolverGC;
+  double time_scalar = 1.0;
 
   //IntrinsicGeometryInterface intrinsicGeometry;
 
@@ -183,8 +184,6 @@ public:
     if (!flipout_m.topology || !flipout_m.geometry) {
         cerr << "Mesh or geometry not initialized." << endl;
         return;
-    } else {
-      cout << "OK GC." << endl;
     }
 
     // Initialize the heat method distance solver
@@ -192,9 +191,12 @@ public:
     heatSolverGC = make_unique<HeatMethodDistanceSolver>(*flipout_m.geometry);
   }
 
-  // void set_t(const float new_t) {
-  //   time_scalar = new_t;
-  // }
+  void set_t(const float new_t) {
+    time_scalar = new_t;
+    // Create the solver considering the new time scalar
+    cout << "Time scalar in set_t: " << time_scalar << endl;
+    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*flipout_m.geometry, time_scalar);
+  }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
     // Check if the solver is initialized
@@ -223,21 +225,6 @@ public:
     // Update the ScalarField
     sc = ScalarField(res);
     sc.normalize_in_01();
-
-
-  //   if (prefactored_matrices.heat_flow_cache != NULL) {
-  //     cache = true;
-  //   }
-  //   std::vector<uint> vids;
-  //   vids.push_back(static_cast<uint>(vid));
-  //   //sc = compute_geodesics_amortized(m, prefactored_matrices, vids);
-  //   sc = compute_geodesics_amortized(m, prefactored_matrices, vids, COTANGENT, time_scalar);
-
-  //   if (cache) {
-  //   cout << "Heat computation with cache." << endl;
-  //   } else {
-  //     cout << "Heat computation without cache." << endl;
-  //   }
   }
 
 };
