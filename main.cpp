@@ -101,7 +101,6 @@ struct State {
   VTPSolver         vtp_solver;
   TrettnerSolver    trettner_solver; 
   HeatSolver        heat_solver;
-  HeatSolverGC      heat_solver_gc;
   GeotangleSolver   geotangle_solver;
   EdgeSolver        edge_solver;
   ExtendedSolver    extended_solver;
@@ -748,11 +747,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::HEAT: {
-          // ----- HEAT WITH GEOMETRY CENTRAL -----
-          cout << "Load()" << endl;
-          gs.heat_solver_gc.load(gs.coords, gs.tris);
-          cout << "Preprocess()" << endl;
-          gs.heat_solver_gc.preprocess();
+          gs.tic = std::chrono::steady_clock::now();
+          gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
+
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           
 
           // ----- HEAT WITH CINOLIB -----
@@ -935,7 +937,7 @@ int main(int argc, char **argv) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
-    string s = "../data/cinolib/3holes.obj";
+    string s = "../data/cinolib/bunny.obj";
     // string s = "../data/Trettner/69930.obj";
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
