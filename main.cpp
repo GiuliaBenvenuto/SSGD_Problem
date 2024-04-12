@@ -75,7 +75,7 @@ struct State {
   float width;
 
   // SSGD Method
-  enum SSGDMethod {VTP, TRETTNER, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED} ssgd_method;
+  enum SSGDMethod {VTP, TRETTNER, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED, LANTHIER} ssgd_method;
   
   ScalarField field;
 
@@ -104,6 +104,7 @@ struct State {
   GeotangleSolver   geotangle_solver;
   EdgeSolver        edge_solver;
   ExtendedSolver    extended_solver;
+  LanthierSolver    lanthier_solver;
 
   
 
@@ -116,6 +117,7 @@ struct State {
   double geotangle_load,  geotangle_preprocess,   geotangle_query;
   double edge_load,       edge_preprocess,        edge_query;
   double extended_load,   extended_preprocess,    extended_query;
+  double lanthier_load,   lanthier_preprocess,    lanthier_query;
 
 
   State() {
@@ -147,6 +149,7 @@ struct State {
     geotangle_load, geotangle_preprocess, geotangle_query = 0.0;
     edge_load,      edge_preprocess,       edge_query = 0.0;
     extended_load,  extended_preprocess,  extended_query = 0.0;
+    lanthier_load,  lanthier_preprocess,  lanthier_query = 0.0;
 
     res = vector<double>();
 
@@ -209,6 +212,10 @@ void fillTimeTable(State &gs, const string& method_name, double load_time, doubl
     gs.extended_load = load_time;
     gs.extended_preprocess = preprocess_time;
     gs.extended_query = query_time;
+  } else if (method_name == "Lanthier") {
+    gs.lanthier_load = load_time;
+    gs.lanthier_preprocess = preprocess_time;
+    gs.lanthier_query = query_time;
   }
 }
 
@@ -237,22 +244,25 @@ void init(GeodesicMethod &m, State &gs, string name) {
 
 void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
-  progress.store(1.0f / 6.0f);  
+  progress.store(1.0f / 7.0f);  
 
   init(gs.trettner_solver, gs, "Trettner");
-  progress.store(2.0f / 6.0f); 
+  progress.store(2.0f / 7.0f); 
 
   init(gs.heat_solver, gs, "Heat");
-  progress.store(3.0f / 6.0f);  
+  progress.store(3.0f / 7.0f);  
 
   init(gs.geotangle_solver, gs, "Geotangle");
-  progress.store(4.0f / 6.0f);  
+  progress.store(4.0f / 7.0f);  
 
   init(gs.edge_solver, gs, "Edge");
-  progress.store(5.0f / 6.0f);  
+  progress.store(5.0f / 7.0f);  
 
   init(gs.extended_solver, gs, "Extended");
-  progress.store(1.0f);         
+  progress.store(6.0f / 7.0f);      
+
+  init(gs.lanthier_solver, gs, "Lanthier");
+  progress.store(1.0f);
 }
 
 
@@ -292,6 +302,8 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.geotangle_load,  gs.geotangle_preprocess,  gs.geotangle_query = 0.0;
     gs.edge_load,       gs.edge_preprocess,       gs.edge_query = 0.0;
     gs.extended_load,   gs.extended_preprocess,   gs.extended_query = 0.0;
+    gs.lanthier_load,   gs.lanthier_preprocess,   gs.lanthier_query = 0.0;
+    
     gs.res = vector<double>();
 
     gs.mesh_path = filename;
@@ -412,6 +424,17 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           ImGui::Text("%.2f", gs.extended_preprocess);
           ImGui::TableSetColumnIndex(3);
           ImGui::Text("%.2f", gs.extended_query);
+
+          // Lanthier Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("Lanthier");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.lanthier_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.lanthier_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.lanthier_query);
 
           ImGui::EndTable();
       }
@@ -696,6 +719,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::Columns(1);
       gs.k = std::max(gs.k, 1);
 
+      if (ImGui::RadioButton("Lanthier  ", gs.ssgd_method == State::LANTHIER)) {
+        gs.ssgd_method = State::LANTHIER;
+      }
+
       ImGui::TreePop();
     } else {
       ImGui::PopFont();
@@ -843,6 +870,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
+          break;
+        }
+
+        case State::LANTHIER: {
+          cout << "Computing SSGD with Lanthier Method" << endl;
           break;
         }
         

@@ -331,6 +331,36 @@ public:
    // but the solver is empty " and stuff like that
 
 
+// ---------- Lanthier ----------
+class LanthierSolver : public GeodesicMethod {
+public:
+  LanthierSolver() {}
+  ~LanthierSolver() {}
+
+  DrawableTrimesh<> m;
+  //geodesic_solver solver;
+  //dual_geodesic_solver dual_solver;
+  //bool dual_solver_computed = false;
+  //int k = 3;
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    m = DrawableTrimesh(coords, tris);
+    cout << "Lanthier LOAD" << endl;
+  }
+  
+  void set_k(const int new_k, const bool compute_solver = true) {
+
+  }
+
+  void preprocess() override {
+    cout << "Lanthier PREPROCESS" << endl;
+  }
+
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+
+  }
+
+};
 
 
 #endif
