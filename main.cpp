@@ -874,6 +874,15 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::LANTHIER: {
+          gs.tic = std::chrono::steady_clock::now();
+          gs.lanthier_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.edge_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          //fillTimeTable(gs, "Edge", gs.edge_load, gs.edge_preprocess, gs.edge_query);
+
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
           cout << "Computing SSGD with Lanthier Method" << endl;
           break;
         }
@@ -910,6 +919,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.geotangle_query = 0.0;
       gs.edge_query = 0.0;
       gs.extended_query = 0.0;
+      gs.lanthier_query = 0.0;
 
       gs.res = vector<double>();
 
@@ -976,8 +986,9 @@ int main(int argc, char **argv) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
-    string s = "../data/cinolib/bunny.obj";
+    // string s = "../data/cinolib/bunny.obj";
     // string s = "../data/Trettner/69930.obj";
+    string s = "../data/cinolib/bunny.obj";
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   }

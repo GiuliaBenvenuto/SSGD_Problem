@@ -338,7 +338,7 @@ public:
   ~LanthierSolver() {}
 
   DrawableTrimesh<> m;
-  //geodesic_solver solver;
+  geodesic_solver solver;
   //dual_geodesic_solver dual_solver;
   //bool dual_solver_computed = false;
   //int k = 3;
@@ -354,9 +354,17 @@ public:
 
   void preprocess() override {
     cout << "Lanthier PREPROCESS" << endl;
+    solver = compute_fine_graph(m, 3);
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    // solver must be the one computed with the lanthier method
+    res = compute_geodesic_distances(solver, {vid});
+    for (auto &value : res) {
+      value = 1.0 - value;
+    }
+    sc = ScalarField(res);
+    sc.normalize_in_01();
 
   }
 
