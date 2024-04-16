@@ -32,9 +32,6 @@ ImFont *lato_bold = nullptr;
 ImFont *lato_regular = nullptr;
 ImFont *lato_bold_title = nullptr;
 atomic<float> progress(0.0f);
-bool isSettingK = false;
-atomic<bool> isSolverThreadRunning(false);
-std::future<void> solver_future;
 
 
 
@@ -75,7 +72,7 @@ struct State {
   float width;
 
   // SSGD Method
-  enum SSGDMethod {VTP, TRETTNER, HEAT, FMM, GEOTANGLE, EDGE, EXTENDED, LANTHIER} ssgd_method;
+  enum SSGDMethod {VTP, TRETTNER, HEAT, GEOTANGLE, EDGE, EXTENDED, LANTHIER} ssgd_method;
   
   ScalarField field;
 
@@ -89,6 +86,10 @@ struct State {
   // Time for heat
   double heat_time;
   double heat_time_prev;
+
+  // Number of Steiner points
+  int n_steiner;
+  int prev_n_steiner;
 
   // Sources for SSGD
   std::vector<uint> sources_heat;
@@ -158,6 +159,10 @@ struct State {
 
     k = 3;
     prev_k = 3;
+
+    n_steiner = 3;
+    prev_n_steiner = 3;
+
     heat_time = 1.0;
     heat_time_prev = 1.0;
   }
@@ -331,7 +336,7 @@ void Load_mesh(GLcanvas &gui, State &gs) {
 //:::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
   GLcanvas gui(1500, 700);
-  gui.side_bar_width = 0.28;
+  gui.side_bar_width = 0.30;
   gui.show_side_bar = true;
   return gui;
 }
@@ -691,10 +696,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::Columns(1);
 
 
-      if (ImGui::RadioButton("FMM  ", gs.ssgd_method == State::FMM)) {
-        gs.ssgd_method = State::FMM;
-      }
-
       // Graph-Based Methods
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Graph-Based Methods");
@@ -713,15 +714,25 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         gs.ssgd_method = State::EXTENDED;
       }
       ImGui::NextColumn();
-      // Second column for the InputFloat
+      // Second column for the InputInt
       ImGui::SetNextItemWidth(gs.width); 
       ImGui::InputInt("k", &gs.k, 1, 10); // Add an input integer for parameter k
       ImGui::Columns(1);
       gs.k = std::max(gs.k, 1);
 
+
+      ImGui::Columns(2, nullptr, false);
       if (ImGui::RadioButton("Lanthier  ", gs.ssgd_method == State::LANTHIER)) {
         gs.ssgd_method = State::LANTHIER;
       }
+      ImGui::NextColumn();
+      // Second column for the InputInt
+      ImGui::SetNextItemWidth(gs.width); 
+      ImGui::InputInt("Steiner points", &gs.n_steiner, 1, 10);
+      ImGui::Columns(1);
+      gs.n_steiner = std::max(gs.n_steiner, 1);
+      //cout << "Number of Steiner points: " << gs.n_steiner << endl;
+
 
       ImGui::TreePop();
     } else {
@@ -809,11 +820,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           break;
         }
 
-        case State::FMM: {
-          // cout << "Computing SSGD with FMM Method" << endl;
-          break;
-        }
-
         case State::GEOTANGLE: {
           gs.tic = std::chrono::steady_clock::now();
           gs.geotangle_solver.query(gs.sources[0], gs.res, gs.field);
@@ -841,24 +847,16 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         case State::EXTENDED: {
           if (gs.k != gs.prev_k) {
             cout << "k has changed to: " << gs.k << endl;
-            isSettingK = true;
-            
-            // Start a new thread to update the solver
-            std::thread solver_thread([&gs, isSolverThreadRunningPtr = &isSolverThreadRunning]() {
-                gs.tic = std::chrono::steady_clock::now();
-                gs.extended_solver.set_k(gs.k); // This is the blocking call
-                gs.toc = std::chrono::steady_clock::now();
 
-                // Calculate the time taken for preprocessing
-                gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-                fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+            gs.tic = std::chrono::steady_clock::now();
+            gs.extended_solver.set_k(gs.k); // This is the blocking call
+            gs.toc = std::chrono::steady_clock::now();
 
-                gs.prev_k = gs.k;
-                isSettingK = false;
-                *isSolverThreadRunningPtr = false;
-              
-            });
-            solver_thread.join();
+            // Calculate the time taken for preprocessing
+            gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+
+            gs.prev_k = gs.k;
           }
 
           gs.tic = std::chrono::steady_clock::now();
@@ -874,6 +872,20 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::LANTHIER: {
+          if(gs.n_steiner != gs.prev_n_steiner) {
+            cout << "Number of Steiner points has changed to: " << gs.n_steiner << endl;
+
+            gs.tic = std::chrono::steady_clock::now();
+            gs.lanthier_solver.set_n_steiner(gs.n_steiner);
+            gs.toc = std::chrono::steady_clock::now();
+
+            // Calculate the time taken for preprocessing
+            gs.lanthier_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
+
+            gs.prev_n_steiner = gs.n_steiner;
+          }
+          
           gs.tic = std::chrono::steady_clock::now();
           gs.lanthier_solver.query(gs.sources[0], gs.res, gs.field);
           gs.toc = std::chrono::steady_clock::now();
@@ -985,9 +997,9 @@ int main(int argc, char **argv) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
-    // string s = "../data/cinolib/bunny.obj";
+    string s = "../data/cinolib/bunny.obj";
     // string s = "../data/Trettner/69930.obj";
-    string s = "../data/cinolib/3holes.obj";
+    // string s = "../data/cinolib/3holes.obj";
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   }

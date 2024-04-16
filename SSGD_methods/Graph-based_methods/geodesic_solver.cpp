@@ -404,8 +404,8 @@ geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
     std::vector<cinolib::vec3d> SteinerPoints;
     std::vector<std::pair<uint, uint>> SteinerPerEdge;
     sample_mesh_Steiner(m, pxedge, SteinerPoints, SteinerPerEdge);
-    cout << "Steiner points: " << SteinerPoints.size() << endl;
-    cout << "Steiner per edge: " << SteinerPerEdge.size() << endl;
+    //cout << "Steiner points: " << SteinerPoints.size() << endl;
+    //cout << "Steiner per edge: " << SteinerPerEdge.size() << endl;
 
     // Add nodes to graph: vertices + Steiner points
     uint offset = m.num_verts();

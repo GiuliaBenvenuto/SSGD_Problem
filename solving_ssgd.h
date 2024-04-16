@@ -303,7 +303,7 @@ public:
   
   void set_k(const int new_k, const bool compute_solver = true) {
     k = new_k;
-    cout << "K in the function: " << k << endl;
+    // cout << "K in the function: " << k << endl;
     if (compute_solver) {
       if (!dual_solver_computed) {
         dual_solver = make_dual_geodesic_solver(m);
@@ -341,18 +341,21 @@ public:
   geodesic_solver solver;
   //dual_geodesic_solver dual_solver;
   //bool dual_solver_computed = false;
-  //int k = 3;
+  int n_steiner = 3;
 
   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
     m = DrawableTrimesh(coords, tris);
   }
   
-  void set_k(const int new_k, const bool compute_solver = true) {
+  void set_n_steiner(const int new_n_steiner) {
+    n_steiner = new_n_steiner;
+    //cout << "n_steiner in the function: " << n_steiner << endl;
+    solver = compute_fine_graph(m, n_steiner);
 
   }
 
   void preprocess() override {
-    solver = compute_fine_graph(m, 3);
+    solver = compute_fine_graph(m, n_steiner);
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
