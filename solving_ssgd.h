@@ -345,7 +345,6 @@ public:
 
   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
     m = DrawableTrimesh(coords, tris);
-    cout << "Lanthier LOAD" << endl;
   }
   
   void set_k(const int new_k, const bool compute_solver = true) {
@@ -353,19 +352,20 @@ public:
   }
 
   void preprocess() override {
-    cout << "Lanthier PREPROCESS" << endl;
     solver = compute_fine_graph(m, 3);
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
     // solver must be the one computed with the lanthier method
+    // res è un vector<double>
     res = compute_geodesic_distances(solver, {vid});
+    // get only m.num_verts() elements of res
+    res.resize(m.num_verts());
     for (auto &value : res) {
       value = 1.0 - value;
     }
     sc = ScalarField(res);
     sc.normalize_in_01();
-
   }
 
 };

@@ -329,6 +329,8 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m,
     std::cout << "Number of edges GEOTANGLE: " << edge_count << std::endl;
   else
     std::cout << "Number of edges edge graph: " << edge_count << std::endl;
+
+  //solver.print_graph();
   return solver;
 }
 
@@ -402,14 +404,8 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m,
 // }
 
 // int add_node_between(geodesic_solver &solver, cinolib::vec3d p, int vertex_index_1, int vertex_index_2) {
-//     // Create a new node
-//     geodesic_solver::graph_edge edge;
-//     edge.node = -1;  // Initialize to -1 since there are no adjacent nodes yet
-//     edge.length = DBL_MAX;  // Initialize to maximum length
+//     std::vector<geodesic_solver::graph_edge> adj_list; 
     
-//     // Create a new adjacency list for the node
-//     std::vector<geodesic_solver::graph_edge> adj_list;
-//     adj_list.push_back(edge);
 
 //     // Insert the new adjacency list at the appropriate position between the two vertices
 //     int new_node_index = vertex_index_1 + 1; // Insert between the two vertices
@@ -447,14 +443,6 @@ void add_directed_arc(geodesic_solver &solver, int a, int b, float length) {
       cout << "ERROR: invalid node index" << endl;
     }
 }
-
-
-
-// Already implemented in connect_nodes
-// void add_undirected_arc(geodesic_solver &solver, uint na, uint nb, float w) {
-//     add_directed_arc(solver, na, nb, w);  // Add edge from na to nb
-//     add_directed_arc(solver, nb, na, w);  // Add edge from nb to na to make it undirected
-// }
 
 
 std::vector<cinolib::vec3d> sample_uniform(DrawableTrimesh<> & m, uint e, float step)
@@ -507,11 +495,13 @@ void add_node(geodesic_solver &solver) {
   // std::vector<geodesic_solver::graph_edge> adj_list;
   // solver.graph.push_back(adj_list);
 
-  //std::vector<geodesic_solver::graph_edge> adj_list;  // Create an empty adjacency list
-  //solver.graph.push_back(adj_list); 
+  std::vector<geodesic_solver::graph_edge> adj_list; 
+  solver.graph.push_back(adj_list); 
+  // print the node added
 
-  solver.graph.push_back({});
+  //solver.graph.push_back({});
 }
+
 
 geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
     auto solver = geodesic_solver{};
@@ -520,11 +510,16 @@ geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
     std::vector<cinolib::vec3d> SteinerPoints;
     std::vector<std::pair<uint, uint>> SteinerPerEdge;
     sample_mesh_Steiner(m, pxedge, SteinerPoints, SteinerPerEdge);
+    cout << "Steiner points: " << SteinerPoints.size() << endl;
+    cout << "Steiner per edge: " << SteinerPerEdge.size() << endl;
 
     // Add nodes to graph: vertices + Steiner points
     uint offset = m.num_verts();
+    cout << "offset: " << offset << endl;
     uint numn = offset + SteinerPoints.size();
-    solver.graph.reserve(numn);
+    cout << "numn: " << numn << endl;
+    solver.graph.reserve(numn);             // reserve number of nodes to speedup insertion
+
     for (uint i = 0; i < offset; i++) {
       add_node(solver);  // Add each vertex as a node
     }
@@ -532,41 +527,58 @@ geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
       add_node(solver);
     }
 
-    cout << "EDGES: " << m.num_edges() << endl;
-    cout << "VERTICES: " << offset << " STEINER POINTS: " << SteinerPoints.size() << endl;
-    cout << "Number of nodes: " << solver.graph.size() << endl;
+    //solver.print_graph();
 
-    for (uint i = 0; i < m.num_polys(); i++) {
-        for (uint j = 0; j < 3; j++) {
+    
+    //cout << "EDGES: " << m.num_edges() << endl;
+    //cout << "VERTICES: " << offset << " STEINER POINTS: " << SteinerPoints.size() << endl;
+    //cout << "Number of nodes: " << solver.graph.size() << endl;
+
+    cout << "Number of polys: " << m.num_polys() << endl;
+    
+    for (uint i = 0; i < m.num_polys(); i++) {  // For all tris (face)
+        for (uint j = 0; j < 3; j++) {          // For all edges of the face
+
             uint e = m.poly_edge_id(i, j);
             uint lastk = SteinerPerEdge[e].first + SteinerPerEdge[e].second;
+            //cout << "lastk: " << lastk << endl;
+            //cout << "SteinerPerEdge[e].first: " << SteinerPerEdge[e].first << endl;
             for (uint k = SteinerPerEdge[e].first; k < lastk; k++) {
                 uint e1 = m.poly_edge_id(i, (j + 1) % 3);
                 uint e2 = m.poly_edge_id(i, (j + 2) % 3);
 
                 // Connect to Steiner points on the next edge
                 uint lasth = SteinerPerEdge[e1].first + SteinerPerEdge[e1].second;
+                //cout << "lasth: " << lasth << endl;
                 for (uint h = SteinerPerEdge[e1].first; h < lasth; h++) {
                     float w = SteinerPoints[k].dist(SteinerPoints[h]);
+                    // cout << "k: " << k << " h: " << h << " w: " << w << endl; 
                     add_directed_arc(solver, k + offset, h + offset, w);
                 }
 
                 // Connect to Steiner points on the following edge
                 lasth = SteinerPerEdge[e2].first + SteinerPerEdge[e2].second;
+                // cout << "lasth: " << lasth << endl;
                 for (uint h = SteinerPerEdge[e2].first; h < lasth; h++) {
                     float w = SteinerPoints[k].dist(SteinerPoints[h]);
+                    // cout << "k: " << k << " h: " << h << " w: " << w << endl; 
                     add_directed_arc(solver, k + offset, h + offset, w);
                 }
             }
         }
     }
+    //solver.print_graph();
 
     // Add arcs to vertices and along edges
+    //cout << "Number of edges: " << m.num_edges() << endl;
+    
     for (uint e = 0; e < m.num_edges(); e++) {
         // Get endpoints and opposite vertices
         uint v0, v1, v2, v3;
         v0 = m.edge_vert_id(e, 0);
         v1 = m.edge_vert_id(e, 1);
+        //cout << "v0: " << v0 << " v1: " << v1 << endl;
+        
         connect_nodes(solver, v0, v1, m.vert(v0).dist(m.vert(v1)));
 
         if (SteinerPerEdge[e].second == 0) continue;
@@ -580,7 +592,9 @@ geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
 
         float w0 = SteinerPoints[firstk].dist(m.vert(v0));
         float w1 = SteinerPoints[firstk].dist(m.vert(v1));
+        //cout << "w0: " << w0 << " w1: " << w1 << endl;
 
+        
         // Ensure v0 is closer to the first Steiner point
         if (w1 < w0) {
             int v=v0; v0=v1; v1=v;
@@ -588,6 +602,10 @@ geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
         }
 
         // Connect the first and last Steiner points
+        //cout << "firstk + offset: " << firstk + offset << endl;
+        //cout << "lastk + offset: " << lastk + offset << endl;
+        //cout << SteinerPoints[lastk].dist(m.vert(v1)) << endl;
+        
         add_directed_arc(solver, firstk + offset, v0, w0);
         add_directed_arc(solver, lastk + offset, v1, SteinerPoints[lastk].dist(m.vert(v1)));
 
@@ -596,30 +614,26 @@ geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
         connect_nodes(solver, firstk + offset, v3, SteinerPoints[firstk].dist(m.vert(v3)));
         connect_nodes(solver, lastk + offset, v2, SteinerPoints[lastk].dist(m.vert(v2)));
         connect_nodes(solver, lastk + offset, v3, SteinerPoints[lastk].dist(m.vert(v3)));
-
+        
+        //cout << "SteinerPerEdge[e].second: " << SteinerPerEdge[e].second << endl;
         if (SteinerPerEdge[e].second > 1) {
             add_directed_arc(solver, firstk + offset, firstk + offset + 1, SteinerPoints[firstk].dist(SteinerPoints[firstk + 1]));
             add_directed_arc(solver, lastk + offset, lastk + offset - 1, SteinerPoints[lastk].dist(SteinerPoints[lastk - 1]));
         }
+        firstk++;
 
         // Connect all other Steiner points
-        for (uint k = firstk + 1; k < lastk; k++) {
+        //cout << "firstk: " << firstk << " lastk: " << lastk << endl;
+        for (uint k = firstk; k < lastk; k++) {
             connect_nodes(solver, k + offset, v2, SteinerPoints[k].dist(m.vert(v2)));
             connect_nodes(solver, k + offset, v3, SteinerPoints[k].dist(m.vert(v3)));
             add_directed_arc(solver, k + offset, k + offset - 1, SteinerPoints[k].dist(SteinerPoints[k - 1]));
             add_directed_arc(solver, k + offset, k + offset + 1, SteinerPoints[k].dist(SteinerPoints[k + 1]));
         }
     }
-
-    for (int i = 0; i < solver.graph.size(); ++i) {
-    std::cout << "Node " << i << " has " << solver.graph[i].size() << " edges.\n";
-    for (auto& edge : solver.graph[i]) {
-        std::cout << " -> Connects to Node " << edge.node << " with weight " << edge.length << "\n";
-    }
-}
-      
-
-
+    //solver.print_graph();
     return solver;
 
 }
+
+

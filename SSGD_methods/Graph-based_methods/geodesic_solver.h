@@ -14,8 +14,27 @@ struct geodesic_solver {
   struct graph_edge {
     int node = -1;
     float length = DBL_MAX;
+
+    // Overload the output operator for graph_edge
+    friend ostream& operator<<(ostream& os, const graph_edge& edge) {
+        os << "Node: " << edge.node << ", Length: " << edge.length;
+        return os;
+    }
   };
   vector<vector<graph_edge>> graph = {};
+
+  
+  // Method to print the entire graph structure
+    void print_graph() {
+        for (int i = 0; i < graph.size(); ++i) {
+            cout << "Adjacency list of vertex " << i << ": " << endl;
+            for (const auto& edge : graph[i]) {
+                cout << edge << "; " << endl;
+            }
+            cout << endl;
+        }
+    }
+
 };
 
 struct dual_geodesic_solver {
@@ -56,6 +75,8 @@ int add_node(geodesic_solver &solver, cinolib::vec3d p);
 int add_node_between(geodesic_solver &solver, cinolib::vec3d p, int vertex_index_1, int vertex_index_2);
 int add_node_prova(geodesic_solver &solver, cinolib::vec3d p, uint deg, size_t index = std::string::npos);
 void add_directed_arc(geodesic_solver &solver, int a, int b, float length);
+
+vector<float> getScalarField(uint n);
 // void add_undirected_arc(geodesic_solver &solver, uint na, uint nb, float w);
 // add_undirected_arc -> è già implementata in connect_nodes()
 

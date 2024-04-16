@@ -877,8 +877,13 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           gs.lanthier_solver.query(gs.sources[0], gs.res, gs.field);
           gs.toc = std::chrono::steady_clock::now();
-          gs.edge_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          //fillTimeTable(gs, "Edge", gs.edge_load, gs.edge_preprocess, gs.edge_query);
+          gs.lanthier_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
+
+          // for (int i = 0; i < gs.field.size(); ++i) {
+          //   std::cout << "Value at index " << i << ": " << gs.field[i] << std::endl;
+          // }
+
 
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
@@ -988,7 +993,7 @@ int main(int argc, char **argv) {
   } else {
     // string s = "../data/cinolib/bunny.obj";
     // string s = "../data/Trettner/69930.obj";
-    string s = "../data/cinolib/bunny.obj";
+    string s = "../data/cinolib/3holes.obj";
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   }
