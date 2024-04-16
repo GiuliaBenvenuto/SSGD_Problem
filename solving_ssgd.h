@@ -356,8 +356,8 @@ public:
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
-    // solver must be the one computed with the lanthier method
-    // res è un vector<double>
+    // solver computed with the lanthier method
+    // res -> vector<double>
     res = compute_geodesic_distances(solver, {vid});
     // get only m.num_verts() elements of res
     res.resize(m.num_verts());

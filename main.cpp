@@ -879,16 +879,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.toc = std::chrono::steady_clock::now();
           gs.lanthier_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
-
-          // for (int i = 0; i < gs.field.size(); ++i) {
-          //   std::cout << "Value at index " << i << ": " << gs.field[i] << std::endl;
-          // }
-
-
+          
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
 
-          cout << "Computing SSGD with Lanthier Method" << endl;
           break;
         }
         

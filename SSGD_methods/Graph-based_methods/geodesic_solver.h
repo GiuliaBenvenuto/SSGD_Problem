@@ -20,11 +20,13 @@ struct geodesic_solver {
         os << "Node: " << edge.node << ", Length: " << edge.length;
         return os;
     }
+
   };
+
   vector<vector<graph_edge>> graph = {};
 
   
-  // Method to print the entire graph structure
+    // Method to print the graph
     void print_graph() {
         for (int i = 0; i < graph.size(); ++i) {
             cout << "Adjacency list of vertex " << i << ": " << endl;
@@ -67,18 +69,9 @@ vector<int> strip_on_dual_graph(const dual_geodesic_solver &solver,
 
 // ------ Lanthier ------
 geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge);
-// uint add_node(geodesic_solver &solver);
-// void add_directed_arc(geodesic_solver &solver, int nA, int nB, float weight);
-// void add_undirected_arc(geodesic_solver &solver, int nA, int nB, float weight);
-
 int add_node(geodesic_solver &solver, cinolib::vec3d p);
-int add_node_between(geodesic_solver &solver, cinolib::vec3d p, int vertex_index_1, int vertex_index_2);
-int add_node_prova(geodesic_solver &solver, cinolib::vec3d p, uint deg, size_t index = std::string::npos);
 void add_directed_arc(geodesic_solver &solver, int a, int b, float length);
-
-vector<float> getScalarField(uint n);
-// void add_undirected_arc(geodesic_solver &solver, uint na, uint nb, float w);
-// add_undirected_arc -> è già implementata in connect_nodes()
+// add_undirected_arc -> already implemented in connect_nodes()
 
 
 #endif
