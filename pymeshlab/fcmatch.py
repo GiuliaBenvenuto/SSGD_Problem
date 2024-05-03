@@ -13,7 +13,7 @@ from scipy.spatial import distance_matrix
 
 ### Constants ###
 
-def fcmatch(mesh_base_name, fine_faces_min = 120, coarse_faces = 6, quiet=False):
+def fcmatch(mesh_base_name, fine_faces_min = 100000, coarse_faces = 5000, quiet=False):
 	mesh_name = f'{mesh_base_name}.ply'
 	mesh_name_f = f'{mesh_base_name}_fine.ply'
 	mesh_name_c = f'{mesh_base_name}_coarse.ply'
@@ -32,11 +32,11 @@ def fcmatch(mesh_base_name, fine_faces_min = 120, coarse_faces = 6, quiet=False)
 	fnum = ms.current_mesh().face_number()
 	if not quiet: print(f'Refining mesh {mesh_base_name}...')
 	while fnum < fine_faces_min:
-		# if not quiet: print('\t', fnum, '<', fine_faces_min)
+		if not quiet: print('\t', fnum, '<', fine_faces_min)
 		ms.meshing_surface_subdivision_ls3_loop(
 			loopweight = 'Loop',
-			iterations = 1
-			# threshold = ml.Percentage(0)
+			iterations = 1,
+			threshold = ml.PercentageValue(0)
 		)
 		fnum = ms.current_mesh().face_number()
 

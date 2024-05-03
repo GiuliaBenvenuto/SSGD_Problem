@@ -1,3 +1,4 @@
+# NOT WORKING
 import pymeshlab as ml
 
 def convert_obj_to_ply(input_file, output_file):
@@ -9,6 +10,6 @@ def convert_obj_to_ply(input_file, output_file):
     ms.save_current_mesh(output_file, save_vertex_normal=False, save_vertex_color=False)
 
 if __name__ == "__main__":
-    input_file = "data/cube.obj"  # Replace with the path to your .obj file
-    output_file = "cube.ply"  # Desired path for the output .ply file
+    input_file = "data/3holes.obj"  # Replace with the path to your .obj file
+    output_file = "3holes.ply"  # Desired path for the output .ply file
     convert_obj_to_ply(input_file, output_file)

@@ -8,5 +8,5 @@ def count_faces(file_path):
     print("Number of faces:", num_faces)
 
 if __name__ == "__main__":
-    file_path = "cube.ply"  # Replace with the path to your .ply file
+    file_path = "bunny.ply"  # Replace with the path to your .ply file
     count_faces(file_path)
