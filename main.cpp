@@ -72,7 +72,7 @@ struct State {
   float width;
 
   // SSGD Method
-  enum SSGDMethod {VTP, TRETTNER, HEAT, GEOTANGLE, EDGE, EXTENDED, LANTHIER} ssgd_method;
+  enum SSGDMethod {VTP, TRETTNER, FAST_MARCHING, HEAT, GEOTANGLE, EDGE, EXTENDED, LANTHIER} ssgd_method;
   
   ScalarField field;
 
@@ -99,13 +99,14 @@ struct State {
   string mesh_path;
   HalfEdge mesh;
 
-  VTPSolver         vtp_solver;
-  TrettnerSolver    trettner_solver; 
-  HeatSolver        heat_solver;
-  GeotangleSolver   geotangle_solver;
-  EdgeSolver        edge_solver;
-  ExtendedSolver    extended_solver;
-  LanthierSolver    lanthier_solver;
+  VTPSolver           vtp_solver;
+  TrettnerSolver      trettner_solver; 
+  FastMarchingSolver  fast_mar_solver;
+  HeatSolver          heat_solver;
+  GeotangleSolver     geotangle_solver;
+  EdgeSolver          edge_solver;
+  ExtendedSolver      extended_solver;
+  LanthierSolver      lanthier_solver;
 
   
 
@@ -114,6 +115,7 @@ struct State {
   std::chrono::steady_clock::time_point toc;
   double vtp_load,        vtp_preprocess,         vtp_query;
   double trettner_load,   trettner_preprocess,    trettner_query;
+  double fast_mar_load,   fast_mar_preprocess,    fast_mar_query;
   double heat_load,       heat_preprocess,        heat_query;
   double geotangle_load,  geotangle_preprocess,   geotangle_query;
   double edge_load,       edge_preprocess,        edge_query;
@@ -146,6 +148,7 @@ struct State {
     // Timer
     vtp_load,       vtp_preprocess,       vtp_query = 0.0;
     trettner_load,  trettner_preprocess,  trettner_query = 0.0;
+    fast_mar_load,  fast_mar_preprocess,  fast_mar_query = 0.0;
     heat_load,      heat_preprocess,      heat_query = 0.0;
     geotangle_load, geotangle_preprocess, geotangle_query = 0.0;
     edge_load,      edge_preprocess,       edge_query = 0.0;
@@ -201,6 +204,10 @@ void fillTimeTable(State &gs, const string& method_name, double load_time, doubl
     gs.trettner_load = load_time;
     gs.trettner_preprocess = preprocess_time;
     gs.trettner_query = query_time;
+  } else if (method_name == "Fast Marching") {
+    gs.fast_mar_load = load_time;
+    gs.fast_mar_preprocess = preprocess_time;
+    gs.fast_mar_query = query_time;
   } else if (method_name == "Heat") {
     gs.heat_load = load_time;
     gs.heat_preprocess = preprocess_time;
@@ -249,22 +256,25 @@ void init(GeodesicMethod &m, State &gs, string name) {
 
 void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
-  progress.store(1.0f / 7.0f);  
+  progress.store(1.0f / 8.0f);  
 
   init(gs.trettner_solver, gs, "Trettner");
-  progress.store(2.0f / 7.0f); 
+  progress.store(2.0f / 8.0f); 
+
+  init(gs.fast_mar_solver, gs, "Fast Marching");
+  progress.store(3.0f / 8.0f); 
 
   init(gs.heat_solver, gs, "Heat");
-  progress.store(3.0f / 7.0f);  
+  progress.store(4.0f / 8.0f);  
 
   init(gs.geotangle_solver, gs, "Geotangle");
-  progress.store(4.0f / 7.0f);  
+  progress.store(5.0f / 8.0f);  
 
   init(gs.edge_solver, gs, "Edge");
-  progress.store(5.0f / 7.0f);  
+  progress.store(6.0f / 8.0f);  
 
   init(gs.extended_solver, gs, "Extended");
-  progress.store(6.0f / 7.0f);      
+  progress.store(7.0f / 8.0f);      
 
   init(gs.lanthier_solver, gs, "Lanthier");
   progress.store(1.0f);
@@ -303,6 +313,7 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
 
     gs.vtp_load,        gs.vtp_preprocess,        gs.vtp_query = 0.0;
     gs.trettner_load,   gs.trettner_preprocess,   gs.trettner_query = 0.0;
+    gs.fast_mar_load,   gs.fast_mar_preprocess,   gs.fast_mar_query = 0.0;
     gs.heat_load,       gs.heat_preprocess,       gs.heat_query = 0.0;
     gs.geotangle_load,  gs.geotangle_preprocess,  gs.geotangle_query = 0.0;
     gs.edge_load,       gs.edge_preprocess,       gs.edge_query = 0.0;
@@ -385,6 +396,17 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           ImGui::Text("%.2f", gs.trettner_preprocess);
           ImGui::TableSetColumnIndex(3);
           ImGui::Text("%.2f", gs.trettner_query);
+
+          // Fast Marching Method
+          ImGui::TableNextRow();
+          ImGui::TableSetColumnIndex(0);
+          ImGui::Text("Fast Marching");
+          ImGui::TableSetColumnIndex(1);
+          ImGui::Text("%.2f", gs.fast_mar_load);
+          ImGui::TableSetColumnIndex(2);
+          ImGui::Text("%.2f", gs.fast_mar_preprocess);
+          ImGui::TableSetColumnIndex(3);
+          ImGui::Text("%.2f", gs.fast_mar_query);
 
           // Heat Method
           ImGui::TableNextRow();
@@ -677,12 +699,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("PDE-Based Methods");
       ImGui::PopFont();
-      // if (ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
-      //   gs.ssgd_method = State::HEAT;
-      // }
-      // ImGui::SameLine(0, 60);
-      // ImGui::SetNextItemWidth(gs.width);
-      // ImGui::InputFloat("param", &gs.heat_time, 0.1f, 1.0f, "%.3f");
+
+      if (ImGui::RadioButton("Fast Marching  ", gs.ssgd_method == State::FAST_MARCHING)) {
+        gs.ssgd_method = State::FAST_MARCHING;
+      }
+
       // Define two columns
       ImGui::Columns(2, nullptr, false);
       // First column for the radio button
@@ -779,6 +800,19 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.toc = std::chrono::steady_clock::now();
           gs.trettner_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Trettner", gs.trettner_load, gs.trettner_preprocess, gs.trettner_query);
+
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          break;
+        }
+
+        case State::FAST_MARCHING: {
+          // TODO: this code should be replaced with the correct and working Fast Marching method
+          gs.tic = std::chrono::steady_clock::now();
+          gs.fast_mar_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.fast_mar_query);
 
           gs.field.copy_to_mesh(gs.m);
           gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
@@ -997,9 +1031,11 @@ int main(int argc, char **argv) {
     string s = "../data/" + string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
-    string s = "../data/pymeshlab_generated/bunny_ok.obj";
+    // string s = "../data/pymeshlab_generated/bunny_ok.obj";
     // string s = "../data/Trettner/69930.obj";
     // string s = "../data/cinolib/3holes.obj";
+    string s = "../data/cinolib/bunny.obj";
+
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   }

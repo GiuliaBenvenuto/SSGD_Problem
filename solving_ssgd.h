@@ -148,6 +148,30 @@ public:
 
 // };
 
+// ---------- FAST MARCHING ----------
+class FastMarchingSolver : public GeodesicMethod {
+public:
+  FastMarchingSolver() {}
+  ~FastMarchingSolver() {}
+
+  DrawableTrimesh<> m;
+  HalfEdge half_edge;
+  string mesh_path;
+  double time;
+
+  explicit FastMarchingSolver(const std::string &path) : mesh_path(path) {}
+
+  void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
+    m = DrawableTrimesh(coords, tris);
+  }
+
+  void preprocess() override {}
+
+  void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    
+  }
+};
+
 // ---------- Heat GEOMETRY CENTRAL ----------
 class HeatSolver : public GeodesicMethod {
 public:
