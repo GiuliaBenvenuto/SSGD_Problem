@@ -20,9 +20,16 @@
 #include "solving_ssgd.h"
 #include "SSGD_methods/heat/gc_wrapper.h"
 
+// Matlab
+#include "MatlabEngine.hpp"
+#include "MatlabDataArray.hpp"
+
+
 using namespace std;
 using namespace cinolib;
 using namespace gcHeatWrapper;
+using namespace matlab::engine;
+
 
 
 
@@ -808,14 +815,28 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::FAST_MARCHING: {
           // TODO: this code should be replaced with the correct and working Fast Marching method
-          gs.tic = std::chrono::steady_clock::now();
-          gs.fast_mar_solver.query(gs.sources[0], gs.res, gs.field);
-          gs.toc = std::chrono::steady_clock::now();
-          gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.fast_mar_query);
+          // Attempt to connect to a shared MATLAB session
+          std::unique_ptr<MATLABEngine> matlabPtr = startMATLAB();
+          matlab::data::ArrayFactory factory;
 
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          // Create a vector of MATLAB data arrays for arguments    
+          std::vector<matlab::data::Array> args({
+              factory.createArray<double>({ 1, 10 }, { 4, 8, 6, -1, -2, -3, -1, 3, 4, 5 }),
+              factory.createScalar<int32_t>(3),
+              factory.createCharArray("Endpoints"),
+              factory.createCharArray("discard")
+          });
+
+          // Call MATLAB function with arguments and return results
+          matlab::data::TypedArray<double> result = matlabPtr->feval(u"movsum", args);
+
+          // Display the result
+          std::cout << "----- RESULT -----: ";
+          for (const auto& value : result) {
+              std::cout << value << " ";
+          }
+          std::cout << std::endl;
+
           break;
         }
 
