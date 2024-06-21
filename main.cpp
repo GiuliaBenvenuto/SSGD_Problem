@@ -838,63 +838,91 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //     std::cout << value << " ";
           // }
           // std::cout << std::endl;
-          try {
-              // Start MATLAB Engine synchronously
-              std::unique_ptr<MATLABEngine> matlabPtr = startMATLAB();
-              matlab::data::ArrayFactory factory;
 
-              // Extract coordinates and triangles
-              vector<double> coords = extract_coords(gs.m);
-              vector<uint> tris = extract_tris(gs.m);
+         try {
+          // Start MATLAB Engine
+          std::unique_ptr<MATLABEngine> matlabPtr = startMATLAB();
+          matlab::data::ArrayFactory factory;
 
-              // Prepare vertices array for MATLAB
-              auto verticesMat = factory.createArray<double>({gs.m.num_verts(), 3});
-              for (size_t i = 0; i < gs.m.num_verts(); ++i) {
-                  verticesMat[i][0] = coords[i * 3 + 0];
-                  verticesMat[i][1] = coords[i * 3 + 1];
-                  verticesMat[i][2] = coords[i * 3 + 2];
-              }
+          matlabPtr->eval(u"addpath('/Users/giuliabenvenuto/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/Toolbox Fast Marching/toolbox_fast_marching');");
 
-              // Prepare faces array for MATLAB (convert to 1-based index and double)
-              auto facesMat = factory.createArray<double>({gs.m.num_polys(), 3});
-              for (size_t i = 0; i < gs.m.num_polys(); ++i) {
-                  facesMat[i][0] = static_cast<double>(tris[i * 3 + 0] + 1);
-                  facesMat[i][1] = static_cast<double>(tris[i * 3 + 1] + 1);
-                  facesMat[i][2] = static_cast<double>(tris[i * 3 + 2] + 1);
-              }
+          // Extract coordinates and triangles
+          vector<double> coords = extract_coords(gs.m);
+          vector<uint> tris = extract_tris(gs.m);
 
-              // Prepare start points
-              auto startPointsMat = factory.createArray<double>({gs.sources.size(), 1});
-              for (size_t i = 0; i < gs.sources.size(); ++i) {
-                  startPointsMat[i] = static_cast<double>(gs.sources[i] + 1);  // Convert to 1-based index
-              }
-
-              // Prepare options as MATLAB struct
-              auto options = factory.createStructArray({1, 1}, {"verbose"});
-              options[0]["verbose"] = factory.createScalar<double>(1);
-
-              // Call MATLAB function
-              auto results = matlabPtr->feval(
-                  u"perform_fast_marching_mesh",
-                  3, // Specify number of outputs
-                  {verticesMat, facesMat, startPointsMat, options}
-              );
-
-              // Process results
-              auto D = std::move(results[0]);
-              auto S = std::move(results[1]);
-              auto Q = std::move(results[2]);
-
-              cout << "Fast Marching Method completed successfully." << endl;
-
-          } catch (const std::exception& e) {
-              std::cerr << "MATLAB Engine failed: " << e.what() << std::endl;
+          // Prepare vertices array for MATLAB
+          auto verticesMat = factory.createArray<double>({gs.m.num_verts(), 3});
+          for (size_t i = 0; i < gs.m.num_verts(); ++i) {
+              verticesMat[i][0] = coords[i * 3 + 0];
+              verticesMat[i][1] = coords[i * 3 + 1];
+              verticesMat[i][2] = coords[i * 3 + 2];
           }
-          break;
+
+          // Prepare faces array for MATLAB (convert to 1-based index and integer)
+          auto facesMat = factory.createArray<double>({gs.m.num_polys(), 3});
+          for (size_t i = 0; i < gs.m.num_polys(); ++i) {
+              facesMat[i][0] = static_cast<double>(tris[i * 3 + 0] + 1);
+              facesMat[i][1] = static_cast<double>(tris[i * 3 + 1] + 1);
+              facesMat[i][2] = static_cast<double>(tris[i * 3 + 2] + 1);
+          }
+
+          // Prepare start points (convert to 1-based index and ensure double)
+          // auto startPointsMat = factory.createArray<double>({gs.sources.size(), 1});
+          // for (size_t i = 0; i < gs.sources.size(); ++i) {
+          //     startPointsMat[i] = static_cast<double>(gs.sources[i] + 1);
+          // }
+
+          // PROVA
+          auto startPointsMat = factory.createScalar<double>(gs.sources[0] + 1);
+
+          // auto startPointsMat = factory.createArray<double>({2, gs.sources.size()});
+          // for (size_t i = 0; i < gs.sources.size(); ++i) {
+          //     startPointsMat[0][i] = static_cast<double>(gs.sources[i] + 1); // Assuming 1-based indexing
+          //     startPointsMat[1][i] = static_cast<double>(0); // Placeholder if needed
+          // }
+
+          // Prepare options as MATLAB struct
+          auto options = factory.createStructArray({1, 1}, {"verbose"});
+          options[0]["verbose"] = factory.createScalar<double>(1);  // Options are okay to be doubles
+
+          // Call MATLAB function
+          auto results = matlabPtr->feval(
+              u"perform_fast_marching_mesh",
+              3, // Specify number of outputs
+              {verticesMat, facesMat, startPointsMat, options}
+
+          );
+
+          // Process results
+          // auto D = std::move(results[0]); // This holds the distance field
+          // auto S = std::move(results[1]);
+          // auto Q = std::move(results[2]);
+          matlab::data::TypedArray<double> D = std::move(results[0]);
+
+
+          std::vector<double> distanceField(D.getNumberOfElements());
+          std::copy(D.begin(), D.end(), distanceField.begin());
+          for (auto &value : distanceField) {
+              value = 1.0 - value; // Invert the value
+          }
+
+          // Create and normalize the scalar field
+          gs.field = ScalarField(distanceField);
+          gs.field.normalize_in_01();
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          
+
+          cout << "Fast Marching Method completed successfully." << endl;
+
+        } catch (const std::exception& e) {
+            std::cerr << "MATLAB Engine failed: " << e.what() << std::endl;
+        }
+        
+        break;
       }
               
-        
-
+      
         case State::HEAT: {
           if (gs.heat_time != gs.heat_time_prev) {
             cout << "Heat time has changed to: " << gs.heat_time << endl;
