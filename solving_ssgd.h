@@ -15,32 +15,17 @@
 #include <functional>
 #include <sys/types.h>
 
+// Matlab
+#include <MatlabDataArray.hpp>
+#include <MatlabEngine.hpp>
+
 
 using namespace std;
 using namespace cinolib;
 using namespace gcHeatWrapper;
 
-// // Heat method
-// ScalarField SSGD_Heat(DrawableTrimesh<> &m,
-//                       GeodesicsCache &prefactored_matrices,
-//                       vector<uint> &sources, double &time_heat);
-
-// // VTP method
-// ScalarField SSGD_VTP(DrawableTrimesh<> &m, vector<int> &sources,
-//                      double &vtp_geodesic_time);
-
-// // GeoTangle method
-// ScalarField SSGD_GeoTangle(DrawableTrimesh<> &m, geodesic_solver &solver,
-//                            vector<int> &sources,
-//                            double &geotangle_geodesic_time);
-
-// // Edge method
-// ScalarField SSGD_Edge(DrawableTrimesh<> &m, geodesic_solver &solver,
-//                       vector<int> &sources, double &edge_geodesic_time);
-
-// // Extended method
-// ScalarField SSGD_Extended(DrawableTrimesh<> &m, geodesic_solver &solver,
-//                           vector<int> &sources, double &extended_geodesic_time);
+using namespace matlab::engine;
+using namespace matlab::data;
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // New Data Structure
@@ -55,6 +40,7 @@ public:
   virtual void preprocess() = 0;
   virtual void query(const int vid, std::vector<double> &res, ScalarField &sc) = 0;
 };
+
 
 // ---------- VTP ----------
 class VTPSolver : public GeodesicMethod {
@@ -109,45 +95,6 @@ public:
 };
 
 
-// ---------- Heat ----------
-// class HeatSolver : public GeodesicMethod {
-// public:
-//   HeatSolver() {}
-//   ~HeatSolver() {}
-
-//   DrawableTrimesh<> m;
-//   GeodesicsCache prefactored_matrices;
-//   bool cache = false;
-//   float time_scalar = 1.0;
-
-//   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
-//     m = DrawableTrimesh(coords, tris);
-//   }
-
-//   void preprocess() override {}
-
-//   void set_t(const float new_t) {
-//     time_scalar = new_t;
-//   }
-
-//   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
-//     if (prefactored_matrices.heat_flow_cache != NULL) {
-//       cache = true;
-//     }
-//     std::vector<uint> vids;
-//     vids.push_back(static_cast<uint>(vid));
-//     //sc = compute_geodesics_amortized(m, prefactored_matrices, vids);
-//     sc = compute_geodesics_amortized(m, prefactored_matrices, vids, COTANGENT, time_scalar);
-
-//     if (cache) {
-//     cout << "Heat computation with cache." << endl;
-//     } else {
-//       cout << "Heat computation without cache." << endl;
-//     }
-//   }
-
-// };
-
 // ---------- FAST MARCHING ----------
 class FastMarchingSolver : public GeodesicMethod {
 public:
@@ -155,22 +102,65 @@ public:
   ~FastMarchingSolver() {}
 
   DrawableTrimesh<> m;
-  HalfEdge half_edge;
-  string mesh_path;
   double time;
+  vector<double> coords;
+  vector<uint> tris;
+  string mesh_path;
+
+  // MATLAB engine members
+  std::unique_ptr<MATLABEngine> matlabPtr;
+  ArrayFactory factory;
+  std::unique_ptr<TypedArray<double>> verticesMat;
+  std::unique_ptr<TypedArray<double>> facesMat;
+  std::unique_ptr<Array> startPointsMat;
+  std::unique_ptr<StructArray> options; // Use smart pointer for StructArray
+  std::vector<Array> results;
 
   explicit FastMarchingSolver(const std::string &path) : mesh_path(path) {}
 
   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
     m = DrawableTrimesh(coords, tris);
+    this->coords = coords;
+    this->tris = tris;
   }
 
-  void preprocess() override {}
+  void preprocess() override {
+
+    verticesMat = std::make_unique<TypedArray<double>>(factory.createArray<double>({m.num_verts(), 3}));
+    for (size_t i = 0; i < m.num_verts(); ++i) {
+        (*verticesMat)[i][0] = coords[i * 3 + 0];
+        (*verticesMat)[i][1] = coords[i * 3 + 1];
+        (*verticesMat)[i][2] = coords[i * 3 + 2];
+    }
+
+    facesMat = std::make_unique<TypedArray<double>>(factory.createArray<double>({m.num_polys(), 3}));
+    for (size_t i = 0; i < m.num_polys(); ++i) {
+        (*facesMat)[i][0] = static_cast<double>(tris[i * 3 + 0] + 1);
+        (*facesMat)[i][1] = static_cast<double>(tris[i * 3 + 1] + 1);
+        (*facesMat)[i][2] = static_cast<double>(tris[i * 3 + 2] + 1);
+    }
+
+    options = std::make_unique<StructArray>(factory.createStructArray({1, 1}, {"verbose"}));
+    (*options)[0]["verbose"] = factory.createScalar<double>(1);
+  }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    matlabPtr = startMATLAB();
+    matlabPtr->eval(u"addpath('/Users/giuliabenvenuto/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/Toolbox Fast Marching/toolbox_fast_marching');");
+
     
+    startPointsMat = std::make_unique<Array>(factory.createScalar<double>(vid + 1));
+    results = matlabPtr->feval(u"perform_fast_marching_mesh", 3, {*verticesMat, *facesMat, *startPointsMat, *options});
+    TypedArray<double> D = results[0];
+    std::vector<double> distanceField(D.begin(), D.end());
+    for (auto &value : distanceField) {
+        value = 1.0 - value; // Invert the value
+    }
+    sc = ScalarField(distanceField);
+    sc.normalize_in_01();
   }
 };
+
 
 // ---------- Heat GEOMETRY CENTRAL ----------
 class HeatSolver : public GeodesicMethod {
@@ -244,8 +234,8 @@ public:
     sc = ScalarField(res);
     sc.normalize_in_01();
   }
-
 };
+
 
 // ---------- Geotangle ----------
 class GeotangleSolver : public GeodesicMethod {
@@ -274,9 +264,8 @@ public:
     sc = ScalarField(res);
     sc.normalize_in_01();
   }
-
-
 };
+
 
 // ---------- Edge ----------
 class EdgeSolver : public GeodesicMethod {
@@ -355,6 +344,7 @@ public:
    // but the solver is empty " and stuff like that
 
 
+
 // ---------- Lanthier ----------
 class LanthierSolver : public GeodesicMethod {
 public:
@@ -396,6 +386,5 @@ public:
   }
 
 };
-
 
 #endif

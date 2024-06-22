@@ -2,6 +2,7 @@
 #include "solving_ssgd.h"
 #include "SSGD_methods/Graph-based_methods/shortest_path.h"
 
+
 ScalarField SSGD_Heat(DrawableTrimesh<> &m,
                       GeodesicsCache &prefactored_matrices,
                       vector<uint> &sources, double &time_heat) {
