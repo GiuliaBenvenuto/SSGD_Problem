@@ -1038,7 +1038,10 @@ int main(int argc, char **argv) {
     // string s = "../data/pymeshlab_generated/bunny_ok.obj";
     // string s = "../data/Trettner/69930.obj";
     // string s = "../data/cinolib/3holes.obj";
-    string s = "../data/cinolib/bunny.obj";
+    // string s = "../data/cinolib/bunny.obj";
+    // string s = "../data/Esperimento_1/bob/bob_tri.obj";
+    string s = "../pymeshlab/out.ply";
+
 
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
