@@ -27,6 +27,9 @@ def fcmatch(mesh_base_name, fine_faces_min = 100000, coarse_faces = 5000, quiet=
 	ms.load_new_mesh(mesh_name)
 	mf = ms.current_mesh()
 	idf = ms.current_mesh_id()
+	
+	print("Initial mesh loaded with", mf.vertex_number(), "vertices.")
+	print("Sample initial vertices:", mf.vertex_matrix()[:5])
 
 	### Refine to target ###
 	fnum = ms.current_mesh().face_number()

@@ -11,7 +11,7 @@ def convert_obj_to_ply(input_file, output_file):
 
 if __name__ == "__main__":
     #input_file = "data/3holes.obj"  # Replace with the path to your .obj file
-    input_file = "Esperimento_1/data/blub_triangulated.obj"
+    input_file = "Esperimento_1/data/bob_tri.obj"
     #output_file = "3holes.ply"  # Desired path for the output .ply file
-    output_file = "Esperimento_1/data/blub_triangulated.ply"
+    output_file = "Esperimento_1/data/bob_tri.ply"
     convert_obj_to_ply(input_file, output_file)
