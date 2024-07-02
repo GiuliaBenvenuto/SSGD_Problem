@@ -1036,18 +1036,11 @@ int main(int argc, char **argv) {
     Load_mesh(s, gui, gs);
   } else {
     // string s = "../data/pymeshlab_generated/bunny_ok.obj";
-    // string s = "../data/Trettner/69930.obj";
     // string s = "../data/cinolib/3holes.obj";
     // string s = "../data/cinolib/bunny.obj";
-    //string s = "../data/Esperimento_1/bob/bob_tri.obj";
-    string s = "../pymeshlab/output_folder/bunny_1k_subdiv_3_final.obj";
-
-    // Con questo non va
-    // string s = "../pymeshlab/Esperimento_1/data/blub/blub_tri.obj";
-    // Se riparo la mesh con repair_mesh.py funziona
-    // string s = "../blub_tri_output_mesh.obj";
-
-
+    // string s = "../pymeshlab/repaired_blub/blub_tri_subdiv_1_final.obj";
+    string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj"; 
+    
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   }
