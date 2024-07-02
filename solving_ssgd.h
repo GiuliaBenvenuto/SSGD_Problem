@@ -327,7 +327,7 @@ public:
   }
 
   void preprocess() override {
-    dual_solver = make_dual_geodesic_solver(m);
+    dual_solver = make_dual_geodesic_solver(m); // TODO: risolvi che questo blocca delle mesh
     solver = extended_solver(m, dual_solver, k);
     dual_solver_computed = true;
   }

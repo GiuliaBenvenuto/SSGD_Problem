@@ -1039,8 +1039,13 @@ int main(int argc, char **argv) {
     // string s = "../data/Trettner/69930.obj";
     // string s = "../data/cinolib/3holes.obj";
     // string s = "../data/cinolib/bunny.obj";
-    // string s = "../data/Esperimento_1/bob/bob_tri.obj";
-    string s = "../pymeshlab/out.ply";
+    //string s = "../data/Esperimento_1/bob/bob_tri.obj";
+    string s = "../pymeshlab/output_folder/bunny_1k_subdiv_3_final.obj";
+
+    // Con questo non va
+    // string s = "../pymeshlab/Esperimento_1/data/blub/blub_tri.obj";
+    // Se riparo la mesh con repair_mesh.py funziona
+    // string s = "../blub_tri_output_mesh.obj";
 
 
     gs.mesh_path = s;

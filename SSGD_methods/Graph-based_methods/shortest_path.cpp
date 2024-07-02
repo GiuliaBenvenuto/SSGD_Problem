@@ -629,6 +629,7 @@ array<vec2d, 3> unfold_face(const DrawableTrimesh<> &m, const uint tid,
 
   return result;
 }
+
 dual_geodesic_solver make_dual_geodesic_solver(const DrawableTrimesh<> &m) {
   uint F = m.num_polys();
   dual_geodesic_solver result;
