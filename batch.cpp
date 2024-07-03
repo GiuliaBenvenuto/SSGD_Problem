@@ -60,6 +60,7 @@ struct State {
 
     // Trettner
     string mesh_path;
+    string mesh_name;
     HalfEdge mesh;
 
     // Solver
@@ -98,6 +99,7 @@ struct State {
         res = vector<double>();
 
         mesh_path = "";
+        mesh_name = "";
         mesh = HalfEdge();
 
         k = 3;
@@ -142,135 +144,97 @@ void load_mesh(const string &filename, State &gs) {
     gs.trettner_solver.mesh_path = filename;
 }
 
-// void run_ssgd_method(State &state, int sourceVertexIndex) {
-//     vector<double> distances;
-//     ScalarField field;
-//     ofstream csvFile("results.csv"); // saved in the build folder
-//     csvFile << "Step,Time(ms)\n"; 
-
-//     // VTP
-//     cout << "----- VTP -----" << endl;
-//     // Load
-//     auto tic = std::chrono::steady_clock::now();
-//     state.vtp_solver.load(state.coords, state.tris);
-//     auto toc = std::chrono::steady_clock::now();
-//     auto load_time = std::chrono::duration_cast<std::chrono::milliseconds>(toc - tic).count();
-//     csvFile << "Load," << load_time << "\n";
-
-//     // Preprocess
-//     tic = std::chrono::steady_clock::now();
-//     state.vtp_solver.preprocess();
-//     toc = std::chrono::steady_clock::now();
-//     auto preprocess_time = std::chrono::duration_cast<std::chrono::milliseconds>(toc - tic).count();
-//     csvFile << "Preprocess," << preprocess_time << "\n";
-
-//     // Query
-//     tic = std::chrono::steady_clock::now();
-//     state.vtp_solver.query(sourceVertexIndex, distances, field);
-//     toc = std::chrono::steady_clock::now();
-//     auto query_time = std::chrono::duration_cast<std::chrono::milliseconds>(toc - tic).count();
-//     csvFile << "Query," << query_time << "\n";
-
-//     // Output distances to CSV
-//     csvFile << "Vertex Index,Distance\n";
-//     for (size_t i = 0; i < distances.size(); ++i) {
-//         csvFile << i << "," << distances[i] << "\n";
-//         // cout << "Distance from vertex " << sourceVertexIndex << " to vertex " << i << " is: " << distances[i] << endl;
-//     }
-
-//     // Trettner
-//     cout << "----- Trettner -----" << endl;
-//     // Load
-//     tic = std::chrono::steady_clock::now();
-//     state.trettner_solver.load(state.coords, state.tris);
-//     toc = std::chrono::steady_clock::now();
-//     load_time = std::chrono::duration_cast<std::chrono::milliseconds>(toc - tic).count();
-//     csvFile << "Load," << load_time << "\n";
-
-//     // Preprocess
-//     tic = std::chrono::steady_clock::now();
-//     state.trettner_solver.preprocess();
-//     toc = std::chrono::steady_clock::now();
-//     preprocess_time = std::chrono::duration_cast<std::chrono::milliseconds>(toc - tic).count();
-//     csvFile << "Preprocess," << preprocess_time << "\n";
-
-//     // Query
-//     // cout << "Mesh path being used: " << mesh_path << endl;
-//     tic = std::chrono::steady_clock::now();
-//     state.trettner_solver.query(sourceVertexIndex, distances, field);
-//     toc = std::chrono::steady_clock::now();
-//     query_time = std::chrono::duration_cast<std::chrono::milliseconds>(toc - tic).count();
-//     csvFile << "Query," << query_time << "\n";
-
-//     // Output distances to CSV
-//     csvFile << "Vertex Index,Distance\n";
-//     for (size_t i = 0; i < distances.size(); ++i) {
-//         csvFile << i << "," << distances[i] << "\n";
-//         // cout << "Distance from vertex " << sourceVertexIndex << " to vertex " << i << " is: " << distances[i] << endl;
-//     }
-
-//     // Close file
-//     csvFile.close();
-// }
 
 void run_ssgd_method(State &state, int sourceVertexIndex) {
     vector<double> distances;
     ScalarField field;
     string resultsFilename = "results.csv";  // Consider adding a timestamp or an identifier to make filenames unique if needed
-    ofstream csvFile(resultsFilename, ios::app);  // Append mode to keep adding data for each run
 
-    // Write header only if file is new
-    if (filesystem::file_size(resultsFilename) == 0) {
-        csvFile << "Mesh Name,Total Vertices,Source Vertex Index,Method,Step,Time (ms),Target Vertex Index,Distance\n";
-    }
+    ofstream csvFile(resultsFilename, ios::trunc); // Truncate mode to overwrite data for each run
+    csvFile << "Mesh Name,Total Vertices,Source Vertex Index,Method,Step,Time (ms),Target Vertex Index,Distance\n";
 
-    // Helper lambda to log time for different steps
     auto log_time = [&](auto &solver, const string &method, const string &step) {
-        auto tic = chrono::steady_clock::now();
+        auto tic = chrono::high_resolution_clock::now();
 
         if (step == "Load") solver.load(state.coords, state.tris);
         else if (step == "Preprocess") solver.preprocess();
         else if (step == "Query") solver.query(sourceVertexIndex, distances, field);
 
-        auto toc = chrono::steady_clock::now();
-        auto time = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
-        csvFile << state.mesh_path << "," << state.nverts << "," << sourceVertexIndex << ","
-                << method << "," << step << "," << time << ",,\n";
+        auto toc = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(toc - tic).count();
+        double time_ms = duration / 1000.0;
+        cout << step << " time: " << time_ms << " ms" << endl;
+
+        csvFile << state.mesh_name << "," << state.nverts << "," << sourceVertexIndex << ","
+                << method << "," << step << "," << time_ms << ",,\n";
     };
+
 
     // Helper lambda to log distances
     auto log_distances = [&](const string &method) {
         for (size_t i = 0; i < distances.size(); ++i) {
-            csvFile << state.mesh_path << "," << state.nverts << "," << sourceVertexIndex << ","
+            csvFile << state.mesh_name << "," << state.nverts << "," << sourceVertexIndex << ","
                     << method << ",,," << i << "," << distances[i] << "\n";
         }
     };
 
+
     // VTP Solver
+    cout << endl << "----- VTP -----" << endl;
     log_time(state.vtp_solver, "VTP", "Load");
     log_time(state.vtp_solver, "VTP", "Preprocess");
     log_time(state.vtp_solver, "VTP", "Query");
     log_distances("VTP");
 
     // Trettner Solver
+    cout << endl << "----- Trettner -----" << endl;
     log_time(state.trettner_solver, "Trettner", "Load");
     log_time(state.trettner_solver, "Trettner", "Preprocess");
     log_time(state.trettner_solver, "Trettner", "Query");
     log_distances("Trettner");
 
     // Fast Marching Solver
+    cout << endl << "----- Fast Marching -----" << endl;
     log_time(state.fast_mar_solver, "Fast Marching", "Load");
     log_time(state.fast_mar_solver, "Fast Marching", "Preprocess");
     log_time(state.fast_mar_solver, "Fast Marching", "Query");
     log_distances("Fast Marching");
 
     // Heat Solver
+    cout << endl << "----- Heat -----" << endl;
     log_time(state.heat_solver, "Heat", "Load");
     log_time(state.heat_solver, "Heat", "Preprocess");
     log_time(state.heat_solver, "Heat", "Query");
     log_distances("Heat");
 
-    // Similarly, add other solvers as needed
+    // Geotangle Solver
+    cout << endl << "----- Geotangle -----" << endl;
+    log_time(state.geotangle_solver, "Geotangle", "Load");
+    log_time(state.geotangle_solver, "Geotangle", "Preprocess");
+    log_time(state.geotangle_solver, "Geotangle", "Query");
+    log_distances("Geotangle");
+
+    // Edge Solver
+    cout << endl << "----- Edge -----" << endl;
+    log_time(state.edge_solver, "Edge", "Load");
+    log_time(state.edge_solver, "Edge", "Preprocess");
+    log_time(state.edge_solver, "Edge", "Query");
+    log_distances("Edge");
+
+    // Extended Solver
+    cout << endl << "----- Extended -----" << endl;
+    log_time(state.extended_solver, "Extended", "Load");
+    log_time(state.extended_solver, "Extended", "Preprocess");
+    log_time(state.extended_solver, "Extended", "Query");
+    log_distances("Extended");
+
+    // Lanthier Solver
+    cout << endl << "----- Lanthier -----" << endl;
+    log_time(state.lanthier_solver, "Lanthier", "Load");
+    log_time(state.lanthier_solver, "Lanthier", "Preprocess");
+    log_time(state.lanthier_solver, "Lanthier", "Query");
+    log_distances("Lanthier");
+
 
     csvFile.close();
 }
@@ -285,6 +249,8 @@ int main(int argc, char **argv) {
     int sourceVertexIndex = stoi(argv[2]);
 
     State gs;
+    gs.mesh_path = meshPath;
+    gs.mesh_name = meshPath.substr(meshPath.find_last_of("/\\") + 1);
     load_mesh(meshPath, gs);
     run_ssgd_method(gs, sourceVertexIndex);
 

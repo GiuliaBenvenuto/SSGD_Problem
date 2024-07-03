@@ -270,6 +270,7 @@ public:
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    res.clear(); 
     res = compute_geodesic_distances(solver, {vid});
     for (auto &value : res) {
       value = 1.0 - value;
@@ -300,7 +301,7 @@ public:
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
-
+    res.clear();
     res = compute_geodesic_distances(solver, {vid});
     for (auto &value : res) {
       value = 1.0 - value;
@@ -346,6 +347,7 @@ public:
   }
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    res.clear();
     res = compute_geodesic_distances(solver, {vid}); // TODO change the code so that the // input is an uint and not a in
     for (auto &value : res) {
       value = 1.0 - value;
@@ -388,6 +390,7 @@ public:
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
     // solver computed with the lanthier method
     // res -> vector<double>
+    res.clear();
     res = compute_geodesic_distances(solver, {vid});
     // get only m.num_verts() elements of res
     res.resize(m.num_verts());
