@@ -57,6 +57,7 @@ public:
   void preprocess() override {}
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    res.clear();  // Clear previous results
     res = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), vid);
     for (auto &value : res) {
       value = 1.0 - value;
@@ -90,6 +91,12 @@ public:
     vector<int> vids = {vid};
     half_edge = HEInit(mesh_path, vids);
     sc = distance_field_trettner(half_edge, vids, time); 
+
+    res.clear();  // Clear previous results
+    res.resize(sc.size());  // Ensure 'res' can hold all distances
+    for (size_t i = 0; i < sc.size(); ++i) {
+        res[i] = sc[i];  // Copy distances to 'res'
+    }
   }
 
 };
@@ -158,6 +165,12 @@ public:
     }
     sc = ScalarField(distanceField);
     sc.normalize_in_01();
+
+    res.clear();  // Clear previous results
+    res.resize(sc.size());  // Ensure 'res' can hold all distances
+    for (size_t i = 0; i < sc.size(); ++i) {
+        res[i] = sc[i];  // Copy distances to 'res'
+    }
   }
 };
 
