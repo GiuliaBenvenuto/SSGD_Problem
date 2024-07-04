@@ -1,7 +1,6 @@
 build/*
 .vscode/
 *.DS_Store
-CMakeLists.txt
 
 pymeshlab/Esperimento_1/data/altro/bunny_1k_final.obj
 pymeshlab/Esperimento_1/data/altro/bunny_1k_subdiv_1_final.obj
