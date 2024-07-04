@@ -530,3 +530,7 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+// prima cosa: calcola ground truth 
+// Quando runno un metodo k sulla mesh m, calcolo già l'errore rispetto alla ground truth con SMAPE
+// Così nei csv ho direttamente l'errore rispetto alla ground truth
