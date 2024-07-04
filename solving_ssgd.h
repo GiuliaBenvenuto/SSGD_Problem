@@ -341,8 +341,13 @@ public:
   }
 
   void preprocess() override {
+    cout << "Make dual geodesic solver START" << endl;
     dual_solver = make_dual_geodesic_solver(m); // TODO: risolvi che questo blocca delle mesh
+    cout << "Make dual geodesic solver END" << endl;
+
+    cout << "Extended solver START" << endl;
     solver = extended_solver(m, dual_solver, k);
+    cout << "Extended solver END" << endl;
     dual_solver_computed = true;
   }
 
