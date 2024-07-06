@@ -26,7 +26,7 @@ geodesic_solver extended_solver(const DrawableTrimesh<> &m,
       //cout << "SHORTEST PATH computed" << endl;
       result.graph[i][j].node = nbr[j];
       result.graph[i][j].length = path_length(path);
-      cout << "Time: " << chrono::duration_cast<chrono::microseconds>(toc - tic).count() << " microseconds" << endl;
+      //cout << "Time: " << chrono::duration_cast<chrono::microseconds>(toc - tic).count() << " microseconds" << endl;
     }
   }
   // // print number of edges

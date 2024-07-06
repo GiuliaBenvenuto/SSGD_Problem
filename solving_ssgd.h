@@ -57,13 +57,32 @@ public:
   void preprocess() override {}
 
   void query(const int vid, std::vector<double> &res, ScalarField &sc) override {
+    cout << "VTP query started... " << endl;
     res.clear();  // Clear previous results
+
+    auto start = std::chrono::high_resolution_clock::now();
     res = exact_geodesic_distance(m.vector_polys(), m.vector_verts(), vid);
+    auto end = std::chrono::high_resolution_clock::now();
+    // print time in seconds with 4 decimal digits
+    std::chrono::duration<double> elapsed = end - start;
+    cout << "VTP computation: " << elapsed.count() << " s" << endl;
+
+
+
+    auto start_modify = std::chrono::high_resolution_clock::now();
     for (auto &value : res) {
       value = 1.0 - value;
     }
+    auto end_modify = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_modify = end_modify - start_modify;
+    cout << "Modify the results: " << elapsed_modify.count() << " s" << endl;
+
+    auto start_scalar = std::chrono::high_resolution_clock::now();
     sc = ScalarField(res);
     sc.normalize_in_01();
+    auto end_scalar = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed_scalar = end_scalar - start_scalar;
+    cout << "ScalarField computation: " << elapsed_scalar.count() << " s" << endl;
   }
 };
 
