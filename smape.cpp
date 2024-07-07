@@ -205,7 +205,7 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    init(gs.vtp_solver,         gs,     "VTP");
+    // init(gs.vtp_solver,         gs,     "VTP");
     init(gs.trettner_solver,    gs,     "Trettner");
     init(gs.fast_mar_solver,    gs,     "Fast Marching");
     init(gs.heat_solver,        gs,     "Heat");
@@ -242,7 +242,7 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
 }
 
 
-void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<double> &gt) {
+void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<double> &gt, vector<double>& smape_errors) {
     vector<double> distances;
     ScalarField field;
     vector<double> &ground_truth = gt;
@@ -257,23 +257,25 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     }
 
     auto log_time_and_calculate_smape = [&](auto &solver, const string &method) {
-        auto tic = chrono::high_resolution_clock::now();
+        auto start = chrono::high_resolution_clock::now();
 
         solver.query(sourceVertexIndex, distances, field);  // Only the query operation
 
-        auto toc = chrono::high_resolution_clock::now();
-        auto duration = chrono::duration_cast<chrono::microseconds>(toc - tic).count();
-        double time_ms = duration / 1000.0;
-        cout << "Query time: " << time_ms << " ms" << endl;
+        auto end = chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        cout << "QUERY TIME: " << elapsed.count() << " s" << endl;
 
         // Calcolo di SMAPE using ground_truth instead of gt
         double smape = calculate_smape(ground_truth, distances);
         cout << method << " SMAPE: " << smape << "%" << endl;
+
+        // Save SMAPE error for this method
+        smape_errors.push_back(smape);
     };
 
     // VTP Solver
-    cout << endl << "----- VTP -----" << endl;
-    log_time_and_calculate_smape(state.vtp_solver, "VTP");
+    // cout << endl << "----- VTP -----" << endl;
+    // log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
     // Trettner Solver
     cout << endl << "----- Trettner -----" << endl;
@@ -322,26 +324,33 @@ int main(int argc, char **argv) {
     string folderPath = argv[1];
 
     // Create a new directory for CSV files
-    fs::path currentPath = fs::current_path();
-    fs::path csvDirPath = currentPath / "errors";
-    if (!fs::exists(csvDirPath)) {
-        fs::create_directory(csvDirPath);
-        cout << "Created directory: " << csvDirPath << endl;
-    } else {
-        cout << "Directory already exists: " << csvDirPath << endl;
-    }
+    // fs::path currentPath = fs::current_path();
+    // fs::path csvDirPath = currentPath / "errors";
+    // if (!fs::exists(csvDirPath)) {
+    //     fs::create_directory(csvDirPath);
+    //     cout << "Created directory: " << csvDirPath << endl;
+    // } else {
+    //     cout << "Directory already exists: " << csvDirPath << endl;
+    // }
 
     // ----- ORA VERTEX = 1 -----
-    int vertex = vertices_idx[0];
+    // int vertex = vertices_idx[1];
+    int vertex = ;
+
+    // Prepare CSV file
+    ofstream csvFile("../pymeshlab/Esperimento_1/data/csv_vtp_gt/smape_errors_" + to_string(vertex) + ".csv");
+    //csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
+    csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
+    csvFile.flush();
+
 
     // read a csv file
     string csv_vtp_gt = "../pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_" + to_string(vertex) + ".csv";
-    ifstream csvFile(csv_vtp_gt);
-    // vector<double> blub_ground_truth, bob_ground_truth, spot_ground_truth;
+    ifstream gt_csvFile(csv_vtp_gt);
     string line;
-    getline(csvFile, line); // skip header
 
-    while (getline(csvFile, line)) {
+    getline(gt_csvFile, line); // skip header
+    while (getline(gt_csvFile, line)) {
         std::stringstream ss(line);
         std::string cell;
         std::vector<double> temp;
@@ -365,6 +374,40 @@ int main(int argc, char **argv) {
 
 
     // for each file .obj in the folderPath
+    // for (const auto &entry : fs::directory_iterator(folderPath)) {
+    //     if (entry.path().extension() == ".obj") {
+    //         string meshPath = entry.path().string();
+    //         gs.mesh_path = meshPath;
+    //         gs.mesh_name = entry.path().filename().string();
+    //         string type = gs.mesh_name.substr(0, 4);
+
+    //         vector<double> smape_errors;
+
+    //         load_mesh(meshPath, gs);
+    //         init_methods(gs);
+
+    //         if (type == "blub") {
+    //             cout << "Blub size of ground truth: " << gs.blub_ground_truth.size() << endl;
+    //             run_ssgd_method(gs, vertex, type, gs.blub_ground_truth, smape_errors);
+    //         } else if (type == "bob_") {
+    //             cout << "Bob size of ground truth: " << gs.bob_ground_truth.size() << endl;
+    //             run_ssgd_method(gs, vertex, type, gs.bob_ground_truth, smape_errors);
+    //         } else if (type == "spot") {
+    //             cout << "Spot size of ground truth: " << gs.spot_ground_truth.size() << endl;
+    //             run_ssgd_method(gs, vertex, type, gs.spot_ground_truth, smape_errors);
+    //         } else {
+    //             cerr << "Invalid type: " << type << endl;
+    //             return 1;
+    //         }
+
+    //         // Write to CSV
+    //         csvFile << gs.mesh_name << "," << gs.nverts;
+    //         for (const auto& smape : smape_errors) {
+    //             csvFile << "," << smape;
+    //         }
+    //         csvFile << "\n";
+    //     }
+    // }
     for (const auto &entry : fs::directory_iterator(folderPath)) {
         if (entry.path().extension() == ".obj") {
             string meshPath = entry.path().string();
@@ -372,25 +415,46 @@ int main(int argc, char **argv) {
             gs.mesh_name = entry.path().filename().string();
             string type = gs.mesh_name.substr(0, 4);
 
+            vector<double> smape_errors;
 
-            load_mesh(meshPath, gs);
-            init_methods(gs);
+            try {
+                load_mesh(meshPath, gs);
+                init_methods(gs);
 
-            if (type == "blub") {
-                cout << "Blub size of ground truth: " << gs.blub_ground_truth.size() << endl;
-                run_ssgd_method(gs, vertex, type, gs.blub_ground_truth);
-            } else if (type == "bob_") {
-                cout << "Bob size of ground truth: " << gs.bob_ground_truth.size() << endl;
-                run_ssgd_method(gs, vertex, type, gs.bob_ground_truth);
-            } else if (type == "spot") {
-                cout << "Spot size of ground truth: " << gs.spot_ground_truth.size() << endl;
-                run_ssgd_method(gs, vertex, type, gs.spot_ground_truth);
-            } else {
-                cerr << "Invalid type: " << type << endl;
-                return 1;
+                if (type == "blub") {
+                    cout << "Blub size of ground truth: " << gs.blub_ground_truth.size() << endl;
+                    run_ssgd_method(gs, vertex, type, gs.blub_ground_truth, smape_errors);
+                } else if (type == "bob_") {
+                    cout << "Bob size of ground truth: " << gs.bob_ground_truth.size() << endl;
+                    run_ssgd_method(gs, vertex, type, gs.bob_ground_truth, smape_errors);
+                } else if (type == "spot") {
+                    cout << "Spot size of ground truth: " << gs.spot_ground_truth.size() << endl;
+                    run_ssgd_method(gs, vertex, type, gs.spot_ground_truth, smape_errors);
+                } else {
+                    cerr << "Invalid type: " << type << endl;
+                    continue; // Skip this mesh and move to the next one
+                }
+
+                // Write to CSV after processing each mesh
+                csvFile << gs.mesh_name << "," << gs.nverts;
+                for (const auto& smape : smape_errors) {
+                    csvFile << "," << smape;
+                }
+                csvFile << "\n";
+                csvFile.flush(); // Ensure the line is written immediately
+
+                cout << "Results for " << gs.mesh_name << " written to CSV." << endl;
+
+            } catch (const std::exception& e) {
+                cerr << "Error processing mesh " << gs.mesh_name << ": " << e.what() << endl;
+                // Optionally, you can write an error entry to the CSV
+                csvFile << gs.mesh_name << "," << gs.nverts << ",ERROR\n";
+                csvFile.flush();
             }
         }
     }
+
+    csvFile.close();
 
     return 0;
 }
