@@ -394,7 +394,7 @@ public:
   geodesic_solver solver;
   //dual_geodesic_solver dual_solver;
   //bool dual_solver_computed = false;
-  int n_steiner = 3;
+  int n_steiner = 1;
 
   void load(const std::vector<double> &coords, const std::vector<uint> &tris) override {
     m = DrawableTrimesh(coords, tris);
