@@ -325,13 +325,14 @@ int main(int argc, char **argv) {
 
     // ----- ORA VERTEX = 1 -----
     // int vertex = vertices_idx[1];
-    int vertex = 2601;
+    int vertex = 1;
 
     // Prepare CSV file
     ofstream csvFile("../pymeshlab/Esperimento_1/data/csv_vtp_gt/smape_errors_" + to_string(vertex) + ".csv");
     csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
     // csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
     // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Lanthier\n";
+    // csvFile << "MeshName,NumVertices,SMAPE_Edge\n";
 
     csvFile.flush();
 
