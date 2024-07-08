@@ -108,8 +108,8 @@ struct State {
         mesh_name = "";
         mesh = HalfEdge();
 
-        k = 3;
-        prev_k = 3;
+        k = 2;
+        prev_k = 2;
 
         n_steiner = 1;
         prev_n_steiner = 1;
@@ -205,14 +205,14 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    init(gs.vtp_solver,         gs,     "VTP");
-    init(gs.trettner_solver,    gs,     "Trettner");
-    init(gs.fast_mar_solver,    gs,     "Fast Marching");
+    // init(gs.vtp_solver,         gs,     "VTP");
+    // init(gs.trettner_solver,    gs,     "Trettner");
+    // init(gs.fast_mar_solver,    gs,     "Fast Marching");
     init(gs.heat_solver,        gs,     "Heat");
     init(gs.geotangle_solver,   gs,     "Geotangle");
     init(gs.edge_solver,        gs,     "Edge");
-    // init(gs.extended_solver,    gs,     "Extended");
-    init(gs.lanthier_solver,    gs,     "Lanthier");
+    init(gs.extended_solver,    gs,     "Extended");
+    // init(gs.lanthier_solver,    gs,     "Lanthier");
 }
 
 // Funzione per calcolare SMAPE tra due vettori
@@ -273,17 +273,17 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
         smape_errors.push_back(smape);
     };
 
-    // VTP Solver
-    cout << endl << "----- VTP -----" << endl;
-    log_time_and_calculate_smape(state.vtp_solver, "VTP");
+    // // VTP Solver
+    // cout << endl << "----- VTP -----" << endl;
+    // log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
-    // Trettner Solver
-    cout << endl << "----- Trettner -----" << endl;
-    log_time_and_calculate_smape(state.trettner_solver, "Trettner");
+    // // Trettner Solver
+    // cout << endl << "----- Trettner -----" << endl;
+    // log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
-    // Fast Marching Solver
-    cout << endl << "----- Fast Marching Query -----" << endl;
-    log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
+    // // Fast Marching Solver
+    // cout << endl << "----- Fast Marching Query -----" << endl;
+    // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
     // Heat Solver
     cout << endl << "----- Heat -----" << endl;
@@ -297,13 +297,13 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     cout << endl << "----- Edge -----" << endl;
     log_time_and_calculate_smape(state.edge_solver, "Edge");
 
-    // Lanthier Solver
-    cout << endl << "----- Lanthier -----" << endl;
-    log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
+    // // Lanthier Solver
+    // cout << endl << "----- Lanthier -----" << endl;
+    // log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
 
-    // Extended Solver
-    // cout << endl << "----- Extended -----" << endl;
-    // log_time_and_calculate_smape(state.extended_solver, "Extended");
+    //Extended Solver
+    cout << endl << "----- Extended -----" << endl;
+    log_time_and_calculate_smape(state.extended_solver, "Extended");
 
 }
 
@@ -335,35 +335,56 @@ int main(int argc, char **argv) {
 
     // ----- ORA VERTEX = 1 -----
     // int vertex = vertices_idx[1];
-    int vertex = 1;
+    int vertex = 651;
 
     // Prepare CSV file
     ofstream csvFile("../pymeshlab/Esperimento_1/data/csv_vtp_gt/smape_errors_" + to_string(vertex) + ".csv");
-    csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
+    // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
     // csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
     // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Lanthier\n";
+    csvFile << "MeshName,NumVertices,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Extended\n";
+
     csvFile.flush();
 
 
     // read a csv file
     string csv_vtp_gt = "../pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_" + to_string(vertex) + ".csv";
+    cout << "Reading ground truth from: " << csv_vtp_gt << endl;
+
     ifstream gt_csvFile(csv_vtp_gt);
     string line;
-
     getline(gt_csvFile, line); // skip header
+    int lineNumber = 1;
+
     while (getline(gt_csvFile, line)) {
+        lineNumber++;
+        // cout << "Processing line " << lineNumber << ": " << line << endl;
+
         std::stringstream ss(line);
         std::string cell;
         std::vector<double> temp;
 
+        int cellNumber = 0;
         while (std::getline(ss, cell, ',')) {
-            temp.push_back(std::stod(cell));
+            cellNumber++;
+            try {
+                double value = std::stod(cell);
+                // Check if the absolute value is smaller than the smallest positive normal value
+                if (std::abs(value) < std::numeric_limits<double>::min()) {
+                    value = 0.0;  // Treat as zero
+                }
+                temp.push_back(value);
+            } catch (const std::exception& e) {
+                cerr << "Error parsing value at line " << lineNumber << ", cell " << cellNumber << ": " << cell << endl;
+                cerr << "Error: " << e.what() << endl;
+                temp.push_back(0.0);  // Push 0.0 for erroneous values
+            }
         }
-        
+
         if (temp.size() > 3) {
-            gs.blub_ground_truth.push_back(temp[1]); 
-            gs.bob_ground_truth.push_back(temp[2]);      
-            gs.spot_ground_truth.push_back(temp[3]);      
+            gs.blub_ground_truth.push_back(temp[1]);
+            gs.bob_ground_truth.push_back(temp[2]);
+            gs.spot_ground_truth.push_back(temp[3]);
         }
     }
 
