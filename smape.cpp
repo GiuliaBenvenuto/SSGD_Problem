@@ -205,11 +205,11 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    init(gs.vtp_solver,         gs,     "VTP");
-    init(gs.trettner_solver,    gs,     "Trettner");
-    init(gs.fast_mar_solver,    gs,     "Fast Marching");
+    // init(gs.vtp_solver,         gs,     "VTP");
+    // init(gs.trettner_solver,    gs,     "Trettner");
+    // init(gs.fast_mar_solver,    gs,     "Fast Marching");
     init(gs.heat_solver,        gs,     "Heat");
-    init(gs.geotangle_solver,   gs,     "Geotangle");
+    // init(gs.geotangle_solver,   gs,     "Geotangle");
     init(gs.edge_solver,        gs,     "Edge");
     // init(gs.extended_solver,    gs,     "Extended");
     init(gs.lanthier_solver,    gs,     "Lanthier");
@@ -273,25 +273,25 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
         smape_errors.push_back(smape);
     };
 
-    // VTP Solver
-    cout << endl << "----- VTP -----" << endl;
-    log_time_and_calculate_smape(state.vtp_solver, "VTP");
+    // // VTP Solver
+    // cout << endl << "----- VTP -----" << endl;
+    // log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
-    // Trettner Solver
-    cout << endl << "----- Trettner -----" << endl;
-    log_time_and_calculate_smape(state.trettner_solver, "Trettner");
+    // // Trettner Solver
+    // cout << endl << "----- Trettner -----" << endl;
+    // log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
-    // Fast Marching Solver
-    cout << endl << "----- Fast Marching Query -----" << endl;
-    log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
+    // // Fast Marching Solver
+    // cout << endl << "----- Fast Marching Query -----" << endl;
+    // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
     // Heat Solver
     cout << endl << "----- Heat -----" << endl;
     log_time_and_calculate_smape(state.heat_solver, "Heat");
 
-    // Geotangle Solver
-    cout << endl << "----- Geotangle -----" << endl;
-    log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
+    // // Geotangle Solver
+    // cout << endl << "----- Geotangle -----" << endl;
+    // log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
 
     // Edge Solver
     cout << endl << "----- Edge -----" << endl;
@@ -315,6 +315,7 @@ using namespace std::chrono;
 int main(int argc, char **argv) {
     State gs;
     // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601, 3251, 3901, 4551, 5201, 5850};
+    // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
     vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
 
     if (argc < 2) {
@@ -325,112 +326,116 @@ int main(int argc, char **argv) {
 
     // ----- ORA VERTEX = 1 -----
     // int vertex = vertices_idx[1];
-    int vertex = 1;
+    // int vertex = 651;
 
-    // Prepare CSV file
-    ofstream csvFile("../pymeshlab/Esperimento_1/data/csv_vtp_gt/smape_errors_" + to_string(vertex) + ".csv");
-    csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
-    // csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
-    // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Lanthier\n";
-    // csvFile << "MeshName,NumVertices,SMAPE_Edge\n";
+    for (int vertex : vertices_idx) {
+        cout << "------- Processing vertex: " << vertex << "--------" << endl;
+    
+        // Prepare CSV file
+        ofstream csvFile("../pymeshlab/Esperimento_1/data/csv_vtp_gt/smape_errors_" + to_string(vertex) + ".csv");
+        // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
+        // csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
+        // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Lanthier\n";
+        csvFile << "MeshName,NumVertices,SMAPE_Heat,SMAPE_Edge,SMAPE_Lanthier\n";
 
-    csvFile.flush();
+        csvFile.flush();
 
 
-    // read a csv file
-    string csv_vtp_gt = "../pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_" + to_string(vertex) + ".csv";
-    cout << "Reading ground truth from: " << csv_vtp_gt << endl;
+        // read a csv file
+        string csv_vtp_gt = "../pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_" + to_string(vertex) + ".csv";
+        cout << "Reading ground truth from: " << csv_vtp_gt << endl;
 
-    ifstream gt_csvFile(csv_vtp_gt);
-    string line;
-    getline(gt_csvFile, line); // skip header
-    int lineNumber = 1;
+        ifstream gt_csvFile(csv_vtp_gt);
+        string line;
+        getline(gt_csvFile, line); // skip header
+        int lineNumber = 1;
 
-    while (getline(gt_csvFile, line)) {
-        lineNumber++;
-        // cout << "Processing line " << lineNumber << ": " << line << endl;
+        while (getline(gt_csvFile, line)) {
+            lineNumber++;
+            // cout << "Processing line " << lineNumber << ": " << line << endl;
 
-        std::stringstream ss(line);
-        std::string cell;
-        std::vector<double> temp;
+            std::stringstream ss(line);
+            std::string cell;
+            std::vector<double> temp;
 
-        int cellNumber = 0;
-        while (std::getline(ss, cell, ',')) {
-            cellNumber++;
-            try {
-                double value = std::stod(cell);
-                // Check if the absolute value is smaller than the smallest positive normal value
-                if (std::abs(value) < std::numeric_limits<double>::min()) {
-                    value = 0.0;  // Treat as zero
+            int cellNumber = 0;
+            while (std::getline(ss, cell, ',')) {
+                cellNumber++;
+                try {
+                    double value = std::stod(cell);
+                    // Check if the absolute value is smaller than the smallest positive normal value
+                    if (std::abs(value) < std::numeric_limits<double>::min()) {
+                        value = 0.0;  // Treat as zero
+                    }
+                    temp.push_back(value);
+                } catch (const std::exception& e) {
+                    cerr << "Error parsing value at line " << lineNumber << ", cell " << cellNumber << ": " << cell << endl;
+                    cerr << "Error: " << e.what() << endl;
+                    temp.push_back(0.0);  // Push 0.0 for erroneous values
                 }
-                temp.push_back(value);
-            } catch (const std::exception& e) {
-                cerr << "Error parsing value at line " << lineNumber << ", cell " << cellNumber << ": " << cell << endl;
-                cerr << "Error: " << e.what() << endl;
-                temp.push_back(0.0);  // Push 0.0 for erroneous values
+            }
+
+            if (temp.size() > 3) {
+                gs.blub_ground_truth.push_back(temp[1]);
+                gs.bob_ground_truth.push_back(temp[2]);
+                gs.spot_ground_truth.push_back(temp[3]);
             }
         }
 
-        if (temp.size() > 3) {
-            gs.blub_ground_truth.push_back(temp[1]);
-            gs.bob_ground_truth.push_back(temp[2]);
-            gs.spot_ground_truth.push_back(temp[3]);
+        // check if ground truth is empty
+        if (gs.blub_ground_truth.empty() || gs.bob_ground_truth.empty() || gs.spot_ground_truth.empty()) {
+            cerr << "Ground truth is empty." << endl;
+            return 1;
         }
-    }
 
-    // check if ground truth is empty
-    if (gs.blub_ground_truth.empty() || gs.bob_ground_truth.empty() || gs.spot_ground_truth.empty()) {
-        cerr << "Ground truth is empty." << endl;
-        return 1;
-    }
+        for (const auto &entry : fs::directory_iterator(folderPath)) {
+            if (entry.path().extension() == ".obj") {
+                string meshPath = entry.path().string();
+                gs.mesh_path = meshPath;
+                gs.mesh_name = entry.path().filename().string();
+                string type = gs.mesh_name.substr(0, 4);
 
-    for (const auto &entry : fs::directory_iterator(folderPath)) {
-        if (entry.path().extension() == ".obj") {
-            string meshPath = entry.path().string();
-            gs.mesh_path = meshPath;
-            gs.mesh_name = entry.path().filename().string();
-            string type = gs.mesh_name.substr(0, 4);
+                vector<double> smape_errors;
 
-            vector<double> smape_errors;
+                try {
+                    load_mesh(meshPath, gs);
+                    init_methods(gs);
 
-            try {
-                load_mesh(meshPath, gs);
-                init_methods(gs);
+                    if (type == "blub") {
+                        cout << "Blub size of ground truth: " << gs.blub_ground_truth.size() << endl;
+                        run_ssgd_method(gs, vertex, type, gs.blub_ground_truth, smape_errors);
+                    } else if (type == "bob_") {
+                        cout << "Bob size of ground truth: " << gs.bob_ground_truth.size() << endl;
+                        run_ssgd_method(gs, vertex, type, gs.bob_ground_truth, smape_errors);
+                    } else if (type == "spot") {
+                        cout << "Spot size of ground truth: " << gs.spot_ground_truth.size() << endl;
+                        run_ssgd_method(gs, vertex, type, gs.spot_ground_truth, smape_errors);
+                    } else {
+                        cerr << "Invalid type: " << type << endl;
+                        continue; // Skip this mesh and move to the next one
+                    }
 
-                if (type == "blub") {
-                    cout << "Blub size of ground truth: " << gs.blub_ground_truth.size() << endl;
-                    run_ssgd_method(gs, vertex, type, gs.blub_ground_truth, smape_errors);
-                } else if (type == "bob_") {
-                    cout << "Bob size of ground truth: " << gs.bob_ground_truth.size() << endl;
-                    run_ssgd_method(gs, vertex, type, gs.bob_ground_truth, smape_errors);
-                } else if (type == "spot") {
-                    cout << "Spot size of ground truth: " << gs.spot_ground_truth.size() << endl;
-                    run_ssgd_method(gs, vertex, type, gs.spot_ground_truth, smape_errors);
-                } else {
-                    cerr << "Invalid type: " << type << endl;
-                    continue; // Skip this mesh and move to the next one
+                    // Write to CSV after processing each mesh
+                    csvFile << gs.mesh_name << "," << gs.nverts;
+                    for (const auto& smape : smape_errors) {
+                        csvFile << "," << smape;
+                    }
+                    csvFile << "\n";
+                    csvFile.flush(); // Ensure the line is written immediately
+
+                    cout << "Results for " << gs.mesh_name << " written to CSV." << endl;
+
+                } catch (const std::exception& e) {
+                    cerr << "Error processing mesh " << gs.mesh_name << ": " << e.what() << endl;
+                    // Optionally, you can write an error entry to the CSV
+                    csvFile << gs.mesh_name << "," << gs.nverts << ",ERROR\n";
+                    csvFile.flush();
                 }
-
-                // Write to CSV after processing each mesh
-                csvFile << gs.mesh_name << "," << gs.nverts;
-                for (const auto& smape : smape_errors) {
-                    csvFile << "," << smape;
-                }
-                csvFile << "\n";
-                csvFile.flush(); // Ensure the line is written immediately
-
-                cout << "Results for " << gs.mesh_name << " written to CSV." << endl;
-
-            } catch (const std::exception& e) {
-                cerr << "Error processing mesh " << gs.mesh_name << ": " << e.what() << endl;
-                // Optionally, you can write an error entry to the CSV
-                csvFile << gs.mesh_name << "," << gs.nverts << ",ERROR\n";
-                csvFile.flush();
             }
         }
-    }
 
-    csvFile.close();
+        csvFile.close();
+    }
 
     return 0;
 }
