@@ -205,14 +205,14 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    // init(gs.vtp_solver,         gs,     "VTP");
-    // init(gs.trettner_solver,    gs,     "Trettner");
-    // init(gs.fast_mar_solver,    gs,     "Fast Marching");
+    init(gs.vtp_solver,         gs,     "VTP");
+    init(gs.trettner_solver,    gs,     "Trettner");
+    init(gs.fast_mar_solver,    gs,     "Fast Marching");
     init(gs.heat_solver,        gs,     "Heat");
     init(gs.geotangle_solver,   gs,     "Geotangle");
     init(gs.edge_solver,        gs,     "Edge");
-    init(gs.extended_solver,    gs,     "Extended");
-    // init(gs.lanthier_solver,    gs,     "Lanthier");
+    // init(gs.extended_solver,    gs,     "Extended");
+    init(gs.lanthier_solver,    gs,     "Lanthier");
 }
 
 // Funzione per calcolare SMAPE tra due vettori
@@ -273,17 +273,17 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
         smape_errors.push_back(smape);
     };
 
-    // // VTP Solver
-    // cout << endl << "----- VTP -----" << endl;
-    // log_time_and_calculate_smape(state.vtp_solver, "VTP");
+    // VTP Solver
+    cout << endl << "----- VTP -----" << endl;
+    log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
-    // // Trettner Solver
-    // cout << endl << "----- Trettner -----" << endl;
-    // log_time_and_calculate_smape(state.trettner_solver, "Trettner");
+    // Trettner Solver
+    cout << endl << "----- Trettner -----" << endl;
+    log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
-    // // Fast Marching Solver
-    // cout << endl << "----- Fast Marching Query -----" << endl;
-    // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
+    // Fast Marching Solver
+    cout << endl << "----- Fast Marching Query -----" << endl;
+    log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
     // Heat Solver
     cout << endl << "----- Heat -----" << endl;
@@ -297,13 +297,13 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     cout << endl << "----- Edge -----" << endl;
     log_time_and_calculate_smape(state.edge_solver, "Edge");
 
-    // // Lanthier Solver
-    // cout << endl << "----- Lanthier -----" << endl;
-    // log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
+    // Lanthier Solver
+    cout << endl << "----- Lanthier -----" << endl;
+    log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
 
-    //Extended Solver
-    cout << endl << "----- Extended -----" << endl;
-    log_time_and_calculate_smape(state.extended_solver, "Extended");
+    // //Extended Solver
+    // cout << endl << "----- Extended -----" << endl;
+    // log_time_and_calculate_smape(state.extended_solver, "Extended");
 
 }
 
@@ -323,26 +323,15 @@ int main(int argc, char **argv) {
     }
     string folderPath = argv[1];
 
-    // Create a new directory for CSV files
-    // fs::path currentPath = fs::current_path();
-    // fs::path csvDirPath = currentPath / "errors";
-    // if (!fs::exists(csvDirPath)) {
-    //     fs::create_directory(csvDirPath);
-    //     cout << "Created directory: " << csvDirPath << endl;
-    // } else {
-    //     cout << "Directory already exists: " << csvDirPath << endl;
-    // }
-
     // ----- ORA VERTEX = 1 -----
     // int vertex = vertices_idx[1];
-    int vertex = 651;
+    int vertex = 2601;
 
     // Prepare CSV file
     ofstream csvFile("../pymeshlab/Esperimento_1/data/csv_vtp_gt/smape_errors_" + to_string(vertex) + ".csv");
-    // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
+    csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
     // csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
     // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Lanthier\n";
-    csvFile << "MeshName,NumVertices,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Extended\n";
 
     csvFile.flush();
 
