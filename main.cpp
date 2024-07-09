@@ -274,11 +274,11 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
   for (auto i = 0; i < gs.nverts; i++)
     gs.VV[i] = gs.m.vert_ordered_verts_link(i);
 
-    gs.m.normalize_bbox(); // rescale mesh to fit [0,1]^3 box
-    gs.m.center_bbox();
-    gs.m.show_wireframe(gs.SHOW_WIREFRAME);
-    gs.m.show_mesh(gs.SHOW_MESH);
-    gs.m.updateGL();
+  gs.m.normalize_bbox(); // rescale mesh to fit [0,1]^3 box
+  gs.m.center_bbox();
+  gs.m.show_wireframe(gs.SHOW_WIREFRAME);
+  gs.m.show_mesh(gs.SHOW_MESH);
+  gs.m.updateGL();
 
   if (gs.MESH_IS_LOADED) {
     
@@ -991,7 +991,6 @@ int main(int argc, char **argv) {
     // string s = "../data/cinolib/bunny.obj";
     // string s = "../pymeshlab/repaired_blub/blub_tri_subdiv_1_final.obj";
     string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj"; 
-    // string s = "../pymeshlab/Esperimento_1/data/tutte/blub_tri_subdiv_5_final.obj";
     
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
