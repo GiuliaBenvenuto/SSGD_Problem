@@ -1,0 +1,4 @@
+MeshName,NumVertices,SMAPE_Heat,SMAPE_Edge,SMAPE_Lanthier
+blub_tri_subdiv_5_final.obj,7274498,80.8506,16.0027,5.42523
+bob_tri_subdiv_5_final.obj,5472256,46.1965,24.8139,10.4133
+spot_tri_subdiv_5_final.obj,2998274,65.67,12.9878,5.42105

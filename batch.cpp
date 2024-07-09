@@ -18,7 +18,6 @@
 
 // Compute SSGD
 #include "solving_ssgd.h"
-#include "SSGD_methods/heat/gc_wrapper.h"
 
 // Matlab
 #include "MatlabEngine.hpp"
@@ -1105,29 +1104,6 @@ struct State {
     }
 };
 
-// ------ Helper functions ------
-vector<double> extract_coords(const DrawableTrimesh<> &mesh) {
-    vector<double> coords;
-    auto verts = mesh.vector_verts();
-    for (const auto& vert : verts) {
-        coords.push_back(vert.x());
-        coords.push_back(vert.y());
-        coords.push_back(vert.z());
-    }
-    return coords;
-}
-
-vector<uint> extract_tris(const DrawableTrimesh<> &mesh) {
-    vector<uint> tris;
-    auto polys = mesh.vector_polys();
-    for (const auto& poly : polys) {
-        for (auto vid : poly) {
-            tris.push_back(vid);
-        }
-    }
-    return tris;
-}
-
 // Load meshes
 void load_mesh(const string &filename, State &gs) {
     gs.m = DrawableTrimesh<>(filename.c_str());
@@ -1143,7 +1119,7 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 
     // Load
     gs.tic = chrono::steady_clock::now();
-    m.load(gs.coords, gs.tris);
+    m.load(&gs.m);
     gs.toc = chrono::steady_clock::now();
     double load_time = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
     cout << "LOAD TIME: " << load_time << " milliseconds" << endl;
@@ -1245,7 +1221,7 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     auto log_time_and_calculate_smape = [&](auto &solver, const string &method) {
         auto tic = chrono::high_resolution_clock::now();
 
-        solver.query(sourceVertexIndex, distances, field);  // Only the query operation
+        solver.query(sourceVertexIndex, distances);  // Only the query operation
 
         auto toc = chrono::high_resolution_clock::now();
         auto duration = chrono::duration_cast<chrono::microseconds>(toc - tic).count();

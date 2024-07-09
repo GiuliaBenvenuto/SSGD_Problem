@@ -18,7 +18,6 @@
 
 // Compute SSGD
 #include "solving_ssgd.h"
-#include "SSGD_methods/heat/gc_wrapper.h"
 
 // Matlab
 #include "MatlabEngine.hpp"
@@ -176,29 +175,6 @@ struct State {
 };
 
 
-// ------ Helper functions ------
-vector<double> extract_coords(const DrawableTrimesh<> &mesh) {
-  vector<double> coords;
-  auto verts = mesh.vector_verts();
-  for (const auto& vert : verts) {
-      coords.push_back(vert.x());
-      coords.push_back(vert.y());
-      coords.push_back(vert.z());
-  }
-  return coords;
-}
-
-vector<uint> extract_tris(const DrawableTrimesh<> &mesh) {
-  vector<uint> tris;
-  auto polys = mesh.vector_polys();
-  for (const auto& poly : polys) {
-      for (auto vid : poly) {
-          tris.push_back(vid);
-      }
-  }
-  return tris;
-}
-
 void fillTimeTable(State &gs, const string& method_name, double load_time, double preprocess_time, double query_time) {
   if (method_name == "VTP") {
     gs.vtp_load = load_time;
@@ -241,7 +217,7 @@ void init(GeodesicMethod &m, State &gs, string name) {
 
   // load
   gs.tic = std::chrono::steady_clock::now();
-  m.load(gs.coords, gs.tris);
+  m.load(&gs.m);
   gs.toc = std::chrono::steady_clock::now();
   double load = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
   cout << "Load time: " << load << " milliseconds" << endl;
@@ -788,38 +764,28 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         case State::VTP: {
           // load() and preprocess() in init_methods()
           gs.tic = std::chrono::steady_clock::now();
-          gs.vtp_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.vtp_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess, gs.vtp_query);
-
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::TRETTNER: {
           gs.tic = std::chrono::steady_clock::now();
-          gs.trettner_solver.query(gs.sources[0], gs.res, gs.field);
-          gs.toc = std::chrono::steady_clock::now();
+          gs.trettner_solver.query(gs.sources[0], gs.res);
+          gs.toc = std::chrono::steady_clock::now(); 
           gs.trettner_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Trettner", gs.trettner_load, gs.trettner_preprocess, gs.trettner_query);
-
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
         case State::FAST_MARCHING: {
           gs.tic = std::chrono::steady_clock::now();
-          gs.fast_mar_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.fast_mar_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.fast_mar_query);
-
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          
           break;
         }
               
@@ -831,15 +797,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           }
 
           gs.tic = std::chrono::steady_clock::now();
-          gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.heat_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
-
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          
-
           // ----- HEAT WITH CINOLIB -----
           // if (gs.heat_time != gs.heat_time_prev) {
           //   cout << "Heat time has changed to: " << gs.heat_time << endl;
@@ -848,7 +809,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           // }
 
           // gs.tic = std::chrono::steady_clock::now();
-          // gs.heat_solver.query(gs.sources[0], gs.res, gs.field);
+          // gs.heat_solver.query(gs.sources[0], gs.res);
           // gs.toc = std::chrono::steady_clock::now();
           // gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           // fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
@@ -860,25 +821,19 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::GEOTANGLE: {
           gs.tic = std::chrono::steady_clock::now();
-          gs.geotangle_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.geotangle_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.geotangle_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Geotangle", gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query);
-
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          break;
+            break;
         }
 
         case State::EDGE: {
           gs.tic = std::chrono::steady_clock::now();
-          gs.edge_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.edge_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.edge_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Edge", gs.edge_load, gs.edge_preprocess, gs.edge_query);
-
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
@@ -898,14 +853,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           }
 
           gs.tic = std::chrono::steady_clock::now();
-          gs.extended_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.extended_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
-
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
           break;
         }
 
@@ -925,14 +876,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           }
           
           gs.tic = std::chrono::steady_clock::now();
-          gs.lanthier_solver.query(gs.sources[0], gs.res, gs.field);
+          gs.lanthier_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.lanthier_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
-          
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-
           break;
         }
         
@@ -940,7 +887,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "No SSGD method selected" << endl;
           break;
         }
-      }
+          gs.field = ScalarField(gs.res);
+          gs.field.normalize_in_01();
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          }
     }
 
 

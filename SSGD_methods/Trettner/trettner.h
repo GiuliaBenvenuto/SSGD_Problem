@@ -51,7 +51,7 @@ struct HalfEdge {
 HalfEdge HEInit(const string &file, vector<int> &sources);
 
 // Declare the compute_distance_field function
-ScalarField distance_field_trettner(const HalfEdge &mesh,
+vector<double> distance_field_trettner(const HalfEdge &mesh,
                                     const vector<int> &sources,
                                     double &trettner_geodesic_time);
 

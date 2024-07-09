@@ -180,7 +180,7 @@ HalfEdge HEInit(const string &file, vector<int> &sources) {
 }
 
 // ---------- Compute the distance field ----------
-ScalarField distance_field_trettner(const HalfEdge &mesh,
+vector<double> distance_field_trettner(const HalfEdge &mesh,
                                     const vector<int> &sources,
                                     double &trettner_geodesic_time) {
   auto f_cnt = mesh.faces.size();
@@ -475,18 +475,14 @@ ScalarField distance_field_trettner(const HalfEdge &mesh,
     min_vertex_dis[size_t(v)] = std::min(dis, min_vertex_dis[size_t(v)]);
   }
 
-  vector<double> dist_trettner;
+  vector<double> dist_trettner; 
+
   for (size_t v = 0; v < mesh.vertex_pos.size(); ++v)
     dist_trettner.push_back(min_vertex_dis[size_t(v)] * mesh.avg_edge_length);
 
-  // Invert the color mapping
-  for (auto &value : dist_trettner) {
-    value = 1.0 - value;
-  }
 
-  ScalarField sc_trettner;
-  sc_trettner = ScalarField(dist_trettner);
-  sc_trettner.normalize_in_01();
 
-  return sc_trettner;
+
+  return dist_trettner;
+  // return sc_trettner;
 }
