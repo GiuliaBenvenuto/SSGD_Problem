@@ -86,27 +86,12 @@ public:
 
     auto start = std::chrono::high_resolution_clock::now();
     res = exact_geodesic_distance(m->vector_polys(), m->vector_verts(), vid);
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
     auto end = std::chrono::high_resolution_clock::now();
-    // print time in seconds with 4 decimal digits
     std::chrono::duration<double> elapsed = end - start;
     cout << "VTP computation: " << elapsed.count() << " s" << endl;
-
-    auto start_modify = std::chrono::high_resolution_clock::now();
-
-    // for (auto &value : res) {
-    //   value = 1.0 - value;
-    // }
-
-    auto end_modify = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed_modify = end_modify - start_modify;
-    cout << "Modify the results: " << elapsed_modify.count() << " s" << endl;
-
-    auto start_scalar = std::chrono::high_resolution_clock::now();
-
-    // convert the scalar field to a vector
-    auto end_scalar = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed_scalar = end_scalar - start_scalar;
-    cout << "ScalarField computation: " << elapsed_scalar.count() << " s" << endl;
   }
 };
 
@@ -120,8 +105,8 @@ public:
   HalfEdge half_edge;
   string mesh_path;
   double time;
-void load(DrawableTrimesh<>* mesh) override {
-  }
+
+  void load(DrawableTrimesh<>* mesh) override {}
 
   explicit TrettnerSolver(const std::string &path) : mesh_path(path) {}
   void preprocess() override {}
@@ -130,8 +115,10 @@ void load(DrawableTrimesh<>* mesh) override {
     vector<int> vids = {vid};
     half_edge = HEInit(mesh_path, vids);
     res = distance_field_trettner(half_edge, vids, time); 
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
-
 };
 
 
@@ -188,13 +175,15 @@ public:
     matlabPtr = startMATLAB();
     matlabPtr->eval(u"addpath('/Users/giuliabenvenuto/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/Toolbox Fast Marching/toolbox_fast_marching');");
 
-    
     startPointsMat = std::make_unique<Array>(factory.createScalar<double>(vid + 1));
 
-    
     results = matlabPtr->feval(u"perform_fast_marching_mesh", 3, {*verticesMat, *facesMat, *startPointsMat, *options});
     TypedArray<double> D = results[0];
     res = vector<double>(D.begin(), D.end());
+
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
 };
 
@@ -205,13 +194,9 @@ public:
   HeatSolver() {}
   ~HeatSolver() {}
 
-  //DrawableTrimesh<> m;
-  //float time_scalar = 1.0;
   gc_mesh gc_m;
   unique_ptr<HeatMethodDistanceSolver> heatSolverGC;
   double time_scalar = 1.0;
-
-  //IntrinsicGeometryInterface intrinsicGeometry;
 
   void load(DrawableTrimesh<>*mesh) override {
     gc_m = make_gc_mesh(extract_tris(*mesh), mesh->vector_verts());
@@ -255,6 +240,9 @@ public:
     for (size_t i = 0; i < distances.size(); ++i) {
         res[i] = distances[Vertex(gc_m.topology.get(), i)];
     }
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
 };
 
@@ -281,6 +269,10 @@ public:
   void query(const int vid, std::vector<double> &res) override {
     res.clear(); 
     res = compute_geodesic_distances(solver, {vid});
+
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
 };
 
@@ -306,6 +298,9 @@ public:
   void query(const int vid, std::vector<double> &res) override {
     res.clear();
     res = compute_geodesic_distances(solver, {vid});
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
 };
 
@@ -328,7 +323,6 @@ public:
   
   void set_k(const int new_k, const bool compute_solver = true) {
     k = new_k;
-    // cout << "K in the function: " << k << endl;
     if (compute_solver) {
       if (!dual_solver_computed) {
         dual_solver = make_dual_geodesic_solver(*m);
@@ -351,10 +345,12 @@ public:
 
   void query(const int vid, std::vector<double> &res) override {
     res.clear();
-    res = compute_geodesic_distances(solver, {vid}); // TODO change the code so that the // input is an uint and not a in
+    res = compute_geodesic_distances(solver, {vid});
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
-}; // TODO: add some checks such as "compute the solver if the query is called
-   // but the solver is empty " and stuff like that
+};
 
 
 
@@ -366,8 +362,6 @@ public:
 
   DrawableTrimesh<>* m;
   geodesic_solver solver;
-  //dual_geodesic_solver dual_solver;
-  //bool dual_solver_computed = false;
   int n_steiner = 1;
 
   void load(DrawableTrimesh<>* mesh) override {
@@ -376,9 +370,7 @@ public:
   
   void set_n_steiner(const int new_n_steiner) {
     n_steiner = new_n_steiner;
-    //cout << "n_steiner in the function: " << n_steiner << endl;
     solver = compute_fine_graph(*m, n_steiner);
-
   }
 
   void preprocess() override {
@@ -386,10 +378,11 @@ public:
   }
 
   void query(const int vid, std::vector<double> &res) override {
-    // solver computed with the lanthier method
-    // res -> vector<double>
     res.clear();
     res = compute_geodesic_distances(solver, {vid});
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
 
 };
