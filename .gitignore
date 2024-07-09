@@ -31,3 +31,8 @@ pymeshlab/Esperimento_1/data/spot/spot_tri_subdiv_6_final.obj
 *.obj
 
 libs/*
+pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_1.csv
+pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_1301.csv
+pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_1951.csv
+pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_2601.csv
+pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_651.csv

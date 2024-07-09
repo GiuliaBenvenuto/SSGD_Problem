@@ -688,6 +688,7 @@ vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
 
   return result;
 }
+
 double path_length(const vector<vec3d> &path) {
   double len = 0;
   for (size_t i = 0; i < path.size() - 1; ++i)
@@ -695,3 +696,5 @@ double path_length(const vector<vec3d> &path) {
 
   return len;
 }
+
+
