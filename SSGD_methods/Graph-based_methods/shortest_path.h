@@ -20,6 +20,13 @@ struct mesh_point {
   }
 };
 
+inline std::ostream &operator<<(std::ostream &os, const mesh_point &p) {
+  os << "mesh_point(" << p.tid << ","
+     << "vec3d(" << p.bary.x() << "," << p.bary.y() << "," << p.bary.z()
+     << "))";
+  return os;
+}
+
 struct funnel_point {
   int face = 0;
   vec2d pos;

@@ -489,7 +489,8 @@ vector<double> funnel(const vector<array<vec2d, 2>> &portals,
 }
 
 vector<int> triangle_fan(const DrawableTrimesh<> &m, const int start_face,
-                         const int end_face, const int vid, const bool CCW) {
+                         const int end_face, const int vid, const bool CCW,
+                         const vector<int> &strip, size_t &index) {
   vector<int> result;
   result.reserve(m.adj_v2p(vid).size());
   result.push_back(start_face);
@@ -498,6 +499,16 @@ vector<int> triangle_fan(const DrawableTrimesh<> &m, const int start_face,
                     : m.poly_vert_id(start_face, (k + 1) % 3);
   uint eid = m.edge_id(vid, vid0);
   uint next_face = m.polys_adjacent_along(start_face, eid)[0];
+
+  while (index >= 1 && strip[index - 1] == next_face) {
+    result.pop_back();
+    result.push_back(next_face);
+    vid0 = m.vert_opposite_to(next_face, vid, vid0);
+    eid = m.edge_id(vid, vid0);
+    next_face = m.polys_adjacent_along(next_face, eid)[0];
+    --index;
+  }
+
   result.push_back(next_face);
   while (next_face != end_face) {
 
@@ -550,7 +561,8 @@ void straighten_path(vector<array<vec2d, 2>> &portals, vector<double> &lerps,
       target_face = strip[curr_index - 1];
     }
 
-    vector<int> new_faces = triangle_fan(m, face, target_face, vertex, CCW);
+    vector<int> new_faces =
+        triangle_fan(m, face, target_face, vertex, CCW, strip, index);
     vector<int> tmp(strip.begin(), strip.begin() + index);
     tmp.insert(tmp.end(), new_faces.begin(), new_faces.end());
     tmp.insert(tmp.end(), strip.begin() + curr_index, strip.end());
@@ -677,6 +689,7 @@ vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
   vector<array<vec2d, 2>> portals = unfold_strip(m, strip, src, tgt);
   size_t max_index = 0;
   vector<double> lerps = funnel(portals, max_index);
+
   straighten_path(portals, lerps, strip, src, tgt, max_index, m);
 
   vector<vec3d> result(strip.size() + 1);
@@ -696,5 +709,3 @@ double path_length(const vector<vec3d> &path) {
 
   return len;
 }
-
-

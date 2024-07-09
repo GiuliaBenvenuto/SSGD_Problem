@@ -19,11 +19,11 @@
 # add_subdirectory(SSGD_methods)
 # add_subdirectory(libs)
 
-# target_link_libraries(${PROJECT_NAME} 
-#     cinolib 
-#     graph-based 
-#     VTP_wrapper 
-#     Tret 
+# target_link_libraries(${PROJECT_NAME}
+#     cinolib
+#     graph-based
+#     VTP_wrapper
+#     Tret
 #     geo_central_wrapper
 #     )
 
@@ -36,7 +36,7 @@
 # set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build architectures for Mac OS X" FORCE)
 # include_directories("/Applications/MATLAB_R2024a.app/extern/include")
 # link_directories("/Applications/MATLAB_R2024a.app/bin/maca64")
-# target_link_libraries(${PROJECT_NAME} 
+# target_link_libraries(${PROJECT_NAME}
 # "/Applications/MATLAB_R2024a.app/extern/bin/maca64/libMatlabDataArray.dylib"
 # "/Applications/MATLAB_R2024a.app/extern/bin/maca64/libMatlabEngine.dylib")
 
@@ -113,7 +113,7 @@ add_executable(smape_app smape.cpp solving_ssgd.h solving_ssgd.cpp)
 set_target_properties(smape_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
 
 # CINOLIB
-set(cinolib_DIR /Users/giuliabenvenuto/Documents/GitHub/cinolib)
+set(cinolib_DIR /Users/claudiomancinelli/Documents/GitHub/cinolib)
 set(CINOLIB_USES_OPENGL_GLFW_IMGUI ON)
 find_package(cinolib REQUIRED)
 
