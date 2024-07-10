@@ -837,7 +837,6 @@ void write_gt(const std::string& filename, const std::vector<double>& blub_dista
 
     file << "vertices,blub_gt_vtp,bob_gt_vtp,spot_gt_vtp\n";
     size_t max_size = std::max({blub_distances.size(), bob_distances.size(), spot_distances.size()});
-    cout << "max_size: " << max_size << endl;
 
     bool has_negative = false;
     for (size_t i = 0; i < max_size; ++i) {
@@ -866,7 +865,7 @@ void write_gt(const std::string& filename, const std::vector<double>& blub_dista
 using namespace std::chrono;
 int main(int argc, char **argv) {
     // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
-    vector<int> vertices_idx = {1, 651};
+    vector<int> vertices_idx = {1};
 
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
