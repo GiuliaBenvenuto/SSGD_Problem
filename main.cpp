@@ -96,6 +96,7 @@ struct State {
 
   // Sources for SSGD
   std::vector<uint> sources_heat;
+  // // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
   vector<int> sources;
 
   // Trettner
@@ -990,19 +991,27 @@ int main(int argc, char **argv) {
     // string s = "../data/cinolib/3holes.obj";
     // string s = "../data/cinolib/bunny.obj";
     // string s = "../pymeshlab/repaired_blub/blub_tri_subdiv_1_final.obj";
-    string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj"; 
+    // string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj"; 
+    
+    string s = "../pymeshlab/Esperimento_1/data/bob/bob_tri.obj";
+    
+    // XCODE
+    // string s = "../../pymeshlab/Esperimento_1/data/blub/blub_tri_subdiv_1_final.obj";
+    
     
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   }
 
-  std::thread graph_thread([&]() { init_methods(gs, progress); });
+  // std::thread graph_thread([&]() { init_methods(gs, progress); });
+  // do init methods without a separate thread
+  init_methods(gs, progress);
 
   // Launch the GUI
   gui.launch();
 
   // Wait for the thread to complete
-  graph_thread.join();
+  // graph_thread.join();
 
   return 0;
 }

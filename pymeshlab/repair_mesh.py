@@ -88,8 +88,8 @@ if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
 # Process all .obj files in the input folder
-#input_folder = 'Esperimento_1/data/altro'
-input_folder = '/Users/giuliabenvenuto/Desktop/organic_meshes/blub'
+input_folder = 'Esperimento_1/data/repair'
+# input_folder = '/Users/giuliabenvenuto/Desktop/organic_meshes/blub'
 for file in os.listdir(input_folder):
     if file.endswith('.obj'):
         input_mesh = os.path.join(input_folder, file)

@@ -841,9 +841,9 @@ void write_gt(const std::string& filename, const std::vector<double>& blub_dista
 
     bool has_negative = false;
     for (size_t i = 0; i < max_size; ++i) {
-        double blub_dist = i < blub_distances.size() ? blub_distances[i] : 0.0;
-        double bob_dist = i < bob_distances.size() ? bob_distances[i] : 0.0;
-        double spot_dist = i < spot_distances.size() ? spot_distances[i] : 0.0;
+        double blub_dist = i < blub_distances.size() ? blub_distances[i] : -1;
+        double bob_dist = i < bob_distances.size() ? bob_distances[i] : -1;
+        double spot_dist = i < spot_distances.size() ? spot_distances[i] : -1;
 
         if (blub_dist < 0 || bob_dist < 0 || spot_dist < 0) {
             std::cerr << "Negative value detected at index " << i << std::endl;
