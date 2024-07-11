@@ -994,7 +994,8 @@ int main(int argc, char **argv) {
     // string s = "../pymeshlab/repaired_blub/blub_tri_subdiv_1_final.obj";
     // string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj"; 
     
-    string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj";
+    // string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj";
+    string s = "../pymeshlab/Esperimento_1/data/prova_bob/bob_tri_final.obj";
 
     // XCODE
     // string s = "../../pymeshlab/Esperimento_1/data/blub/blub_tri_subdiv_1_final.obj";
