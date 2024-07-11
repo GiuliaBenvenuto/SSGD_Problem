@@ -81,17 +81,19 @@ public:
   void preprocess() override {}
 
   void query(const int vid, std::vector<double> &res) override {
-    cout << "VTP query started... " << endl;
+    // cout << "VTP query started... " << endl;
     res.clear();  // Clear previous results
 
     auto start = std::chrono::high_resolution_clock::now();
     res = exact_geodesic_distance(m->vector_polys(), m->vector_verts(), vid);
+
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
+    
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    cout << "VTP computation: " << elapsed.count() << " s" << endl;
+    // cout << "VTP computation: " << elapsed.count() << " s" << endl;
   }
 };
 
