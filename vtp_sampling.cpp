@@ -128,7 +128,10 @@ int main(int argc, char **argv) {
     vector<int> valid_vertices;
 
     // Load the reference mesh to sample vertices from
-    string refMeshPath = folderPath + "/bob_tri_final.obj";
+    // string refMeshPath = folderPath + "/blub_tri_final.obj";
+    // string refMeshPath = folderPath + "/bob_tri_final.obj";
+    string refMeshPath = folderPath + "/spot_tri_final.obj";
+    
     load_mesh(refMeshPath, gs);
     cout << "Number of vertices in reference mesh: " << gs.nverts << endl;
 
@@ -153,7 +156,7 @@ int main(int argc, char **argv) {
             objFiles.push_back(entry.path().string());
         }
     }
-    cout << "((((((((( OBJ Files: " << endl;
+    cout << "======= OBJ Files =======" << endl;
     for (const string &objPath : objFiles) {
         cout << objPath << endl;
     }
