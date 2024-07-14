@@ -99,7 +99,7 @@ void run_ssgd_method(State &state, int sourceVertexIndex, vector<vector<double>>
 }
 
 
-void write_csv(const string &filename, const vector<int> &vv_blub, const vector<vector<double>> &all_distances) {
+void write_csv(const string &filename, const vector<int> &vv_spot, const vector<vector<double>> &all_distances) {
     ofstream csvFile(filename);
 
     if (!csvFile.is_open()) {
@@ -109,7 +109,7 @@ void write_csv(const string &filename, const vector<int> &vv_blub, const vector<
 
     // Write header
     csvFile << "index";
-    for (int vertex : vv_blub) {
+    for (int vertex : vv_spot) {
         csvFile << ",vertex_" << vertex;
     }
     csvFile << "\n";
@@ -146,9 +146,11 @@ int main(int argc, char **argv) {
     State gs;
     string filePath = argv[1];
 
-    vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
+    // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
+    // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
+    vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
 
-    fs::path csvDirPath = "../pymeshlab/Esperimento_1/data/blub_gt_csv";
+    fs::path csvDirPath = "../pymeshlab/Esperimento_1/data/spot_gt_csv";
     if (!fs::exists(csvDirPath)) {
         fs::create_directory(csvDirPath);
         cout << "Created directory: " << csvDirPath << endl;
@@ -163,13 +165,15 @@ int main(int argc, char **argv) {
     init_methods(gs);
 
     vector<vector<double>> all_distances;
-    for (int sourceVertexIndex : vv_blub) {
-        cout << "Source vertex: " << sourceVertexIndex;
+    for (int sourceVertexIndex : vv_spot) {
+        cout << "Source vertex: " << sourceVertexIndex << endl;
         run_ssgd_method(gs, sourceVertexIndex, all_distances);
     }
 
-    string csvFile = csvDirPath.string() + "/blub_gt_distances.csv";
-    write_csv(csvFile, vv_blub, all_distances);
+    string csvFile = csvDirPath.string() + "/spot_gt_distances.csv";
+    write_csv(csvFile, vv_spot, all_distances);
 
     return 0;
 }
+
+

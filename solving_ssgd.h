@@ -114,6 +114,7 @@ public:
   void preprocess() override {}
 
   void query(const int vid, std::vector<double> &res) override {
+    res.clear(); 
     vector<int> vids = {vid};
     half_edge = HEInit(mesh_path, vids);
     res = distance_field_trettner(half_edge, vids, time); 
@@ -174,6 +175,7 @@ public:
   }
 
   void query(const int vid, std::vector<double> &res) override {
+    res.clear();
     matlabPtr = startMATLAB();
     matlabPtr->eval(u"addpath('/Users/giuliabenvenuto/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/Toolbox Fast Marching/toolbox_fast_marching');");
 
