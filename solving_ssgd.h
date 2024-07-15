@@ -118,6 +118,7 @@ public:
     vector<int> vids = {vid};
     half_edge = HEInit(mesh_path, vids);
     res = distance_field_trettner(half_edge, vids, time); 
+    cout << "? Trettner RES size: " << res.size() << endl;
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
@@ -185,6 +186,8 @@ public:
     TypedArray<double> D = results[0];
     res = vector<double>(D.begin(), D.end());
 
+    cout << "? FastMarching RES size: " << res.size() << endl;
+
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
@@ -247,6 +250,7 @@ public:
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
+    cout << "? Heat RES size: " << res.size() << endl;
   }
 };
 
@@ -302,6 +306,7 @@ public:
   void query(const int vid, std::vector<double> &res) override {
     res.clear();
     res = compute_geodesic_distances(solver, {vid});
+    cout << "? Edge RES size: " << res.size() << endl;
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
@@ -353,6 +358,7 @@ public:
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
+    cout << "? Geotangle RES size: " << res.size() << endl;
   }
 };
 
@@ -387,6 +393,7 @@ public:
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
+    cout << "? Lanthier RES size: " << res.size() << endl;
   }
 
 };

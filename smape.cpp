@@ -116,8 +116,8 @@ struct State {
         n_steiner = 3;
         prev_n_steiner = 3;
 
-        heat_time = 1.0;
-        heat_time_prev = 1.0;
+        heat_time = 0.5;
+        heat_time_prev = 0.5;
     }
 };
 
@@ -146,6 +146,23 @@ public:
     }
 };
 
+
+// Function to calculate average edge length of a mesh
+// ----> C'è già una funzione in cinolib che lo fa
+
+// double average_edge_length(const DrawableTrimesh<> &mesh) {
+//     double total_length = 0.0;
+//     int edge_count = 0;
+    
+//     for (uint eid = 0; eid < mesh.num_edges(); ++eid) {
+//         total_length += mesh.edge_length(eid);
+//         edge_count++;
+//     }
+    
+//     return (edge_count > 0) ? (total_length / edge_count) : 0.0;
+// }
+
+
 // Load meshes
 void load_mesh(const string &filename, State &gs, MeshCache& cache) {
     if (!cache.isMeshLoaded(filename)) {
@@ -166,6 +183,8 @@ void load_mesh(const string &filename, State &gs, MeshCache& cache) {
         gs.tris = meshData.tris;
         gs.trettner_solver.mesh_path = filename;
     }
+
+    
 }
 
 void init(GeodesicMethod &m, State &gs, const string &name) {
@@ -184,6 +203,15 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
     gs.toc = chrono::steady_clock::now();
     double preprocess_time = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
     cout << "PREPROCESS TIME: " << preprocess_time << " milliseconds" << endl;
+
+    // if (name == "Heat") {
+    //     // HEAT
+    //     double avg_edge_length = average_edge_length(gs.m);
+    //     double k = 1.0; // This can be adjusted based on your empirical testing
+    //     gs.heat_time = k * (avg_edge_length * avg_edge_length);
+    //     gs.heat_solver.set_t(gs.heat_time); // Assuming set_heat_time is a method of HeatSolver
+    //     cout << "HEAT TIME set to: " << gs.heat_time << endl;
+    // }
 
     // Update timings in the state
     if (name == "VTP") {
@@ -242,7 +270,8 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
     double smape = 0.0;
     int count = 0;
 
-    for (size_t i = 0; i < gt.size() && i < est.size(); ++i) {
+    // for (size_t i = 0; i < gt.size() && i < est.size(); ++i) {
+    for (size_t i = 0; i < est.size(); ++i) {
         double denom = std::abs(gt[i]) + std::abs(est[i]);
         if (denom != 0) {
             smape += std::abs(gt[i] - est[i]) / denom;
@@ -256,10 +285,16 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
     return smape;
 }
 
+
 void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<double> &gt, vector<double>& smape_errors) {
-    vector<double> distances;
+    // Initialize variables
+    vector<double> distances = vector<double>(state.nverts, 0.0);
+    // vector<double> distances;
+
     ScalarField field;
-    vector<double> &ground_truth = gt;
+
+    //vector<double> &ground_truth = gt;
+    vector<double> ground_truth = gt;
 
     // check if ground truth is empty
     if (ground_truth.empty()) {
@@ -279,7 +314,12 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
         cout << "QUERY TIME: " << elapsed.count() << " s" << endl;
 
         // Calculate SMAPE using ground_truth instead of gt
-        double smape = calculate_smape(ground_truth, distances);
+        if (method == "Lanthier") {
+            // take only the first nverts values
+            distances.resize(state.nverts);
+            cout << "Distances size for LANTHIER after resize: " << distances.size() << endl;
+        }
+        double smape = calculate_smape(gt, distances);
         cout << method << " SMAPE: " << smape << "%" << endl;
 
         // Save SMAPE error for this method
@@ -327,8 +367,9 @@ int main(int argc, char **argv) {
 
     // Valid vertices for the meshes
     // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
-    vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
+    // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
     //vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+    vector<int> vv_bob = {1710, 3782};
 
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
@@ -355,7 +396,6 @@ int main(int argc, char **argv) {
         ifstream gt_csvFile(csv_gt);
         string line;
         getline(gt_csvFile, line); 
-
         stringstream header(line);
         string headerValue;
         int columnIndex = -1;
@@ -373,6 +413,8 @@ int main(int argc, char **argv) {
         if (columnIndex == -1) {
             cerr << "Vertex " << vertex << " not found in header." << endl;
             return 2;
+        } else {
+            cout << "Vertex " << vertex << " found at column " << columnIndex << endl;
         }
 
         // Read the specified column from each line
