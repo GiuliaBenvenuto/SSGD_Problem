@@ -623,6 +623,8 @@ array<vec2d, 3> unfold_face(const DrawableTrimesh<> &m, const uint tid,
   uint vid1 = m.edge_vert_id(eid, 1);
   int k = vert_offset(m, tid, vid0);
 
+  if (k == -1) std::cout << "You are messing something up" << std::endl;
+
   if (m.poly_vert_id(tid, (k + 1) % 3) != vid1) {
     k = (k + 2) % 3;
     swap(vid0, vid1);

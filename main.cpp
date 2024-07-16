@@ -798,11 +798,18 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             gs.heat_time_prev = gs.heat_time;
           }
 
+          double time_scalar = 1;
+          
+          cout << "Time scalar: " << time_scalar << endl;
+          gs.heat_solver.set_t(time_scalar);
+
+
           gs.tic = std::chrono::steady_clock::now();
           gs.heat_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
+
           // ----- HEAT WITH CINOLIB -----
           // if (gs.heat_time != gs.heat_time_prev) {
           //   cout << "Heat time has changed to: " << gs.heat_time << endl;
@@ -877,7 +884,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             gs.prev_n_steiner = gs.n_steiner;
           }
           
+
           gs.tic = std::chrono::steady_clock::now();
+          cout << "Source vertex: " << gs.sources[0] << endl;
           gs.lanthier_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.lanthier_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
@@ -985,17 +994,17 @@ int main(int argc, char **argv) {
 
   // Load mesh
   if (argc > 1) {
-    string s = "../data/" + string(argv[1]);
+    string s = string(argv[1]);
     Load_mesh(s, gui, gs);
   } else {
     // string s = "../data/pymeshlab_generated/bunny_ok.obj";
     // string s = "../data/cinolib/3holes.obj";
-    // string s = "../data/cinolib/bunny.obj";
+    string s = "../data/cinolib/bunny.obj";
     // string s = "../pymeshlab/repaired_blub/blub_tri_subdiv_1_final.obj";
     // string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj"; 
     
     // string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj";
-    string s = "../pymeshlab/Esperimento_1/data/prova_bob/bob_tri_final.obj";
+    // string s = "../pymeshlab/Esperimento_1/data/prova_bob/bob_tri_final.obj";
 
     // XCODE
     // string s = "../../pymeshlab/Esperimento_1/data/blub/blub_tri_subdiv_1_final.obj";

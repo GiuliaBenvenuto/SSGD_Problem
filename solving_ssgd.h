@@ -217,7 +217,9 @@ public:
     }
 
     // Initialize the heat method distance solver
-    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*gc_m.geometry);
+    // heatSolverGC = make_unique<HeatMethodDistanceSolver>(*gc_m.geometry);
+    cout << "Heat time in preprocess: " << time_scalar << endl;
+    heatSolverGC = make_unique<HeatMethodDistanceSolver>(*gc_m.geometry, time_scalar);
   }
 
   void set_t(const float new_t) {
@@ -228,6 +230,8 @@ public:
   }
 
   void query(const int vid, std::vector<double> &res) override {
+    cout << "HEAT TIME SCALAR: " << time_scalar << endl;
+
     // Check if the solver is initialized
     if (!heatSolverGC) {
         cerr << "Heat method solver is not initialized." << endl;
@@ -247,9 +251,6 @@ public:
     for (size_t i = 0; i < distances.size(); ++i) {
         res[i] = distances[Vertex(gc_m.topology.get(), i)];
     }
-    // for (int i = 0; i < res.size(); i++) {
-    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
-    // }
     cout << "? Heat RES size: " << res.size() << endl;
   }
 };
@@ -343,7 +344,7 @@ public:
 
   void preprocess() override {
     cout << "Make dual geodesic solver START" << endl;
-    dual_solver = make_dual_geodesic_solver(*m); // TODO: risolvi che questo blocca delle mesh
+    dual_solver = make_dual_geodesic_solver(*m); 
     cout << "Make dual geodesic solver END" << endl;
 
     cout << "Extended solver START" << endl;
@@ -393,6 +394,7 @@ public:
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
+    res.resize(m->num_verts());
     cout << "? Lanthier RES size: " << res.size() << endl;
   }
 
