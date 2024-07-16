@@ -98,7 +98,7 @@ struct State {
   std::vector<uint> sources_heat;
   // // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
   // vector<int> sources;
-  vector<int> sources;
+  vector<int> sources = {1710};
 
   // Trettner
   string mesh_path;
@@ -261,6 +261,34 @@ void init_methods(State &gs, atomic<float> &progress) {
   init(gs.lanthier_solver, gs, "Lanthier");
   progress.store(1.0f);
 }
+
+// SMAPE calculation
+double calculate_smape(const vector<double>& gt, const vector<double>& est) {
+    cout << "GT size: " << gt.size() << ", EST size: " << est.size() << endl;
+    if (gt.empty() || est.empty()) {
+        cerr << "Ground truth or estimated distances are empty." << endl;
+        return 0.0;
+    }
+
+    double smape = 0.0;
+    int count = 0;
+
+    // for (size_t i = 0; i < gt.size() && i < est.size(); ++i) {
+    for (size_t i = 0; i < est.size(); ++i) {
+        double denom = std::abs(gt[i]) + std::abs(est[i]);
+        if (denom != 0) {
+            smape += std::abs(gt[i] - est[i]) / denom;
+            ++count;
+        }
+    }
+
+    if (count > 0) {
+        smape = (smape / count) * 100.0;  // Convert to percentage
+    }
+
+    return smape;
+}
+
 
 
 //:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
@@ -809,22 +837,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.toc = std::chrono::steady_clock::now();
           gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
-
-          // ----- HEAT WITH CINOLIB -----
-          // if (gs.heat_time != gs.heat_time_prev) {
-          //   cout << "Heat time has changed to: " << gs.heat_time << endl;
-          //   gs.heat_solver.set_t(gs.heat_time);
-          //   gs.heat_time_prev = gs.heat_time;
-          // }
-
-          // gs.tic = std::chrono::steady_clock::now();
-          // gs.heat_solver.query(gs.sources[0], gs.res);
-          // gs.toc = std::chrono::steady_clock::now();
-          // gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          // fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
-
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           break;
         }
 
@@ -834,7 +846,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.toc = std::chrono::steady_clock::now();
           gs.geotangle_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Geotangle", gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query);
-            break;
+          break;
         }
 
         case State::EDGE: {
@@ -906,6 +918,172 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     }
 
 
+    vector<double> ground_truth = vector<double>();
+    double smape = 0.0;
+    // Button for Compute SMAPE error
+    if (ImGui::Button("Compute SMAPE")) {
+      // Based on the selected SSGD method, perform different actions
+      if (gs.sources_heat.empty() && gs.sources.empty()) {
+        // Open a warning popup if no source is selected
+        ImGui::OpenPopup("Warning");
+      } else {
+
+        switch (gs.ssgd_method) {
+
+        case State::VTP: {
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for VTP: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+
+          break;
+        }
+
+        case State::TRETTNER: {
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.trettner_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for Trettner: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+
+          break;
+        }
+
+        case State::FAST_MARCHING: {
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.fast_mar_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for Fast Marching: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+
+          break;
+        }
+              
+        case State::HEAT: {
+          if (gs.heat_time != gs.heat_time_prev) {
+            cout << "Heat time has changed to: " << gs.heat_time << endl;
+            gs.heat_solver.set_t(gs.heat_time); // set_t recall the preprocess()
+            gs.heat_time_prev = gs.heat_time;
+          }
+
+          double time_scalar = 1;
+          
+          cout << "Time scalar: " << time_scalar << endl;
+          gs.heat_solver.set_t(time_scalar);
+
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.heat_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for Heat: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+          break;
+        }
+
+        case State::GEOTANGLE: {
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.geotangle_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for Geotangle: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+
+          break;
+        }
+
+        case State::EDGE: {
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.edge_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for Edge: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+
+          break;
+        }
+
+        case State::EXTENDED: {
+          if (gs.k != gs.prev_k) {
+            cout << "k has changed to: " << gs.k << endl;
+
+            gs.tic = std::chrono::steady_clock::now();
+            gs.extended_solver.set_k(gs.k); // This is the blocking call
+            gs.toc = std::chrono::steady_clock::now();
+
+            // Calculate the time taken for preprocessing
+            gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+
+            gs.prev_k = gs.k;
+          }
+
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.extended_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for Extended: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+
+          break;
+        }
+
+        case State::LANTHIER: {
+          if(gs.n_steiner != gs.prev_n_steiner) {
+            cout << "Number of Steiner points has changed to: " << gs.n_steiner << endl;
+
+            gs.tic = std::chrono::steady_clock::now();
+            gs.lanthier_solver.set_n_steiner(gs.n_steiner);
+            gs.toc = std::chrono::steady_clock::now();
+
+            // Calculate the time taken for preprocessing
+            gs.lanthier_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
+
+            gs.prev_n_steiner = gs.n_steiner;
+          }
+          
+          gs.vtp_solver.query(gs.sources[0], gs.res);
+          ground_truth = gs.res;
+          gs.lanthier_solver.query(gs.sources[0], gs.res);
+          smape = calculate_smape(ground_truth, gs.res);
+          cout << "SMAPE ERROR for Lanthier: " << smape << endl;
+
+          ground_truth.clear();
+          smape = 0.0;
+          
+          break;
+        }
+        
+        default:
+          cout << "No SSGD method selected" << endl;
+          break;
+        }
+          gs.field = ScalarField(gs.res);
+          gs.field.normalize_in_01();
+          gs.field.copy_to_mesh(gs.m);
+          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          }
+    }
+
+
 
     // Popup modal for warning if no source is selected
     if (ImGui::BeginPopupModal("Warning", NULL,
@@ -923,6 +1101,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       // Reset sources
       gs.sources_heat.clear();
       gs.sources.clear();
+
+      // TODO: DA TOGLIEREEEEE
+      gs.sources = {1710};
 
       gs.vtp_query = 0.0;
       gs.trettner_query = 0.0;
