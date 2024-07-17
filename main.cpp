@@ -50,6 +50,10 @@ struct State {
   vector<uint> tris;       // triangle indices
   vector<double> res;
 
+  vector<double> ground_truth;
+  vector<double> estimated_distances;
+  double smape;
+
   //-------- GUI state --------
   // View
   bool SHOW_MESH, SHOW_WIREFRAME;
@@ -98,6 +102,8 @@ struct State {
   std::vector<uint> sources_heat;
   // // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
   // vector<int> sources;
+
+  // TODO: DA TOGLIERE
   vector<int> sources = {1710};
 
   // Trettner
@@ -161,6 +167,10 @@ struct State {
     lanthier_load,  lanthier_preprocess,  lanthier_query = 0.0;
 
     res = vector<double>();
+
+    ground_truth = vector<double>();
+    estimated_distances = vector<double>();
+    smape = 0.0;
 
     mesh_path = "";
     mesh = HalfEdge();
@@ -351,6 +361,8 @@ void Load_mesh(GLcanvas &gui, State &gs) {
   string filename = file_dialog_open();
   if (filename.size() != 0)
     gs.mesh_path = filename;
+
+  gs.mesh_path = filename;
   Load_mesh(filename, gui, gs);
 }
 
@@ -918,8 +930,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     }
 
 
-    vector<double> ground_truth = vector<double>();
-    double smape = 0.0;
     // Button for Compute SMAPE error
     if (ImGui::Button("Compute SMAPE")) {
       // Based on the selected SSGD method, perform different actions
@@ -932,39 +942,43 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
         case State::VTP: {
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for VTP: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for VTP: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
 
           break;
         }
 
         case State::TRETTNER: {
+          gs.res.clear();
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
+          gs.res.clear();
+          gs.trettner_solver.load(&gs.m);
+          gs.trettner_solver.preprocess();
           gs.trettner_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for Trettner: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for Trettner: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
 
           break;
         }
 
         case State::FAST_MARCHING: {
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
           gs.fast_mar_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for Fast Marching: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for Fast Marching: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
 
           break;
         }
@@ -982,38 +996,39 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.heat_solver.set_t(time_scalar);
 
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
           gs.heat_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for Heat: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for Heat: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
+          
           break;
         }
 
         case State::GEOTANGLE: {
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
           gs.geotangle_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for Geotangle: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for Geotangle: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
 
           break;
         }
 
         case State::EDGE: {
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
           gs.edge_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for Edge: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for Edge: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
 
           break;
         }
@@ -1034,13 +1049,13 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           }
 
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
           gs.extended_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for Extended: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for Extended: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
 
           break;
         }
@@ -1061,14 +1076,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           }
           
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          ground_truth = gs.res;
+          gs.ground_truth = gs.res;
           gs.lanthier_solver.query(gs.sources[0], gs.res);
-          smape = calculate_smape(ground_truth, gs.res);
-          cout << "SMAPE ERROR for Lanthier: " << smape << endl;
+          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          cout << "SMAPE ERROR for Lanthier: " << gs.smape << endl;
 
-          ground_truth.clear();
-          smape = 0.0;
-          
+          gs.ground_truth.clear();
+          gs.smape = 0.0;
+
           break;
         }
         
@@ -1114,6 +1129,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.lanthier_query = 0.0;
 
       gs.res = vector<double>();
+
+      // Reset the smape error
+      gs.ground_truth = vector<double>();
+      gs.estimated_distances = vector<double>();
+      gs.smape = 0.0;
 
       // Reset the scalar field
       for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
@@ -1176,20 +1196,16 @@ int main(int argc, char **argv) {
   // Load mesh
   if (argc > 1) {
     string s = string(argv[1]);
+    gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   } else {
     // string s = "../data/pymeshlab_generated/bunny_ok.obj";
     // string s = "../data/cinolib/3holes.obj";
-    string s = "../data/cinolib/bunny.obj";
-    // string s = "../pymeshlab/repaired_blub/blub_tri_subdiv_1_final.obj";
-    // string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj"; 
-    
-    // string s = "../pymeshlab/Esperimento_1/data/spot/spot_tri.obj";
-    // string s = "../pymeshlab/Esperimento_1/data/prova_bob/bob_tri_final.obj";
+    // string s = "../data/cinolib/bunny.obj";
+    string s = "../pymeshlab/Esperimento_1/data/bob/bob_tri_final.obj";
 
     // XCODE
     // string s = "../../pymeshlab/Esperimento_1/data/blub/blub_tri_subdiv_1_final.obj";
-    
     
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);

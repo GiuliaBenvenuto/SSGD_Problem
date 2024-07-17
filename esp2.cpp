@@ -64,6 +64,7 @@ struct State {
     VTPSolver           vtp_solver;
     TrettnerSolver      trettner_solver; 
     FastMarchingSolver  fast_mar_solver;
+    HeatSolver          heat_solver;
     GeotangleSolver     geotangle_solver;
     EdgeSolver          edge_solver;
     LanthierSolver      lanthier_solver;
@@ -74,6 +75,7 @@ struct State {
     double vtp_load,        vtp_preprocess,         vtp_query;
     double trettner_load,   trettner_preprocess,    trettner_query;
     double fast_mar_load,   fast_mar_preprocess,    fast_mar_query;
+    double heat_load,       heat_preprocess,        heat_query;
     double geotangle_load,  geotangle_preprocess,   geotangle_query;
     double edge_load,       edge_preprocess,        edge_query;
     double lanthier_load,   lanthier_preprocess,    lanthier_query;
@@ -85,6 +87,7 @@ struct State {
         vtp_load = vtp_preprocess = vtp_query = 0.0;
         trettner_load = trettner_preprocess = trettner_query = 0.0;
         fast_mar_load = fast_mar_preprocess = fast_mar_query = 0.0;
+        heat_load = heat_preprocess = heat_query = 0.0;
         geotangle_load = geotangle_preprocess = geotangle_query = 0.0;
         edge_load = edge_preprocess = edge_query = 0.0;
         lanthier_load = lanthier_preprocess = lanthier_query = 0.0;
@@ -187,6 +190,10 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
         gs.fast_mar_load = load_time;
         gs.fast_mar_preprocess = preprocess_time;
     }
+    else if (name == "Heat") {
+        gs.heat_load = load_time;
+        gs.heat_preprocess = preprocess_time;
+    }
     else if (name == "Geotangle") {
         gs.geotangle_load = load_time;
         gs.geotangle_preprocess = preprocess_time;
@@ -204,10 +211,11 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 void init_methods(State &gs) {
     init(gs.vtp_solver,         gs,     "VTP");
     init(gs.trettner_solver,    gs,     "Trettner");
-    init(gs.fast_mar_solver,    gs,     "Fast Marching");
-    init(gs.geotangle_solver,   gs,     "Geotangle");
-    init(gs.edge_solver,        gs,     "Edge");
-    init(gs.lanthier_solver,    gs,     "Lanthier");
+    // init(gs.fast_mar_solver,    gs,     "Fast Marching");
+    // init(gs.heat_solver,        gs,     "Heat");
+    // init(gs.geotangle_solver,   gs,     "Geotangle");
+    // init(gs.edge_solver,        gs,     "Edge");
+    // init(gs.lanthier_solver,    gs,     "Lanthier");
 }
 
 // Function to calculate SMAPE between two vectors
@@ -255,10 +263,9 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     }
 
     auto log_time_and_calculate_smape = [&](auto &solver, const string &method) {
+
         auto start = chrono::high_resolution_clock::now();
-
         solver.query(sourceVertexIndex, distances);  // Only the query operation
-
         auto end = chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = end - start;
         cout << "QUERY TIME: " << elapsed.count() << " s" << endl;
@@ -278,29 +285,33 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
         distances.clear();
     };
 
-    // // VTP Solver
-    // cout << endl << "----- VTP -----" << endl;
-    // log_time_and_calculate_smape(state.vtp_solver, "VTP");
+    // VTP Solver
+    cout << endl << "----- VTP -----" << endl;
+    log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
     // Trettner Solver
     cout << endl << "----- Trettner -----" << endl;
     log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
-    // Fast Marching Solver
-    cout << endl << "----- Fast Marching Query -----" << endl;
-    log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
+    // // Fast Marching Solver
+    // cout << endl << "----- Fast Marching Query -----" << endl;
+    // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
-    // Geotangle Solver
-    cout << endl << "----- Geotangle -----" << endl;
-    log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
+    // // Heat Solver
+    // cout << endl << "----- Heat -----" << endl;
+    // log_time_and_calculate_smape(state.heat_solver, "Heat");
 
-    // Edge Solver
-    cout << endl << "----- Edge -----" << endl;
-    log_time_and_calculate_smape(state.edge_solver, "Edge");
+    // // Geotangle Solver
+    // cout << endl << "----- Geotangle -----" << endl;
+    // log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
 
-    // Lanthier Solver
-    cout << endl << "----- Lanthier -----" << endl;
-    log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
+    // // Edge Solver
+    // cout << endl << "----- Edge -----" << endl;
+    // log_time_and_calculate_smape(state.edge_solver, "Edge");
+
+    // // Lanthier Solver
+    // cout << endl << "----- Lanthier -----" << endl;
+    // log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
 }
 
 // Assume other necessary headers and namespace declarations are here
@@ -325,7 +336,7 @@ int main(int argc, char **argv) {
 
         // Prepare CSV file
         ofstream csvFile("../pymeshlab/Esperimento_1/data/esp2_results/smape_errors_" + to_string(vertex) + ".csv");
-        csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Edge,SMAPE_Geotangle,SMAPE_Lanthier\n";
+        csvFile << "MeshName,NumVertices,SMAPE_Trettner\n";
 
         for (const auto &entry : fs::directory_iterator(folderPath)) {
             if (entry.path().extension() == ".obj") {

@@ -186,10 +186,11 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
     cout << "LOAD TIME: " << load_time << " milliseconds" << endl;
 
     if (name == "Heat") {   
-        double time_scalar = 1;
+        double time_scalar = 1;  // Adjust with a factor (e.g., 10.0)
         
         cout << "Time scalar: " << time_scalar << endl;
         gs.heat_solver.set_t(time_scalar);
+
     }
 
     // Preprocess
@@ -213,7 +214,6 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
         gs.fast_mar_preprocess = preprocess_time;
     }
     else if (name == "Heat") {
-
         gs.heat_load = load_time;
         gs.heat_preprocess = preprocess_time;
     }
