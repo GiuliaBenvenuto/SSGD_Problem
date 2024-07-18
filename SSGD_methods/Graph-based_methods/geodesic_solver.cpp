@@ -54,10 +54,6 @@ void visit_geodesic_graph(vector<double> &field, const geodesic_solver &solver,
     cumulative_weight -= field[node];
 
     // Check early exit condition.
-    if (exit(node))
-      break;
-    if (stop(node))
-      continue;
 
     for (auto i = 0; i < (int)solver.graph[node].size(); i++) {
       // Distance of neighbor through this node
@@ -144,11 +140,6 @@ void visit_geodesic_graph(vector<double> &field,
     in_queue[node] = false;
     cumulative_weight -= field[node];
 
-    // Check early exit condition.
-    if (exit(node))
-      break;
-    if (stop(node))
-      continue;
 
     for (auto i = 0; i < (int)solver.graph[node].size(); i++) {
       // Distance of neighbor through this node
@@ -192,7 +183,7 @@ void update_geodesic_distances(vector<double> &distances,
                                double max_distance) {
 
   auto update = [](int node, int neighbor) {};
-  auto stop = [&](int node) { return distances[node] > max_distance; };
+  auto stop = [&](int node) { };
   auto exit = [](int node) { return false; };
   for (auto source : sources)
     distances[source] = 0.0;

@@ -169,9 +169,7 @@ void load_mesh(const string &filename, State &gs, MeshCache& cache) {
         gs.coords = meshData.coords;
         gs.tris = meshData.tris;
         gs.trettner_solver.mesh_path = filename;
-    }
-
-    
+    } 
 }
 
 
@@ -241,7 +239,7 @@ void init_methods(State &gs) {
     // init(gs.trettner_solver,    gs,     "Trettner");
     // init(gs.fast_mar_solver,    gs,     "Fast Marching");
     // init(gs.heat_solver,        gs,     "Heat");
-    init(gs.geotangle_solver,   gs,     "Geotangle");
+    // init(gs.geotangle_solver,   gs,     "Geotangle");
     // init(gs.edge_solver,        gs,     "Edge");
     init(gs.extended_solver,    gs,     "Extended");
     // init(gs.lanthier_solver,    gs,     "Lanthier");
@@ -262,7 +260,7 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
     for (size_t i = 0; i < est.size(); ++i) {
         double denom = std::abs(gt[i]) + std::abs(est[i]);
         if (denom != 0) {
-            smape += std::abs(gt[i] - est[i]) / denom;
+            smape += (std::abs(gt[i] - est[i]) / denom);
             ++count;
         }
     }
@@ -276,7 +274,7 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
 
 void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<double> &gt, vector<double>& smape_errors) {
     // Initialize variables
-    vector<double> distances = vector<double>(state.nverts, 0.0);
+    vector<double> distances = vector<double>(state.nverts, DBL_MAX);
     // vector<double> distances;
 
     ScalarField field;
@@ -319,7 +317,7 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     // cout << endl << "----- VTP -----" << endl;
     // log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
-    // Trettner Solver
+    // // Trettner Solver
     // cout << endl << "----- Trettner -----" << endl;
     // log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
@@ -331,11 +329,11 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     // cout << endl << "----- Heat -----" << endl;
     // log_time_and_calculate_smape(state.heat_solver, "Heat");
 
-    // Geotangle Solver
-    cout << endl << "----- Geotangle -----" << endl;
-    log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
+    // // Geotangle Solver
+    // cout << endl << "----- Geotangle -----" << endl;
+    // log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
 
-    // Edge Solver
+    // // Edge Solver
     // cout << endl << "----- Edge -----" << endl;
     // log_time_and_calculate_smape(state.edge_solver, "Edge");
 
@@ -356,8 +354,8 @@ int main(int argc, char **argv) {
     // Valid vertices for the meshes
     // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
     // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
-    //vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
-    vector<int> vv_bob = {1710};
+    // vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+    vector<int> vv_blub = {4662, 4715, 6694};
 
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
@@ -365,19 +363,16 @@ int main(int argc, char **argv) {
     }
     string folderPath = argv[1];
 
-    for (int vertex : vv_bob) {
+    for (int vertex : vv_blub) {
         cout << "------- Processing vertex: " << vertex << " --------" << endl;
-        gs.bob_ground_truth.clear();
+        gs.blub_ground_truth.clear();
 
         // Prepare CSV file
-        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_errors_" + to_string(vertex) + ".csv");
-        // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
-        csvFile << "MeshName,NumVertices,SMAPE_Geotangle,SMAPE_Extended\n";
-        // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Lanthier\n";
-        // csvFile << "MeshName,NumVertices,SMAPE_Heat,SMAPE_Edge,SMAPE_Lanthier\n";
+        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_blub_ext_" + to_string(vertex) + ".csv");
+        csvFile << "MeshName,NumVertices,SMAPE_Extended\n";
 
         // read a csv file
-        string csv_gt = "../pymeshlab/Esperimento_1/data/gt/bob_gt_distances.csv";
+        string csv_gt = "../pymeshlab/Esperimento_1/data/gt/blub_gt_distances.csv";
         cout << "Reading ground truth from: " << csv_gt << endl;
 
         // read only the column of csv_gt that is names "vertex_" + to_string(vertex)
@@ -413,21 +408,18 @@ int main(int argc, char **argv) {
 
             while (getline(lineStream, cell, ',')) {
                 if (currentColumn == columnIndex) {
-                    gs.bob_ground_truth.push_back(stod(cell));
+                    gs.blub_ground_truth.push_back(stod(cell));
                     break;
                 }
                 currentColumn++;
             }
         }
 
-        if (gs.bob_ground_truth.empty()) {
+        if (gs.blub_ground_truth.empty()) {
             cerr << "Ground truth is empty." << endl;
             return 1;
         } else {
-            cout << gs.bob_ground_truth.size() << " ground truth values read." << endl;
-            // for (int i = 0; i < 10; i++) {
-            //     cout << gs.bob_ground_truth[i] << " ";
-            // }
+            cout << gs.blub_ground_truth.size() << " ground truth values read." << endl;
         }
 
         gt_csvFile.close();
@@ -445,7 +437,7 @@ int main(int argc, char **argv) {
                 try {
                     load_mesh(meshPath, gs, cache);
                     init_methods(gs);
-                    run_ssgd_method(gs, vertex, type, gs.bob_ground_truth, smape_errors);
+                    run_ssgd_method(gs, vertex, type, gs.blub_ground_truth, smape_errors);
 
                     // Write to CSV after processing each mesh
                     csvFile << gs.mesh_name << "," << gs.nverts;
@@ -469,3 +461,222 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+
+// CON DUE FOLDER PATH
+// int main(int argc, char **argv) {
+//     State gs;
+//     MeshCache cache;
+
+//     // Valid vertices for the meshes
+//     // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
+//     vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
+//     // vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+
+//     if (argc < 3) {
+//         cerr << "Usage: " << argv[0] << " <folder_path_1>" << " <folder_path_2>" << endl;
+//         return 1;
+//     }
+//     string folderPath_1 = argv[1];
+//     string folderPath_2 = argv[2];
+
+//     // PRIMO GIRO SU BOB
+//     for (int vertex : vv_bob) {
+//         cout << "------- Processing vertex: " << vertex << " --------" << endl;
+//         gs.bob_ground_truth.clear();
+
+//         // Prepare CSV file
+//         ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_bob_ext_" + to_string(vertex) + ".csv");
+//         csvFile << "MeshName,NumVertices,SMAPE_Extended\n";
+
+//         // read a csv file
+//         string csv_gt = "../pymeshlab/Esperimento_1/data/gt/bob_gt_distances.csv";
+//         cout << "Reading ground truth from: " << csv_gt << endl;
+
+//         // read only the column of csv_gt that is names "vertex_" + to_string(vertex)
+//         ifstream gt_csvFile(csv_gt);
+//         string line;
+//         getline(gt_csvFile, line); 
+//         stringstream header(line);
+//         string headerValue;
+//         int columnIndex = -1;
+//         int index = 0;
+
+//         // Find the correct column for the vertex
+//         while (getline(header, headerValue, ',')) {
+//             if (headerValue == "vertex_" + to_string(vertex)) {
+//                 columnIndex = index;
+//                 break;
+//             }
+//             index++;
+//         }
+
+//         if (columnIndex == -1) {
+//             cerr << "Vertex " << vertex << " not found in header." << endl;
+//             return 2;
+//         } else {
+//             cout << "Vertex " << vertex << " found at column " << columnIndex << endl;
+//         }
+
+//         // Read the specified column from each line
+//         while (getline(gt_csvFile, line)) {
+//             stringstream lineStream(line);
+//             string cell;
+//             int currentColumn = 0;
+
+//             while (getline(lineStream, cell, ',')) {
+//                 if (currentColumn == columnIndex) {
+//                     gs.bob_ground_truth.push_back(stod(cell));
+//                     break;
+//                 }
+//                 currentColumn++;
+//             }
+//         }
+
+//         if (gs.bob_ground_truth.empty()) {
+//             cerr << "Ground truth is empty." << endl;
+//             return 1;
+//         } else {
+//             cout << gs.bob_ground_truth.size() << " ground truth values read." << endl;
+//         }
+
+//         gt_csvFile.close();
+
+//         for (const auto &entry : fs::directory_iterator(folderPath_1)) {
+//             if (entry.path().extension() == ".obj") {
+//                 string meshPath = entry.path().string();
+//                 gs.mesh_path = meshPath;
+//                 gs.mesh_name = entry.path().filename().string();
+//                 cout << "----- Mesh name: " << gs.mesh_name << " -----" << endl;
+//                 string type = gs.mesh_name.substr(0, 4);
+
+//                 vector<double> smape_errors;
+
+//                 try {
+//                     load_mesh(meshPath, gs, cache);
+//                     init_methods(gs);
+//                     run_ssgd_method(gs, vertex, type, gs.bob_ground_truth, smape_errors);
+
+//                     // Write to CSV after processing each mesh
+//                     csvFile << gs.mesh_name << "," << gs.nverts;
+//                     for (const auto& smape : smape_errors) {
+//                         csvFile << "," << smape;
+//                     }
+//                     csvFile << "\n";
+//                     csvFile.flush(); // Ensure the line is written immediately
+
+//                     cout << "###### Results for " << gs.mesh_name << " written to CSV." << endl << endl;
+
+//                 } catch (const std::exception& e) {
+//                     cerr << "Error processing mesh " << gs.mesh_name << ": " << e.what() << endl;
+//                     csvFile << gs.mesh_name << "," << gs.nverts << ",ERROR\n";
+//                     csvFile.flush();
+//                 }
+//             }
+//         }
+//         csvFile.close(); // Ensure the CSV file is closed after all meshes for the vertex are processed
+//     }
+
+
+
+//     // SECONDO GIRO SU BLUB
+//     vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
+
+//     for (int vertex : vv_blub) {
+//         cout << "------- Processing vertex: " << vertex << " --------" << endl;
+//         gs.blub_ground_truth.clear();
+
+//         // Prepare CSV file
+//         ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_blub_ext_" + to_string(vertex) + ".csv");
+//         csvFile << "MeshName,NumVertices,SMAPE_Extended\n";
+
+//         // read a csv file
+//         string csv_gt = "../pymeshlab/Esperimento_1/data/gt/blub_gt_distances.csv";
+//         cout << "Reading ground truth from: " << csv_gt << endl;
+
+//         // read only the column of csv_gt that is names "vertex_" + to_string(vertex)
+//         ifstream gt_csvFile(csv_gt);
+//         string line;
+//         getline(gt_csvFile, line); 
+//         stringstream header(line);
+//         string headerValue;
+//         int columnIndex = -1;
+//         int index = 0;
+
+//         // Find the correct column for the vertex
+//         while (getline(header, headerValue, ',')) {
+//             if (headerValue == "vertex_" + to_string(vertex)) {
+//                 columnIndex = index;
+//                 break;
+//             }
+//             index++;
+//         }
+
+//         if (columnIndex == -1) {
+//             cerr << "Vertex " << vertex << " not found in header." << endl;
+//             return 2;
+//         } else {
+//             cout << "Vertex " << vertex << " found at column " << columnIndex << endl;
+//         }
+
+//         // Read the specified column from each line
+//         while (getline(gt_csvFile, line)) {
+//             stringstream lineStream(line);
+//             string cell;
+//             int currentColumn = 0;
+
+//             while (getline(lineStream, cell, ',')) {
+//                 if (currentColumn == columnIndex) {
+//                     gs.blub_ground_truth.push_back(stod(cell));
+//                     break;
+//                 }
+//                 currentColumn++;
+//             }
+//         }
+
+//         if (gs.blub_ground_truth.empty()) {
+//             cerr << "Ground truth is empty." << endl;
+//             return 1;
+//         } else {
+//             cout << gs.blub_ground_truth.size() << " ground truth values read." << endl;
+//         }
+
+//         gt_csvFile.close();
+
+//         for (const auto &entry : fs::directory_iterator(folderPath_2)) {
+//             if (entry.path().extension() == ".obj") {
+//                 string meshPath = entry.path().string();
+//                 gs.mesh_path = meshPath;
+//                 gs.mesh_name = entry.path().filename().string();
+//                 cout << "----- Mesh name: " << gs.mesh_name << " -----" << endl;
+//                 string type = gs.mesh_name.substr(0, 4);
+
+//                 vector<double> smape_errors;
+
+//                 try {
+//                     load_mesh(meshPath, gs, cache);
+//                     init_methods(gs);
+//                     run_ssgd_method(gs, vertex, type, gs.blub_ground_truth, smape_errors);
+
+//                     // Write to CSV after processing each mesh
+//                     csvFile << gs.mesh_name << "," << gs.nverts;
+//                     for (const auto& smape : smape_errors) {
+//                         csvFile << "," << smape;
+//                     }
+//                     csvFile << "\n";
+//                     csvFile.flush(); // Ensure the line is written immediately
+
+//                     cout << "###### Results for " << gs.mesh_name << " written to CSV." << endl << endl;
+
+//                 } catch (const std::exception& e) {
+//                     cerr << "Error processing mesh " << gs.mesh_name << ": " << e.what() << endl;
+//                     csvFile << gs.mesh_name << "," << gs.nverts << ",ERROR\n";
+//                     csvFile.flush();
+//                 }
+//             }
+//         }
+//         csvFile.close(); // Ensure the CSV file is closed after all meshes for the vertex are processed
+//     }
+
+//     return 0;
+// }

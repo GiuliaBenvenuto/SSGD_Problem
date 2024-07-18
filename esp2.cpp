@@ -211,11 +211,11 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 void init_methods(State &gs) {
     init(gs.vtp_solver,         gs,     "VTP");
     init(gs.trettner_solver,    gs,     "Trettner");
-    // init(gs.fast_mar_solver,    gs,     "Fast Marching");
-    // init(gs.heat_solver,        gs,     "Heat");
-    // init(gs.geotangle_solver,   gs,     "Geotangle");
-    // init(gs.edge_solver,        gs,     "Edge");
-    // init(gs.lanthier_solver,    gs,     "Lanthier");
+    init(gs.fast_mar_solver,    gs,     "Fast Marching");
+    init(gs.heat_solver,        gs,     "Heat");
+    init(gs.geotangle_solver,   gs,     "Geotangle");
+    init(gs.edge_solver,        gs,     "Edge");
+    init(gs.lanthier_solver,    gs,     "Lanthier");
 }
 
 // Function to calculate SMAPE between two vectors
@@ -293,25 +293,25 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     cout << endl << "----- Trettner -----" << endl;
     log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
-    // // Fast Marching Solver
-    // cout << endl << "----- Fast Marching Query -----" << endl;
-    // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
+    // Fast Marching Solver
+    cout << endl << "----- Fast Marching Query -----" << endl;
+    log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
-    // // Heat Solver
-    // cout << endl << "----- Heat -----" << endl;
-    // log_time_and_calculate_smape(state.heat_solver, "Heat");
+    // Heat Solver
+    cout << endl << "----- Heat -----" << endl;
+    log_time_and_calculate_smape(state.heat_solver, "Heat");
 
-    // // Geotangle Solver
-    // cout << endl << "----- Geotangle -----" << endl;
-    // log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
+    // Geotangle Solver
+    cout << endl << "----- Geotangle -----" << endl;
+    log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
 
-    // // Edge Solver
-    // cout << endl << "----- Edge -----" << endl;
-    // log_time_and_calculate_smape(state.edge_solver, "Edge");
+    // Edge Solver
+    cout << endl << "----- Edge -----" << endl;
+    log_time_and_calculate_smape(state.edge_solver, "Edge");
 
-    // // Lanthier Solver
-    // cout << endl << "----- Lanthier -----" << endl;
-    // log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
+    // Lanthier Solver
+    cout << endl << "----- Lanthier -----" << endl;
+    log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
 }
 
 // Assume other necessary headers and namespace declarations are here
