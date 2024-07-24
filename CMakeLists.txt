@@ -120,9 +120,17 @@ set_target_properties(vtp_sampling_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_R
 add_executable(esp2_app esp2.cpp solving_ssgd.h solving_ssgd.cpp)
 set_target_properties(esp2_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
 
-# New VTP sampling
+# PROVA
 add_executable(prova_app prova.cpp solving_ssgd.h solving_ssgd.cpp)
 set_target_properties(prova_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
+
+# Check Bob Geotangle smape
+add_executable(check_bob_app check_bob.cpp solving_ssgd.h solving_ssgd.cpp)
+set_target_properties(check_bob_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
+
+# Bunny
+add_executable(bunny_app bunny.cpp solving_ssgd.h solving_ssgd.cpp)
+set_target_properties(bunny_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
 
 # CINOLIB
 set(cinolib_DIR /Users/giuliabenvenuto/Documents/GitHub/cinolib)
@@ -140,7 +148,7 @@ add_subdirectory(SSGD_methods)
 add_subdirectory(libs)
 
 # Linking libraries common to all applications
-foreach(app IN ITEMS ${PROJECT_NAME} batch_app smape_app vtp_sampling_app esp2_app prova_app)
+foreach(app IN ITEMS ${PROJECT_NAME} batch_app smape_app vtp_sampling_app esp2_app prova_app check_bob_app bunny_app)
     target_link_libraries(${app}
         cinolib
         graph-based
@@ -153,7 +161,7 @@ endforeach()
 # OpenGL
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
-foreach(app IN ITEMS ${PROJECT_NAME} batch_app smape_app vtp_sampling_app esp2_app prova_app)
+foreach(app IN ITEMS ${PROJECT_NAME} batch_app smape_app vtp_sampling_app esp2_app prova_app check_bob_app bunny_app)
     target_link_libraries(${app} ${OPENGL_gl_LIBRARY})
 endforeach()
 
@@ -161,7 +169,7 @@ endforeach()
 set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build architectures for Mac OS X" FORCE)
 include_directories("/Applications/MATLAB_R2024a.app/extern/include")
 link_directories("/Applications/MATLAB_R2024a.app/bin/maca64")
-foreach(app IN ITEMS ${PROJECT_NAME} batch_app smape_app vtp_sampling_app esp2_app prova_app)
+foreach(app IN ITEMS ${PROJECT_NAME} batch_app smape_app vtp_sampling_app esp2_app prova_app check_bob_app bunny_app)
     target_link_libraries(${app}
         "/Applications/MATLAB_R2024a.app/extern/bin/maca64/libMatlabDataArray.dylib"
         "/Applications/MATLAB_R2024a.app/extern/bin/maca64/libMatlabEngine.dylib"

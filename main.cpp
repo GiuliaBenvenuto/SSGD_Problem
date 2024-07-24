@@ -104,7 +104,7 @@ struct State {
   // vector<int> sources;
 
   // TODO: DA TOGLIERE
-  vector<int> sources = {1710};
+  vector<int> sources = {100};
 
   // Trettner
   string mesh_path;
@@ -1118,7 +1118,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources.clear();
 
       // TODO: DA TOGLIEREEEEE
-      gs.sources = {1710};
+      gs.sources = {100};
 
       gs.vtp_query = 0.0;
       gs.trettner_query = 0.0;

@@ -477,8 +477,10 @@ vector<double> distance_field_trettner(const HalfEdge &mesh,
 
   vector<double> dist_trettner; 
 
+  cout << "Mesh avg length: " << mesh.avg_edge_length << endl;
   for (size_t v = 0; v < mesh.vertex_pos.size(); ++v)
     dist_trettner.push_back(min_vertex_dis[size_t(v)] * mesh.avg_edge_length);
+
 
 
 

@@ -49,7 +49,7 @@ struct State {
     // HeatSolver          heat_solver;
     GeotangleSolver     geotangle_solver;
     // EdgeSolver          edge_solver;
-    ExtendedSolver      extended_solver;
+    // ExtendedSolver      extended_solver;
     // LanthierSolver      lanthier_solver;
 
     // Timer
@@ -85,7 +85,7 @@ struct State {
 
         res = vector<double>();
 
-        // vtp_solver = VTPSolver();
+        vtp_solver = VTPSolver();
         // geotangle_solver = GeotangleSolver();
     }
 };
@@ -174,12 +174,8 @@ void init(GeodesicMethod &method, State &gs, const string &name) {
 void init_methods(State &gs) {
     // init(gs.vtp_solver, gs, "VTP");
 
-    // gs.geotangle_solver = GeotangleSolver();
-    // init(gs.geotangle_solver, gs, "Geotangle");
-
-    init(gs.extended_solver, gs, "Extended");
-
-    
+    gs.geotangle_solver = GeotangleSolver();
+    init(gs.geotangle_solver, gs, "Geotangle");
 }
 
 
@@ -189,15 +185,6 @@ double smape_error(const vector<double> &res, const vector<double> &gt, State &g
     cout << "Res size: " << res.size() << endl;
     cout << "GT size: " << gt.size() << endl;
 
-    if (res.size() != gs.nverts) {
-        cerr << "Error: res and nverts have different sizes." << endl;
-        return -1;
-    }
-
-    // if(res.size() != gt.size()) {
-    //     cerr << "Error: res and gt have different sizes." << endl;
-    //     return -1;
-    // }
     double smape = 0.0;
     int count = 0;
 
@@ -216,15 +203,56 @@ double smape_error(const vector<double> &res, const vector<double> &gt, State &g
         cerr << "Error: No valid data points to calculate SMAPE." << endl;
         return -1; // Or handle this case differently if preferred
     }
-    cout << "Smape: " << smape << endl;
-    cout << "Count: " << count << endl;
 
-    return (smape / count) * 100.0;
+    double smape_error = (smape / count) * 100.0;
+    cout << "Smape error: " << smape_error << endl;
+
+    return smape_error;
 }
 
 
-// void run_ssgd_method(State &gs, int vertex, ofstream &smape_csv, ofstream &dist_csv) {
-void run_ssgd_method(State &gs, int vertex) {
+double compute_MSE(const vector<double>& res, const vector<double>& gt) {
+    double sum_squared_errors = 0.0;
+    int n = res.size();
+
+    for (int i = 0; i < n; ++i) {
+        double error = res[i] - gt[i];
+        sum_squared_errors += error * error;
+    }
+
+    double mse = sum_squared_errors / n;
+    cout << "MSE: " << mse << endl;
+    return mse;
+}
+
+double compute_MSE_percentage(const vector<double>& res, const vector<double>& gt) {
+    double sum_squared_errors = 0.0;
+    double sum_squared_gt = 0.0;
+    // int n = res.size();
+    int n = 5344;
+
+    for (int i = 0; i < n; ++i) {
+        double error = res[i] - gt[i];
+        sum_squared_errors += error * error;
+        sum_squared_gt += gt[i] * gt[i];
+    }
+
+    if (sum_squared_gt == 0) {
+        cerr << "Error: Sum of squared ground truth values is zero." << endl;
+        return -1.0; // Return an invalid value to indicate error
+    }
+
+    double mse = sum_squared_errors / n;
+    double mse_percentage = (mse / (sum_squared_gt / n)) * 100.0;
+
+    cout << "MSE: " << mse << endl;
+    cout << "MSE Percentage: " << mse_percentage << " %" << endl;
+
+    return mse_percentage;
+}
+
+
+void run_ssgd_method(State &gs, int vertex, ofstream &smape_csv, ofstream &dist_csv) {
     // gs.res.clear();
     // cout << "Running SSGE method..." << endl;
     // gs.vtp_solver.query(vertex, gs.res);
@@ -232,28 +260,21 @@ void run_ssgd_method(State &gs, int vertex) {
     // gs.res.resize(gs.nverts);
 
     gs.res.clear();
-    cout << "Running Extended method..." << endl;
-    gs.extended_solver.query(vertex, gs.res);
-    cout << "Extended method completed." << endl;
+    cout << "Running Geotangle method..." << endl;
+    gs.geotangle_solver.query(vertex, gs.res);
+    cout << "Geotangle method completed." << endl;
     gs.res.resize(gs.nverts);
 
+    // call the smape error function here
+    double smape = smape_error(gs.res, gs.bob_ground_truth, gs);
+    cout << "SMAPE: " << smape << endl;
 
-    // gs.res.clear();
-    // cout << "Running Geotangle method..." << endl;
-    // gs.geotangle_solver.query(vertex, gs.res);
-    // cout << "Geotangle method completed." << endl;
-    // gs.res.resize(gs.nverts);
+    // Write the results to the csv file
+    smape_csv << gs.mesh_name << "," << gs.nverts << "," << vertex << "," << smape << endl;
 
-    // // call the smape error function here
-    // double smape = smape_error(gs.res, gs.bob_ground_truth, gs);
-    // cout << "SMAPE: " << smape << endl;
-
-    // // Write the results to the csv file
-    // smape_csv << gs.mesh_name << "," << gs.nverts << "," << vertex << "," << smape << endl;
-
-    // for (int i = 0; i < gs.res.size(); i++) {
-    //     dist_csv << i << "," << gs.res[i] << endl;
-    // }
+    for (int i = 0; i < gs.res.size(); i++) {
+        dist_csv << i << "," << gs.res[i] << endl;
+    }
 }
 
 
@@ -266,29 +287,11 @@ int main(int argc, char **argv) {
     // vector<int> vv_bob = {482, 1710, 2005, 3782, 4757};
     vector<int> vv_bob = {482};
 
-    if (argc < 2) {
-        cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
-        return 1;
-    }
-    string folderPath = argv[1];
 
-    // OUTPUT CSV
-    ofstream smape_csv("../pymeshlab/Esperimento_1/data/prova/SMAPE_bob.csv");
-    if (!smape_csv.is_open()) {
-        cerr << "Failed to open SMAPE file." << endl;
-        return 1;
-    }
-    smape_csv << "Mesh,Vertices,Vertex,SMAPE_Geotangle" << endl;
-
-    ofstream dist_csv("../pymeshlab/Esperimento_1/data/prova/dist_BOB_ORIGINAL.csv");
-    if (!dist_csv.is_open()) {
-        cerr << "Failed to open SMAPE file." << endl;
-        return 1;
-    }
-    dist_csv << "Index,Dist_482" << endl;
-
-
-
+    vector<double> res_BOB_0 = vector<double>();
+    vector<double> res_BOB_3 = vector<double>();
+    vector<double> res_BOB_5 = vector<double>();
+    
     // For each vertex
     for (int vertex : vv_bob) {
         cout << endl << endl << "------- Processing vertex: " << vertex << " --------" << endl;
@@ -304,105 +307,35 @@ int main(int argc, char **argv) {
             cout << "Ground truth read successfully." << endl << endl;
         }
 
-        // For element in the folder with extension ".obj"
-        for (const auto &entry : fs::directory_iterator(folderPath)) {
-            if (entry.path().extension() == ".obj") {
-                cout << endl << "MESH: " << entry.path() << endl;
-                gs.mesh_path = entry.path().string();
-                gs.mesh_name = entry.path().filename().string();
-
-                load_mesh(gs.mesh_path, gs);
-                init_methods(gs);
-                // run_ssgd_method(gs, vertex, smape_csv, dist_csv);
-
-            }
+        string csv_BOB_0 = "../pymeshlab/Esperimento_1/data/bob_check/dist_BOB_0.csv";
+        string csv_BOB_3 = "../pymeshlab/Esperimento_1/data/bob_check/dist_BOB_3.csv";
+        string csv_BOB_5 = "../pymeshlab/Esperimento_1/data/bob_check/dist_BOB_5.csv";
+        if (!read_ground_truth(csv_BOB_3, vertex, res_BOB_3)) {
+            return 1;
+        } else {
+            cout << "Ground truth read successfully." << endl << endl;
         }
+
+        // Verify that gs.bob_ground_truth and res_BOB_0 are not empty and print their sizes
+        if (gs.bob_ground_truth.empty() || res_BOB_3.empty()) {
+            cout << "Error: ground truth or res_BOB_3 is empty." << endl;
+            return 1;
+        } else {
+            cout << "Ground truth size: " << gs.bob_ground_truth.size() << endl;
+            cout << "Res_BOB_3 size: " << res_BOB_3.size() << endl;
+        }
+
+        // Compute the SMAPE error
+        // double smape = smape_error(res_BOB_5, gs.bob_ground_truth, gs);
+        double mse = compute_MSE(res_BOB_3, gs.bob_ground_truth);
+
+
     }
 
     return 0;
 }
 
-
-// // ----- Compute again VTP for subdiv_5 for vertex 482 -----
-// int main(int argc, char **argv) {
-//     State gs;
-
-//     // Valid vertices for the meshes
-//     // vector<int> vv_bob = {482};
-//     vector<int> vv_bunny = {100};
-
-//     if (argc < 2) {
-//         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
-//         return 1;
-//     }
-//     // folderPath = ../pymeshlab/Esperimento_1/data/bob
-//     string folderPath = argv[1];
-
-//     // gs.mesh_path = folderPath + "/bob_tri_subdiv_5_final.obj";
-//     // gs.mesh_path = folderPath + "/bunny_500_subdiv_6_final.obj";
-//     gs.mesh_path = folderPath + "/bunny_500_final.obj";
-
-//     for (int vertex : vv_bunny) {
-//         cout << "MESH: " << gs.mesh_path << endl;
-//         load_mesh(gs.mesh_path, gs);
-//         init_methods(gs);
-//         run_ssgd_method(gs, vertex);
-
-//         // take gs.res and write it to a csv file in the same folder
-//         // string csv_res = "../pymeshlab/Esperimento_1/data/prova/bob_tri_subdiv_5_final_res.csv";
-//         string csv_res = "../pymeshlab/Esperimento_1/data/prova/bunny_500_ext_res.csv";
-//         ofstream res_csvFile(csv_res);
-//         if (!res_csvFile.is_open()) {
-//             cerr << "Failed to open result file: " << csv_res << endl;
-//             return 1;
-//         }
-//         res_csvFile << "vertex_" << vertex << endl;
-//         for (int i = 0; i < gs.res.size(); i++) {
-//             res_csvFile << gs.res[i] << endl;
-//         }
-//         res_csvFile.close();
-//     }
-//     return 0;
-// }
-
-
-
-// ----- PRINT VTP bob_tri_final.obj - bob_tri_subdiv_3_final.obj for vertex 482 -----
-// Assume other necessary headers and namespace declarations are here
-
-// int main(int argc, char **argv) {
-//     State gs;
-
-//     // Valid vertices for the meshes
-//     vector<int> vv_bob = {482};
-
-//     if (argc < 2) {
-//         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
-//         return 1;
-//     }
-//     // folderPath = ../pymeshlab/Esperimento_1/data/bob
-//     string folderPath = argv[1];
-
-//     gs.mesh_path_1 = folderPath + "/bob_tri_final.obj";
-//     gs.mesh_path_2 = folderPath + "/bob_tri_subdiv_3_final.obj";
-
-//     for (int vertex : vv_bob) {
-//         cout << "MESH: " << gs.mesh_path_1 << endl;
-//         load_mesh(gs.mesh_path_1, gs);
-//         init_methods(gs);
-//         run_ssgd_method(gs, vertex);
-
-//         cout << "MESH: " << gs.mesh_path_2 << endl;
-//         load_mesh(gs.mesh_path_2, gs);
-//         init_methods(gs);
-//         run_ssgd_method(gs, vertex);
-
-//     }
-
-//     return 0;
-// }
-
-
-
+// BOB_3: no percentage -> 0.00814959
+// BOB_5: no percentage -> 0.00828597
 
 

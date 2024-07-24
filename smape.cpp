@@ -119,8 +119,8 @@ struct State {
         n_steiner = 3;
         prev_n_steiner = 3;
 
-        heat_time = 0.5;
-        heat_time_prev = 0.5;
+        heat_time = 1.0;
+        heat_time_prev = 1.0;
     }
 };
 
@@ -234,15 +234,14 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-
     // init(gs.vtp_solver,         gs,     "VTP");
-    // init(gs.trettner_solver,    gs,     "Trettner");
-    // init(gs.fast_mar_solver,    gs,     "Fast Marching");
-    // init(gs.heat_solver,        gs,     "Heat");
-    // init(gs.geotangle_solver,   gs,     "Geotangle");
-    // init(gs.edge_solver,        gs,     "Edge");
-    init(gs.extended_solver,    gs,     "Extended");
-    // init(gs.lanthier_solver,    gs,     "Lanthier");
+    init(gs.trettner_solver,    gs,     "Trettner");
+    init(gs.fast_mar_solver,    gs,     "Fast Marching");
+    init(gs.heat_solver,        gs,     "Heat");
+    init(gs.geotangle_solver,   gs,     "Geotangle");
+    init(gs.edge_solver,        gs,     "Edge");
+    init(gs.lanthier_solver,    gs,     "Lanthier");
+    // init(gs.extended_solver,    gs,     "Extended");
 }
 
 // Function to calculate SMAPE between two vectors
@@ -317,34 +316,93 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     // cout << endl << "----- VTP -----" << endl;
     // log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
-    // // Trettner Solver
-    // cout << endl << "----- Trettner -----" << endl;
-    // log_time_and_calculate_smape(state.trettner_solver, "Trettner");
+    // Trettner Solver
+    cout << endl << "----- Trettner -----" << endl;
+    log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
-    // // Fast Marching Solver
-    // cout << endl << "----- Fast Marching Query -----" << endl;
-    // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
+    // Fast Marching Solver
+    cout << endl << "----- Fast Marching Query -----" << endl;
+    log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
-    // // Heat Solver
-    // cout << endl << "----- Heat -----" << endl;
-    // log_time_and_calculate_smape(state.heat_solver, "Heat");
+    // Heat Solver
+    cout << endl << "----- Heat -----" << endl;
+    log_time_and_calculate_smape(state.heat_solver, "Heat");
 
-    // // Geotangle Solver
-    // cout << endl << "----- Geotangle -----" << endl;
-    // log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
+    // Geotangle Solver
+    cout << endl << "----- Geotangle -----" << endl;
+    log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
 
-    // // Edge Solver
-    // cout << endl << "----- Edge -----" << endl;
-    // log_time_and_calculate_smape(state.edge_solver, "Edge");
+    // Edge Solver
+    cout << endl << "----- Edge -----" << endl;
+    log_time_and_calculate_smape(state.edge_solver, "Edge");
 
-    // // Lanthier Solver
-    // cout << endl << "----- Lanthier -----" << endl;
-    // log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
+    // Lanthier Solver
+    cout << endl << "----- Lanthier -----" << endl;
+    log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
 
-    //Extended Solver
-    cout << endl << "----- Extended -----" << endl;
-    log_time_and_calculate_smape(state.extended_solver, "Extended");
+    // //Extended Solver
+    // cout << endl << "----- Extended -----" << endl;
+    // log_time_and_calculate_smape(state.extended_solver, "Extended");
 }
+
+
+bool read_ground_truth(const string& csv_gt, int vertex, vector<double>& ground_truth) {
+    ifstream gt_csvFile(csv_gt);
+    if (!gt_csvFile.is_open()) {
+        cerr << "Failed to open ground truth file: " << csv_gt << endl;
+        return false;
+    }
+
+    string line;
+    getline(gt_csvFile, line); 
+    stringstream header(line);
+    string headerValue;
+
+    int columnIndex = -1;
+    int index = 0;
+
+    // Find the correct column for the vertex
+    while (getline(header, headerValue, ',')) {
+        if (headerValue == "vertex_" + to_string(vertex)) {
+            columnIndex = index;
+            break;
+        }
+        index++;
+    }
+
+    if (columnIndex == -1) {
+        cerr << "Vertex " << vertex << " not found in header." << endl;
+        return false;
+    } else {
+        cout << "Vertex " << vertex << " found at column " << columnIndex << endl;
+    }
+
+    // Read the specified column from each line
+    while (getline(gt_csvFile, line)) {
+        stringstream lineStream(line);
+        string cell;
+        int currentColumn = 0;
+
+        while (getline(lineStream, cell, ',')) {
+            if (currentColumn == columnIndex) {
+                ground_truth.push_back(stod(cell));
+                break;
+            }
+            currentColumn++;
+        }
+    }
+
+    if (ground_truth.empty()) {
+        cerr << "Ground truth is empty." << endl;
+        return false;
+    } else {
+        cout << ground_truth.size() << " ground truth values read." << endl;
+    }
+
+    gt_csvFile.close();
+    return true;
+}
+
 
 // Assume other necessary headers and namespace declarations are here
 int main(int argc, char **argv) {
@@ -352,10 +410,9 @@ int main(int argc, char **argv) {
     MeshCache cache;
 
     // Valid vertices for the meshes
-    // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
+    vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
     // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
     // vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
-    vector<int> vv_blub = {4662, 4715, 6694};
 
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
@@ -368,61 +425,18 @@ int main(int argc, char **argv) {
         gs.blub_ground_truth.clear();
 
         // Prepare CSV file
-        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_blub_ext_" + to_string(vertex) + ".csv");
-        csvFile << "MeshName,NumVertices,SMAPE_Extended\n";
+        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_blub_TUTTO_" + to_string(vertex) + ".csv");
+        csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMar,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
 
         // read a csv file
         string csv_gt = "../pymeshlab/Esperimento_1/data/gt/blub_gt_distances.csv";
         cout << "Reading ground truth from: " << csv_gt << endl;
 
-        // read only the column of csv_gt that is names "vertex_" + to_string(vertex)
-        ifstream gt_csvFile(csv_gt);
-        string line;
-        getline(gt_csvFile, line); 
-        stringstream header(line);
-        string headerValue;
-        int columnIndex = -1;
-        int index = 0;
-
-        // Find the correct column for the vertex
-        while (getline(header, headerValue, ',')) {
-            if (headerValue == "vertex_" + to_string(vertex)) {
-                columnIndex = index;
-                break;
-            }
-            index++;
-        }
-
-        if (columnIndex == -1) {
-            cerr << "Vertex " << vertex << " not found in header." << endl;
+        // Use the read_ground_truth function
+        if (!read_ground_truth(csv_gt, vertex, gs.blub_ground_truth)) {
+            cerr << "Failed to read ground truth for vertex " << vertex << endl;
             return 2;
-        } else {
-            cout << "Vertex " << vertex << " found at column " << columnIndex << endl;
         }
-
-        // Read the specified column from each line
-        while (getline(gt_csvFile, line)) {
-            stringstream lineStream(line);
-            string cell;
-            int currentColumn = 0;
-
-            while (getline(lineStream, cell, ',')) {
-                if (currentColumn == columnIndex) {
-                    gs.blub_ground_truth.push_back(stod(cell));
-                    break;
-                }
-                currentColumn++;
-            }
-        }
-
-        if (gs.blub_ground_truth.empty()) {
-            cerr << "Ground truth is empty." << endl;
-            return 1;
-        } else {
-            cout << gs.blub_ground_truth.size() << " ground truth values read." << endl;
-        }
-
-        gt_csvFile.close();
 
         for (const auto &entry : fs::directory_iterator(folderPath)) {
             if (entry.path().extension() == ".obj") {

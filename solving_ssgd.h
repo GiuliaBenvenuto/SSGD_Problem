@@ -88,7 +88,7 @@ public:
     res = exact_geodesic_distance(m->vector_polys(), m->vector_verts(), vid);
 
     // for (int i = 0; i < res.size(); i++) {
-    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    //   cout << i << "," << res[i] << endl;
     // }
     
     auto end = std::chrono::high_resolution_clock::now();
@@ -111,6 +111,7 @@ public:
   void load(DrawableTrimesh<>* mesh) override {}
 
   explicit TrettnerSolver(const std::string &path) : mesh_path(path) {}
+
   void preprocess() override {}
 
   void query(const int vid, std::vector<double> &res) override {
@@ -119,6 +120,7 @@ public:
     half_edge = HEInit(mesh_path, vids);
     res = distance_field_trettner(half_edge, vids, time); 
     cout << "? Trettner RES size: " << res.size() << endl;
+
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
@@ -252,6 +254,11 @@ public:
         res[i] = distances[Vertex(gc_m.topology.get(), i)];
     }
     cout << "? Heat RES size: " << res.size() << endl;
+
+    // // print the results
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
   }
 };
 
@@ -268,6 +275,8 @@ public:
 
   void load(DrawableTrimesh<>* mesh) override {
     m = mesh;
+    cout << "Number of vertices: " << m->num_verts() << endl;
+    cout << "Number of faces: " << m->num_polys() << endl;
   }
 
   void preprocess() override {
@@ -356,9 +365,11 @@ public:
   void query(const int vid, std::vector<double> &res) override {
     res.clear();
     res = compute_geodesic_distances(solver, {vid});
+
     // for (int i = 0; i < res.size(); i++) {
-    //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    //   cout<< i << "," << res[i] << endl;
     // }
+
     cout << "? Geotangle RES size: " << res.size() << endl;
   }
 };
