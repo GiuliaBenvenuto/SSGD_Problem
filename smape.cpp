@@ -90,7 +90,9 @@ struct State {
     double extended_load,   extended_preprocess,    extended_query;
     double lanthier_load,   lanthier_preprocess,    lanthier_query;
 
-    vector<double> blub_ground_truth, bob_ground_truth, spot_ground_truth;
+    // vector<double> blub_ground_truth;
+    // vector<double> bob_ground_truth;
+    vector<double> spot_ground_truth;
 
     State() {
         // Timer
@@ -105,8 +107,8 @@ struct State {
 
         res = vector<double>();
 
-        blub_ground_truth = vector<double>();
-        bob_ground_truth = vector<double>();
+        // blub_ground_truth = vector<double>();
+        // bob_ground_truth = vector<double>();
         spot_ground_truth = vector<double>();
 
         mesh_path = "";
@@ -234,13 +236,13 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    // init(gs.vtp_solver,         gs,     "VTP");
-    init(gs.trettner_solver,    gs,     "Trettner");
-    init(gs.fast_mar_solver,    gs,     "Fast Marching");
-    init(gs.heat_solver,        gs,     "Heat");
-    init(gs.geotangle_solver,   gs,     "Geotangle");
-    init(gs.edge_solver,        gs,     "Edge");
-    init(gs.lanthier_solver,    gs,     "Lanthier");
+    init(gs.vtp_solver,         gs,     "VTP");
+    // init(gs.trettner_solver,    gs,     "Trettner");
+    // init(gs.fast_mar_solver,    gs,     "Fast Marching");
+    // init(gs.heat_solver,        gs,     "Heat");
+    // init(gs.geotangle_solver,   gs,     "Geotangle");
+    // init(gs.edge_solver,        gs,     "Edge");
+    // init(gs.lanthier_solver,    gs,     "Lanthier");
     // init(gs.extended_solver,    gs,     "Extended");
 }
 
@@ -312,33 +314,33 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
         distances.clear();
     };
 
-    // // VTP Solver
-    // cout << endl << "----- VTP -----" << endl;
-    // log_time_and_calculate_smape(state.vtp_solver, "VTP");
+    // VTP Solver
+    cout << endl << "----- VTP -----" << endl;
+    log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
-    // Trettner Solver
-    cout << endl << "----- Trettner -----" << endl;
-    log_time_and_calculate_smape(state.trettner_solver, "Trettner");
+    // // Trettner Solver
+    // cout << endl << "----- Trettner -----" << endl;
+    // log_time_and_calculate_smape(state.trettner_solver, "Trettner");
 
-    // Fast Marching Solver
-    cout << endl << "----- Fast Marching Query -----" << endl;
-    log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
+    // // Fast Marching Solver
+    // cout << endl << "----- Fast Marching Query -----" << endl;
+    // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
-    // Heat Solver
-    cout << endl << "----- Heat -----" << endl;
-    log_time_and_calculate_smape(state.heat_solver, "Heat");
+    // // Heat Solver
+    // cout << endl << "----- Heat -----" << endl;
+    // log_time_and_calculate_smape(state.heat_solver, "Heat");
 
-    // Geotangle Solver
-    cout << endl << "----- Geotangle -----" << endl;
-    log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
+    // // Geotangle Solver
+    // cout << endl << "----- Geotangle -----" << endl;
+    // log_time_and_calculate_smape(state.geotangle_solver, "Geotangle");
 
-    // Edge Solver
-    cout << endl << "----- Edge -----" << endl;
-    log_time_and_calculate_smape(state.edge_solver, "Edge");
+    // // Edge Solver
+    // cout << endl << "----- Edge -----" << endl;
+    // log_time_and_calculate_smape(state.edge_solver, "Edge");
 
-    // Lanthier Solver
-    cout << endl << "----- Lanthier -----" << endl;
-    log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
+    // // Lanthier Solver
+    // cout << endl << "----- Lanthier -----" << endl;
+    // log_time_and_calculate_smape(state.lanthier_solver, "Lanthier");
 
     // //Extended Solver
     // cout << endl << "----- Extended -----" << endl;
@@ -410,9 +412,9 @@ int main(int argc, char **argv) {
     MeshCache cache;
 
     // Valid vertices for the meshes
-    vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
+    // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
     // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
-    // vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+    vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
 
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
@@ -420,20 +422,20 @@ int main(int argc, char **argv) {
     }
     string folderPath = argv[1];
 
-    for (int vertex : vv_blub) {
+    for (int vertex : vv_spot) {
         cout << "------- Processing vertex: " << vertex << " --------" << endl;
-        gs.blub_ground_truth.clear();
+        gs.spot_ground_truth.clear();
 
         // Prepare CSV file
-        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_blub_TUTTO_" + to_string(vertex) + ".csv");
-        csvFile << "MeshName,NumVertices,SMAPE_Trettner,SMAPE_FastMar,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier\n";
+        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_spot_VTP_" + to_string(vertex) + ".csv");
+        csvFile << "MeshName,NumVertices,SMAPE_vtp\n";
 
         // read a csv file
-        string csv_gt = "../pymeshlab/Esperimento_1/data/gt/blub_gt_distances.csv";
+        string csv_gt = "../pymeshlab/Esperimento_1/data/gt/spot_gt_distances.csv";
         cout << "Reading ground truth from: " << csv_gt << endl;
 
         // Use the read_ground_truth function
-        if (!read_ground_truth(csv_gt, vertex, gs.blub_ground_truth)) {
+        if (!read_ground_truth(csv_gt, vertex, gs.spot_ground_truth)) {
             cerr << "Failed to read ground truth for vertex " << vertex << endl;
             return 2;
         }
@@ -451,7 +453,7 @@ int main(int argc, char **argv) {
                 try {
                     load_mesh(meshPath, gs, cache);
                     init_methods(gs);
-                    run_ssgd_method(gs, vertex, type, gs.blub_ground_truth, smape_errors);
+                    run_ssgd_method(gs, vertex, type, gs.spot_ground_truth, smape_errors);
 
                     // Write to CSV after processing each mesh
                     csvFile << gs.mesh_name << "," << gs.nverts;
