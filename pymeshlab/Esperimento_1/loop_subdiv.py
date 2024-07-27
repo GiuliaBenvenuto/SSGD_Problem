@@ -113,6 +113,7 @@ def generate_refined_meshes(mesh_base_name, num_subdivisions):
 
 # Use the function to generate refined meshes
 # generate_refined_meshes('data/altro/bunny_1k', 3)
+
 # print("-----> Mesh: 'bob_tri.obj' <-----")
 # generate_refined_meshes('data/prova_bob/bob_tri', 5)
 # print("\n")
@@ -125,6 +126,10 @@ def generate_refined_meshes(mesh_base_name, num_subdivisions):
 # generate_refined_meshes('data/spot/spot_tri', 6)
 # print("\n")
 
-print("-----> Mesh: 'bunny_500.obj' <-----")
-generate_refined_meshes('data/bunny/bunny_500', 6)
+# print("-----> Mesh: 'bunny_500.obj' <-----")
+# generate_refined_meshes('data/bunny/bunny_500', 6)
+# print("\n")
+
+print("-----> Mesh: 'spot_500.obj' <-----")
+generate_refined_meshes('data/simplified/spot_500f', 6)
 print("\n")

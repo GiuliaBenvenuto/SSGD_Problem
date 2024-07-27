@@ -220,7 +220,7 @@ public:
 
     // Initialize the heat method distance solver
     // heatSolverGC = make_unique<HeatMethodDistanceSolver>(*gc_m.geometry);
-    cout << "Heat time in preprocess: " << time_scalar << endl;
+    // cout << "Heat time in preprocess: " << time_scalar << endl;
     heatSolverGC = make_unique<HeatMethodDistanceSolver>(*gc_m.geometry, time_scalar);
   }
 
@@ -317,8 +317,13 @@ public:
     res.clear();
     res = compute_geodesic_distances(solver, {vid});
     cout << "? Edge RES size: " << res.size() << endl;
+
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
+    // }
+
+    // for (int i = 0; i < res.size(); i++) {
+    //   cout << i << "," << res[i] << endl;
     // }
   }
 };

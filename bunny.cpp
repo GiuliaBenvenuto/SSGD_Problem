@@ -74,23 +74,23 @@ void Load_mesh(string filename, State &gs) {
 
 
 void init(GeodesicMethod &method, State &gs, const string &name) {
-  cout << "----- Init method: " << name << " -----" << endl;
-  method.load(&gs.m);
-  if (name == "Heat") {       
+    cout << "----- Init method: " << name << " -----" << endl;
+    method.load(&gs.m);
+    if (name == "Heat") {       
     gs.heat_solver.set_t(gs.heat_time);
-  }
-  method.preprocess();
+    }
+    method.preprocess();
 }
 
 void init_methods(State &gs) {
-  // init(gs.vtp_solver, gs, "VTP");
-  // init(gs.trettner_solver, gs, "Trettner");
-  // init(gs.fast_mar_solver, gs, "Fast Marching");
-  // init(gs.heat_solver, gs, "Heat");
-  // init(gs.geotangle_solver, gs, "Geotangle");
-  // init(gs.edge_solver, gs, "Edge");
-  init(gs.extended_solver, gs, "Extended");
-  //init(gs.lanthier_solver, gs, "Lanthier");
+    // init(gs.vtp_solver, gs, "VTP");
+    init(gs.trettner_solver, gs, "Trettner");
+    // init(gs.fast_mar_solver, gs, "Fast Marching");
+    // init(gs.heat_solver, gs, "Heat");
+    // init(gs.geotangle_solver, gs, "Geotangle");
+    // init(gs.edge_solver, gs, "Edge");
+    // init(gs.extended_solver, gs, "Extended");
+    // init(gs.lanthier_solver, gs, "Lanthier");
 }
 
 double smape_error(const vector<double> &res, const vector<double> &gt, State &gs) {
@@ -127,78 +127,80 @@ double smape_error(const vector<double> &res, const vector<double> &gt, State &g
 
 
 void run_ssgd_method(State &gs, int vertex, vector<double> &ground_truth, vector<double> &smape_errors) {
-  double smape = 0.0;
+    double smape = 0.0;
 
-  cout << "----- Running SSGD method -----" << endl;
+    cout << "----- Running SSGD method -----" << endl;
 
-  // cout << "----- VTP ----- " << endl;
-  // gs.vtp_solver.query(vertex, gs.res);
-  // // Output results
-  // // cout << "Geodesic distances from vertex " << vertex << ":" << endl;
-  // // for (size_t i = 0; i < gs.res.size(); ++i) {
-  // //   cout << "Vertex " << i << ": " << gs.res[i] << endl;
-  // // }
-  // smape = smape_error(gs.res, ground_truth, gs);
-  // smape_errors.push_back(smape);
-  // gs.res.clear();
-  // smape = 0.0;
-
-
-  // cout << "----- TRETTNER -----" << endl;
-  // gs.trettner_solver.query(vertex, gs.res);
-  // smape = smape_error(gs.res, ground_truth, gs);
-  // smape_errors.push_back(smape);
-  // gs.res.clear();
-  // smape = 0.0;
+    // cout << "----- VTP ----- " << endl;
+    // gs.vtp_solver.query(vertex, gs.res);
+    // // Output results
+    // for (int i = 0; i < gs.res.size(); i++) {
+    //     cout << i << "," << gs.res[i] << endl;
+    // }
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
 
 
-  // cout << "----- FAST MARCHING -----" << endl;
-  // gs.fast_mar_solver.query(vertex, gs.res);
-  // smape = smape_error(gs.res, ground_truth, gs);
-  // smape_errors.push_back(smape);
-  // gs.res.clear();
-  // smape = 0.0;
+    cout << "----- TRETTNER -----" << endl;
+    gs.trettner_solver.query(vertex, gs.res);
+    for (int i = 0; i < gs.res.size(); i++) {
+        cout << i << "," << gs.res[i] << endl;
+    }
+    smape = smape_error(gs.res, ground_truth, gs);
+    smape_errors.push_back(smape);
+    gs.res.clear();
+    smape = 0.0;
 
 
-  // cout << "----- HEAT -----" << endl;
-  // gs.heat_solver.query(vertex, gs.res);
-  // smape = smape_error(gs.res, ground_truth, gs);
-  // smape_errors.push_back(smape);
-  // gs.res.clear();
-  // smape = 0.0;
+    // cout << "----- FAST MARCHING -----" << endl;
+    // gs.fast_mar_solver.query(vertex, gs.res);
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
 
 
-  // cout << "----- GEOTANGLE -----" << endl;
-  // gs.geotangle_solver.query(vertex, gs.res);
-  // smape = smape_error(gs.res, ground_truth, gs);
-  // smape_errors.push_back(smape);
-  // gs.res.clear();
-  // smape = 0.0;
+    // cout << "----- HEAT -----" << endl;
+    // gs.heat_solver.query(vertex, gs.res);
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
 
 
-  // cout << "----- EDGE -----" << endl;
-  // gs.edge_solver.query(vertex, gs.res);
-  // smape = smape_error(gs.res, ground_truth, gs);
-  // smape_errors.push_back(smape);
-  // gs.res.clear();
-  // smape = 0.0;
-
-  
-  cout << "----- EXTENDED -----" << endl;
-  gs.extended_solver.query(vertex, gs.res);
-  smape = smape_error(gs.res, ground_truth, gs);
-  smape_errors.push_back(smape);
-  gs.res.clear();
-  smape = 0.0;
+    // cout << "----- GEOTANGLE -----" << endl;
+    // gs.geotangle_solver.query(vertex, gs.res);
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
 
 
-  // cout << "----- LANTHIER -----" << endl;
-  // gs.lanthier_solver.query(vertex, gs.res);
-  // gs.res.resize(gs.nverts);
-  // smape = smape_error(gs.res, ground_truth, gs);
-  // smape_errors.push_back(smape);
-  // gs.res.clear();
-  // smape = 0.0;
+    // cout << "----- EDGE -----" << endl;
+    // gs.edge_solver.query(vertex, gs.res);
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
+
+    
+    // cout << "----- EXTENDED -----" << endl;
+    // gs.extended_solver.query(vertex, gs.res);
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
+
+
+    // cout << "----- LANTHIER -----" << endl;
+    // gs.lanthier_solver.query(vertex, gs.res);
+    // gs.res.resize(gs.nverts);
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
 
 }
 
@@ -261,7 +263,7 @@ bool read_ground_truth(const string& csv_gt, int vertex, vector<double>& ground_
 }
 
 
-
+// ----- MAIN FOR THE QUERY ------
 int main(int argc, char **argv) {
     State gs;
 
@@ -273,19 +275,24 @@ int main(int argc, char **argv) {
     string folder_path = argv[1];
 
     // Read the ground truth from the CSV file we just created
-    std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/bunny_dist/bunny_gt_distances.csv";
+    // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/bunny_gt_distances.csv";
+    std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/bob500f_gt_distances.csv";
+    // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/GROUND_TRUTH_GIUSTE/SPOT_GT.csv";
 
-    vector<int> vv_bunny = {100};
+    vector<int> vv_bob = {100};
+    // vector<int> vv_spot = {174};
+    // vector<int> vv_spot = {100};
+
     vector<double> ground_truth;
 
-    for(int vertex : vv_bunny) {
+    for(int vertex : vv_bob) {
 
       ground_truth.clear();
 
       // Prepare CSV file
-      ofstream csvFile("../pymeshlab/Esperimento_1/data/bunny_prova/smape_bunny_" + to_string(vertex) + ".csv");
-      //csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier" << endl;
-      csvFile << "MeshName,NumVertices,SMAPE_Extended" << endl;
+      ofstream csvFile("../pymeshlab/Esperimento_1/data/simplified/smape_BOB_TRETTNER" + to_string(vertex) + ".csv");
+      // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier" << endl;
+      csvFile << "MeshName,NumVertices,SMAPE_TRETTNER" << endl;
 
       if (!read_ground_truth(csv_path.string(), vertex, ground_truth)) {
         cerr << "Failed to read ground truth from " << csv_path << endl;
@@ -327,7 +334,8 @@ int main(int argc, char **argv) {
 
 
 
-// ------- WRITE CSV GROUND TRUTH FILE -------
+
+// ------- WRITE CSV GROUND TRUTH FILE BACKUP-------
 // int main(int argc, char **argv) {
 //     if (argc < 2) {
 //     cerr << "Usage: " << argv[0] << " <mesh_file.obj>" << endl;
@@ -379,3 +387,242 @@ int main(int argc, char **argv) {
 
 //     return 0;
 // }
+
+
+
+// BOB GROUND TRUTH GIUSTA
+/*
+int main(int argc, char **argv) {
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <mesh_file.obj>" << endl;
+        return 1;
+    }
+
+    string mesh_filename = argv[1];
+    vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
+    string csv_path = "../pymeshlab/Esperimento_1/data/GROUND_TRUTH_GIUSTE/BOB_GT.csv";
+
+    // Open CSV file early
+    std::ofstream csv_file(csv_path);
+    if (!csv_file.is_open()) {
+        cerr << "Failed to create CSV file: " << csv_path << endl;
+        return 1;
+    }
+
+    // Write CSV header
+    csv_file << "index";
+    for (int source : vv_bob) {
+        csv_file << ",vertex_" << source;
+    }
+    csv_file << "\n";
+
+    vector<vector<double>> all_results(vv_bob.size());
+
+    for (size_t idx = 0; idx < vv_bob.size(); ++idx) {
+        int source = vv_bob[idx];
+        State gs;
+
+        // Load mesh
+        Load_mesh(mesh_filename, gs);
+
+        // Initialize methods
+        init_methods(gs);
+
+        // Set the current source
+        gs.sources = {source};
+
+        // Compute SSGD using the chosen method
+        auto tic = std::chrono::steady_clock::now();
+        gs.vtp_solver.query(gs.sources[0], gs.res);
+        auto toc = std::chrono::steady_clock::now();
+        double query_time = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
+
+        cout << "Query time for vertex " << source << ": " << query_time << " milliseconds" << endl;
+
+        all_results[idx] = gs.res;
+    }
+
+    // Determine the maximum number of vertices (rows)
+    size_t max_size = 0;
+    for (const auto &res : all_results) {
+        max_size = max(max_size, res.size());
+    }
+
+    // Write results to CSV by rows and flush each row
+    for (size_t i = 0; i < max_size; ++i) {
+        csv_file << i;
+        for (const auto &res : all_results) {
+            if (i < res.size()) {
+                csv_file << "," << res[i];
+            } else {
+                csv_file << ",";
+            }
+        }
+        csv_file << "\n";
+        csv_file.flush();  // Flush data to ensure it's written to file immediately
+    }
+
+    csv_file.close();
+    cout << "Results have been written to: " << csv_path << endl;
+
+    return 0;
+}
+*/
+
+// BLUB GROUND TRUTH GIUSTA
+/*
+int main(int argc, char **argv) {
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <mesh_file.obj>" << endl;
+        return 1;
+    }
+
+    string mesh_filename = argv[1];
+    vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
+    string csv_path = "../pymeshlab/Esperimento_1/data/GROUND_TRUTH_GIUSTE/BLUB_GT.csv";
+
+    // Open CSV file early
+    std::ofstream csv_file(csv_path);
+    if (!csv_file.is_open()) {
+        cerr << "Failed to create CSV file: " << csv_path << endl;
+        return 1;
+    }
+
+    // Write CSV header
+    csv_file << "index";
+    for (int source : vv_blub) {
+        csv_file << ",vertex_" << source;
+    }
+    csv_file << "\n";
+
+    vector<vector<double>> all_results(vv_blub.size());
+
+    for (size_t idx = 0; idx < vv_blub.size(); ++idx) {
+        int source = vv_blub[idx];
+        State gs;
+
+        // Load mesh
+        Load_mesh(mesh_filename, gs);
+
+        // Initialize methods
+        init_methods(gs);
+
+        // Set the current source
+        gs.sources = {source};
+
+        // Compute SSGD using the chosen method
+        auto tic = std::chrono::steady_clock::now();
+        gs.vtp_solver.query(gs.sources[0], gs.res);
+        auto toc = std::chrono::steady_clock::now();
+        double query_time = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
+
+        cout << "Query time for vertex " << source << ": " << query_time << " milliseconds" << endl;
+
+        all_results[idx] = gs.res;
+    }
+
+    // Determine the maximum number of vertices (rows)
+    size_t max_size = 0;
+    for (const auto &res : all_results) {
+        max_size = max(max_size, res.size());
+    }
+
+    // Write results to CSV by rows and flush each row
+    for (size_t i = 0; i < max_size; ++i) {
+        csv_file << i;
+        for (const auto &res : all_results) {
+            if (i < res.size()) {
+                csv_file << "," << res[i];
+            } else {
+                csv_file << ",";
+            }
+        }
+        csv_file << "\n";
+        csv_file.flush();  // Flush data to ensure it's written to file immediately
+    }
+
+    csv_file.close();
+    cout << "Results have been written to: " << csv_path << endl;
+
+    return 0;
+}
+*/
+
+// SPOT GROUND TRUTH GIUSTA
+/*
+int main(int argc, char **argv) {
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <mesh_file.obj>" << endl;
+        return 1;
+    }
+
+    string mesh_filename = argv[1];
+    vector<int> vv_spot = {395, 2794, 283, 174, 1876};
+    string csv_path = "../pymeshlab/Esperimento_1/data/GROUND_TRUTH_GIUSTE/SPOT_GT.csv";
+
+    // Open CSV file early
+    std::ofstream csv_file(csv_path);
+    if (!csv_file.is_open()) {
+        cerr << "Failed to create CSV file: " << csv_path << endl;
+        return 1;
+    }
+
+    // Write CSV header
+    csv_file << "index";
+    for (int source : vv_spot) {
+        csv_file << ",vertex_" << source;
+    }
+    csv_file << "\n";
+
+    vector<vector<double>> all_results(vv_spot.size());
+
+    for (size_t idx = 0; idx < vv_spot.size(); ++idx) {
+        int source = vv_spot[idx];
+        State gs;
+
+        // Load mesh
+        Load_mesh(mesh_filename, gs);
+
+        // Initialize methods
+        init_methods(gs);
+
+        // Set the current source
+        gs.sources = {source};
+
+        // Compute SSGD using the chosen method
+        auto tic = std::chrono::steady_clock::now();
+        gs.vtp_solver.query(gs.sources[0], gs.res);
+        auto toc = std::chrono::steady_clock::now();
+        double query_time = chrono::duration_cast<chrono::milliseconds>(toc - tic).count();
+
+        cout << "Query time for vertex " << source << ": " << query_time << " milliseconds" << endl;
+
+        all_results[idx] = gs.res;
+    }
+
+    // Determine the maximum number of vertices (rows)
+    size_t max_size = 0;
+    for (const auto &res : all_results) {
+        max_size = max(max_size, res.size());
+    }
+
+    // Write results to CSV by rows and flush each row
+    for (size_t i = 0; i < max_size; ++i) {
+        csv_file << i;
+        for (const auto &res : all_results) {
+            if (i < res.size()) {
+                csv_file << "," << res[i];
+            } else {
+                csv_file << ",";
+            }
+        }
+        csv_file << "\n";
+        csv_file.flush();  // Flush data to ensure it's written to file immediately
+    }
+
+    csv_file.close();
+    cout << "Results have been written to: " << csv_path << endl;
+
+    return 0;
+}
+*/

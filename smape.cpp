@@ -91,8 +91,8 @@ struct State {
     double lanthier_load,   lanthier_preprocess,    lanthier_query;
 
     // vector<double> blub_ground_truth;
-    // vector<double> bob_ground_truth;
-    vector<double> spot_ground_truth;
+    vector<double> bob_ground_truth;
+    // vector<double> spot_ground_truth;
 
     State() {
         // Timer
@@ -108,8 +108,8 @@ struct State {
         res = vector<double>();
 
         // blub_ground_truth = vector<double>();
-        // bob_ground_truth = vector<double>();
-        spot_ground_truth = vector<double>();
+        bob_ground_truth = vector<double>();
+        // spot_ground_truth = vector<double>();
 
         mesh_path = "";
         mesh_name = "";
@@ -236,10 +236,10 @@ void init(GeodesicMethod &m, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    init(gs.vtp_solver,         gs,     "VTP");
+    // init(gs.vtp_solver,         gs,     "VTP");
     // init(gs.trettner_solver,    gs,     "Trettner");
     // init(gs.fast_mar_solver,    gs,     "Fast Marching");
-    // init(gs.heat_solver,        gs,     "Heat");
+    init(gs.heat_solver,        gs,     "Heat");
     // init(gs.geotangle_solver,   gs,     "Geotangle");
     // init(gs.edge_solver,        gs,     "Edge");
     // init(gs.lanthier_solver,    gs,     "Lanthier");
@@ -273,7 +273,7 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
 }
 
 
-void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<double> &gt, vector<double>& smape_errors) {
+void run_ssgd_method(State &state, int sourceVertexIndex, vector<double> &gt, vector<double>& smape_errors) {
     // Initialize variables
     vector<double> distances = vector<double>(state.nverts, DBL_MAX);
     // vector<double> distances;
@@ -306,6 +306,12 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
             distances.resize(state.nverts);
             cout << "Distances size for LANTHIER after resize: " << distances.size() << endl;
         }
+
+        // print distances
+        for (int i = 0; i < distances.size(); i++) {
+            cout << distances[i] << endl;
+        }
+
         double smape = calculate_smape(gt, distances);
         cout << method << " SMAPE: " << smape << "%" << endl;
 
@@ -315,8 +321,8 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     };
 
     // VTP Solver
-    cout << endl << "----- VTP -----" << endl;
-    log_time_and_calculate_smape(state.vtp_solver, "VTP");
+    // cout << endl << "----- VTP -----" << endl;
+    // log_time_and_calculate_smape(state.vtp_solver, "VTP");
 
     // // Trettner Solver
     // cout << endl << "----- Trettner -----" << endl;
@@ -326,9 +332,9 @@ void run_ssgd_method(State &state, int sourceVertexIndex, string type, vector<do
     // cout << endl << "----- Fast Marching Query -----" << endl;
     // log_time_and_calculate_smape(state.fast_mar_solver, "Fast Marching");
 
-    // // Heat Solver
-    // cout << endl << "----- Heat -----" << endl;
-    // log_time_and_calculate_smape(state.heat_solver, "Heat");
+    // Heat Solver
+    cout << endl << "----- Heat -----" << endl;
+    log_time_and_calculate_smape(state.heat_solver, "Heat");
 
     // // Geotangle Solver
     // cout << endl << "----- Geotangle -----" << endl;
@@ -414,7 +420,9 @@ int main(int argc, char **argv) {
     // Valid vertices for the meshes
     // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
     // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
-    vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+    // vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+    
+    vector<int> vv_bob = {482};
 
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
@@ -422,20 +430,20 @@ int main(int argc, char **argv) {
     }
     string folderPath = argv[1];
 
-    for (int vertex : vv_spot) {
+    for (int vertex : vv_bob) {
         cout << "------- Processing vertex: " << vertex << " --------" << endl;
-        gs.spot_ground_truth.clear();
+        gs.bob_ground_truth.clear();
 
         // Prepare CSV file
-        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_spot_VTP_" + to_string(vertex) + ".csv");
-        csvFile << "MeshName,NumVertices,SMAPE_vtp\n";
+        ofstream csvFile("../pymeshlab/Esperimento_1/data/smape/smape_bob500f_niente_" + to_string(vertex) + ".csv");
+        csvFile << "MeshName,NumVertices,SMAPE_VTP\n";
 
         // read a csv file
-        string csv_gt = "../pymeshlab/Esperimento_1/data/gt/spot_gt_distances.csv";
+        string csv_gt = "../pymeshlab/Esperimento_1/data/gt/bob_gt_distances.csv";
         cout << "Reading ground truth from: " << csv_gt << endl;
 
         // Use the read_ground_truth function
-        if (!read_ground_truth(csv_gt, vertex, gs.spot_ground_truth)) {
+        if (!read_ground_truth(csv_gt, vertex, gs.bob_ground_truth)) {
             cerr << "Failed to read ground truth for vertex " << vertex << endl;
             return 2;
         }
@@ -446,14 +454,13 @@ int main(int argc, char **argv) {
                 gs.mesh_path = meshPath;
                 gs.mesh_name = entry.path().filename().string();
                 cout << "----- Mesh name: " << gs.mesh_name << " -----" << endl;
-                string type = gs.mesh_name.substr(0, 4);
 
                 vector<double> smape_errors;
 
                 try {
                     load_mesh(meshPath, gs, cache);
                     init_methods(gs);
-                    run_ssgd_method(gs, vertex, type, gs.spot_ground_truth, smape_errors);
+                    run_ssgd_method(gs, vertex, gs.bob_ground_truth, smape_errors);
 
                     // Write to CSV after processing each mesh
                     csvFile << gs.mesh_name << "," << gs.nverts;

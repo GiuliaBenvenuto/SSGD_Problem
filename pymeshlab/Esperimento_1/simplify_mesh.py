@@ -44,14 +44,18 @@ def decimate_mesh(verts, faces, target, optimalplacement=True):
     verts = m.vertex_matrix()
     faces = m.face_matrix()
 
-    print(f'[INFO] mesh decimation: {_ori_vert_shape} --> {verts.shape}, {_ori_face_shape} --> {faces.shape}')
+    print(f'mesh decimation: {_ori_vert_shape} --> {verts.shape}, {_ori_face_shape} --> {faces.shape}')
     return verts, faces
 
-# Usage
+
+# Call the function
 import trimesh
 
+input_file = 'data/spot/spot_tri.obj'
+output_file = 'data/simplified/spot_500f.obj'
+
 # Load the mesh
-mesh = trimesh.load_mesh('data/bob/bob_tri.obj')
+mesh = trimesh.load_mesh(input_file)
 
 # Get vertices and faces
 verts = mesh.vertices
@@ -64,5 +68,5 @@ new_verts, new_faces = decimate_mesh(verts, faces, target=500)
 new_mesh = trimesh.Trimesh(vertices=new_verts, faces=new_faces)
 
 # Save the new mesh
-new_mesh.export('data/simplified/bob_500f.obj')
+new_mesh.export(output_file)
 

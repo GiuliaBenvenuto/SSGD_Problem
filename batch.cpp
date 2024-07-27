@@ -47,7 +47,7 @@ struct State {
     string mesh_name;
 
     // Solver
-    VTPSolver           vtp_solver;
+    VTPSolver vtp_solver;
 
     std::chrono::steady_clock::time_point tic;
     std::chrono::steady_clock::time_point toc;
@@ -148,9 +148,10 @@ int main(int argc, char **argv) {
 
     // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
     // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
-    vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+    // vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+    vector<int> vv_bob = {100};
 
-    fs::path csvDirPath = "../pymeshlab/Esperimento_1/data/spot_gt_csv";
+    fs::path csvDirPath = "../pymeshlab/Esperimento_1/data/gt";
     if (!fs::exists(csvDirPath)) {
         fs::create_directory(csvDirPath);
         cout << "Created directory: " << csvDirPath << endl;
@@ -165,13 +166,13 @@ int main(int argc, char **argv) {
     init_methods(gs);
 
     vector<vector<double>> all_distances;
-    for (int sourceVertexIndex : vv_spot) {
+    for (int sourceVertexIndex : vv_bob) {
         cout << "Source vertex: " << sourceVertexIndex << endl;
         run_ssgd_method(gs, sourceVertexIndex, all_distances);
     }
 
-    string csvFile = csvDirPath.string() + "/spot_gt_distances.csv";
-    write_csv(csvFile, vv_spot, all_distances);
+    string csvFile = csvDirPath.string() + "/bob500f_gt_distances_batch.csv";
+    write_csv(csvFile, vv_bob, all_distances);
 
     return 0;
 }
