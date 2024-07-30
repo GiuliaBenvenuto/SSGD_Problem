@@ -233,9 +233,9 @@ def toggle_visibility(event, fig, lined):
     fig.canvas.draw()
 
 # Directory and reference setup
-directory_path = 'data/distances_bunny_500f'
-key_string = 'VTP'  # Filter criteria for non-reference files
-reference_key = 'bunny_500f_6_VTP_100.txt'  # Reference file
+directory_path = 'data/distances_bob_500f'
+key_string = 'Extended'  # Filter criteria for non-reference files
+reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file
 
 # Process directory, ensuring reference file is included
 file_data = process_directory(directory_path, key_string, reference_key)
