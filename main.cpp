@@ -821,9 +821,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.trettner_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now(); 
           gs.trettner_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          // for (int i = 0; i < gs.res.size(); i++) {
-          //   cout << "TRET: " << gs.res[i] << endl;
-          // }
+          for (int i = 0; i < gs.res.size(); i++) {
+            cout << "TRET: " << gs.res[i] << endl;
+          }
           fillTimeTable(gs, "Trettner", gs.trettner_load, gs.trettner_preprocess, gs.trettner_query);
           break;
         }

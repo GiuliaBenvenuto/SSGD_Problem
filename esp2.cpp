@@ -1,3 +1,7 @@
+// *****************************************************************
+// QUESTO E' ESPERIMENTO 2: OGNI METODO CONTRO VTP SULLA STESSA MESH
+// *****************************************************************
+
 #include <chrono>
 #include <cinolib/drawable_segment_soup.h>
 #include <cinolib/drawable_sphere.h>
