@@ -1,3 +1,6 @@
+# Algorithm that simplifies a mesh by decimating it to a target number of faces
+# For instance, take: spot_tri.obj and simplify it to 500 faces
+
 import pymeshlab as pml
 import numpy as np
 

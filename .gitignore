@@ -37,3 +37,4 @@ pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_1951.csv
 pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_2601.csv
 pymeshlab/Esperimento_1/data/csv_vtp_gt/results_vertex_651.csv
 *.csv
+pymeshlab/Esperimento_Drago/data/dragon.ply
