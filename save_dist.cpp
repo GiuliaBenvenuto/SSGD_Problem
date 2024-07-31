@@ -277,7 +277,25 @@ void Load_mesh(string filename, State &gs) {
     gs.m.normalize_bbox();
     gs.m.center_bbox();
 
-    gs.trettner_solver = TrettnerSolver(filename);
+
+    // FOR TRETTER
+    // Save thi normalized mesh to a file .obj
+    // Extract the parent path of the file
+    string parent_path = fs::path(filename).parent_path().string();
+    // Go back to the parent of the parent folder
+    string grandparent_path = fs::path(parent_path).parent_path().string();
+    // Construct the new path for the "normalized_for_trettner" folder
+    string new_folder = grandparent_path + "/normalized_for_trettner";
+    // Ensure the new folder exists
+    fs::create_directories(new_folder);
+    // Construct the new filename
+    string new_filename = fs::path(filename).filename().string();
+    string out_normalized_bb_mesh = new_folder + "/" + new_filename.substr(0, new_filename.size() - 4) + "_NORMALIZED.obj";
+    // Save the normalized mesh
+    gs.m.save(out_normalized_bb_mesh.c_str());
+    // Give to Trettner the normalized mesh
+    gs.trettner_solver = TrettnerSolver(out_normalized_bb_mesh);
+    // gs.trettner_solver = TrettnerSolver(filename);
 }
 
 void init(GeodesicMethod &method, State &gs, const string &name) {
@@ -307,13 +325,13 @@ void init(GeodesicMethod &method, State &gs, const string &name) {
 
 void init_methods(State &gs) {
     // init(gs.vtp_solver, gs, "VTP");
-    // init(gs.trettner_solver, gs, "Trettner");
-    // init(gs.fast_mar_solver, gs, "Fast Marching");
-    // init(gs.heat_solver, gs, "Heat");
+    init(gs.trettner_solver, gs, "Trettner");
+    init(gs.fast_mar_solver, gs, "Fast Marching");
+    init(gs.heat_solver, gs, "Heat");
     // init(gs.geotangle_solver, gs, "Geotangle");
     // init(gs.edge_solver, gs, "Edge");
-    init(gs.extended_solver, gs, "Extended");
-    // init(gs.lanthier_solver, gs, "Lanthier");
+    // init(gs.extended_solver, gs, "Extended");
+    init(gs.lanthier_solver, gs, "Lanthier");
 }
 
 void write_results_to_file(const string& mesh_name, const string& method_name, int source_vertex,
@@ -364,13 +382,13 @@ auto run_method = [&](auto& solver, const string& method_name) {
     };
 
     // run_method(gs.vtp_solver, "VTP");
-    // run_method(gs.trettner_solver, "Trettner");
-    // run_method(gs.fast_mar_solver, "Fast Marching");
-    // run_method(gs.heat_solver, "Heat");
+    run_method(gs.trettner_solver, "Trettner");
+    run_method(gs.fast_mar_solver, "Fast Marching");
+    run_method(gs.heat_solver, "Heat");
     // run_method(gs.geotangle_solver, "Geotangle");
     // run_method(gs.edge_solver, "Edge");
-    run_method(gs.extended_solver, "Extended");
-    // run_method(gs.lanthier_solver, "Lanthier");
+    // run_method(gs.extended_solver, "Extended");
+    run_method(gs.lanthier_solver, "Lanthier");
 }
 
 int main(int argc, char **argv) {
@@ -405,3 +423,7 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
+/* Per usarlo: ./save_dist_app ../pymeshlab/Esperimento_Distribuzioni/data/bunny_500f
+ * Dove nella cartella ci sono i file .obj su cui calcolare le distanze con i metodi SSGD   
+ */
