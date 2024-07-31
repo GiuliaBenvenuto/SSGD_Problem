@@ -177,7 +177,7 @@ def compute_percentage_errors(data, reference_key):
 # Gaussian distributions of the percentage errors
 def plot_percentage_errors(percentage_errors, reference_key):
     global fig, ax
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(12, 6))
     lines = []
     x_range = np.linspace(-100, 100, 300)  # Error range from -100% to 100%
 
@@ -202,7 +202,7 @@ def plot_percentage_errors(percentage_errors, reference_key):
     ax.axhline(0, color='black', linewidth=1)
     ax.axvline(0, color='black', linewidth=1)
 
-    ax.set_title('Distribution of Percentage Errors for "Bunny" meshes with Extended Method')
+    ax.set_title('Distribution of Percentage Errors for "Bob" meshes with Trettner Method')
     ax.set_xlabel('Percentage Error going from -100% to 100%\n (Zoom between -10% and 10%)')
     ax.set_ylabel('Density')
     ax.set_xlim(-10, 10)
@@ -231,10 +231,10 @@ def toggle_visibility(event, fig, lined):
 
 # Directory and reference setup
 # directory_path = 'data/distances_bob_500f'
-directory_path = 'data/distances_bunny_500f'
+directory_path = 'data/distances_bob_500f'
 
-key_string = 'Extended'  # Filter criteria for non-reference files
-reference_key = 'bunny_500f_6_VTP_100.txt'  # Reference file
+key_string = 'Trettner'  # Filter criteria for non-reference files
+reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file
 
 
 # Process directory, ensuring reference file is included
