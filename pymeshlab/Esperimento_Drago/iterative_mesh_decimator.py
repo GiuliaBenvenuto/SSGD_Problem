@@ -8,7 +8,7 @@ def simplify_mesh(input_mesh_path, output_mesh_basepath):
     print(f"Mesh loaded successfully. Initial number of faces: {ms.current_mesh().face_number()}")
 
     mesh_sequence = [ms.current_mesh()]
-    target_faces = 500  # Target number of faces
+    target_faces = 9  # Target number of faces
     current_faces = ms.current_mesh().face_number()
 
     i = 0
@@ -24,7 +24,7 @@ def simplify_mesh(input_mesh_path, output_mesh_basepath):
         print(f"Number of faces after iteration {i}: {current_faces}")
         print(f"Time taken for iteration {i}: {end_time - start_time:.2f} seconds")
         
-        ms.save_current_mesh(f"{output_mesh_basepath}_M{i}.obj", save_vertex_normals=False)
+        ms.save_current_mesh(f"{output_mesh_basepath}_M{i}.obj", save_vertex_normal=False, save_vertex_color=False)
         print(f"Mesh saved: {output_mesh_basepath}_M{i}.obj")
         print("")
         
@@ -35,8 +35,12 @@ def simplify_mesh(input_mesh_path, output_mesh_basepath):
     return mesh_sequence
 
 # Usage:
-input_mesh_path = 'data/dragon.ply'
-output_mesh_basepath = 'data/dragon_simplified'
+# input_mesh_path = 'data/dragon.ply'
+# output_mesh_basepath = 'data/dragon_simplified'
+
+input_mesh_path = 'dode/dode.obj'
+output_mesh_basepath = 'dode/dode_simplified'
+
 
 mesh_sequence = simplify_mesh(input_mesh_path, output_mesh_basepath)
 
