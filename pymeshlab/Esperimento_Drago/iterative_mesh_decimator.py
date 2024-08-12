@@ -38,7 +38,7 @@ def simplify_mesh(input_mesh_path, output_mesh_basepath):
 # input_mesh_path = 'data/dragon.ply'
 # output_mesh_basepath = 'data/dragon_simplified'
 
-input_mesh_path = 'dode/dode.obj'
+input_mesh_path = 'dode/dode_tri.obj'
 output_mesh_basepath = 'dode/dode_simplified'
 
 
