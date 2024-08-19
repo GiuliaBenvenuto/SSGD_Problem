@@ -66,6 +66,8 @@ void load_mesh(const string &filename, State &gs) {
     gs.nverts = gs.m.num_verts();
     gs.coords = extract_coords(gs.m);
     gs.tris = extract_tris(gs.m);
+    gs.m.normalize_bbox();
+    gs.m.center_bbox();
 }
 
 void init(GeodesicMethod &m, State &gs, const string &name) {
@@ -130,7 +132,7 @@ int main(int argc, char **argv) {
     // Load the reference mesh to sample vertices from
     // string refMeshPath = folderPath + "/blub_tri_final.obj";
     // string refMeshPath = folderPath + "/bob_tri_final.obj";
-    string refMeshPath = folderPath + "/spot_tri_final.obj";
+    string refMeshPath = folderPath + "/M0_reordered.obj";
     
     load_mesh(refMeshPath, gs);
     cout << "Number of vertices in reference mesh: " << gs.nverts << endl;

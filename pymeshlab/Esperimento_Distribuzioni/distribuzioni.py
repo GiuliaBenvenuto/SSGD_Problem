@@ -110,6 +110,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def read_distances_from_file(file_path):
     distances = []
@@ -174,50 +175,95 @@ def compute_percentage_errors(data, reference_key):
     return percentage_errors
 
 
-# Gaussian distributions of the percentage errors
-def plot_percentage_errors(percentage_errors, reference_key):
-    global fig, ax
-    fig, ax = plt.subplots(figsize=(12, 6))
-    lines = []
-    x_range = np.linspace(-100, 100, 300)  # Error range from -100% to 100%
+# # Gaussian distributions of the percentage errors
+# def plot_percentage_errors(percentage_errors, reference_key):
+#     global fig, ax
+#     fig, ax = plt.subplots(figsize=(14, 8))
+#     lines = []
+#     x_range = np.linspace(-100, 100, 300)  # Error range from -100% to 100%
 
+
+#     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
+
+#     for i, (key, errors) in enumerate(percentage_errors.items()):
+#         if key != reference_key and len(errors) > 0:
+#             mean, std = np.mean(errors), np.std(errors)
+#             # p: probability density function (PDF) of a normal (Gaussian) distribution.
+#             # It's calculated using the formula for a normal distribution: p(x) = (1 / (σ * √(2π))) * e^(-(x - μ)^2 / (2σ^2)) 
+#             # where μ is the mean and σ is the standard deviation.
+#             # This formula creates a bell-shaped curve centered at the mean, with its width determined by the standard deviation.
+#             p = 1 / (std * np.sqrt(2 * np.pi)) * np.exp(-((x_range - mean) ** 2) / (2 * std**2))
+
+#             line, = ax.plot(x_range, p, linewidth=2, label=f"{key} (μ={mean:.2f}, σ={std:.2f})", color=colors[i % len(colors)])
+#             lines.append(line)
+
+#     if not lines:
+#         print("No valid data to plot.")
+#         return
+
+#     # Draw the x and y axis lines prominently
+#     ax.axhline(0, color='black', linewidth=1)
+#     ax.axvline(0, color='black', linewidth=1)
+
+#     ax.set_title('Distribution of Percentage Errors for "Dragon" meshes with Edge Method')
+#     ax.set_xlabel('Percentage Error going from -100% to 100%\n (Zoom between -30% and 30%)')
+#     ax.set_ylabel('Density')
+#     ax.set_xlim(-30, 30)
+
+#     # Add a grey grid
+#     ax.grid(True, which='both', linestyle='--', linewidth=0.5, color='grey')
+
+#     leg = ax.legend(fancybox=True, shadow=True)
+#     lined = {}
+#     for legline, origline in zip(leg.get_lines(), lines):
+#         legline.set_picker(5)
+#         lined[legline] = origline
+
+#     fig.canvas.mpl_connect('pick_event', lambda event: toggle_visibility(event, fig, lined))
+#     plt.show()
+
+# WITH SEABORN
+def plot_percentage_errors(percentage_errors, reference_key):
+    # Set the style and color palette
+    sns.set_style("whitegrid")
+    sns.set_palette("husl", 8)
+    
+    fig, ax = plt.subplots(figsize=(16, 10))
+    
+    x_range = np.linspace(-100, 100, 300)
+    
     for key, errors in percentage_errors.items():
         if key != reference_key and len(errors) > 0:
-            # mean and standard deviation of the errors
             mean, std = np.mean(errors), np.std(errors)
-            # p: probability density function (PDF) of a normal (Gaussian) distribution.
-            # It's calculated using the formula for a normal distribution: p(x) = (1 / (σ * √(2π))) * e^(-(x - μ)^2 / (2σ^2)) 
-            # where μ is the mean and σ is the standard deviation.
-            # This formula creates a bell-shaped curve centered at the mean, with its width determined by the standard deviation.
             p = 1 / (std * np.sqrt(2 * np.pi)) * np.exp(-((x_range - mean) ** 2) / (2 * std**2))
+            
+            sns.lineplot(x=x_range, y=p, label=f"{key} (μ={mean:.2f}, σ={std:.2f})", linewidth=2.5)
+    
+    # Customize the plot
+    ax.set_title('Distribution of Percentage Errors for "Dragon" meshes with Lanthier Method', fontsize=20, fontweight='bold')
+    ax.set_xlabel('Percentage Error going from -100% to +100%\n (Zoom between -20% and +20%)', fontsize=16)
+    # ax.set_xlabel('Percentage Error going from -100% to +100%', fontsize=16)
 
-            line, = ax.plot(x_range, p, linewidth=2, label=f"{key} (μ={mean:.2f}, σ={std:.2f})")
-            lines.append(line)
+    ax.set_ylabel('Density', fontsize=16)
+    ax.set_xlim(-20, 20)
+    
+    # Add a shaded area for better readability
+    ax.axvspan(-10, 10, alpha=0.1, color='gray')
+    
+    # Customize the legend
+    leg = ax.legend(title="Mesh Comparisons", fontsize=12, title_fontsize=14)
+    leg.get_frame().set_alpha(0.8)
+    
+    # Improve tick labels
+    ax.tick_params(axis='both', which='major', labelsize=12)
 
-    if not lines:
-        print("No valid data to plot.")
-        return
-
-    # Draw the x and y axis lines prominently
-    ax.axhline(0, color='black', linewidth=1)
-    ax.axvline(0, color='black', linewidth=1)
-
-    ax.set_title('Distribution of Percentage Errors for "Bob" meshes with Lanthier Method')
-    ax.set_xlabel('Percentage Error going from -100% to 100%\n (Zoom between -10% and 10%)')
-    ax.set_ylabel('Density')
-    ax.set_xlim(-10, 10)
-
-    # Add a grey grid
-    ax.grid(True, which='both', linestyle='--', linewidth=0.5, color='grey')
-
-    leg = ax.legend(fancybox=True, shadow=True)
-    lined = {}
-    for legline, origline in zip(leg.get_lines(), lines):
-        legline.set_picker(5)
-        lined[legline] = origline
-
-    fig.canvas.mpl_connect('pick_event', lambda event: toggle_visibility(event, fig, lined))
+    # Add dotted grid lines
+    ax.grid(True, linestyle=':', alpha=0.7)
+    
+    # Adjust layout and display
+    plt.tight_layout()
     plt.show()
+
 
 
 def toggle_visibility(event, fig, lined):
@@ -231,10 +277,12 @@ def toggle_visibility(event, fig, lined):
 
 # Directory and reference setup
 # directory_path = 'data/distances_bob_500f'
-directory_path = 'data/distances_bob_500f'
+# directory_path = 'data/distances_bob_500f'
+directory_path = 'data/distances_asian_dragon'
 
 key_string = 'Lanthier'  # Filter criteria for non-reference files
-reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file
+# reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file - GROUND TRUTH
+reference_key = 'M7_reordered_VTP_16.txt'
 
 
 # Process directory, ensuring reference file is included
