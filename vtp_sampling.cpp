@@ -132,7 +132,8 @@ int main(int argc, char **argv) {
     // Load the reference mesh to sample vertices from
     // string refMeshPath = folderPath + "/blub_tri_final.obj";
     // string refMeshPath = folderPath + "/bob_tri_final.obj";
-    string refMeshPath = folderPath + "/M0_reordered.obj";
+    // string refMeshPath = folderPath + "/M0_reordered.obj";
+    string refMeshPath = folderPath + "/D_subdiv_0.obj";
     
     load_mesh(refMeshPath, gs);
     cout << "Number of vertices in reference mesh: " << gs.nverts << endl;
@@ -145,11 +146,16 @@ int main(int argc, char **argv) {
     shuffle(indices.begin(), indices.end(), g);
     vector<int> selected_indices(indices.begin(), indices.begin() + 50);
 
+    // VERTICI CHE VOGLIO TESTARE
+    // selected_indices = {16, 167, 163, 194, 66};
+
     cout << "Random indices: ";
     for (int idx : selected_indices) {
         cout << idx << " ";
     }
     cout << endl;
+
+    
 
     // Collect all .obj files in the folder
     vector<string> objFiles;

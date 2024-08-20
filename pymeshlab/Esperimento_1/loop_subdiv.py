@@ -130,6 +130,10 @@ def generate_refined_meshes(mesh_base_name, num_subdivisions):
 # generate_refined_meshes('data/bunny/bunny_500', 6)
 # print("\n")
 
-print("-----> Mesh: 'spot_500.obj' <-----")
-generate_refined_meshes('data/simplified/spot_500f', 6)
+# print("-----> Mesh: 'spot_500.obj' <-----")
+# generate_refined_meshes('data/simplified/spot_500f', 6)
+# print("\n")
+
+print("-----> Mesh: 'DRAGON M0.obj' <-----")
+generate_refined_meshes('../Esperimento_Drago/Dragon_with_subdivision/dragon_subdiv/D0', 7)
 print("\n")
