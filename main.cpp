@@ -10,6 +10,7 @@
 #include <cinolib/gradient.h>
 #include <cinolib/io/write_OBJ.h>
 #include <cinolib/scalar_field.h>
+#include <cinolib/color.h>
 #include <cinolib/vector_serialization.h>
 #include <fstream>
 #include <imgui.h>
@@ -101,10 +102,10 @@ struct State {
   // Sources for SSGD
   std::vector<uint> sources_heat;
   // // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
-  // vector<int> sources;
+  vector<int> sources;
 
   // TODO: DA TOGLIERE
-  vector<int> sources = {167};
+  // vector<int> sources = {167};
 
   // Trettner
   string mesh_path;
@@ -250,26 +251,26 @@ void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
   progress.store(1.0f / 8.0f);  
 
-  // init(gs.trettner_solver, gs, "Trettner");
-  // progress.store(2.0f / 8.0f); 
+  init(gs.trettner_solver, gs, "Trettner");
+  progress.store(2.0f / 8.0f); 
 
-  // init(gs.fast_mar_solver, gs, "Fast Marching");
-  // progress.store(3.0f / 8.0f); 
+  init(gs.fast_mar_solver, gs, "Fast Marching");
+  progress.store(3.0f / 8.0f); 
 
-  // init(gs.heat_solver, gs, "Heat");
-  // progress.store(4.0f / 8.0f);  
+  init(gs.heat_solver, gs, "Heat");
+  progress.store(4.0f / 8.0f);  
 
-  // init(gs.geotangle_solver, gs, "Geotangle");
-  // progress.store(5.0f / 8.0f);  
+  init(gs.geotangle_solver, gs, "Geotangle");
+  progress.store(5.0f / 8.0f);  
 
-  // init(gs.edge_solver, gs, "Edge");
-  // progress.store(6.0f / 8.0f);  
+  init(gs.edge_solver, gs, "Edge");
+  progress.store(6.0f / 8.0f);  
 
-  // // init(gs.extended_solver, gs, "Extended");
-  // progress.store(7.0f / 8.0f);      
+  init(gs.extended_solver, gs, "Extended");
+  progress.store(7.0f / 8.0f);      
 
-  // init(gs.lanthier_solver, gs, "Lanthier");
-  // progress.store(1.0f);
+  init(gs.lanthier_solver, gs, "Lanthier");
+  progress.store(1.0f);
 }
 
 // SMAPE calculation
@@ -298,6 +299,8 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
 
     return smape;
 }
+
+
 
 
 
@@ -813,14 +816,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           // for (int i = 0; i < gs.res.size(); i++) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
-          cout << "---------------" << endl;
-          cout << "VTP: " << endl;
-          cout << "---------------" << endl;
-          cout << "Source: " << gs.sources[0] << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            // cout << i << "," << gs.res[i] << endl;
-            cout << gs.res[i] << "," << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "VTP: " << endl;
+          // cout << "---------------" << endl;
+          // cout << "Source: " << gs.sources[0] << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   // cout << i << "," << gs.res[i] << endl;
+          //   cout << gs.res[i] << "," << endl;
+          // }
           fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess, gs.vtp_query);
           break;
         }
@@ -830,12 +833,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.trettner_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now(); 
           gs.trettner_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          cout << "---------------" << endl;
-          cout << "TRETTNER: " << endl;
-          cout << "---------------" << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            cout << i << "," << gs.res[i] << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "TRETTNER: " << endl;
+          // cout << "---------------" << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   cout << i << "," << gs.res[i] << endl;
+          // }
           fillTimeTable(gs, "Trettner", gs.trettner_load, gs.trettner_preprocess, gs.trettner_query);
           break;
         }
@@ -845,12 +848,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.fast_mar_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          cout << "---------------" << endl;
-          cout << "FAST MAR: " << endl;
-          cout << "---------------" << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            cout << i << "," << gs.res[i] << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "FAST MAR: " << endl;
+          // cout << "---------------" << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   cout << i << "," << gs.res[i] << endl;
+          // }
           fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.fast_mar_query);
           break;
         }
@@ -872,12 +875,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.heat_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          cout << "---------------" << endl;
-          cout << "HEAT: " << endl;
-          cout << "---------------" << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            cout << i << "," << gs.res[i] << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "HEAT: " << endl;
+          // cout << "---------------" << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   cout << i << "," << gs.res[i] << endl;
+          // }
           fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
           break;
         }
@@ -888,12 +891,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.toc = std::chrono::steady_clock::now();
           gs.geotangle_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
 
-          cout << "---------------" << endl;
-          cout << "GEOTANGLE: " << endl;
-          cout << "---------------" << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            cout << i << "," << gs.res[i] << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "GEOTANGLE: " << endl;
+          // cout << "---------------" << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   cout << i << "," << gs.res[i] << endl;
+          // }
           fillTimeTable(gs, "Geotangle", gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query);
           break;
         }
@@ -902,12 +905,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           gs.edge_solver.query(gs.sources[0], gs.res);
 
-          cout << "---------------" << endl;
-          cout << "EDGE: " << endl;
-          cout << "---------------" << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            cout << gs.res[i] << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "EDGE: " << endl;
+          // cout << "---------------" << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   cout << gs.res[i] << endl;
+          // }
           gs.toc = std::chrono::steady_clock::now();
           gs.edge_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Edge", gs.edge_load, gs.edge_preprocess, gs.edge_query);
@@ -931,12 +934,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
           gs.tic = std::chrono::steady_clock::now();
           gs.extended_solver.query(gs.sources[0], gs.res);
-          cout << "---------------" << endl;
-          cout << "EXTENDED: " << endl;
-          cout << "---------------" << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            cout << gs.res[i] << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "EXTENDED: " << endl;
+          // cout << "---------------" << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   cout << gs.res[i] << endl;
+          // }
           gs.toc = std::chrono::steady_clock::now();
           gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
@@ -962,12 +965,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           cout << "Source vertex: " << gs.sources[0] << endl;
           gs.lanthier_solver.query(gs.sources[0], gs.res);
-          cout << "---------------" << endl;
-          cout << "LANTHIER: " << endl;
-          cout << "---------------" << endl;
-          for (int i = 0; i < gs.res.size(); i++) {
-            cout << i << "," << gs.res[i] << endl;
-          }
+          // cout << "---------------" << endl;
+          // cout << "LANTHIER: " << endl;
+          // cout << "---------------" << endl;
+          // for (int i = 0; i < gs.res.size(); i++) {
+          //   cout << i << "," << gs.res[i] << endl;
+          // }
           gs.toc = std::chrono::steady_clock::now();
           gs.lanthier_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
@@ -1019,6 +1022,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.trettner_solver.query(gs.sources[0], gs.res);
           gs.smape = calculate_smape(gs.ground_truth, gs.res);
           cout << "SMAPE ERROR for Trettner: " << gs.smape << endl;
+        
 
           gs.ground_truth.clear();
           gs.smape = 0.0;
@@ -1147,10 +1151,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "No SSGD method selected" << endl;
           break;
         }
-          gs.field = ScalarField(gs.res);
-          gs.field.normalize_in_01();
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+          // QUI VOLGIO VISUALIZZARE L'ERRORE COME UNA HEATMAP SULLA MESH PERCHE' L'ERRORE E' UNO SCALAR
+          // gs.field = ScalarField(gs.res);
+          // gs.field.normalize_in_01();
+          // gs.field.copy_to_mesh(gs.m);
+          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
           }
     }
 
@@ -1172,7 +1177,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources.clear();
 
       // TODO: DA TOGLIEREEEEE
-      gs.sources = {167};
+      // gs.sources = {167};
 
       gs.vtp_query = 0.0;
       gs.trettner_query = 0.0;
