@@ -1,3 +1,5 @@
+/* CPP Program to find 5 valid vertices for which VTP works correctly */
+
 #include <Eigen/SparseCholesky>
 #include <chrono>
 #include <cinolib/drawable_segment_soup.h>
@@ -133,7 +135,7 @@ int main(int argc, char **argv) {
     // string refMeshPath = folderPath + "/blub_tri_final.obj";
     // string refMeshPath = folderPath + "/bob_tri_final.obj";
     // string refMeshPath = folderPath + "/M0_reordered.obj";
-    string refMeshPath = folderPath + "/D_subdiv_0.obj";
+    string refMeshPath = folderPath + "/thai_ord_0.obj";
     
     load_mesh(refMeshPath, gs);
     cout << "Number of vertices in reference mesh: " << gs.nverts << endl;

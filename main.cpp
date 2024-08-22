@@ -104,7 +104,7 @@ struct State {
   // vector<int> sources;
 
   // TODO: DA TOGLIERE
-  vector<int> sources = {16};
+  vector<int> sources = {167};
 
   // Trettner
   string mesh_path;
@@ -250,26 +250,26 @@ void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
   progress.store(1.0f / 8.0f);  
 
-  init(gs.trettner_solver, gs, "Trettner");
-  progress.store(2.0f / 8.0f); 
+  // init(gs.trettner_solver, gs, "Trettner");
+  // progress.store(2.0f / 8.0f); 
 
-  init(gs.fast_mar_solver, gs, "Fast Marching");
-  progress.store(3.0f / 8.0f); 
+  // init(gs.fast_mar_solver, gs, "Fast Marching");
+  // progress.store(3.0f / 8.0f); 
 
-  init(gs.heat_solver, gs, "Heat");
-  progress.store(4.0f / 8.0f);  
+  // init(gs.heat_solver, gs, "Heat");
+  // progress.store(4.0f / 8.0f);  
 
-  init(gs.geotangle_solver, gs, "Geotangle");
-  progress.store(5.0f / 8.0f);  
+  // init(gs.geotangle_solver, gs, "Geotangle");
+  // progress.store(5.0f / 8.0f);  
 
-  init(gs.edge_solver, gs, "Edge");
-  progress.store(6.0f / 8.0f);  
+  // init(gs.edge_solver, gs, "Edge");
+  // progress.store(6.0f / 8.0f);  
 
-  // init(gs.extended_solver, gs, "Extended");
-  progress.store(7.0f / 8.0f);      
+  // // init(gs.extended_solver, gs, "Extended");
+  // progress.store(7.0f / 8.0f);      
 
-  init(gs.lanthier_solver, gs, "Lanthier");
-  progress.store(1.0f);
+  // init(gs.lanthier_solver, gs, "Lanthier");
+  // progress.store(1.0f);
 }
 
 // SMAPE calculation
@@ -816,8 +816,10 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "---------------" << endl;
           cout << "VTP: " << endl;
           cout << "---------------" << endl;
+          cout << "Source: " << gs.sources[0] << endl;
           for (int i = 0; i < gs.res.size(); i++) {
-            cout << i << "," << gs.res[i] << endl;
+            // cout << i << "," << gs.res[i] << endl;
+            cout << gs.res[i] << "," << endl;
           }
           fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess, gs.vtp_query);
           break;
@@ -1170,7 +1172,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources.clear();
 
       // TODO: DA TOGLIEREEEEE
-      gs.sources = {16};
+      gs.sources = {167};
 
       gs.vtp_query = 0.0;
       gs.trettner_query = 0.0;

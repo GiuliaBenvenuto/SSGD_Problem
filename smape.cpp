@@ -421,8 +421,10 @@ int main(int argc, char **argv) {
     // vector<int> vv_blub = {663, 3958, 4662, 4715, 6694};
     // vector<int> vv_bob = {1710, 3782, 4757, 482, 2005};
     // vector<int> vv_spot = {395, 2794, 283, 174, 1876}; 
+
+    vector<int> vv_drago = {16, 167, 163, 194, 66}; 
     
-    vector<int> vv_bob = {482};
+    
 
     if (argc < 2) {
         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
@@ -430,7 +432,7 @@ int main(int argc, char **argv) {
     }
     string folderPath = argv[1];
 
-    for (int vertex : vv_bob) {
+    for (int vertex : vv_drago) {
         cout << "------- Processing vertex: " << vertex << " --------" << endl;
         gs.bob_ground_truth.clear();
 
