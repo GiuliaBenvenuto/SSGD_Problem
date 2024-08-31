@@ -30,7 +30,7 @@ namespace fs = std::filesystem;
 using namespace matlab::engine;
 
 
-const string OUTPUT_PATH = "../pymeshlab/Esperimento_Drago/Dragon_with_subdivision/DISTANCES_dragon_subdiv";
+const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/distances_ext";
 
 
 struct State {
@@ -64,7 +64,7 @@ struct State {
     State() {
         // sources = {100}; // Default source vertex
         // Dragon source:
-        sources = {16};
+        // sources = {16};
 
         // Timer
         vtp_pre = 0.0, tre_pre = 0.0, fast_pre = 0.0, heat_pre = 0.0;
@@ -136,14 +136,15 @@ void init(GeodesicMethod &method, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    init(gs.vtp_solver, gs, "VTP");
-    init(gs.trettner_solver, gs, "Trettner");
-    init(gs.fast_mar_solver, gs, "Fast Marching");
-    init(gs.heat_solver, gs, "Heat");
-    init(gs.geotangle_solver, gs, "Geotangle");
-    init(gs.edge_solver, gs, "Edge");
-    // init(gs.extended_solver, gs, "Extended");
-    init(gs.lanthier_solver, gs, "Lanthier");
+    // init(gs.vtp_solver, gs, "VTP");
+    // init(gs.trettner_solver, gs, "Trettner");
+    // init(gs.fast_mar_solver, gs, "Fast Marching");
+    // init(gs.heat_solver, gs, "Heat");
+    // init(gs.geotangle_solver, gs, "Geotangle");
+    // init(gs.edge_solver, gs, "Edge");
+    // init(gs.lanthier_solver, gs, "Lanthier");
+    init(gs.extended_solver, gs, "Extended");
+    
 }
 
 void write_results_to_file(const string& mesh_name, const string& method_name, int source_vertex,
@@ -193,14 +194,14 @@ auto run_method = [&](auto& solver, const string& method_name) {
         gs.res.clear();
     };
 
-    run_method(gs.vtp_solver, "VTP");
-    run_method(gs.trettner_solver, "Trettner");
-    run_method(gs.fast_mar_solver, "Fast Marching");
-    run_method(gs.heat_solver, "Heat");
-    run_method(gs.geotangle_solver, "Geotangle");
-    run_method(gs.edge_solver, "Edge");
-    // run_method(gs.extended_solver, "Extended");
-    run_method(gs.lanthier_solver, "Lanthier");
+    // run_method(gs.vtp_solver, "VTP");
+    // run_method(gs.trettner_solver, "Trettner");
+    // run_method(gs.fast_mar_solver, "Fast Marching");
+    // run_method(gs.heat_solver, "Heat");
+    // run_method(gs.geotangle_solver, "Geotangle");
+    // run_method(gs.edge_solver, "Edge");
+    // run_method(gs.lanthier_solver, "Lanthier");
+    run_method(gs.extended_solver, "Extended");
 }
 
 int main(int argc, char **argv) {
@@ -216,7 +217,7 @@ int main(int argc, char **argv) {
     fs::create_directories(OUTPUT_PATH);
 
     // vector<int> vv_sources = {100};
-    vector<int> vv_sources = {16};
+    vector<int> vv_sources = {729, 1989, 2519, 93, 475};
 
     for(int vertex : vv_sources) {
         for (const auto &entry : fs::directory_iterator(folder_path)) {

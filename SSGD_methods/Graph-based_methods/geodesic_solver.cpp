@@ -202,6 +202,7 @@ vector<double> compute_geodesic_distances(const geodesic_solver &solver,
 
   return field;
 }
+
 vector<int> strip_on_dual_graph(const dual_geodesic_solver &solver,
                                 const int start, const int end) {
   if (start == end)

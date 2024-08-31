@@ -135,7 +135,8 @@ int main(int argc, char **argv) {
     // string refMeshPath = folderPath + "/blub_tri_final.obj";
     // string refMeshPath = folderPath + "/bob_tri_final.obj";
     // string refMeshPath = folderPath + "/M0_reordered.obj";
-    string refMeshPath = folderPath + "/thai_ord_0.obj";
+    // string refMeshPath = folderPath + "/thai_ord_0.obj";
+    string refMeshPath = folderPath + "/17_spot_3k.obj";
     
     load_mesh(refMeshPath, gs);
     cout << "Number of vertices in reference mesh: " << gs.nverts << endl;
