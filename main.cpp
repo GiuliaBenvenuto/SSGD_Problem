@@ -275,29 +275,76 @@ void init_methods(State &gs, atomic<float> &progress) {
 }
 
 // SMAPE calculation
-double calculate_smape(const vector<double>& gt, const vector<double>& est) {
-    cout << "GT size: " << gt.size() << ", EST size: " << est.size() << endl;
+// double calculate_smape(const vector<double>& gt, const vector<double>& est) {
+//     cout << "GT size: " << gt.size() << ", EST size: " << est.size() << endl;
+//     if (gt.empty() || est.empty()) {
+//         cerr << "Ground truth or estimated distances are empty." << endl;
+//         return 0.0;
+//     }
+
+//     double smape = 0.0;
+//     int count = 0;
+
+//     // for (size_t i = 0; i < gt.size() && i < est.size(); ++i) {
+//     for (size_t i = 0; i < est.size(); ++i) {
+//         double denom = std::abs(gt[i]) + std::abs(est[i]);
+//         if (denom != 0) {
+//             smape += std::abs(gt[i] - est[i]) / denom;
+//             ++count;
+//         }
+//     }
+
+//     if (count > 0) {
+//         smape = (smape / count) * 100.0;  // Convert to percentage
+//     }
+//     return smape;
+// }
+
+// Updated SMAPE calculation function
+std::pair<double, std::vector<double>> calculate_smape(const std::vector<double>& gt, const std::vector<double>& est) {
+    std::cout << "GT size: " << gt.size() << ", EST size: " << est.size() << std::endl;
     if (gt.empty() || est.empty()) {
-        cerr << "Ground truth or estimated distances are empty." << endl;
-        return 0.0;
+        std::cerr << "Ground truth or estimated distances are empty." << std::endl;
+        return {0.0, std::vector<double>()};
     }
 
-    double smape = 0.0;
+    double smape_percentage = 0.0;
     int count = 0;
+    std::vector<double> smape_values(gt.size(), 0.0); // To store individual SMAPE values
 
-    // for (size_t i = 0; i < gt.size() && i < est.size(); ++i) {
+    // Calculate SMAPE for each vertex and overall SMAPE percentage
     for (size_t i = 0; i < est.size(); ++i) {
         double denom = std::abs(gt[i]) + std::abs(est[i]);
         if (denom != 0) {
-            smape += std::abs(gt[i] - est[i]) / denom;
+            smape_values[i] = std::abs(gt[i] - est[i]) / denom;
+            smape_percentage += smape_values[i];
             ++count;
         }
     }
 
+    // Convert to overall SMAPE percentage
     if (count > 0) {
-        smape = (smape / count) * 100.0;  // Convert to percentage
+        smape_percentage = (smape_percentage / count) * 100.0;
     }
-    return smape;
+
+    return {smape_percentage, smape_values};
+}
+
+void visualize_smape_on_mesh(State &gs, const vector<double> &smape_values) {
+    // Create a scalar field from the SMAPE values
+    gs.field = ScalarField(smape_values);
+
+    // Normalize the scalar field between 0 and 1 for better visualization
+    gs.field.normalize_in_01();
+
+    // Copy the scalar field values to the mesh vertices
+    gs.field.copy_to_mesh(gs.m);
+
+    // Set the texture to a color map (HSV with isolines is a good choice)
+    gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+
+    // Update the mesh display
+    gs.m.updateGL();
 }
 
 
@@ -1040,7 +1087,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.vtp_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+
           cout << "SMAPE ERROR for VTP: " << gs.smape << endl;
 
           gs.ground_truth.clear();
@@ -1057,7 +1109,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.trettner_solver.load(&gs.m);
           gs.trettner_solver.preprocess();
           gs.trettner_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+
           cout << "SMAPE ERROR for Trettner: " << gs.smape << endl;
         
 
@@ -1071,7 +1128,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.fast_mar_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+
           cout << "SMAPE ERROR for Fast Marching: " << gs.smape << endl;
 
           gs.ground_truth.clear();
@@ -1095,7 +1157,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.heat_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+
           cout << "SMAPE ERROR for Heat: " << gs.smape << endl;
 
           gs.ground_truth.clear();
@@ -1108,7 +1175,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.geotangle_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+
           cout << "SMAPE ERROR for Geotangle: " << gs.smape << endl;
 
           gs.ground_truth.clear();
@@ -1121,7 +1193,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.edge_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+
           cout << "SMAPE ERROR for Edge: " << gs.smape << endl;
 
           gs.ground_truth.clear();
@@ -1148,7 +1225,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.extended_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+
           cout << "SMAPE ERROR for Extended: " << gs.smape << endl;
 
           gs.ground_truth.clear();
@@ -1175,7 +1257,12 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.lanthier_solver.query(gs.sources[0], gs.res);
-          gs.smape = calculate_smape(gs.ground_truth, gs.res);
+          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          gs.smape = smape_percentage;
+          visualize_smape_on_mesh(gs, smape_values);
+          
           cout << "SMAPE ERROR for Lanthier: " << gs.smape << endl;
 
           gs.ground_truth.clear();
