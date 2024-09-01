@@ -29,6 +29,7 @@ using namespace std;
 using namespace cinolib;
 using namespace gcHeatWrapper;
 using namespace matlab::engine;
+namespace fs = std::filesystem;
 
 
 //------ Global variables ------
@@ -296,7 +297,6 @@ double calculate_smape(const vector<double>& gt, const vector<double>& est) {
     if (count > 0) {
         smape = (smape / count) * 100.0;  // Convert to percentage
     }
-
     return smape;
 }
 
@@ -346,15 +346,51 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     
     gs.res = vector<double>();
 
-    gs.mesh_path = filename;
-    gs.trettner_solver = TrettnerSolver(gs.mesh_path);
+    // FOR TRETTER
+    // Save thi normalized mesh to a file .obj
+    // Extract the parent path of the file
+    string parent_path = fs::path(filename).parent_path().string();
+    // Go back to the parent of the parent folder
+    string grandparent_path = fs::path(parent_path).parent_path().string();
+    // Construct the new path for the "normalized_for_trettner" folder
+    string new_folder = grandparent_path + "/normalized_for_trettner";
+    // Ensure the new folder exists
+    fs::create_directories(new_folder);
+    // Construct the new filename
+    string new_filename = fs::path(filename).filename().string();
+    string out_normalized_bb_mesh = new_folder + "/" + new_filename.substr(0, new_filename.size() - 4) + "_NORMALIZED.obj";
+    // Save the normalized mesh
+    gs.m.save(out_normalized_bb_mesh.c_str());
+    // Give to Trettner the normalized mesh
+    gs.trettner_solver = TrettnerSolver(out_normalized_bb_mesh);
+
+    //gs.mesh_path = filename;
+    //gs.trettner_solver = TrettnerSolver(gs.mesh_path);
 
     init_methods(gs, progress);
   }
 
   if (!gs.MESH_IS_LOADED) {
-    gs.mesh_path = filename;
-    gs.trettner_solver = TrettnerSolver(gs.mesh_path);
+    // FOR TRETTER
+    // Save thi normalized mesh to a file .obj
+    // Extract the parent path of the file
+    string parent_path = fs::path(filename).parent_path().string();
+    // Go back to the parent of the parent folder
+    string grandparent_path = fs::path(parent_path).parent_path().string();
+    // Construct the new path for the "normalized_for_trettner" folder
+    string new_folder = grandparent_path + "/normalized_for_trettner";
+    // Ensure the new folder exists
+    fs::create_directories(new_folder);
+    // Construct the new filename
+    string new_filename = fs::path(filename).filename().string();
+    string out_normalized_bb_mesh = new_folder + "/" + new_filename.substr(0, new_filename.size() - 4) + "_NORMALIZED.obj";
+    // Save the normalized mesh
+    gs.m.save(out_normalized_bb_mesh.c_str());
+    // Give to Trettner the normalized mesh
+    gs.trettner_solver = TrettnerSolver(out_normalized_bb_mesh);
+
+    //gs.mesh_path = filename;
+    //gs.trettner_solver = TrettnerSolver(gs.mesh_path);
 
     gui.push(&gs.m);
     gs.MESH_IS_LOADED = true;
@@ -372,7 +408,7 @@ void Load_mesh(GLcanvas &gui, State &gs) {
 
 //:::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
-  GLcanvas gui(1500, 700);
+  GLcanvas gui(1600, 800);
   gui.side_bar_width = 0.30;
   gui.show_side_bar = true;
   return gui;
@@ -406,88 +442,88 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("VTP");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.vtp_load);
+          ImGui::Text("%.4f", gs.vtp_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.vtp_preprocess);
+          ImGui::Text("%.4f", gs.vtp_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.vtp_query);
+          ImGui::Text("%.4f", gs.vtp_query);
 
           // Trettner Method
           ImGui::TableNextRow();
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("Trettner");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.trettner_load);
+          ImGui::Text("%.4f", gs.trettner_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.trettner_preprocess);
+          ImGui::Text("%.4f", gs.trettner_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.trettner_query);
+          ImGui::Text("%.4f", gs.trettner_query);
 
           // Fast Marching Method
           ImGui::TableNextRow();
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("Fast Marching");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.fast_mar_load);
+          ImGui::Text("%.4f", gs.fast_mar_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.fast_mar_preprocess);
+          ImGui::Text("%.4f", gs.fast_mar_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.fast_mar_query);
+          ImGui::Text("%.4f", gs.fast_mar_query);
 
           // Heat Method
           ImGui::TableNextRow();
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("Heat");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.heat_load);
+          ImGui::Text("%.4f", gs.heat_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.heat_preprocess);
+          ImGui::Text("%.4f", gs.heat_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.heat_query);
+          ImGui::Text("%.4f", gs.heat_query);
 
           // GeoTangle Method
           ImGui::TableNextRow();
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("GeoTangle");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.geotangle_load);
+          ImGui::Text("%.4f", gs.geotangle_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.geotangle_preprocess);
+          ImGui::Text("%.4f", gs.geotangle_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.geotangle_query);
+          ImGui::Text("%.4f", gs.geotangle_query);
 
           // Edge Method
           ImGui::TableNextRow();
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("Edge");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.edge_load);
+          ImGui::Text("%.4f", gs.edge_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.edge_preprocess);
+          ImGui::Text("%.4f", gs.edge_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.edge_query);
+          ImGui::Text("%.4f", gs.edge_query);
 
           // Extended Method
           ImGui::TableNextRow();
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("Extended");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.extended_load);
+          ImGui::Text("%.4f", gs.extended_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.extended_preprocess);
+          ImGui::Text("%.4f", gs.extended_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.extended_query);
+          ImGui::Text("%.4f", gs.extended_query);
 
           // Lanthier Method
           ImGui::TableNextRow();
           ImGui::TableSetColumnIndex(0);
           ImGui::Text("Lanthier");
           ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.2f", gs.lanthier_load);
+          ImGui::Text("%.4f", gs.lanthier_load);
           ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.2f", gs.lanthier_preprocess);
+          ImGui::Text("%.4f", gs.lanthier_preprocess);
           ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.2f", gs.lanthier_query);
+          ImGui::Text("%.4f", gs.lanthier_query);
 
           ImGui::EndTable();
       }
@@ -989,6 +1025,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     }
 
 
+    static float displayed_smape = 0.0f;
     // Button for Compute SMAPE error
     if (ImGui::Button("Compute SMAPE")) {
       // Based on the selected SSGD method, perform different actions
@@ -1007,7 +1044,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "SMAPE ERROR for VTP: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          // gs.smape = 0.0;
 
           break;
         }
@@ -1025,7 +1062,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          //gs.smape = 0.0;
 
           break;
         }
@@ -1038,7 +1075,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "SMAPE ERROR for Fast Marching: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          // gs.smape = 0.0;
 
           break;
         }
@@ -1062,7 +1099,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "SMAPE ERROR for Heat: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          // gs.smape = 0.0;
           
           break;
         }
@@ -1075,7 +1112,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "SMAPE ERROR for Geotangle: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          // gs.smape = 0.0;
 
           break;
         }
@@ -1088,7 +1125,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "SMAPE ERROR for Edge: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          // gs.smape = 0.0;
 
           break;
         }
@@ -1115,7 +1152,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "SMAPE ERROR for Extended: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          // gs.smape = 0.0;
 
           break;
         }
@@ -1142,7 +1179,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "SMAPE ERROR for Lanthier: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          gs.smape = 0.0;
+          // gs.smape = 0.0;
 
           break;
         }
@@ -1156,8 +1193,18 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           // gs.field.normalize_in_01();
           // gs.field.copy_to_mesh(gs.m);
           // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          }
+      }
     }
+    // Display SMAPE error next to the button
+    ImGui::SameLine();
+    ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 20.0f);
+
+    ImGui::PushFont(lato_bold);
+    ImGui::Text("SMAPE Error:");
+    ImGui::PopFont();
+
+    ImGui::SameLine();
+    ImGui::Text("%.6f%%", gs.smape);
 
     // Popup modal for warning if no source is selected
     if (ImGui::BeginPopupModal("Warning", NULL,
