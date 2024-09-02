@@ -330,24 +330,67 @@ std::pair<double, std::vector<double>> calculate_smape(const std::vector<double>
     return {smape_percentage, smape_values};
 }
 
-void visualize_smape_on_mesh(State &gs, const vector<double> &smape_values) {
+
+
+Color interpolate_color(double value) {
+    // Ensure the value is clamped between 0 and 1
+    value = std::max(0.0, std::min(1.0, value));
+
+    // Directly assign green to zero error without any transformation
+    if (value == 0) {
+        return Color(0.0f, 1.0f, 0.0f, 1.0f);  // Pure green for zero error
+    }
+
+    // Apply a transformation to enhance contrast for non-zero values
+    value = pow(value, 0.5);  // Using square root to enhance contrast
+
+    // Define the colors using RGBA format
+    Color green(0.0f, 1.0f, 0.0f, 1.0f);  // Green color for low error
+    Color yellow(1.0f, 1.0f, 0.0f, 1.0f); // Yellow color for medium error
+    Color red(1.0f, 0.0f, 0.0f, 1.0f);    // Red color for high error
+
+    float r, g, b, a = 1.0f;  // Set alpha to fully opaque
+    if (value < 0.5) {
+        // Interpolate between green and yellow
+        float local_value = value * 2;  // Scale to 0-1 range
+        r = (1.0f - local_value) * green.rgba[0] + local_value * yellow.rgba[0];
+        g = (1.0f - local_value) * green.rgba[1] + local_value * yellow.rgba[1];
+        b = (1.0f - local_value) * green.rgba[2] + local_value * yellow.rgba[2];
+    } else {
+        // Interpolate between yellow and red
+        float local_value = (value - 0.5f) * 2;  // Adjust scale for upper half
+        r = (1.0f - local_value) * yellow.rgba[0] + local_value * red.rgba[0];
+        g = (1.0f - local_value) * yellow.rgba[1] + local_value * red.rgba[1];
+        b = (1.0f - local_value) * yellow.rgba[2] + local_value * red.rgba[2];
+    }
+
+    return Color(r, g, b, a);
+}
+
+
+
+void visualize_smape_on_mesh(State &gs, const std::vector<double> &smape_values) {
     // Create a scalar field from the SMAPE values
     gs.field = ScalarField(smape_values);
 
     // Normalize the scalar field between 0 and 1 for better visualization
     gs.field.normalize_in_01();
 
-    // Copy the scalar field values to the mesh vertices
-    gs.field.copy_to_mesh(gs.m);
+    // Assign colors based on the normalized values using the red-blue gradient
+    for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+        double normalized_value = gs.field[vid]; // Normalized SMAPE value
+        
+        // Use the custom interpolation function to get the color
+        Color color = interpolate_color(normalized_value);
 
-    // Set the texture to a color map (HSV with isolines is a good choice)
-    gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+        // Set the interpolated color to the vertex
+        gs.m.vert_data(vid).color = color;
+    }
 
-    // Update the mesh display
+    // Show the vertex colors on the mesh
+    gs.m.show_vert_color();
     gs.m.updateGL();
 }
-
-
 
 
 
@@ -1262,7 +1305,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
-          
+
           cout << "SMAPE ERROR for Lanthier: " << gs.smape << endl;
 
           gs.ground_truth.clear();
