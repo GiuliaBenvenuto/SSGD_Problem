@@ -132,6 +132,10 @@ set_target_properties(write_gt_csv PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUI
 add_executable(save_dist_app save_dist.cpp solving_ssgd.h solving_ssgd.cpp)
 set_target_properties(save_dist_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
 
+# Mesh Analysis
+add_executable(mesh_analysis_app mesh_analysis.cpp solving_ssgd.h solving_ssgd.cpp)
+set_target_properties(mesh_analysis_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
+
 # CINOLIB
 set(cinolib_DIR /Users/giuliabenvenuto/Documents/GitHub/cinolib)
 set(CINOLIB_USES_OPENGL_GLFW_IMGUI ON)
@@ -148,7 +152,7 @@ add_subdirectory(SSGD_methods)
 add_subdirectory(libs)
 
 # Linking libraries common to all applications
-foreach(app IN ITEMS ${PROJECT_NAME} smape_app vtp_sampling_app esp2_app check_bob_app smape_batch_app write_gt_csv save_dist_app)
+foreach(app IN ITEMS ${PROJECT_NAME} smape_app vtp_sampling_app esp2_app check_bob_app smape_batch_app write_gt_csv save_dist_app mesh_analysis_app)
     target_link_libraries(${app}
         cinolib
         graph-based
@@ -161,7 +165,7 @@ endforeach()
 # OpenGL
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
-foreach(app IN ITEMS ${PROJECT_NAME} smape_app vtp_sampling_app esp2_app check_bob_app smape_batch_app write_gt_csv save_dist_app)
+foreach(app IN ITEMS ${PROJECT_NAME} smape_app vtp_sampling_app esp2_app check_bob_app smape_batch_app write_gt_csv save_dist_app mesh_analysis_app)
     target_link_libraries(${app} ${OPENGL_gl_LIBRARY})
 endforeach()
 
@@ -169,7 +173,7 @@ endforeach()
 set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build architectures for Mac OS X" FORCE)
 include_directories("/Applications/MATLAB_R2024a.app/extern/include")
 link_directories("/Applications/MATLAB_R2024a.app/bin/maca64")
-foreach(app IN ITEMS ${PROJECT_NAME} smape_app vtp_sampling_app esp2_app check_bob_app smape_batch_app write_gt_csv save_dist_app)
+foreach(app IN ITEMS ${PROJECT_NAME} smape_app vtp_sampling_app esp2_app check_bob_app smape_batch_app write_gt_csv save_dist_app mesh_analysis_app)
     target_link_libraries(${app}
         "/Applications/MATLAB_R2024a.app/extern/bin/maca64/libMatlabDataArray.dylib"
         "/Applications/MATLAB_R2024a.app/extern/bin/maca64/libMatlabEngine.dylib"

@@ -30,7 +30,7 @@ namespace fs = std::filesystem;
 using namespace matlab::engine;
 
 
-const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/prova";
+const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/distances_FMM";
 
 
 struct State {
@@ -136,13 +136,13 @@ void init(GeodesicMethod &method, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    init(gs.vtp_solver, gs, "VTP");
-    init(gs.trettner_solver, gs, "Trettner");
+    // init(gs.vtp_solver, gs, "VTP");
+    // init(gs.trettner_solver, gs, "Trettner");
     init(gs.fast_mar_solver, gs, "Fast Marching");
-    init(gs.heat_solver, gs, "Heat");
-    init(gs.geotangle_solver, gs, "Geotangle");
-    init(gs.edge_solver, gs, "Edge");
-    init(gs.lanthier_solver, gs, "Lanthier");
+    // init(gs.heat_solver, gs, "Heat");
+    // init(gs.geotangle_solver, gs, "Geotangle");
+    // init(gs.edge_solver, gs, "Edge");
+    // init(gs.lanthier_solver, gs, "Lanthier");
     // init(gs.extended_solver, gs, "Extended");
     
 }
@@ -192,18 +192,23 @@ auto run_method = [&](auto& solver, const string& method_name) {
         solver.query(vertex, gs.res);
         auto end = std::chrono::steady_clock::now();
         gs.query_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
+
+        if (method_name == "Fast Marching") {
+            cout << "Getting true FMM query time..." << endl;
+            gs.query_time = gs.fast_mar_solver.get_time();
+        }
         
         write_results_to_file(mesh_name, method_name, vertex, gs, gs.res);
         gs.res.clear();
     };
 
-    run_method(gs.vtp_solver, "VTP");
-    run_method(gs.trettner_solver, "Trettner");
+    // run_method(gs.vtp_solver, "VTP");
+    // run_method(gs.trettner_solver, "Trettner");
     run_method(gs.fast_mar_solver, "Fast Marching");
-    run_method(gs.heat_solver, "Heat");
-    run_method(gs.geotangle_solver, "Geotangle");
-    run_method(gs.edge_solver, "Edge");
-    run_method(gs.lanthier_solver, "Lanthier");
+    // run_method(gs.heat_solver, "Heat");
+    // run_method(gs.geotangle_solver, "Geotangle");
+    // run_method(gs.edge_solver, "Edge");
+    // run_method(gs.lanthier_solver, "Lanthier");
     // run_method(gs.extended_solver, "Extended");
 }
 
@@ -220,8 +225,8 @@ int main(int argc, char **argv) {
     fs::create_directories(OUTPUT_PATH);
 
     // vector<int> vv_sources = {100};
-    // vector<int> vv_sources = {729, 1989, 2519, 93, 475};
-    vector<int> vv_sources = {729};
+    vector<int> vv_sources = {729, 1989, 2519, 93, 475};
+    // vector<int> vv_sources = {729};
 
 
     for(int vertex : vv_sources) {

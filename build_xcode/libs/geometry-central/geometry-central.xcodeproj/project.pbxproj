@@ -1,0 +1,1419 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		1951A01383ED4B839506D715 /* install */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 26A7FBC31C3F49BF8162E94C /* Build configuration list for PBXAggregateTarget "install" */;
+			buildPhases = (
+				93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */,
+			);
+			dependencies = (
+				F02B803AB83E4E24957C3F45 /* PBXTargetDependency */,
+			);
+			name = install;
+			productName = install;
+		};
+		872D8300524D48B1A3EDE437 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 19269B2D60F24E749C2504C0 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				F6943AF4D97D33CF40D8A358 /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		EECCCBAC82CC4A1ABF21AF65 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5C6053360BBA490496045451 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				185B6826680B230A0C370FD5 /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				A401F61D374945E39EA759EB /* PBXTargetDependency */,
+				37538FD230EC48A187D08A42 /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		002B3230DB26445A85BA1FBF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/suitesparse_utilities.h */ = {isa = PBXBuildFile; fileRef = ACB09A1E58CA4128B6AF1C9B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/suitesparse_utilities.h */; };
+		05E0503E9CA94EAB89839B85 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.h */ = {isa = PBXBuildFile; fileRef = 2787279C10F94C0E95CA4FCC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.h */; };
+		080C8A8633B74026BBB7A5CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/trace_geodesic.cpp */ = {isa = PBXBuildFile; fileRef = 479E76D272D24B3FB5BAB458 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/trace_geodesic.cpp */; };
+		09DC8256601C41C8A2024286 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/disjoint_sets.cpp */ = {isa = PBXBuildFile; fileRef = 0B83A840EF684510A2649A25 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/disjoint_sets.cpp */; };
+		0E3063755D784472B40436BA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/edge_length_geometry.cpp */ = {isa = PBXBuildFile; fileRef = 66FF06F409044B8E8EB0D9B0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/edge_length_geometry.cpp */; };
+		0FC871054C874D91B39BD4FE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_logic_templates.ipp */ = {isa = PBXBuildFile; fileRef = A37B98783100456FAA4F5856 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_logic_templates.ipp */; };
+		110E3A6C8E9945BE9228CD11 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.ipp */ = {isa = PBXBuildFile; fileRef = E47E99B27F4E4972842ADDB4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.ipp */; };
+		140E2146176E424E9F7FE447 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/tufted_laplacian.cpp */ = {isa = PBXBuildFile; fileRef = 1C79F000FDEF4FA5AA0DD131 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/tufted_laplacian.cpp */; };
+		15C9437A26D74C329E7665D8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_factories.h */ = {isa = PBXBuildFile; fileRef = 8A8088A5A49E4183A6DE8480 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_factories.h */; };
+		1BEEC98E9D454047A12051A7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/neighborhoods.cpp */ = {isa = PBXBuildFile; fileRef = 17005F20B4C640429DA16EC2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/neighborhoods.cpp */; };
+		1D701EF7AF2F42DAAF5B6C7E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.h */ = {isa = PBXBuildFile; fileRef = AB41153324574A339E48BB98 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.h */; };
+		20E6211643C04BE49DF26941 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/integer_coordinates_intrinsic_triangulation.cpp */ = {isa = PBXBuildFile; fileRef = 56BC01207CAC4EB3A0DE301E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/integer_coordinates_intrinsic_triangulation.cpp */; };
+		211D3C4E610E4E778EA7B469 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_graph_algorithms.h */ = {isa = PBXBuildFile; fileRef = 850FE296004E48D39CF7D062 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_graph_algorithms.h */; };
+		23EACC613C53428BAB1F690F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_ray_tracer.h */ = {isa = PBXBuildFile; fileRef = 2B2A1D6DEBF44A838975AF6A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_ray_tracer.h */; };
+		243FF76B7CA84A9DAAAB871A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_mollification.h */ = {isa = PBXBuildFile; fileRef = F79DC25A0D244F81A3C1EC02 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_mollification.h */; };
+		261CF97C463B4AC9B4BAF4E0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.ipp */ = {isa = PBXBuildFile; fileRef = AF9C8DFC2250403D81597F3C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.ipp */; };
+		26245FC390A147379FAEFE2E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_heat_solver.cpp */ = {isa = PBXBuildFile; fileRef = 091A2538FD6046D581CFF208 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_heat_solver.cpp */; };
+		2718311E91E24D53A27B3E09 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/heat_method_distance.h */ = {isa = PBXBuildFile; fileRef = E8EEFB782592431A8F9EC2C9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/heat_method_distance.h */; };
+		27A4E996A5B54AA49475C4EF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/flip_geodesics.cpp */ = {isa = PBXBuildFile; fileRef = B934570EC12E4EFDB094045D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/flip_geodesics.cpp */; };
+		293B856565844BE38647B819 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.h */ = {isa = PBXBuildFile; fileRef = 31BCCCE4EE20462E8BDA8548 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.h */; };
+		295900D64C8A4B02AA447306 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/tri_tri_intersect.cpp */ = {isa = PBXBuildFile; fileRef = 36596908FFC04DBA9BC88995 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/tri_tri_intersect.cpp */; };
+		298E736C14A247DFBEE7EE84 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.ipp */ = {isa = PBXBuildFile; fileRef = 2DA6BC88194849BC8C1D8708 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.ipp */; };
+		29E8A3B657E64730A5CC0968 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.h */ = {isa = PBXBuildFile; fileRef = 11C17010C1A14A51AB6BCDB7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.h */; };
+		2A0DB790225A4CBBADB4AC8D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/manifold_surface_mesh.cpp */ = {isa = PBXBuildFile; fileRef = C227E9AFEB484DD5A2768F93 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/manifold_surface_mesh.cpp */; };
+		2AB44328D45C4D31975D9D7C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/parameterize.h */ = {isa = PBXBuildFile; fileRef = CF8E93DCA12F4BB4ABE59627 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/parameterize.h */; };
+		2B4D73A888B24775B6B362C0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/uniformize.h */ = {isa = PBXBuildFile; fileRef = 1A025672207648EEB151A031 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/uniformize.h */; };
+		2C446E8319B64CDDB20F4D07 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intersection.cpp */ = {isa = PBXBuildFile; fileRef = 3A3699835E244C369CFB04DA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intersection.cpp */; };
+		2DE9A4942BE049B781DB2173 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/heat_method_distance.cpp */ = {isa = PBXBuildFile; fileRef = D580975C63014307AACE30C9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/heat_method_distance.cpp */; };
+		2E3D895D3ECD4CD6908D2365 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mutation_manager.cpp */ = {isa = PBXBuildFile; fileRef = 6774F15CA1224A66AF57B5BC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mutation_manager.cpp */; };
+		316A84936B83451CB9265B2F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/signpost_intrinsic_triangulation.cpp */ = {isa = PBXBuildFile; fileRef = F9EAF71382C9477B9A204662 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/signpost_intrinsic_triangulation.cpp */; };
+		330668C1D1CD4571B681321E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/uniformize.cpp */ = {isa = PBXBuildFile; fileRef = 1AAD7D02C0284E6D96118DF9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/uniformize.cpp */; };
+		33A6CE826E5145AABFC6DEBE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/quadric_error_simplification.cpp */ = {isa = PBXBuildFile; fileRef = AD7EC385A4B747AD9CA83BBB /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/quadric_error_simplification.cpp */; };
+		33EE2CA7736943F9B5D90D19 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_geometry_interface.h */ = {isa = PBXBuildFile; fileRef = D4517F1E7F3646619B15AE9A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_geometry_interface.h */; };
+		373FA75465B54DEE823D8550 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/detect_symmetry.h */ = {isa = PBXBuildFile; fileRef = E2482471482740829DDAF5D1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/detect_symmetry.h */; };
+		37E3086F010842E9A781477E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/remeshing.cpp */ = {isa = PBXBuildFile; fileRef = 3A4A16DE797A4EC7AB1EDE1F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/remeshing.cpp */; };
+		38A07C402BBD4020A7D7EE94 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.ipp */ = {isa = PBXBuildFile; fileRef = 41E67A543AB048759C892D85 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.ipp */; };
+		3CAF62FC1B5A4AE0B15BAAE0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.ipp */ = {isa = PBXBuildFile; fileRef = 6EEA3E59D82949BFAD6DC727 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.ipp */; };
+		3CC49EEE22694F9AA66D1D3E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/knn.h */ = {isa = PBXBuildFile; fileRef = 230AB2F14ED145458CBAD1C6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/knn.h */; };
+		3E2C43FADAC442EE85463AA4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/square_solvers.cpp */ = {isa = PBXBuildFile; fileRef = DF8E62D2086041CD8737B1AD /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/square_solvers.cpp */; };
+		3ED82CB7014744659BD129F8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/suitesparse_utilities.cpp */ = {isa = PBXBuildFile; fileRef = 868CE35B0C31448285A20955 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/suitesparse_utilities.cpp */; };
+		3F9F58DCC5874B47A609D95A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_centers.h */ = {isa = PBXBuildFile; fileRef = 89A4C0D4C753434284D7710B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_centers.h */; };
+		43F46BA702B34E28821D2D84 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_geometry_interface.cpp */ = {isa = PBXBuildFile; fileRef = 4E4924279CA74D73B7EEF2FF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_geometry_interface.cpp */; };
+		45D077DC31364FFAA60B760A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/extrinsic_geometry_interface.cpp */ = {isa = PBXBuildFile; fileRef = 946E6B1062954E9B99F67EA5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/extrinsic_geometry_interface.cpp */; };
+		47066A970ABF411481A24B67 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vertex_position_geometry.cpp */ = {isa = PBXBuildFile; fileRef = FACE6468E740439E9888977C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vertex_position_geometry.cpp */; };
+		478C90B085244D0D8CDF1354 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp */ = {isa = PBXBuildFile; fileRef = EB80B22936ED48E89BF3B127 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp */; };
+		4AA6CC0B95F849D1A01D219A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_idt.cpp */ = {isa = PBXBuildFile; fileRef = 5E76201190B7478EA3E7401D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_idt.cpp */; };
+		4C2C1A77165F4E6C8D90B993 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_centers.cpp */ = {isa = PBXBuildFile; fileRef = E23B9FCB9A8840CE95FD64DF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_centers.cpp */; };
+		4F742049D8EC4B3AA153DFCA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/embedded_geometry_interface.cpp */ = {isa = PBXBuildFile; fileRef = EC4AD00BBCF4484F9B07D427 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/embedded_geometry_interface.cpp */; };
+		4FAAC18C88834A4FB312C055 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/extrinsic_geometry_interface.h */ = {isa = PBXBuildFile; fileRef = 07D227763EDC457998F1ED7D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/extrinsic_geometry_interface.h */; };
+		5190861EE51E459BB8624D76 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.h */ = {isa = PBXBuildFile; fileRef = FAFC221B458C436490B34FB7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.h */; };
+		51FA723228E0441084C22150 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/parameterize.cpp */ = {isa = PBXBuildFile; fileRef = 7DB1E34F0D1D40E9AF79CE87 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/parameterize.cpp */; };
+		56CFDE76D02B48DD93A9A8F1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mesh_graph_algorithms.cpp */ = {isa = PBXBuildFile; fileRef = 8CE891FD2F8949D595EAD9C3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mesh_graph_algorithms.cpp */; };
+		57919CCB69E0489BB8DC9948 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/common_subdivision.cpp */ = {isa = PBXBuildFile; fileRef = 13CC85B975AC4E8289EF3348 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/common_subdivision.cpp */; };
+		58570334A3B947AD8A065861 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/fast_marching_method.cpp */ = {isa = PBXBuildFile; fileRef = EC461EC0415740689D70C15D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/fast_marching_method.cpp */; };
+		58DFF7413FE34BD685E74792 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/poisson_disk_sampler.h */ = {isa = PBXBuildFile; fileRef = 1997AE3FF1AB434EB62A594F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/poisson_disk_sampler.h */; };
+		598DC3191BAE4C57801B42E5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vector_heat_method.h */ = {isa = PBXBuildFile; fileRef = 4AC460438B894758B73DC9E9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vector_heat_method.h */; };
+		5AB1A880641A42F699F0EFA5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/eigenproblem_solvers.cpp */ = {isa = PBXBuildFile; fileRef = 2B984720F67B48E5B0EF09C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/eigenproblem_solvers.cpp */; };
+		5DC88407F2FE4EAF8C28EEFD /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/local_triangulation.cpp */ = {isa = PBXBuildFile; fileRef = 6AE1FD88BF704D94A3F23F48 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/local_triangulation.cpp */; };
+		5E1B3A15DA2F4D7F84443C5C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_mollification.cpp */ = {isa = PBXBuildFile; fileRef = 7FDD93FB444B4CD094FA9E8A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_mollification.cpp */; };
+		60A58E53762A4DEFA8B4012F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_geometry.cpp */ = {isa = PBXBuildFile; fileRef = D4413ED773A849D4B54DC19F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_geometry.cpp */; };
+		663EC860003A407191B64292 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_normal_geometry.cpp */ = {isa = PBXBuildFile; fileRef = E1482F1032D641CE9889E672 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_normal_geometry.cpp */; };
+		66ED4CBA5F86469D9004A3D7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/positive_definite_solvers.cpp */ = {isa = PBXBuildFile; fileRef = 26CD723062414E39B6596958 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/positive_definite_solvers.cpp */; };
+		684B0902E8434A4C82099DC3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/subdivide.cpp */ = {isa = PBXBuildFile; fileRef = FD23A91B7F654A61B11FE29A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/subdivide.cpp */; };
+		68DD96447A7C449FA9F6CE1E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/manifold_surface_mesh.h */ = {isa = PBXBuildFile; fileRef = 235830F76A0D4BD3926493D3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/manifold_surface_mesh.h */; };
+		6AB4A941BC2946F3AB65852F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_frame_geometry.cpp */ = {isa = PBXBuildFile; fileRef = E82DD80D265F4B03B1120566 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_frame_geometry.cpp */; };
+		6B3C5470D9284287B3AA2FD4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.h */ = {isa = PBXBuildFile; fileRef = 38220ED9EB544D92A3D702B4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.h */; };
+		6C4FF300BEB642A48B0688D7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/stripe_patterns.cpp */ = {isa = PBXBuildFile; fileRef = 912EF70264F241FA8277ACB9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/stripe_patterns.cpp */; };
+		6C9F79D78AB041FDAF5F5E3F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_mesh.h */ = {isa = PBXBuildFile; fileRef = DDB680C6DA05448181B9AE2B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_mesh.h */; };
+		6DF629515D444F399E5A4E8C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/base_geometry_interface.h */ = {isa = PBXBuildFile; fileRef = 7E68935B572E4FC6A547AD53 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/base_geometry_interface.h */; };
+		6FC7955885E04728B5DEEE29 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh_factories.cpp */ = {isa = PBXBuildFile; fileRef = 2D3A6679E09449DC85477531 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh_factories.cpp */; };
+		7192081AE0C441F5BD1E36BB /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surgery.h */ = {isa = PBXBuildFile; fileRef = 1B78BFB8086949D397CD51C2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surgery.h */; };
+		73EFEEE33A8F48FD8ACAA054 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/halfedge_factories.cpp */ = {isa = PBXBuildFile; fileRef = 1DDEA3321317492A9F52DE94 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/halfedge_factories.cpp */; };
+		7526A1AD974F4568B3072EB0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surgery.cpp */ = {isa = PBXBuildFile; fileRef = E0DF633BAF2340919CF2F171 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surgery.cpp */; };
+		7801FE0368C94A50893EBE33 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh.cpp */ = {isa = PBXBuildFile; fileRef = 560EBF4288C740D782F5F867 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh.cpp */; };
+		7A2F163B511140FA9EEB8C64 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/meshio.cpp */ = {isa = PBXBuildFile; fileRef = A3BF47B6A2904C759987C3CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/meshio.cpp */; };
+		7D5D0F470C924A68B4C6C3F8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/direction_fields.h */ = {isa = PBXBuildFile; fileRef = B8387D6D8DF446BEBDC11AF7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/direction_fields.h */; };
+		8A9CD1B332D94372BE43F204 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/remeshing.h */ = {isa = PBXBuildFile; fileRef = 466A30D366094C2790377D44 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/remeshing.h */; };
+		8C489DE67E65458A885C3A08 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/subdivide.h */ = {isa = PBXBuildFile; fileRef = 4FC7989201CF4BF9ACDFB680 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/subdivide.h */; };
+		8CC472D61C744C6AB8BA3DE3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesics.h */ = {isa = PBXBuildFile; fileRef = 13C940F903904F25B525CEC6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesics.h */; };
+		8D21BA67245B4F33B81A9B97 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud.cpp */ = {isa = PBXBuildFile; fileRef = E5E9FE62A8AC4453A9BF1C0E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud.cpp */; };
+		8D39DDE1C7AA47CEB874A88F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_idt.h */ = {isa = PBXBuildFile; fileRef = 6CD7C23ED2614BBBBDC56562 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_idt.h */; };
+		8DEBC0BFEEDE4A88A7BB7EE1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.ipp */ = {isa = PBXBuildFile; fileRef = 91E880CE1BA6477E897DDEE2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.ipp */; };
+		8E9920EE2B6F48A7B30385B6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/quaternion.h */ = {isa = PBXBuildFile; fileRef = 5685147665CD4853978A5186 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/quaternion.h */; };
+		8F4BC40582574A959CB374B4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/knn.cpp */ = {isa = PBXBuildFile; fileRef = C2E8DE88C3F948BF9DA60EF4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/knn.cpp */; };
+		90ADF56355884F758D44D450 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/geodesic_centroidal_voronoi_tessellation.h */ = {isa = PBXBuildFile; fileRef = BF01D5A9D7FC4533B87AF5F6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/geodesic_centroidal_voronoi_tessellation.h */; };
+		93FF6FE8EF8949119211F874 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_polyhedral_geodesics.cpp */ = {isa = PBXBuildFile; fileRef = D0C0D3C97170460C8A890004 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_polyhedral_geodesics.cpp */; };
+		94AD0B22F80B4C309B54754D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_polygon_mesh.cpp */ = {isa = PBXBuildFile; fileRef = D66D0D3E5CB1408486AAC90F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_polygon_mesh.cpp */; };
+		95E69E5F5F5B47978EE7DD77 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/direction_fields.cpp */ = {isa = PBXBuildFile; fileRef = 42AE133EECB3406E9AF939EF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/direction_fields.cpp */; };
+		9611E4B79EAE4B0AAF32F3DA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.h */ = {isa = PBXBuildFile; fileRef = AEA0332CD9FB49C085E3F0CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.h */; };
+		9802894DB7184E029E6CB3B8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_point.cpp */ = {isa = PBXBuildFile; fileRef = BE2EA1DE90FC44AC9A5BBA16 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_point.cpp */; };
+		99AF775EF7BD4C388FAE4012 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/normal_coordinates.cpp */ = {isa = PBXBuildFile; fileRef = 2AA48C73FF874CFDB9E1905C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/normal_coordinates.cpp */; };
+		9ADA561AC0A14416AAF7B507 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/transfer_functions.cpp */ = {isa = PBXBuildFile; fileRef = 5DBFB47D60CB4A3983BAAEB3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/transfer_functions.cpp */; };
+		9B203E1341F740F4B9B6B1AE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/combining_hash_functions.h */ = {isa = PBXBuildFile; fileRef = 522E7D074AED47ABB2CD9A2B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/combining_hash_functions.h */; };
+		9BF1AFF6623F4306BF1CE2D0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.h */ = {isa = PBXBuildFile; fileRef = 5AB9F68983464EE9B7803C67 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.h */; };
+		9D420909096E4869984D5478 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/boundary_first_flattening.cpp */ = {isa = PBXBuildFile; fileRef = 4CB42AE59D1D4CCABD42DBEE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/boundary_first_flattening.cpp */; };
+		A0B3057DDF884E3FAB73E2A6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.h */ = {isa = PBXBuildFile; fileRef = C0146491088D4CD58B315FEC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.h */; };
+		A0F689DB7C174116B2678301 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/transfer_functions.h */ = {isa = PBXBuildFile; fileRef = 9AF95379270F4C9C9FAFD844 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/transfer_functions.h */; };
+		A3082BBB661B4A6DB44663E1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/utilities.cpp */ = {isa = PBXBuildFile; fileRef = 8CAAB2B2C8264F1E955A62C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/utilities.cpp */; };
+		A4FF34F8C7964A9781D71E50 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_solvers.h */ = {isa = PBXBuildFile; fileRef = 6819DBFD60B54224AD7DAEF7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_solvers.h */; };
+		A5683CE6E98A4847ACB3D91F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vector_heat_method.cpp */ = {isa = PBXBuildFile; fileRef = 4609175A02314A24AE116596 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vector_heat_method.cpp */; };
+		A5CDDF909D0F4CC6BA0AEEDC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/meshio.h */ = {isa = PBXBuildFile; fileRef = FE71B0F12D4746BFA6FCE145 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/meshio.h */; };
+		A680DE4E6CB449C1A6A4C222 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_polygon_mesh.h */ = {isa = PBXBuildFile; fileRef = A6C25229AB1848A481D65B5B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_polygon_mesh.h */; };
+		A754A665EBBE40158D664CD2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/polygon_soup_mesh.h */ = {isa = PBXBuildFile; fileRef = 5C7AFF1B9BD84B0F9D98DEAF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/polygon_soup_mesh.h */; };
+		AA7340786BEC4C4C902E6161 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/base_geometry_interface.cpp */ = {isa = PBXBuildFile; fileRef = 47B74621B8E74FCA81487F26 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/base_geometry_interface.cpp */; };
+		AC4694EA500E43F2B654A6AC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.h */ = {isa = PBXBuildFile; fileRef = F12405313DBB4BDBAED33555 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.h */; };
+		AD02DF0F1A2D4C3B8ADDC66D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.ipp */ = {isa = PBXBuildFile; fileRef = F2E48B2A13AC4A93AA8B1D11 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.ipp */; };
+		B02475CAC22C4AD186D80F27 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/eigen_interop_helpers.h */ = {isa = PBXBuildFile; fileRef = 5AEBA44BD0F14CA7AA728405 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/eigen_interop_helpers.h */; };
+		B1B303F7CAFD405B986C298C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/qr_solvers.cpp */ = {isa = PBXBuildFile; fileRef = 8D7F557496FC46688DB9C3EA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/qr_solvers.cpp */; };
+		B86728AAD3CD431992A6774C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_io.cpp */ = {isa = PBXBuildFile; fileRef = 1D22824BAD874375AA89120D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_io.cpp */; };
+		BA0CB85862D24482B0ED1780 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/elementary_geometry.cpp */ = {isa = PBXBuildFile; fileRef = 23823FEAACBF44A295C36C98 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/elementary_geometry.cpp */; };
+		BD2EC05CB1DB4F1EB162C93B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/rich_surface_mesh_data.cpp */ = {isa = PBXBuildFile; fileRef = 6DF9EC4FEAC6465FB993C1C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/rich_surface_mesh_data.cpp */; };
+		C0E745AEA9A542AB94D99876 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.ipp */ = {isa = PBXBuildFile; fileRef = 32D34A938F6B46CF8EC0B8E3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.ipp */; };
+		C0F6992CF72E44D09797E628 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/stripe_patterns.h */ = {isa = PBXBuildFile; fileRef = 864C20EF940442EBA6370278 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/stripe_patterns.h */; };
+		C3B986D011DD4F4197E3E68A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/fast_marching_method.h */ = {isa = PBXBuildFile; fileRef = 6B1F8FB7FBE54368A6853EC2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/fast_marching_method.h */; };
+		C411A40F5BBE42C68673661B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/quaternion.cpp */ = {isa = PBXBuildFile; fileRef = DB13177ED6974A13889197CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/quaternion.cpp */; };
+		C52508B106F343E092148BC4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesic_helpers.cpp */ = {isa = PBXBuildFile; fileRef = FE8D1B3D46D14546B18347C2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesic_helpers.cpp */; };
+		C97EE6115AC0470CBCA29744 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/embedded_geometry_interface.h */ = {isa = PBXBuildFile; fileRef = D5E70C67AC0A4546AE317701 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/embedded_geometry_interface.h */; };
+		CAA6A84BE97349C3A41F104E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.h */ = {isa = PBXBuildFile; fileRef = 534CD48ABC784D6CA30EF839 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.h */; };
+		CDACB9D12E334395AF318687 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.ipp */ = {isa = PBXBuildFile; fileRef = 439BD3A5E6CB45E78704B95B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.ipp */; };
+		CEB52CF2AB0445A0A7068915 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_algebra_utilities.cpp */ = {isa = PBXBuildFile; fileRef = BA07D6FDD35D4D55AFC31FB1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_algebra_utilities.cpp */; };
+		D02B4BBB15654210B89DCCE2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/sample_cloud.cpp */ = {isa = PBXBuildFile; fileRef = 7B49D1CBC73B41C1AF89AD19 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/sample_cloud.cpp */; };
+		D032C56BC2AC4ACF828111F7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.h */ = {isa = PBXBuildFile; fileRef = AD8A42D9AF02482CA672894D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.h */; };
+		D2F21A166A8C455199ABF806 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.h */ = {isa = PBXBuildFile; fileRef = 155A332B7D8E465D994678A2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.h */; };
+		D6DF2DF26C034464B118A7B2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.ipp */ = {isa = PBXBuildFile; fileRef = FB87ADE869E94A9F8001B4A0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.ipp */; };
+		D738C88C9D974887A2C6D146 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_triangulation.cpp */ = {isa = PBXBuildFile; fileRef = FC8C7E6E20504CACB446FE72 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_triangulation.cpp */; };
+		D74D103A81924A5894DC336C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/trace_geodesic.h */ = {isa = PBXBuildFile; fileRef = B89C6CEEB5C2442492724560 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/trace_geodesic.h */; };
+		D7A7E7A61365431D926E0B04 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/poisson_disk_sampler.cpp */ = {isa = PBXBuildFile; fileRef = ECE74E328EA7499CB5731C28 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/poisson_disk_sampler.cpp */; };
+		D865E2F60D2C40C082CC9675 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/quadric_error_simplification.h */ = {isa = PBXBuildFile; fileRef = B87F4AC1C0244535B944E2DE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/quadric_error_simplification.h */; };
+		DA69FB7A47644E7B98AE0BC7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.ipp */ = {isa = PBXBuildFile; fileRef = DD365DD9C268434BBFE871AC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.ipp */; };
+		DAE4C4707672428B9351CD48 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/utilities.h */ = {isa = PBXBuildFile; fileRef = 2F56C6E0CB1441FCB7379C44 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/utilities.h */; };
+		DB68761D4E26479CAC2ECA76 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.ipp */ = {isa = PBXBuildFile; fileRef = 3E4A02B41E054B3E86C40E92 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.ipp */; };
+		DEAAD0BCDDAE4617B3A7662D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/geodesic_centroidal_voronoi_tessellation.cpp */ = {isa = PBXBuildFile; fileRef = 0B044F55911E456FBC6B8E8F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/geodesic_centroidal_voronoi_tessellation.cpp */; };
+		E22988BE017F4B7CAED31E51 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.ipp */ = {isa = PBXBuildFile; fileRef = 6E9E7023B12F43F08734D728 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.ipp */; };
+		E2A135744E39492393B2F756 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.h */ = {isa = PBXBuildFile; fileRef = 9D76D932D6AC4139A4CF44B3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.h */; };
+		E4F69A0D470B4757987251FF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp */ = {isa = PBXBuildFile; fileRef = DB9B3FDD6F02481ABD99477C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp */; };
+		E50B1BBA2B6A457E9846B671 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.h */ = {isa = PBXBuildFile; fileRef = B178FE98DE6F43E1AAF2A831 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.h */; };
+		E5ACB7DFEFEA4312855B8597 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/disjoint_sets.h */ = {isa = PBXBuildFile; fileRef = EEA295DF62E646988306BFB5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/disjoint_sets.h */; };
+		EC56DFC8113A401DA1642ACF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.h */ = {isa = PBXBuildFile; fileRef = FC96A204BB52441BBC8D9353 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.h */; };
+		F38FD30C7A25451697714534 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_polyhedral_geodesics.h */ = {isa = PBXBuildFile; fileRef = 0B1EF27D55924D8192F78773 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_polyhedral_geodesics.h */; };
+		F97586DB3BFF4E049575BFEA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesics.cpp */ = {isa = PBXBuildFile; fileRef = E0CC14A0DFE94E75965A7560 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesics.cpp */; };
+		F99D9081BC0446C395409A9C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_solvers.cpp */ = {isa = PBXBuildFile; fileRef = CD6EAD89D443403498D00E2C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_solvers.cpp */; };
+		FAEAAAE2B8B64E7199E8D3AA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = C767C03D579541AEB283D3A8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/CMakeLists.txt */; };
+		FBEE5B5346B84DBAA5180CE4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.ipp */ = {isa = PBXBuildFile; fileRef = EB3E8C63A1394BAA8EA5AF9D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.ipp */; };
+		FBF9B04800D94E2C8171360F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/timing.h */ = {isa = PBXBuildFile; fileRef = 75932851CFC349C39A918150 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/timing.h */; };
+		FF12F91ABA6F45C4B9653A24 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/boundary_first_flattening.h */ = {isa = PBXBuildFile; fileRef = A8524DD7F5BE4346861AE0BF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/boundary_first_flattening.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		49A4CA1FA7404688B1584364 /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		A4C160BC72644FE68792AF87 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		DA4A358A4FE54CD29EBAD9B1 /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		EB45D1F4F668491B9CBAF7A1 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		485BBF9F87D345BD84A7AE27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2E0780D16CF7416EB62F96BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 038CBD2BB2A248639581D9E1;
+			remoteInfo = "geometry-central";
+		};
+		D32DC9D57D9B4C398FFC7906 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2E0780D16CF7416EB62F96BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EECCCBAC82CC4A1ABF21AF65;
+			remoteInfo = ALL_BUILD;
+		};
+		E5DE8227D8C840F7A997C833 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2E0780D16CF7416EB62F96BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 872D8300524D48B1A3EDE437;
+			remoteInfo = ZERO_CHECK;
+		};
+		F5E54212A5D74FF9ADC91C91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2E0780D16CF7416EB62F96BB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 872D8300524D48B1A3EDE437;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07D227763EDC457998F1ED7D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/extrinsic_geometry_interface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = extrinsic_geometry_interface.h; path = include/geometrycentral/surface/extrinsic_geometry_interface.h; sourceTree = SOURCE_ROOT; };
+		091A2538FD6046D581CFF208 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_heat_solver.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = point_cloud_heat_solver.cpp; path = src/pointcloud/point_cloud_heat_solver.cpp; sourceTree = SOURCE_ROOT; };
+		0B044F55911E456FBC6B8E8F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/geodesic_centroidal_voronoi_tessellation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = geodesic_centroidal_voronoi_tessellation.cpp; path = src/surface/geodesic_centroidal_voronoi_tessellation.cpp; sourceTree = SOURCE_ROOT; };
+		0B1EF27D55924D8192F78773 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_polyhedral_geodesics.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = exact_polyhedral_geodesics.h; path = include/geometrycentral/surface/exact_polyhedral_geodesics.h; sourceTree = SOURCE_ROOT; };
+		0B83A840EF684510A2649A25 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/disjoint_sets.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disjoint_sets.cpp; path = src/utilities/disjoint_sets.cpp; sourceTree = SOURCE_ROOT; };
+		11C17010C1A14A51AB6BCDB7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = vector2.h; path = include/geometrycentral/utilities/vector2.h; sourceTree = SOURCE_ROOT; };
+		13C940F903904F25B525CEC6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesics.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = exact_geodesics.h; path = include/geometrycentral/surface/exact_geodesics.h; sourceTree = SOURCE_ROOT; };
+		13CC85B975AC4E8289EF3348 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/common_subdivision.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = common_subdivision.cpp; path = src/surface/common_subdivision.cpp; sourceTree = SOURCE_ROOT; };
+		155A332B7D8E465D994678A2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = curve.h; path = include/geometrycentral/utilities/curve.h; sourceTree = SOURCE_ROOT; };
+		17005F20B4C640429DA16EC2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/neighborhoods.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = neighborhoods.cpp; path = src/pointcloud/neighborhoods.cpp; sourceTree = SOURCE_ROOT; };
+		1997AE3FF1AB434EB62A594F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/poisson_disk_sampler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = poisson_disk_sampler.h; path = include/geometrycentral/surface/poisson_disk_sampler.h; sourceTree = SOURCE_ROOT; };
+		1A025672207648EEB151A031 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/uniformize.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = uniformize.h; path = include/geometrycentral/surface/uniformize.h; sourceTree = SOURCE_ROOT; };
+		1AAD7D02C0284E6D96118DF9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/uniformize.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = uniformize.cpp; path = src/surface/uniformize.cpp; sourceTree = SOURCE_ROOT; };
+		1B78BFB8086949D397CD51C2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surgery.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = surgery.h; path = include/geometrycentral/surface/surgery.h; sourceTree = SOURCE_ROOT; };
+		1C79F000FDEF4FA5AA0DD131 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/tufted_laplacian.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tufted_laplacian.cpp; path = src/surface/tufted_laplacian.cpp; sourceTree = SOURCE_ROOT; };
+		1D22824BAD874375AA89120D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_io.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = point_cloud_io.cpp; path = src/pointcloud/point_cloud_io.cpp; sourceTree = SOURCE_ROOT; };
+		1DDEA3321317492A9F52DE94 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/halfedge_factories.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = halfedge_factories.cpp; path = src/surface/halfedge_factories.cpp; sourceTree = SOURCE_ROOT; };
+		230AB2F14ED145458CBAD1C6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/knn.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = knn.h; path = include/geometrycentral/utilities/knn.h; sourceTree = SOURCE_ROOT; };
+		235830F76A0D4BD3926493D3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/manifold_surface_mesh.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = manifold_surface_mesh.h; path = include/geometrycentral/surface/manifold_surface_mesh.h; sourceTree = SOURCE_ROOT; };
+		23823FEAACBF44A295C36C98 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/elementary_geometry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = elementary_geometry.cpp; path = src/utilities/elementary_geometry.cpp; sourceTree = SOURCE_ROOT; };
+		26CD723062414E39B6596958 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/positive_definite_solvers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = positive_definite_solvers.cpp; path = src/numerical/positive_definite_solvers.cpp; sourceTree = SOURCE_ROOT; };
+		2787279C10F94C0E95CA4FCC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = edge_length_geometry.h; path = include/geometrycentral/surface/edge_length_geometry.h; sourceTree = SOURCE_ROOT; };
+		2AA48C73FF874CFDB9E1905C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/normal_coordinates.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = normal_coordinates.cpp; path = src/surface/normal_coordinates.cpp; sourceTree = SOURCE_ROOT; };
+		2B2A1D6DEBF44A838975AF6A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_ray_tracer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = mesh_ray_tracer.h; path = include/geometrycentral/surface/mesh_ray_tracer.h; sourceTree = SOURCE_ROOT; };
+		2B984720F67B48E5B0EF09C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/eigenproblem_solvers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = eigenproblem_solvers.cpp; path = src/numerical/eigenproblem_solvers.cpp; sourceTree = SOURCE_ROOT; };
+		2D3A6679E09449DC85477531 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh_factories.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = surface_mesh_factories.cpp; path = src/surface/surface_mesh_factories.cpp; sourceTree = SOURCE_ROOT; };
+		2DA6BC88194849BC8C1D8708 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = surface_point.ipp; path = include/geometrycentral/surface/surface_point.ipp; sourceTree = SOURCE_ROOT; };
+		2F56C6E0CB1441FCB7379C44 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/utilities.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = utilities.h; path = include/geometrycentral/utilities/utilities.h; sourceTree = SOURCE_ROOT; };
+		31BCCCE4EE20462E8BDA8548 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = barycentric_vector.h; path = include/geometrycentral/surface/barycentric_vector.h; sourceTree = SOURCE_ROOT; };
+		32D34A938F6B46CF8EC0B8E3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = surface_mesh.ipp; path = include/geometrycentral/surface/surface_mesh.ipp; sourceTree = SOURCE_ROOT; };
+		36596908FFC04DBA9BC88995 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/tri_tri_intersect.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tri_tri_intersect.cpp; path = src/utilities/tri_tri_intersect.cpp; sourceTree = SOURCE_ROOT; };
+		38220ED9EB544D92A3D702B4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = surface_point.h; path = include/geometrycentral/surface/surface_point.h; sourceTree = SOURCE_ROOT; };
+		3A3699835E244C369CFB04DA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intersection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = intersection.cpp; path = src/surface/intersection.cpp; sourceTree = SOURCE_ROOT; };
+		3A4A16DE797A4EC7AB1EDE1F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/remeshing.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = remeshing.cpp; path = src/surface/remeshing.cpp; sourceTree = SOURCE_ROOT; };
+		3E4A02B41E054B3E86C40E92 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = barycentric_vector.ipp; path = include/geometrycentral/surface/barycentric_vector.ipp; sourceTree = SOURCE_ROOT; };
+		416FD2E39BF74787AEBFA18F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		41E67A543AB048759C892D85 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = halfedge_element_types.ipp; path = include/geometrycentral/surface/halfedge_element_types.ipp; sourceTree = SOURCE_ROOT; };
+		42AE133EECB3406E9AF939EF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/direction_fields.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = direction_fields.cpp; path = src/surface/direction_fields.cpp; sourceTree = SOURCE_ROOT; };
+		439BD3A5E6CB45E78704B95B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = curve.ipp; path = include/geometrycentral/utilities/curve.ipp; sourceTree = SOURCE_ROOT; };
+		4609175A02314A24AE116596 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vector_heat_method.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = vector_heat_method.cpp; path = src/surface/vector_heat_method.cpp; sourceTree = SOURCE_ROOT; };
+		466A30D366094C2790377D44 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/remeshing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = remeshing.h; path = include/geometrycentral/surface/remeshing.h; sourceTree = SOURCE_ROOT; };
+		479E76D272D24B3FB5BAB458 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/trace_geodesic.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = trace_geodesic.cpp; path = src/surface/trace_geodesic.cpp; sourceTree = SOURCE_ROOT; };
+		47B74621B8E74FCA81487F26 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/base_geometry_interface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = base_geometry_interface.cpp; path = src/surface/base_geometry_interface.cpp; sourceTree = SOURCE_ROOT; };
+		4A597250AEC64AB685D65490 /* geometry-central */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libgeometry-central.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AC460438B894758B73DC9E9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vector_heat_method.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = vector_heat_method.h; path = include/geometrycentral/surface/vector_heat_method.h; sourceTree = SOURCE_ROOT; };
+		4CB42AE59D1D4CCABD42DBEE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/boundary_first_flattening.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = boundary_first_flattening.cpp; path = src/surface/boundary_first_flattening.cpp; sourceTree = SOURCE_ROOT; };
+		4E4924279CA74D73B7EEF2FF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_geometry_interface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = intrinsic_geometry_interface.cpp; path = src/surface/intrinsic_geometry_interface.cpp; sourceTree = SOURCE_ROOT; };
+		4FC7989201CF4BF9ACDFB680 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/subdivide.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = subdivide.h; path = include/geometrycentral/surface/subdivide.h; sourceTree = SOURCE_ROOT; };
+		522E7D074AED47ABB2CD9A2B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/combining_hash_functions.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = combining_hash_functions.h; path = include/geometrycentral/utilities/combining_hash_functions.h; sourceTree = SOURCE_ROOT; };
+		534CD48ABC784D6CA30EF839 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = rich_surface_mesh_data.h; path = include/geometrycentral/surface/rich_surface_mesh_data.h; sourceTree = SOURCE_ROOT; };
+		560EBF4288C740D782F5F867 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = surface_mesh.cpp; path = src/surface/surface_mesh.cpp; sourceTree = SOURCE_ROOT; };
+		5685147665CD4853978A5186 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/quaternion.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = quaternion.h; path = include/geometrycentral/utilities/quaternion.h; sourceTree = SOURCE_ROOT; };
+		56BC01207CAC4EB3A0DE301E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/integer_coordinates_intrinsic_triangulation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = integer_coordinates_intrinsic_triangulation.cpp; path = src/surface/integer_coordinates_intrinsic_triangulation.cpp; sourceTree = SOURCE_ROOT; };
+		5AB9F68983464EE9B7803C67 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = vertex_position_geometry.h; path = include/geometrycentral/surface/vertex_position_geometry.h; sourceTree = SOURCE_ROOT; };
+		5AEBA44BD0F14CA7AA728405 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/eigen_interop_helpers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = eigen_interop_helpers.h; path = include/geometrycentral/utilities/eigen_interop_helpers.h; sourceTree = SOURCE_ROOT; };
+		5C7AFF1B9BD84B0F9D98DEAF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/polygon_soup_mesh.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = polygon_soup_mesh.h; path = include/geometrycentral/surface/polygon_soup_mesh.h; sourceTree = SOURCE_ROOT; };
+		5DBFB47D60CB4A3983BAAEB3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/transfer_functions.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = transfer_functions.cpp; path = src/surface/transfer_functions.cpp; sourceTree = SOURCE_ROOT; };
+		5E76201190B7478EA3E7401D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_idt.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = simple_idt.cpp; path = src/surface/simple_idt.cpp; sourceTree = SOURCE_ROOT; };
+		66FF06F409044B8E8EB0D9B0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/edge_length_geometry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = edge_length_geometry.cpp; path = src/surface/edge_length_geometry.cpp; sourceTree = SOURCE_ROOT; };
+		6774F15CA1224A66AF57B5BC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mutation_manager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = mutation_manager.cpp; path = src/surface/mutation_manager.cpp; sourceTree = SOURCE_ROOT; };
+		6819DBFD60B54224AD7DAEF7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_solvers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = linear_solvers.h; path = include/geometrycentral/numerical/linear_solvers.h; sourceTree = SOURCE_ROOT; };
+		6AE1FD88BF704D94A3F23F48 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/local_triangulation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = local_triangulation.cpp; path = src/pointcloud/local_triangulation.cpp; sourceTree = SOURCE_ROOT; };
+		6B1F8FB7FBE54368A6853EC2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/fast_marching_method.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = fast_marching_method.h; path = include/geometrycentral/surface/fast_marching_method.h; sourceTree = SOURCE_ROOT; };
+		6CD7C23ED2614BBBBDC56562 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_idt.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = simple_idt.h; path = include/geometrycentral/surface/simple_idt.h; sourceTree = SOURCE_ROOT; };
+		6DF9EC4FEAC6465FB993C1C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/rich_surface_mesh_data.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = rich_surface_mesh_data.cpp; path = src/surface/rich_surface_mesh_data.cpp; sourceTree = SOURCE_ROOT; };
+		6E9E7023B12F43F08734D728 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = vector2.ipp; path = include/geometrycentral/utilities/vector2.ipp; sourceTree = SOURCE_ROOT; };
+		6EEA3E59D82949BFAD6DC727 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = dependent_quantity.ipp; path = include/geometrycentral/utilities/dependent_quantity.ipp; sourceTree = SOURCE_ROOT; };
+		75932851CFC349C39A918150 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/timing.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = timing.h; path = include/geometrycentral/utilities/timing.h; sourceTree = SOURCE_ROOT; };
+		7B49D1CBC73B41C1AF89AD19 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/sample_cloud.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sample_cloud.cpp; path = src/pointcloud/sample_cloud.cpp; sourceTree = SOURCE_ROOT; };
+		7DB1E34F0D1D40E9AF79CE87 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/parameterize.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = parameterize.cpp; path = src/surface/parameterize.cpp; sourceTree = SOURCE_ROOT; };
+		7E68935B572E4FC6A547AD53 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/base_geometry_interface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = base_geometry_interface.h; path = include/geometrycentral/surface/base_geometry_interface.h; sourceTree = SOURCE_ROOT; };
+		7FDD93FB444B4CD094FA9E8A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_mollification.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = intrinsic_mollification.cpp; path = src/surface/intrinsic_mollification.cpp; sourceTree = SOURCE_ROOT; };
+		850FE296004E48D39CF7D062 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_graph_algorithms.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = mesh_graph_algorithms.h; path = include/geometrycentral/surface/mesh_graph_algorithms.h; sourceTree = SOURCE_ROOT; };
+		864C20EF940442EBA6370278 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/stripe_patterns.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = stripe_patterns.h; path = include/geometrycentral/surface/stripe_patterns.h; sourceTree = SOURCE_ROOT; };
+		868CE35B0C31448285A20955 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/suitesparse_utilities.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = suitesparse_utilities.cpp; path = src/numerical/suitesparse_utilities.cpp; sourceTree = SOURCE_ROOT; };
+		89A4C0D4C753434284D7710B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_centers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = surface_centers.h; path = include/geometrycentral/surface/surface_centers.h; sourceTree = SOURCE_ROOT; };
+		8A8088A5A49E4183A6DE8480 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_factories.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = halfedge_factories.h; path = include/geometrycentral/surface/halfedge_factories.h; sourceTree = SOURCE_ROOT; };
+		8CAAB2B2C8264F1E955A62C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/utilities.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = utilities.cpp; path = src/utilities/utilities.cpp; sourceTree = SOURCE_ROOT; };
+		8CE891FD2F8949D595EAD9C3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mesh_graph_algorithms.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = mesh_graph_algorithms.cpp; path = src/surface/mesh_graph_algorithms.cpp; sourceTree = SOURCE_ROOT; };
+		8D7F557496FC46688DB9C3EA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/qr_solvers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = qr_solvers.cpp; path = src/numerical/qr_solvers.cpp; sourceTree = SOURCE_ROOT; };
+		912EF70264F241FA8277ACB9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/stripe_patterns.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = stripe_patterns.cpp; path = src/surface/stripe_patterns.cpp; sourceTree = SOURCE_ROOT; };
+		91E880CE1BA6477E897DDEE2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = rich_surface_mesh_data.ipp; path = include/geometrycentral/surface/rich_surface_mesh_data.ipp; sourceTree = SOURCE_ROOT; };
+		946E6B1062954E9B99F67EA5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/extrinsic_geometry_interface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = extrinsic_geometry_interface.cpp; path = src/surface/extrinsic_geometry_interface.cpp; sourceTree = SOURCE_ROOT; };
+		9AF95379270F4C9C9FAFD844 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/transfer_functions.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = transfer_functions.h; path = include/geometrycentral/surface/transfer_functions.h; sourceTree = SOURCE_ROOT; };
+		9D76D932D6AC4139A4CF44B3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = surface_mesh.h; path = include/geometrycentral/surface/surface_mesh.h; sourceTree = SOURCE_ROOT; };
+		A37B98783100456FAA4F5856 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_logic_templates.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = halfedge_logic_templates.ipp; path = include/geometrycentral/surface/halfedge_logic_templates.ipp; sourceTree = SOURCE_ROOT; };
+		A3BF47B6A2904C759987C3CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/meshio.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = meshio.cpp; path = src/surface/meshio.cpp; sourceTree = SOURCE_ROOT; };
+		A6C25229AB1848A481D65B5B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_polygon_mesh.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = simple_polygon_mesh.h; path = include/geometrycentral/surface/simple_polygon_mesh.h; sourceTree = SOURCE_ROOT; };
+		A8524DD7F5BE4346861AE0BF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/boundary_first_flattening.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = boundary_first_flattening.h; path = include/geometrycentral/surface/boundary_first_flattening.h; sourceTree = SOURCE_ROOT; };
+		AB41153324574A339E48BB98 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = exact_geodesic_helpers.h; path = include/geometrycentral/surface/exact_geodesic_helpers.h; sourceTree = SOURCE_ROOT; };
+		ACB09A1E58CA4128B6AF1C9B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/suitesparse_utilities.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = suitesparse_utilities.h; path = include/geometrycentral/numerical/suitesparse_utilities.h; sourceTree = SOURCE_ROOT; };
+		AD7EC385A4B747AD9CA83BBB /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/quadric_error_simplification.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = quadric_error_simplification.cpp; path = src/surface/quadric_error_simplification.cpp; sourceTree = SOURCE_ROOT; };
+		AD8A42D9AF02482CA672894D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = vector3.h; path = include/geometrycentral/utilities/vector3.h; sourceTree = SOURCE_ROOT; };
+		AEA0332CD9FB49C085E3F0CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = barycentric_coordinate_helpers.h; path = include/geometrycentral/surface/barycentric_coordinate_helpers.h; sourceTree = SOURCE_ROOT; };
+		AF9C8DFC2250403D81597F3C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = exact_geodesic_helpers.ipp; path = include/geometrycentral/surface/exact_geodesic_helpers.ipp; sourceTree = SOURCE_ROOT; };
+		B178FE98DE6F43E1AAF2A831 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = halfedge_element_types.h; path = include/geometrycentral/surface/halfedge_element_types.h; sourceTree = SOURCE_ROOT; };
+		B8387D6D8DF446BEBDC11AF7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/direction_fields.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = direction_fields.h; path = include/geometrycentral/surface/direction_fields.h; sourceTree = SOURCE_ROOT; };
+		B87F4AC1C0244535B944E2DE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/quadric_error_simplification.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = quadric_error_simplification.h; path = include/geometrycentral/surface/quadric_error_simplification.h; sourceTree = SOURCE_ROOT; };
+		B89C6CEEB5C2442492724560 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/trace_geodesic.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = trace_geodesic.h; path = include/geometrycentral/surface/trace_geodesic.h; sourceTree = SOURCE_ROOT; };
+		B934570EC12E4EFDB094045D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/flip_geodesics.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = flip_geodesics.cpp; path = src/surface/flip_geodesics.cpp; sourceTree = SOURCE_ROOT; };
+		BA07D6FDD35D4D55AFC31FB1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_algebra_utilities.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = linear_algebra_utilities.cpp; path = src/numerical/linear_algebra_utilities.cpp; sourceTree = SOURCE_ROOT; };
+		BE2EA1DE90FC44AC9A5BBA16 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_point.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = surface_point.cpp; path = src/surface/surface_point.cpp; sourceTree = SOURCE_ROOT; };
+		BF01D5A9D7FC4533B87AF5F6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/geodesic_centroidal_voronoi_tessellation.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = geodesic_centroidal_voronoi_tessellation.h; path = include/geometrycentral/surface/geodesic_centroidal_voronoi_tessellation.h; sourceTree = SOURCE_ROOT; };
+		C0146491088D4CD58B315FEC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = linear_algebra_utilities.h; path = include/geometrycentral/numerical/linear_algebra_utilities.h; sourceTree = SOURCE_ROOT; };
+		C227E9AFEB484DD5A2768F93 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/manifold_surface_mesh.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = manifold_surface_mesh.cpp; path = src/surface/manifold_surface_mesh.cpp; sourceTree = SOURCE_ROOT; };
+		C2E8DE88C3F948BF9DA60EF4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/knn.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = knn.cpp; path = src/utilities/knn.cpp; sourceTree = SOURCE_ROOT; };
+		C767C03D579541AEB283D3A8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = src/CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		CD6EAD89D443403498D00E2C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_solvers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = linear_solvers.cpp; path = src/numerical/linear_solvers.cpp; sourceTree = SOURCE_ROOT; };
+		CF8E93DCA12F4BB4ABE59627 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/parameterize.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = parameterize.h; path = include/geometrycentral/surface/parameterize.h; sourceTree = SOURCE_ROOT; };
+		D0C0D3C97170460C8A890004 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_polyhedral_geodesics.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = exact_polyhedral_geodesics.cpp; path = src/surface/exact_polyhedral_geodesics.cpp; sourceTree = SOURCE_ROOT; };
+		D4413ED773A849D4B54DC19F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_geometry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = point_position_geometry.cpp; path = src/pointcloud/point_position_geometry.cpp; sourceTree = SOURCE_ROOT; };
+		D4517F1E7F3646619B15AE9A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_geometry_interface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = intrinsic_geometry_interface.h; path = include/geometrycentral/surface/intrinsic_geometry_interface.h; sourceTree = SOURCE_ROOT; };
+		D580975C63014307AACE30C9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/heat_method_distance.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = heat_method_distance.cpp; path = src/surface/heat_method_distance.cpp; sourceTree = SOURCE_ROOT; };
+		D5E70C67AC0A4546AE317701 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/embedded_geometry_interface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = embedded_geometry_interface.h; path = include/geometrycentral/surface/embedded_geometry_interface.h; sourceTree = SOURCE_ROOT; };
+		D66D0D3E5CB1408486AAC90F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_polygon_mesh.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = simple_polygon_mesh.cpp; path = src/surface/simple_polygon_mesh.cpp; sourceTree = SOURCE_ROOT; };
+		DB13177ED6974A13889197CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/quaternion.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = quaternion.cpp; path = src/utilities/quaternion.cpp; sourceTree = SOURCE_ROOT; };
+		DB9B3FDD6F02481ABD99477C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = edge_length_geometry.ipp; path = include/geometrycentral/surface/edge_length_geometry.ipp; sourceTree = SOURCE_ROOT; };
+		DD365DD9C268434BBFE871AC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = vector3.ipp; path = include/geometrycentral/utilities/vector3.ipp; sourceTree = SOURCE_ROOT; };
+		DDB680C6DA05448181B9AE2B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_mesh.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = halfedge_mesh.h; path = include/geometrycentral/surface/halfedge_mesh.h; sourceTree = SOURCE_ROOT; };
+		DF8E62D2086041CD8737B1AD /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/square_solvers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = square_solvers.cpp; path = src/numerical/square_solvers.cpp; sourceTree = SOURCE_ROOT; };
+		E0CC14A0DFE94E75965A7560 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesics.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = exact_geodesics.cpp; path = src/surface/exact_geodesics.cpp; sourceTree = SOURCE_ROOT; };
+		E0DF633BAF2340919CF2F171 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surgery.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = surgery.cpp; path = src/surface/surgery.cpp; sourceTree = SOURCE_ROOT; };
+		E1482F1032D641CE9889E672 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_normal_geometry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = point_position_normal_geometry.cpp; path = src/pointcloud/point_position_normal_geometry.cpp; sourceTree = SOURCE_ROOT; };
+		E23B9FCB9A8840CE95FD64DF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_centers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = surface_centers.cpp; path = src/surface/surface_centers.cpp; sourceTree = SOURCE_ROOT; };
+		E2482471482740829DDAF5D1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/detect_symmetry.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = detect_symmetry.h; path = include/geometrycentral/surface/detect_symmetry.h; sourceTree = SOURCE_ROOT; };
+		E47E99B27F4E4972842ADDB4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = signpost_intrinsic_triangulation.ipp; path = include/geometrycentral/surface/signpost_intrinsic_triangulation.ipp; sourceTree = SOURCE_ROOT; };
+		E5E9FE62A8AC4453A9BF1C0E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = point_cloud.cpp; path = src/pointcloud/point_cloud.cpp; sourceTree = SOURCE_ROOT; };
+		E82DD80D265F4B03B1120566 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_frame_geometry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = point_position_frame_geometry.cpp; path = src/pointcloud/point_position_frame_geometry.cpp; sourceTree = SOURCE_ROOT; };
+		E8EEFB782592431A8F9EC2C9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/heat_method_distance.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = heat_method_distance.h; path = include/geometrycentral/surface/heat_method_distance.h; sourceTree = SOURCE_ROOT; };
+		EB3E8C63A1394BAA8EA5AF9D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = linear_algebra_utilities.ipp; path = include/geometrycentral/numerical/linear_algebra_utilities.ipp; sourceTree = SOURCE_ROOT; };
+		EB80B22936ED48E89BF3B127 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = vertex_position_geometry.ipp; path = include/geometrycentral/surface/vertex_position_geometry.ipp; sourceTree = SOURCE_ROOT; };
+		EC461EC0415740689D70C15D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/fast_marching_method.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = fast_marching_method.cpp; path = src/surface/fast_marching_method.cpp; sourceTree = SOURCE_ROOT; };
+		EC4AD00BBCF4484F9B07D427 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/embedded_geometry_interface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = embedded_geometry_interface.cpp; path = src/surface/embedded_geometry_interface.cpp; sourceTree = SOURCE_ROOT; };
+		ECE74E328EA7499CB5731C28 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/poisson_disk_sampler.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = poisson_disk_sampler.cpp; path = src/surface/poisson_disk_sampler.cpp; sourceTree = SOURCE_ROOT; };
+		EEA295DF62E646988306BFB5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/disjoint_sets.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = disjoint_sets.h; path = include/geometrycentral/utilities/disjoint_sets.h; sourceTree = SOURCE_ROOT; };
+		F12405313DBB4BDBAED33555 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = dependent_quantity.h; path = include/geometrycentral/utilities/dependent_quantity.h; sourceTree = SOURCE_ROOT; };
+		F2E48B2A13AC4A93AA8B1D11 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = barycentric_coordinate_helpers.ipp; path = include/geometrycentral/surface/barycentric_coordinate_helpers.ipp; sourceTree = SOURCE_ROOT; };
+		F79DC25A0D244F81A3C1EC02 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_mollification.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = intrinsic_mollification.h; path = include/geometrycentral/surface/intrinsic_mollification.h; sourceTree = SOURCE_ROOT; };
+		F9EAF71382C9477B9A204662 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/signpost_intrinsic_triangulation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = signpost_intrinsic_triangulation.cpp; path = src/surface/signpost_intrinsic_triangulation.cpp; sourceTree = SOURCE_ROOT; };
+		FACE6468E740439E9888977C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vertex_position_geometry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = vertex_position_geometry.cpp; path = src/surface/vertex_position_geometry.cpp; sourceTree = SOURCE_ROOT; };
+		FAFC221B458C436490B34FB7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = signpost_intrinsic_triangulation.h; path = include/geometrycentral/surface/signpost_intrinsic_triangulation.h; sourceTree = SOURCE_ROOT; };
+		FB87ADE869E94A9F8001B4A0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.ipp */ = {isa = PBXFileReference; explicitFileType = sourcecode; fileEncoding = 4; name = mesh_data.ipp; path = include/geometrycentral/utilities/mesh_data.ipp; sourceTree = SOURCE_ROOT; };
+		FC8C7E6E20504CACB446FE72 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_triangulation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = intrinsic_triangulation.cpp; path = src/surface/intrinsic_triangulation.cpp; sourceTree = SOURCE_ROOT; };
+		FC96A204BB52441BBC8D9353 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = mesh_data.h; path = include/geometrycentral/utilities/mesh_data.h; sourceTree = SOURCE_ROOT; };
+		FD23A91B7F654A61B11FE29A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/subdivide.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = subdivide.cpp; path = src/surface/subdivide.cpp; sourceTree = SOURCE_ROOT; };
+		FE71B0F12D4746BFA6FCE145 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/meshio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = meshio.h; path = include/geometrycentral/surface/meshio.h; sourceTree = SOURCE_ROOT; };
+		FE8D1B3D46D14546B18347C2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesic_helpers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = exact_geodesic_helpers.cpp; path = src/surface/exact_geodesic_helpers.cpp; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DDA24AA5AE1B4BC6BB8444D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1135E3A6442B4D17B8D927BC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		73331BF275A1462084CE44EA /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				2B984720F67B48E5B0EF09C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/eigenproblem_solvers.cpp */,
+				BA07D6FDD35D4D55AFC31FB1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_algebra_utilities.cpp */,
+				CD6EAD89D443403498D00E2C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_solvers.cpp */,
+				26CD723062414E39B6596958 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/positive_definite_solvers.cpp */,
+				8D7F557496FC46688DB9C3EA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/qr_solvers.cpp */,
+				DF8E62D2086041CD8737B1AD /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/square_solvers.cpp */,
+				868CE35B0C31448285A20955 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/suitesparse_utilities.cpp */,
+				6AE1FD88BF704D94A3F23F48 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/local_triangulation.cpp */,
+				17005F20B4C640429DA16EC2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/neighborhoods.cpp */,
+				E5E9FE62A8AC4453A9BF1C0E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud.cpp */,
+				091A2538FD6046D581CFF208 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_heat_solver.cpp */,
+				1D22824BAD874375AA89120D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_io.cpp */,
+				E82DD80D265F4B03B1120566 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_frame_geometry.cpp */,
+				D4413ED773A849D4B54DC19F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_geometry.cpp */,
+				E1482F1032D641CE9889E672 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_normal_geometry.cpp */,
+				7B49D1CBC73B41C1AF89AD19 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/sample_cloud.cpp */,
+				47B74621B8E74FCA81487F26 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/base_geometry_interface.cpp */,
+				4CB42AE59D1D4CCABD42DBEE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/boundary_first_flattening.cpp */,
+				13CC85B975AC4E8289EF3348 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/common_subdivision.cpp */,
+				42AE133EECB3406E9AF939EF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/direction_fields.cpp */,
+				66FF06F409044B8E8EB0D9B0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/edge_length_geometry.cpp */,
+				EC4AD00BBCF4484F9B07D427 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/embedded_geometry_interface.cpp */,
+				FE8D1B3D46D14546B18347C2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesic_helpers.cpp */,
+				E0CC14A0DFE94E75965A7560 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesics.cpp */,
+				D0C0D3C97170460C8A890004 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_polyhedral_geodesics.cpp */,
+				946E6B1062954E9B99F67EA5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/extrinsic_geometry_interface.cpp */,
+				EC461EC0415740689D70C15D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/fast_marching_method.cpp */,
+				B934570EC12E4EFDB094045D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/flip_geodesics.cpp */,
+				0B044F55911E456FBC6B8E8F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/geodesic_centroidal_voronoi_tessellation.cpp */,
+				1DDEA3321317492A9F52DE94 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/halfedge_factories.cpp */,
+				D580975C63014307AACE30C9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/heat_method_distance.cpp */,
+				56BC01207CAC4EB3A0DE301E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/integer_coordinates_intrinsic_triangulation.cpp */,
+				3A3699835E244C369CFB04DA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intersection.cpp */,
+				4E4924279CA74D73B7EEF2FF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_geometry_interface.cpp */,
+				7FDD93FB444B4CD094FA9E8A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_mollification.cpp */,
+				FC8C7E6E20504CACB446FE72 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_triangulation.cpp */,
+				C227E9AFEB484DD5A2768F93 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/manifold_surface_mesh.cpp */,
+				8CE891FD2F8949D595EAD9C3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mesh_graph_algorithms.cpp */,
+				A3BF47B6A2904C759987C3CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/meshio.cpp */,
+				6774F15CA1224A66AF57B5BC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mutation_manager.cpp */,
+				2AA48C73FF874CFDB9E1905C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/normal_coordinates.cpp */,
+				7DB1E34F0D1D40E9AF79CE87 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/parameterize.cpp */,
+				ECE74E328EA7499CB5731C28 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/poisson_disk_sampler.cpp */,
+				AD7EC385A4B747AD9CA83BBB /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/quadric_error_simplification.cpp */,
+				3A4A16DE797A4EC7AB1EDE1F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/remeshing.cpp */,
+				6DF9EC4FEAC6465FB993C1C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/rich_surface_mesh_data.cpp */,
+				F9EAF71382C9477B9A204662 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/signpost_intrinsic_triangulation.cpp */,
+				5E76201190B7478EA3E7401D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_idt.cpp */,
+				D66D0D3E5CB1408486AAC90F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_polygon_mesh.cpp */,
+				912EF70264F241FA8277ACB9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/stripe_patterns.cpp */,
+				FD23A91B7F654A61B11FE29A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/subdivide.cpp */,
+				E23B9FCB9A8840CE95FD64DF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_centers.cpp */,
+				560EBF4288C740D782F5F867 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh.cpp */,
+				2D3A6679E09449DC85477531 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh_factories.cpp */,
+				BE2EA1DE90FC44AC9A5BBA16 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_point.cpp */,
+				E0DF633BAF2340919CF2F171 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surgery.cpp */,
+				479E76D272D24B3FB5BAB458 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/trace_geodesic.cpp */,
+				5DBFB47D60CB4A3983BAAEB3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/transfer_functions.cpp */,
+				1C79F000FDEF4FA5AA0DD131 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/tufted_laplacian.cpp */,
+				1AAD7D02C0284E6D96118DF9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/uniformize.cpp */,
+				4609175A02314A24AE116596 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vector_heat_method.cpp */,
+				FACE6468E740439E9888977C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vertex_position_geometry.cpp */,
+				0B83A840EF684510A2649A25 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/disjoint_sets.cpp */,
+				23823FEAACBF44A295C36C98 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/elementary_geometry.cpp */,
+				C2E8DE88C3F948BF9DA60EF4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/knn.cpp */,
+				DB13177ED6974A13889197CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/quaternion.cpp */,
+				36596908FFC04DBA9BC88995 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/tri_tri_intersect.cpp */,
+				8CAAB2B2C8264F1E955A62C8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/utilities.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		83149C3EAC88494D98A24A0E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8590C89417E0478DA7AAB257 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				896FC0BDD3B3459FA94236E5 /* CMake Rules */,
+				416FD2E39BF74787AEBFA18F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		896FC0BDD3B3459FA94236E5 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		C0A37C6628EE4AF89D64C41B /* geometry-central */ = {
+			isa = PBXGroup;
+			children = (
+				73331BF275A1462084CE44EA /* Source Files */,
+				D5A5F582ED604ACBA934855D /* Header Files */,
+				EB3E8C63A1394BAA8EA5AF9D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.ipp */,
+				F2E48B2A13AC4A93AA8B1D11 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.ipp */,
+				3E4A02B41E054B3E86C40E92 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.ipp */,
+				DB9B3FDD6F02481ABD99477C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.ipp */,
+				AF9C8DFC2250403D81597F3C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.ipp */,
+				41E67A543AB048759C892D85 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.ipp */,
+				A37B98783100456FAA4F5856 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_logic_templates.ipp */,
+				91E880CE1BA6477E897DDEE2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.ipp */,
+				E47E99B27F4E4972842ADDB4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.ipp */,
+				32D34A938F6B46CF8EC0B8E3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.ipp */,
+				2DA6BC88194849BC8C1D8708 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.ipp */,
+				EB80B22936ED48E89BF3B127 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.ipp */,
+				439BD3A5E6CB45E78704B95B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.ipp */,
+				6EEA3E59D82949BFAD6DC727 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.ipp */,
+				FB87ADE869E94A9F8001B4A0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.ipp */,
+				6E9E7023B12F43F08734D728 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.ipp */,
+				DD365DD9C268434BBFE871AC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.ipp */,
+				C767C03D579541AEB283D3A8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/CMakeLists.txt */,
+			);
+			name = "geometry-central";
+			sourceTree = "<group>";
+		};
+		D5A5F582ED604ACBA934855D /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				C0146491088D4CD58B315FEC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_algebra_utilities.h */,
+				6819DBFD60B54224AD7DAEF7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/linear_solvers.h */,
+				ACB09A1E58CA4128B6AF1C9B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/numerical/suitesparse_utilities.h */,
+				AEA0332CD9FB49C085E3F0CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_coordinate_helpers.h */,
+				31BCCCE4EE20462E8BDA8548 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/barycentric_vector.h */,
+				7E68935B572E4FC6A547AD53 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/base_geometry_interface.h */,
+				A8524DD7F5BE4346861AE0BF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/boundary_first_flattening.h */,
+				E2482471482740829DDAF5D1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/detect_symmetry.h */,
+				B8387D6D8DF446BEBDC11AF7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/direction_fields.h */,
+				2787279C10F94C0E95CA4FCC /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/edge_length_geometry.h */,
+				D5E70C67AC0A4546AE317701 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/embedded_geometry_interface.h */,
+				AB41153324574A339E48BB98 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesic_helpers.h */,
+				13C940F903904F25B525CEC6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_geodesics.h */,
+				0B1EF27D55924D8192F78773 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/exact_polyhedral_geodesics.h */,
+				07D227763EDC457998F1ED7D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/extrinsic_geometry_interface.h */,
+				6B1F8FB7FBE54368A6853EC2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/fast_marching_method.h */,
+				BF01D5A9D7FC4533B87AF5F6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/geodesic_centroidal_voronoi_tessellation.h */,
+				B178FE98DE6F43E1AAF2A831 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_element_types.h */,
+				8A8088A5A49E4183A6DE8480 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_factories.h */,
+				DDB680C6DA05448181B9AE2B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/halfedge_mesh.h */,
+				E8EEFB782592431A8F9EC2C9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/heat_method_distance.h */,
+				D4517F1E7F3646619B15AE9A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_geometry_interface.h */,
+				F79DC25A0D244F81A3C1EC02 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/intrinsic_mollification.h */,
+				235830F76A0D4BD3926493D3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/manifold_surface_mesh.h */,
+				850FE296004E48D39CF7D062 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_graph_algorithms.h */,
+				2B2A1D6DEBF44A838975AF6A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/mesh_ray_tracer.h */,
+				FE71B0F12D4746BFA6FCE145 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/meshio.h */,
+				CF8E93DCA12F4BB4ABE59627 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/parameterize.h */,
+				1997AE3FF1AB434EB62A594F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/poisson_disk_sampler.h */,
+				5C7AFF1B9BD84B0F9D98DEAF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/polygon_soup_mesh.h */,
+				B87F4AC1C0244535B944E2DE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/quadric_error_simplification.h */,
+				466A30D366094C2790377D44 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/remeshing.h */,
+				534CD48ABC784D6CA30EF839 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/rich_surface_mesh_data.h */,
+				FAFC221B458C436490B34FB7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/signpost_intrinsic_triangulation.h */,
+				6CD7C23ED2614BBBBDC56562 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_idt.h */,
+				A6C25229AB1848A481D65B5B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/simple_polygon_mesh.h */,
+				864C20EF940442EBA6370278 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/stripe_patterns.h */,
+				4FC7989201CF4BF9ACDFB680 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/subdivide.h */,
+				89A4C0D4C753434284D7710B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_centers.h */,
+				9D76D932D6AC4139A4CF44B3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_mesh.h */,
+				38220ED9EB544D92A3D702B4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surface_point.h */,
+				1B78BFB8086949D397CD51C2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/surgery.h */,
+				B89C6CEEB5C2442492724560 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/trace_geodesic.h */,
+				9AF95379270F4C9C9FAFD844 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/transfer_functions.h */,
+				1A025672207648EEB151A031 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/uniformize.h */,
+				4AC460438B894758B73DC9E9 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vector_heat_method.h */,
+				5AB9F68983464EE9B7803C67 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/surface/vertex_position_geometry.h */,
+				522E7D074AED47ABB2CD9A2B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/combining_hash_functions.h */,
+				155A332B7D8E465D994678A2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/curve.h */,
+				F12405313DBB4BDBAED33555 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/dependent_quantity.h */,
+				EEA295DF62E646988306BFB5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/disjoint_sets.h */,
+				5AEBA44BD0F14CA7AA728405 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/eigen_interop_helpers.h */,
+				230AB2F14ED145458CBAD1C6 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/knn.h */,
+				FC96A204BB52441BBC8D9353 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/mesh_data.h */,
+				5685147665CD4853978A5186 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/quaternion.h */,
+				75932851CFC349C39A918150 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/timing.h */,
+				2F56C6E0CB1441FCB7379C44 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/utilities.h */,
+				11C17010C1A14A51AB6BCDB7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector2.h */,
+				AD8A42D9AF02482CA672894D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include/geometrycentral/utilities/vector3.h */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		EA2A1FE2B41D4895AD0F336D = {
+			isa = PBXGroup;
+			children = (
+				8590C89417E0478DA7AAB257 /* ALL_BUILD */,
+				C0A37C6628EE4AF89D64C41B /* geometry-central */,
+				FE2078397C6644D8AA92560F /* Products */,
+				83149C3EAC88494D98A24A0E /* Frameworks */,
+				1135E3A6442B4D17B8D927BC /* Resources */,
+			);
+			sourceTree = "<group>";
+		};
+		FE2078397C6644D8AA92560F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4A597250AEC64AB685D65490 /* geometry-central */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		038CBD2BB2A248639581D9E1 /* geometry-central */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 44A5705BE12C4976A0B370AE /* Build configuration list for PBXNativeTarget "geometry-central" */;
+			buildPhases = (
+				0E6F6DDE5AF54C42B23CD6E7 /* Sources */,
+				DDA24AA5AE1B4BC6BB8444D6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C0E19470E05421798B1996F /* PBXTargetDependency */,
+			);
+			name = "geometry-central";
+			productName = "geometry-central";
+			productReference = 4A597250AEC64AB685D65490 /* geometry-central */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2E0780D16CF7416EB62F96BB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1540;
+			};
+			buildConfigurationList = A72E5EF02F804657B23DFE32 /* Build configuration list for PBXProject "geometry-central" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				DA4A358A4FE54CD29EBAD9B1 /* Debug */,
+				A4C160BC72644FE68792AF87 /* Release */,
+				49A4CA1FA7404688B1584364 /* MinSizeRel */,
+				EB45D1F4F668491B9CBAF7A1 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = EA2A1FE2B41D4895AD0F336D;
+			projectDirPath = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central";
+			projectRoot = "";
+			targets = (
+				EECCCBAC82CC4A1ABF21AF65 /* ALL_BUILD */,
+				872D8300524D48B1A3EDE437 /* ZERO_CHECK */,
+				038CBD2BB2A248639581D9E1 /* geometry-central */,
+				1951A01383ED4B839506D715 /* install */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		185B6826680B230A0C370FD5 /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/CMakeFiles/ALL_BUILD"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  echo Build\\ all\\ projects
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		3C0110FC8322DE7E50886E21 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		87AF4882E018677E2624B544 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  /opt/homebrew/Cellar/cmake/3.28.3/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		9B50530E35CC49C82C2FACCF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		F6943AF4D97D33CF40D8A358 /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/CMakeFiles/ZERO_CHECK"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  make -f /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  make -f /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  make -f /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central
+  make -f /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/CMakeScripts/ReRunCMake.make
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0E6F6DDE5AF54C42B23CD6E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5AB1A880641A42F699F0EFA5 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/eigenproblem_solvers.cpp */,
+				CEB52CF2AB0445A0A7068915 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_algebra_utilities.cpp */,
+				F99D9081BC0446C395409A9C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/linear_solvers.cpp */,
+				66ED4CBA5F86469D9004A3D7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/positive_definite_solvers.cpp */,
+				B1B303F7CAFD405B986C298C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/qr_solvers.cpp */,
+				3E2C43FADAC442EE85463AA4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/square_solvers.cpp */,
+				3ED82CB7014744659BD129F8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/numerical/suitesparse_utilities.cpp */,
+				5DC88407F2FE4EAF8C28EEFD /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/local_triangulation.cpp */,
+				1BEEC98E9D454047A12051A7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/neighborhoods.cpp */,
+				8D21BA67245B4F33B81A9B97 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud.cpp */,
+				26245FC390A147379FAEFE2E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_heat_solver.cpp */,
+				B86728AAD3CD431992A6774C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_cloud_io.cpp */,
+				6AB4A941BC2946F3AB65852F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_frame_geometry.cpp */,
+				60A58E53762A4DEFA8B4012F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_geometry.cpp */,
+				663EC860003A407191B64292 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/point_position_normal_geometry.cpp */,
+				D02B4BBB15654210B89DCCE2 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/pointcloud/sample_cloud.cpp */,
+				AA7340786BEC4C4C902E6161 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/base_geometry_interface.cpp */,
+				9D420909096E4869984D5478 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/boundary_first_flattening.cpp */,
+				57919CCB69E0489BB8DC9948 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/common_subdivision.cpp */,
+				95E69E5F5F5B47978EE7DD77 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/direction_fields.cpp */,
+				0E3063755D784472B40436BA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/edge_length_geometry.cpp */,
+				4F742049D8EC4B3AA153DFCA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/embedded_geometry_interface.cpp */,
+				C52508B106F343E092148BC4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesic_helpers.cpp */,
+				F97586DB3BFF4E049575BFEA /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_geodesics.cpp */,
+				93FF6FE8EF8949119211F874 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/exact_polyhedral_geodesics.cpp */,
+				45D077DC31364FFAA60B760A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/extrinsic_geometry_interface.cpp */,
+				58570334A3B947AD8A065861 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/fast_marching_method.cpp */,
+				27A4E996A5B54AA49475C4EF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/flip_geodesics.cpp */,
+				DEAAD0BCDDAE4617B3A7662D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/geodesic_centroidal_voronoi_tessellation.cpp */,
+				73EFEEE33A8F48FD8ACAA054 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/halfedge_factories.cpp */,
+				2DE9A4942BE049B781DB2173 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/heat_method_distance.cpp */,
+				20E6211643C04BE49DF26941 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/integer_coordinates_intrinsic_triangulation.cpp */,
+				2C446E8319B64CDDB20F4D07 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intersection.cpp */,
+				43F46BA702B34E28821D2D84 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_geometry_interface.cpp */,
+				5E1B3A15DA2F4D7F84443C5C /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_mollification.cpp */,
+				D738C88C9D974887A2C6D146 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/intrinsic_triangulation.cpp */,
+				2A0DB790225A4CBBADB4AC8D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/manifold_surface_mesh.cpp */,
+				56CFDE76D02B48DD93A9A8F1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mesh_graph_algorithms.cpp */,
+				7A2F163B511140FA9EEB8C64 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/meshio.cpp */,
+				2E3D895D3ECD4CD6908D2365 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/mutation_manager.cpp */,
+				99AF775EF7BD4C388FAE4012 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/normal_coordinates.cpp */,
+				51FA723228E0441084C22150 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/parameterize.cpp */,
+				D7A7E7A61365431D926E0B04 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/poisson_disk_sampler.cpp */,
+				33A6CE826E5145AABFC6DEBE /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/quadric_error_simplification.cpp */,
+				37E3086F010842E9A781477E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/remeshing.cpp */,
+				BD2EC05CB1DB4F1EB162C93B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/rich_surface_mesh_data.cpp */,
+				316A84936B83451CB9265B2F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/signpost_intrinsic_triangulation.cpp */,
+				4AA6CC0B95F849D1A01D219A /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_idt.cpp */,
+				94AD0B22F80B4C309B54754D /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/simple_polygon_mesh.cpp */,
+				6C4FF300BEB642A48B0688D7 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/stripe_patterns.cpp */,
+				684B0902E8434A4C82099DC3 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/subdivide.cpp */,
+				4C2C1A77165F4E6C8D90B993 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_centers.cpp */,
+				7801FE0368C94A50893EBE33 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh.cpp */,
+				6FC7955885E04728B5DEEE29 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_mesh_factories.cpp */,
+				9802894DB7184E029E6CB3B8 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surface_point.cpp */,
+				7526A1AD974F4568B3072EB0 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/surgery.cpp */,
+				080C8A8633B74026BBB7A5CF /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/trace_geodesic.cpp */,
+				9ADA561AC0A14416AAF7B507 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/transfer_functions.cpp */,
+				140E2146176E424E9F7FE447 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/tufted_laplacian.cpp */,
+				330668C1D1CD4571B681321E /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/uniformize.cpp */,
+				A5683CE6E98A4847ACB3D91F /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vector_heat_method.cpp */,
+				47066A970ABF411481A24B67 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/surface/vertex_position_geometry.cpp */,
+				09DC8256601C41C8A2024286 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/disjoint_sets.cpp */,
+				BA0CB85862D24482B0ED1780 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/elementary_geometry.cpp */,
+				8F4BC40582574A959CB374B4 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/knn.cpp */,
+				C411A40F5BBE42C68673661B /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/quaternion.cpp */,
+				295900D64C8A4B02AA447306 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/tri_tri_intersect.cpp */,
+				A3082BBB661B4A6DB44663E1 /* /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/utilities/utilities.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		37538FD230EC48A187D08A42 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 872D8300524D48B1A3EDE437 /* ZERO_CHECK */;
+			targetProxy = E5DE8227D8C840F7A997C833 /* PBXContainerItemProxy */;
+		};
+		9C0E19470E05421798B1996F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 872D8300524D48B1A3EDE437 /* ZERO_CHECK */;
+			targetProxy = F5E54212A5D74FF9ADC91C91 /* PBXContainerItemProxy */;
+		};
+		A401F61D374945E39EA759EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 038CBD2BB2A248639581D9E1 /* geometry-central */;
+			targetProxy = 485BBF9F87D345BD84A7AE27 /* PBXContainerItemProxy */;
+		};
+		F02B803AB83E4E24957C3F45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EECCCBAC82CC4A1ABF21AF65 /* ALL_BUILD */;
+			targetProxy = D32DC9D57D9B4C398FFC7906 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		049789F534A4442481EE857D /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		1C9D53A8AE36431AA4CC25D6 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build;
+			};
+			name = RelWithDebInfo;
+		};
+		1E47C14B2CCE43CBAE117920 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/src/MinSizeRel";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks,"$(inherited)");
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",NOMINMAX,_USE_MATH_DEFINES,GC_HAVE_SUITESPARSE,"$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/giuliabenvenuto/Documents/GitHub/cinolib/include,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/../include",/opt/homebrew/include/suitesparse,/opt/homebrew/include/eigen3,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanort/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanoflann/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/deps/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/happly","$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++11' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "geometry-central";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build/geometry-central.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		27F708828BAC4B46AA90C3D3 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build;
+			};
+			name = MinSizeRel;
+		};
+		2BF0E575DBE64351AAFDE1D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		30AC0C84A5F74CEB8F11871E /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		34B209925AE24C76A12E270A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build;
+			};
+			name = Release;
+		};
+		37D5451CED9347BBB632456D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SYMROOT = /Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build;
+			};
+			name = Debug;
+		};
+		48F3CFC50E05446992FE89B4 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/src/RelWithDebInfo";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks,"$(inherited)");
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",NOMINMAX,_USE_MATH_DEFINES,GC_HAVE_SUITESPARSE,"$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/giuliabenvenuto/Documents/GitHub/cinolib/include,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/../include",/opt/homebrew/include/suitesparse,/opt/homebrew/include/eigen3,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanort/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanoflann/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/deps/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/happly","$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=c++11' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "geometry-central";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build/geometry-central.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		4E17B87A65334EEFAC042885 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/src/Debug";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks,"$(inherited)");
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",NOMINMAX,_USE_MATH_DEFINES,GC_HAVE_SUITESPARSE,"$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/giuliabenvenuto/Documents/GitHub/cinolib/include,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/../include",/opt/homebrew/include/suitesparse,/opt/homebrew/include/eigen3,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanort/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanoflann/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/deps/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/happly","$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "   '-std=c++11' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "geometry-central";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build/geometry-central.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		67EDFCC9467D494C97BD1DBF /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		6E9B614D88D246D9B6BE513C /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		9022052FD6D94C7DAB4BECBC /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		99ED34026F26407882C04C19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		9ED5DA97E3D4453C855FA830 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		A32E4197F6E64AB0B70DD70D /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		B643A26737A34A619AC0306A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/src/Release";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = (/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks,"$(inherited)");
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",NOMINMAX,_USE_MATH_DEFINES,GC_HAVE_SUITESPARSE,"$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/giuliabenvenuto/Documents/GitHub/cinolib/include,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs,/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/Eigen,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/src/../include",/opt/homebrew/include/suitesparse,/opt/homebrew/include/eigen3,"/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanort/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/nanoflann/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/libs/geometry-central/deps/include","/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/libs/geometry-central/deps/happly","$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++11' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "geometry-central";
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/giuliabenvenuto/Documents/GitHub/SSGD_Problem/build_xcode/build/geometry-central.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		BDA80CAFA32747C385E46255 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		C7F0AF57BE554E6B9728879C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		DE677578D70D460BAA7E30FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		19269B2D60F24E749C2504C0 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9ED5DA97E3D4453C855FA830 /* Debug */,
+				C7F0AF57BE554E6B9728879C /* Release */,
+				30AC0C84A5F74CEB8F11871E /* MinSizeRel */,
+				049789F534A4442481EE857D /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		26A7FBC31C3F49BF8162E94C /* Build configuration list for PBXAggregateTarget "install" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99ED34026F26407882C04C19 /* Debug */,
+				BDA80CAFA32747C385E46255 /* Release */,
+				6E9B614D88D246D9B6BE513C /* MinSizeRel */,
+				A32E4197F6E64AB0B70DD70D /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		44A5705BE12C4976A0B370AE /* Build configuration list for PBXNativeTarget "geometry-central" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E17B87A65334EEFAC042885 /* Debug */,
+				B643A26737A34A619AC0306A /* Release */,
+				1E47C14B2CCE43CBAE117920 /* MinSizeRel */,
+				48F3CFC50E05446992FE89B4 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5C6053360BBA490496045451 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BF0E575DBE64351AAFDE1D6 /* Debug */,
+				DE677578D70D460BAA7E30FE /* Release */,
+				9022052FD6D94C7DAB4BECBC /* MinSizeRel */,
+				67EDFCC9467D494C97BD1DBF /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A72E5EF02F804657B23DFE32 /* Build configuration list for PBXProject "geometry-central" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37D5451CED9347BBB632456D /* Debug */,
+				34B209925AE24C76A12E270A /* Release */,
+				27F708828BAC4B46AA90C3D3 /* MinSizeRel */,
+				1C9D53A8AE36431AA4CC25D6 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2E0780D16CF7416EB62F96BB /* Project object */;
+}

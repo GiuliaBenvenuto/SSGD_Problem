@@ -103,10 +103,12 @@ struct State {
   // Sources for SSGD
   std::vector<uint> sources_heat;
   // // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
-  vector<int> sources;
+  // vector<int> sources;
 
   // TODO: DA TOGLIERE
-  // vector<int> sources = {729};
+  // vector<int> sources = {93};
+  int inputVertexIndex; // to store user input for vertex index
+  vector<int> sources;
 
   // Trettner
   string mesh_path;
@@ -196,15 +198,18 @@ struct State {
 void fillTimeTable(State &gs, const string& method_name, double load_time, double preprocess_time, double query_time) {
   if (method_name == "VTP") {
     gs.vtp_load = load_time;
-    gs.vtp_preprocess = preprocess_time;
+    // gs.vtp_preprocess = preprocess_time;
+    gs.vtp_preprocess = 0.0;
     gs.vtp_query = query_time;
   } else if (method_name == "Trettner") {
     gs.trettner_load = load_time;
-    gs.trettner_preprocess = preprocess_time;
+    // gs.trettner_preprocess = preprocess_time;
+    gs.trettner_preprocess = 0.0;
     gs.trettner_query = query_time;
   } else if (method_name == "Fast Marching") {
     gs.fast_mar_load = load_time;
-    gs.fast_mar_preprocess = preprocess_time;
+    // gs.fast_mar_preprocess = preprocess_time;
+    gs.fast_mar_preprocess = 0.0;
     gs.fast_mar_query = query_time;
   } else if (method_name == "Heat") {
     gs.heat_load = load_time;
@@ -241,11 +246,13 @@ void init(GeodesicMethod &m, State &gs, string name) {
   cout << "Load time: " << load << " milliseconds" << endl;
 
   // preprocess
-  gs.tic = std::chrono::steady_clock::now();
+  // gs.tic = std::chrono::steady_clock::now();
+  auto start = std::chrono::steady_clock::now();
   m.preprocess();
-  gs.toc = std::chrono::steady_clock::now();
-  double preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-  cout << "Preprocess time: " << preprocess << " milliseconds" << endl;
+  // gs.toc = std::chrono::steady_clock::now();
+  auto end = std::chrono::steady_clock::now();
+  auto preprocess = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
+  cout << "Preprocess time: " << preprocess << " seconds" << endl;
 
   // fill time table
   fillTimeTable(gs, name, load, preprocess, 0.0);
@@ -271,11 +278,13 @@ void init_methods(State &gs, atomic<float> &progress) {
   init(gs.edge_solver, gs, "Edge");
   progress.store(6.0f / 8.0f);  
 
-  init(gs.extended_solver, gs, "Extended");
-  progress.store(7.0f / 8.0f);      
-
   init(gs.lanthier_solver, gs, "Lanthier");
   progress.store(1.0f);
+
+  // init(gs.extended_solver, gs, "Extended");
+  // progress.store(7.0f / 8.0f);      
+
+
 }
 
 // SMAPE calculation
@@ -708,6 +717,19 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PopFont();
     }
 
+    ImGui::Text("Set Source Vertex:");
+    ImGui::InputInt("Vertex Index", &gs.inputVertexIndex);
+    if (ImGui::Button("Set")) {
+      if (gs.inputVertexIndex >= 0 && gs.inputVertexIndex < gs.m.num_verts()) {
+        gs.sources.clear(); // Clear existing sources if you only want one source at a time
+        gs.sources.push_back(gs.inputVertexIndex);
+        std::cout << "Source vertex set to: " << gs.inputVertexIndex << std::endl;
+      } else {
+        std::cerr << "Invalid vertex index!" << std::endl;
+      }
+    }
+    ImGui::Separator();
+
     // Wireframe settings
     ImGui::SetNextItemOpen(false, ImGuiCond_Once);
     ImGui::PushFont(lato_bold);
@@ -993,7 +1015,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "True FMM query time: " << gs.true_FMM_query_time << endl;
 
 
-          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.fast_mar_query);
+          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.true_FMM_query_time);
           break;
         }
               
@@ -1367,7 +1389,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources.clear();
 
       // TODO: DA TOGLIEREEEEE
-      // gs.sources = {729};
+      // gs.sources = {93};
 
       gs.vtp_query = 0.0;
       gs.trettner_query = 0.0;
@@ -1451,10 +1473,10 @@ int main(int argc, char **argv) {
     // string s = "../data/pymeshlab_generated/bunny_ok.obj";
     // string s = "../data/cinolib/3holes.obj";
     // string s = "../data/cinolib/bunny.obj";
-    string s = "../pymeshlab/Esperimento_1/data/bob/bob_tri_final.obj";
+    // string s = "../pymeshlab/Esperimento_1/data/bob/bob_tri_final.obj";
 
     // XCODE
-    // string s = "../../pymeshlab/Esperimento_1/data/blub/blub_tri_subdiv_1_final.obj";
+    string s = "../../pymeshlab/Esperimento_2/data/15_spot.obj";
     
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
