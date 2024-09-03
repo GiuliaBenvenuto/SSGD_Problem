@@ -135,6 +135,8 @@ struct State {
   double extended_load,   extended_preprocess,    extended_query;
   double lanthier_load,   lanthier_preprocess,    lanthier_query;
 
+  double true_FMM_query_time;
+
 
   State() {
     MESH_IS_LOADED = false;
@@ -167,6 +169,8 @@ struct State {
     edge_load,      edge_preprocess,       edge_query = 0.0;
     extended_load,  extended_preprocess,  extended_query = 0.0;
     lanthier_load,  lanthier_preprocess,  lanthier_query = 0.0;
+
+    true_FMM_query_time = 0.0;
 
     res = vector<double>();
 
@@ -433,7 +437,9 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     gs.edge_load,       gs.edge_preprocess,       gs.edge_query = 0.0;
     gs.extended_load,   gs.extended_preprocess,   gs.extended_query = 0.0;
     gs.lanthier_load,   gs.lanthier_preprocess,   gs.lanthier_query = 0.0;
-    
+
+    gs.true_FMM_query_time = 0.0;
+
     gs.res = vector<double>();
 
     // FOR TRETTER
@@ -980,6 +986,13 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           for (int i = 0; i < gs.res.size(); i++) {
             cout << i << "," << gs.res[i] << endl;
           }
+
+          // take query time
+          gs.true_FMM_query_time = gs.fast_mar_solver.get_time();
+          cout << "Query function time: " << gs.fast_mar_query << endl;
+          cout << "True FMM query time: " << gs.true_FMM_query_time << endl;
+
+
           fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.fast_mar_query);
           break;
         }

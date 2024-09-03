@@ -23,7 +23,7 @@ plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_query_time_log_log.png')
+plt.savefig('mesh_size_vs_query_time_EXT.png')
 
 # Show the plot
 plt.show()
@@ -40,7 +40,7 @@ plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_preprocessing_time_log_log.png')
+plt.savefig('mesh_size_vs_preprocessing_time_EXT.png')
 
 # Show the plot
 plt.show()

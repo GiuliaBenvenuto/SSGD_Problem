@@ -179,20 +179,33 @@ public:
 
   void query(const int vid, std::vector<double> &res) override {
     res.clear();
+    time = 0.0;
     matlabPtr = startMATLAB();
     matlabPtr->eval(u"addpath('/Users/giuliabenvenuto/Library/Application Support/MathWorks/MATLAB Add-Ons/Collections/Toolbox Fast Marching/toolbox_fast_marching');");
 
     startPointsMat = std::make_unique<Array>(factory.createScalar<double>(vid + 1));
 
+    auto start = std::chrono::high_resolution_clock::now();
     results = matlabPtr->feval(u"perform_fast_marching_mesh", 3, {*verticesMat, *facesMat, *startPointsMat, *options});
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    // save elapsed time
+    time = elapsed.count();
+    
     TypedArray<double> D = results[0];
     res = vector<double>(D.begin(), D.end());
 
     cout << "? FastMarching RES size: " << res.size() << endl;
+    cout << "Computation Time FAST MARCHING: " << elapsed.count() << " s" << endl;
 
     // for (int i = 0; i < res.size(); i++) {
     //   cout << "vertex: " << i << ", value: " << res[i] << endl;
     // }
+  }
+
+  // function to get the elapsed time
+  double get_time() {
+    return time;
   }
 };
 
