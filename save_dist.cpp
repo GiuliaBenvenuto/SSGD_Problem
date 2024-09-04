@@ -30,7 +30,7 @@ namespace fs = std::filesystem;
 using namespace matlab::engine;
 
 
-const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/distances_FMM";
+const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/distances_PROVA";
 
 
 struct State {
@@ -136,13 +136,13 @@ void init(GeodesicMethod &method, State &gs, const string &name) {
 }
 
 void init_methods(State &gs) {
-    // init(gs.vtp_solver, gs, "VTP");
-    // init(gs.trettner_solver, gs, "Trettner");
+    init(gs.vtp_solver, gs, "VTP");
+    init(gs.trettner_solver, gs, "Trettner");
     init(gs.fast_mar_solver, gs, "Fast Marching");
-    // init(gs.heat_solver, gs, "Heat");
-    // init(gs.geotangle_solver, gs, "Geotangle");
-    // init(gs.edge_solver, gs, "Edge");
-    // init(gs.lanthier_solver, gs, "Lanthier");
+    init(gs.heat_solver, gs, "Heat");
+    init(gs.geotangle_solver, gs, "Geotangle");
+    init(gs.edge_solver, gs, "Edge");
+    init(gs.lanthier_solver, gs, "Lanthier");
     // init(gs.extended_solver, gs, "Extended");
     
 }
@@ -202,13 +202,13 @@ auto run_method = [&](auto& solver, const string& method_name) {
         gs.res.clear();
     };
 
-    // run_method(gs.vtp_solver, "VTP");
-    // run_method(gs.trettner_solver, "Trettner");
+    run_method(gs.vtp_solver, "VTP");
+    run_method(gs.trettner_solver, "Trettner");
     run_method(gs.fast_mar_solver, "Fast Marching");
-    // run_method(gs.heat_solver, "Heat");
-    // run_method(gs.geotangle_solver, "Geotangle");
-    // run_method(gs.edge_solver, "Edge");
-    // run_method(gs.lanthier_solver, "Lanthier");
+    run_method(gs.heat_solver, "Heat");
+    run_method(gs.geotangle_solver, "Geotangle");
+    run_method(gs.edge_solver, "Edge");
+    run_method(gs.lanthier_solver, "Lanthier");
     // run_method(gs.extended_solver, "Extended");
 }
 

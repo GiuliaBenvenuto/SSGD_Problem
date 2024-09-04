@@ -1,77 +1,53 @@
-# Python script to extract the preprocessing and query times from the output files
-# and calculate the mean times for each mesh and method of times respect to the 5 source vertices
-
 import os
-import re
+import numpy as np
 import pandas as pd
 
-# Define the path to the main folder (current directory since the script is inside the "distances" folder)
-base_folder = "."
+def read_distances(file_path):
+    with open(file_path, 'r') as file:
+        data = file.readlines()[4:]  # Skip the first four lines with metadata
+    distances = [float(line.strip()) for line in data]
+    return distances
 
-# Define a pattern to extract relevant data from the files, including vertices and faces
-time_pattern = r"# Number of vertices: (\d+), Number of faces: (\d+)\n# Preprocessing time: ([\d\.e-]+)\n# Query time: ([\d\.e-]+)"
+def calculate_smape(gt, est):
+    gt = np.array(gt)
+    est = np.array(est)
+    if len(gt) == 0 or len(est) == 0:
+        return 0.0
+    denom = np.abs(gt) + np.abs(est)
+    nonzero = denom != 0
+    smape = np.abs(gt[nonzero] - est[nonzero]) / denom[nonzero]
+    return np.mean(smape) * 100  # Convert to percentage
 
-# Initialize a list to hold the results
-results = []
+def process_folder(folder_path):
+    results = []
+    files = os.listdir(folder_path)
+    mesh_methods = {}
 
-# Iterate through each folder in the base folder
-for folder in os.listdir(base_folder):
-    folder_path = os.path.join(base_folder, folder)
+    # Organize files by mesh and method
+    for file in files:
+        if file.endswith('.txt'):
+            parts = file.split('_')
+            mesh_name = parts[1]  # Corrected to extract mesh name from the second part of the filename
+            method = parts[2].split('.')[0]  # Extract method from the third part of the filename
+            if mesh_name not in mesh_methods:
+                mesh_methods[mesh_name] = {}
+            mesh_methods[mesh_name][method] = os.path.join(folder_path, file)
     
-    if os.path.isdir(folder_path):
-        # Iterate through each file in the folder
-        for filename in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, filename)
-            
-            if filename.endswith(".txt"):
-                with open(file_path, 'r') as file:
-                    content = file.read()
-                    
-                    # Extract the mesh name, method, and times
-                    mesh_name = filename.split('_')[1]
-                    method = filename.split('_')[2]
-                    # print(f"Processing {filename}...")  # Debug: Show the file being processed
-                    match = re.search(time_pattern, content)
-                    
-                    if match:
-                        vertices = int(match.group(1))
-                        faces = int(match.group(2))
-                        preprocessing_time = float(match.group(3))
-                        query_time = float(match.group(4))
-                        
-                        # Approximate very small values to 0
-                        if preprocessing_time < 1e-06:
-                            preprocessing_time = 0.0
-                        if query_time < 1e-06:
-                            query_time = 0.0
-                        
-                        results.append({
-                            "Mesh": mesh_name,
-                            "Method": method,
-                            "Vertices": vertices,
-                            "Faces": faces,
-                            "Preprocessing Time": preprocessing_time,
-                            "Query Time": query_time,
-                            "Source Vertex": folder
-                        })
-                    else:
-                        print(f"No match found for {filename}")  # Debug: If the pattern doesn't match
+    # Compute SMAPE for each mesh between VTP and other methods
+    for mesh, methods in mesh_methods.items():
+        if 'VTP' in methods:
+            gt_distances = read_distances(methods['VTP'])
+            row_result = {'MeshName': mesh}
+            for method, path in methods.items():
+                if method != 'VTP':
+                    est_distances = read_distances(path)
+                    smape = calculate_smape(gt_distances, est_distances)
+                    row_result[f'SMAPE_{method}'] = smape
+            results.append(row_result)
+    
+    # Create DataFrame and save to CSV
+    df = pd.DataFrame(results)
+    df.to_csv(os.path.join(folder_path, 'smape_results.csv'), index=False)
 
-# Convert results to a DataFrame
-df = pd.DataFrame(results)
-
-# Write the detailed times data to a CSV file
-df.to_csv("times_GIUSTI.csv", index=False)
-
-# Calculate the mean preprocessing and query times for each mesh and method
-# Keep vertices and faces as additional columns by taking the first value (assuming they are the same for each mesh-method combination)
-mean_times = df.groupby(['Mesh', 'Method', 'Vertices', 'Faces'], as_index=False).mean(numeric_only=True)
-
-# Ensure that even zero values are included correctly in the output
-mean_times.fillna(0, inplace=True)
-
-# Save the resulting mean times DataFrame to another CSV file
-output_csv = "mean_times_GIUSTI.csv"
-mean_times.to_csv(output_csv, index=False)
-
-print(f"CSV file has been saved as {output_csv}")
+# Replace 'path_to_folder' with the path to your folder containing the txt files
+process_folder('path_to_folder')
