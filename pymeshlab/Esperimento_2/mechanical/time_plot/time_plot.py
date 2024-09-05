@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the CSV file
-mean_times_df = pd.read_csv('../distances/mean_times_mechanical.csv')  # Make sure to set the correct path to your CSV file
+mean_times_df = pd.read_csv('../distances/mean_times_mechanical_MODIFIED.csv')  # Make sure to set the correct path to your CSV file
 
 # Calculate the size of the mesh
 mean_times_df['Mesh Size'] = mean_times_df['Vertices']
@@ -23,7 +23,7 @@ plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_query_MECHANIC.png')
+plt.savefig('mesh_size_vs_query_MODIFIED.png')
 
 # Show the plot
 plt.show()
@@ -40,7 +40,7 @@ plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_preprocessing_MECHANIC.png')
+plt.savefig('mesh_size_vs_preprocessing_MODIFIED.png')
 
 # Show the plot
 plt.show()
