@@ -30,7 +30,7 @@ namespace fs = std::filesystem;
 using namespace matlab::engine;
 
 
-const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/distances_PROVA";
+const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/mechanical/distances";
 
 
 struct State {
@@ -143,7 +143,7 @@ void init_methods(State &gs) {
     init(gs.geotangle_solver, gs, "Geotangle");
     init(gs.edge_solver, gs, "Edge");
     init(gs.lanthier_solver, gs, "Lanthier");
-    // init(gs.extended_solver, gs, "Extended");
+    init(gs.extended_solver, gs, "Extended");
     
 }
 
@@ -209,7 +209,7 @@ auto run_method = [&](auto& solver, const string& method_name) {
     run_method(gs.geotangle_solver, "Geotangle");
     run_method(gs.edge_solver, "Edge");
     run_method(gs.lanthier_solver, "Lanthier");
-    // run_method(gs.extended_solver, "Extended");
+    run_method(gs.extended_solver, "Extended");
 }
 
 int main(int argc, char **argv) {
@@ -225,8 +225,8 @@ int main(int argc, char **argv) {
     fs::create_directories(OUTPUT_PATH);
 
     // vector<int> vv_sources = {100};
-    vector<int> vv_sources = {729, 1989, 2519, 93, 475};
-    // vector<int> vv_sources = {729};
+    vector<int> vv_sources = {221, 236, 128, 32, 278};
+
 
 
     for(int vertex : vv_sources) {
