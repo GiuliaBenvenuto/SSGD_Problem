@@ -58,5 +58,9 @@ template <typename T>
 inline T interpolate(const array<T, 3> &v, const vec3d &alpha) {
   return alpha[0] * v[0] + alpha[1] * v[1] + alpha[2] * v[2];
 }
+template <typename T>
+inline T interpolate(const vector<T> &v, const vec3d &alpha) {
+  return alpha[0] * v[0] + alpha[1] * v[1] + alpha[2] * v[2];
+}
 
 #endif

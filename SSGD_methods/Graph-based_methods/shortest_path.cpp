@@ -623,7 +623,8 @@ array<vec2d, 3> unfold_face(const DrawableTrimesh<> &m, const uint tid,
   uint vid1 = m.edge_vert_id(eid, 1);
   int k = vert_offset(m, tid, vid0);
 
-  if (k == -1) std::cout << "You are messing something up" << std::endl;
+  if (k == -1)
+    std::cout << "You are messing something up" << std::endl;
 
   if (m.poly_vert_id(tid, (k + 1) % 3) != vid1) {
     k = (k + 2) % 3;
@@ -671,7 +672,140 @@ dual_geodesic_solver make_dual_geodesic_solver(const DrawableTrimesh<> &m) {
 
   return result;
 }
+template <typename Update, typename Stop, typename Exit>
+void search_strip(vector<double> &field, vector<bool> &in_queue,
+                  const dual_geodesic_solver &solver,
+                  const DrawableTrimesh<> &m, int start, int end,
+                  Update &&update, Stop &&stop, Exit &&exit) {
+  auto destination_pos =
+      interpolate(m.poly_verts(end), vec3d{1.0 / 3, 1.0 / 3, 1.0 / 3});
 
+  auto estimate_dist = [&](int face) {
+    vec3d p = interpolate(m.poly_verts(face), vec3d{1.0 / 3, 1.0 / 3, 1.0 / 3});
+    return (p - destination_pos).norm();
+  };
+  field[start] = estimate_dist(start);
+
+  // Cumulative weights of elements in queue. Used to keep track of the
+  // average weight of the queue.
+  double cumulative_weight = 0.0;
+
+  // setup queue
+  auto queue = std::deque<int>{};
+  in_queue[start] = true;
+  cumulative_weight += field[start];
+  queue.push_back(start);
+
+  while (!queue.empty()) {
+    auto node = queue.front();
+    auto average_weight = (float)(cumulative_weight / queue.size());
+
+    // Large Label Last (see comment at the beginning)
+    for (auto tries = 0; tries < queue.size() + 1; tries++) {
+      if (field[node] <= average_weight)
+        break;
+      queue.pop_front();
+      queue.push_back(node);
+      node = queue.front();
+    }
+
+    // Remove node from queue.
+    queue.pop_front();
+    in_queue[node] = false;
+    cumulative_weight -= field[node];
+
+    // Check early exit condition.
+    if (exit(node))
+      break;
+    if (stop(node))
+      continue;
+
+    for (auto i = 0; i < (int)solver.graph[node].size(); i++) {
+      auto neighbor = solver.graph[node][i].node;
+      if (neighbor == -1)
+        continue;
+
+      // Distance of neighbor through this node
+      auto new_distance = field[node];
+      new_distance += solver.graph[node][i].length;
+      new_distance += estimate_dist(neighbor);
+      new_distance -= estimate_dist(node);
+
+      auto old_distance = field[neighbor];
+      if (new_distance >= old_distance)
+        continue;
+
+      if (in_queue[neighbor]) {
+        // If neighbor already in queue, don't add it.
+        // Just update cumulative weight.
+        cumulative_weight += new_distance - old_distance;
+      } else {
+        // If neighbor not in queue, add node to queue using Small Label
+        // First (see comment at the beginning).
+        if (queue.empty() || (new_distance < field[queue.front()]))
+          queue.push_front(neighbor);
+        else
+          queue.push_back(neighbor);
+
+        // Update queue information.
+        in_queue[neighbor] = true;
+        cumulative_weight += new_distance;
+      }
+
+      // Update distance of neighbor.
+      field[neighbor] = new_distance;
+      if (update(node, neighbor, new_distance))
+        return;
+    }
+  }
+}
+vector<int> compute_strip_tlv(const DrawableTrimesh<> &m,
+                              const dual_geodesic_solver &solver, int start,
+                              int end) {
+  if (start == end)
+    return {start};
+
+  thread_local static auto parents = vector<int>{};
+  thread_local static auto field = vector<double>{};
+  thread_local static auto in_queue = vector<bool>{};
+
+  if (parents.size() != solver.graph.size()) {
+    parents.assign(solver.graph.size(), -1);
+    field.assign(solver.graph.size(), DBL_MAX);
+    in_queue.assign(solver.graph.size(), false);
+  }
+
+  // initialize once for all and sparsely cleanup at the end of every solve
+  auto visited = vector<int>{start};
+  auto sources = vector<int>{start};
+  auto update = [&visited, end](int node, int neighbor, float new_distance) {
+    parents[neighbor] = node;
+    visited.push_back(neighbor);
+    return neighbor == end;
+  };
+  auto stop = [](int node) { return false; };
+  auto exit = [](int node) { return false; };
+
+  search_strip(field, in_queue, solver, m, start, end, update, stop, exit);
+
+  // extract_strip
+  auto strip = vector<int>{};
+  auto node = end;
+  strip.reserve((int)sqrt(parents.size()));
+  while (node != -1) {
+    strip.push_back(node);
+    node = parents[node];
+  }
+
+  // cleanup buffers
+  for (auto &v : visited) {
+    parents[v] = -1;
+    field[v] = DBL_MAX;
+    in_queue[v] = false;
+  }
+  // assert(check_strip(geometry.adjacencies, strip));
+  return strip;
+}
 vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
                             const DrawableTrimesh<> &m,
                             const dual_geodesic_solver &solver) {
@@ -680,9 +814,9 @@ vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
     vec2i edge = oriented_edge(m, curr_tid, next_tid);
     return (1 - lerp) * m.vert(edge.x()) + lerp * m.vert(edge.y());
   };
-  vector<int> strip = strip_on_dual_graph(
-      solver, tgt.tid,
-      src.tid); // reversed so the strip goes from src to tgt
+  vector<int> strip = compute_strip_tlv(m, solver, tgt.tid, src.tid);
+  // strip_on_dual_graph(solver, tgt.tid, src.tid);
+  //  reversed so the strip goes from src to tgt
   assert(check_strip(m, strip));
   clean_strip(strip, src, tgt, m);
   if (strip.size() < 2)

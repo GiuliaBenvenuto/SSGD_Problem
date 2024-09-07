@@ -1,6 +1,7 @@
 
 #include <Eigen/SparseCholesky>
 #include <chrono>
+#include <cinolib/color.h>
 #include <cinolib/drawable_segment_soup.h>
 #include <cinolib/drawable_sphere.h>
 #include <cinolib/drawable_vector_field.h>
@@ -10,27 +11,24 @@
 #include <cinolib/gradient.h>
 #include <cinolib/io/write_OBJ.h>
 #include <cinolib/scalar_field.h>
-#include <cinolib/color.h>
 #include <cinolib/vector_serialization.h>
 #include <fstream>
+#include <future>
 #include <imgui.h>
 #include <thread>
-#include <future>
 
 // Compute SSGD
 #include "solving_ssgd.h"
 
 // Matlab
-#include "MatlabEngine.hpp"
 #include "MatlabDataArray.hpp"
-
+#include "MatlabEngine.hpp"
 
 using namespace std;
 using namespace cinolib;
 using namespace gcHeatWrapper;
 using namespace matlab::engine;
 namespace fs = std::filesystem;
-
 
 //------ Global variables ------
 // Fonts
@@ -39,8 +37,8 @@ ImFont *lato_regular = nullptr;
 ImFont *lato_bold_title = nullptr;
 atomic<float> progress(0.0f);
 
-
-//:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR GUI):::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::: GLOBAL VARIABLES (FOR
+//: GUI):::::::::::::::::::::::::::::::
 struct State {
   //-------- Program state --------
   bool MESH_IS_LOADED;
@@ -65,7 +63,7 @@ struct State {
   float wireframe_alpha; // Wireframe transparency
 
   // Shading
-  enum MeshRenderMode {RENDER_POINTS, RENDER_FLAT, RENDER_SMOOTH} render_mode;
+  enum MeshRenderMode { RENDER_POINTS, RENDER_FLAT, RENDER_SMOOTH } render_mode;
 
   // Vector field
   DrawableVectorField vec_field;
@@ -81,8 +79,17 @@ struct State {
   float width;
 
   // SSGD Method
-  enum SSGDMethod {VTP, TRETTNER, FAST_MARCHING, HEAT, GEOTANGLE, EDGE, EXTENDED, LANTHIER} ssgd_method;
-  
+  enum SSGDMethod {
+    VTP,
+    TRETTNER,
+    FAST_MARCHING,
+    HEAT,
+    GEOTANGLE,
+    EDGE,
+    EXTENDED,
+    LANTHIER
+  } ssgd_method;
+
   ScalarField field;
 
   // Cache for Heat method
@@ -114,31 +121,28 @@ struct State {
   string mesh_path;
   HalfEdge mesh;
 
-  VTPSolver           vtp_solver;
-  TrettnerSolver      trettner_solver; 
-  FastMarchingSolver  fast_mar_solver;
-  HeatSolver          heat_solver;
-  GeotangleSolver     geotangle_solver;
-  EdgeSolver          edge_solver;
-  ExtendedSolver      extended_solver;
-  LanthierSolver      lanthier_solver;
-
-  
+  VTPSolver vtp_solver;
+  TrettnerSolver trettner_solver;
+  FastMarchingSolver fast_mar_solver;
+  HeatSolver heat_solver;
+  GeotangleSolver geotangle_solver;
+  EdgeSolver edge_solver;
+  ExtendedSolver extended_solver;
+  LanthierSolver lanthier_solver;
 
   // Timer
   std::chrono::steady_clock::time_point tic;
   std::chrono::steady_clock::time_point toc;
-  double vtp_load,        vtp_preprocess,         vtp_query;
-  double trettner_load,   trettner_preprocess,    trettner_query;
-  double fast_mar_load,   fast_mar_preprocess,    fast_mar_query;
-  double heat_load,       heat_preprocess,        heat_query;
-  double geotangle_load,  geotangle_preprocess,   geotangle_query;
-  double edge_load,       edge_preprocess,        edge_query;
-  double extended_load,   extended_preprocess,    extended_query;
-  double lanthier_load,   lanthier_preprocess,    lanthier_query;
+  double vtp_load, vtp_preprocess, vtp_query;
+  double trettner_load, trettner_preprocess, trettner_query;
+  double fast_mar_load, fast_mar_preprocess, fast_mar_query;
+  double heat_load, heat_preprocess, heat_query;
+  double geotangle_load, geotangle_preprocess, geotangle_query;
+  double edge_load, edge_preprocess, edge_query;
+  double extended_load, extended_preprocess, extended_query;
+  double lanthier_load, lanthier_preprocess, lanthier_query;
 
   double true_FMM_query_time;
-
 
   State() {
     MESH_IS_LOADED = false;
@@ -163,14 +167,14 @@ struct State {
     ssgd_method = State::VTP;
 
     // Timer
-    vtp_load,       vtp_preprocess,       vtp_query = 0.0;
-    trettner_load,  trettner_preprocess,  trettner_query = 0.0;
-    fast_mar_load,  fast_mar_preprocess,  fast_mar_query = 0.0;
-    heat_load,      heat_preprocess,      heat_query = 0.0;
+    vtp_load, vtp_preprocess, vtp_query = 0.0;
+    trettner_load, trettner_preprocess, trettner_query = 0.0;
+    fast_mar_load, fast_mar_preprocess, fast_mar_query = 0.0;
+    heat_load, heat_preprocess, heat_query = 0.0;
     geotangle_load, geotangle_preprocess, geotangle_query = 0.0;
-    edge_load,      edge_preprocess,       edge_query = 0.0;
-    extended_load,  extended_preprocess,  extended_query = 0.0;
-    lanthier_load,  lanthier_preprocess,  lanthier_query = 0.0;
+    edge_load, edge_preprocess, edge_query = 0.0;
+    extended_load, extended_preprocess, extended_query = 0.0;
+    lanthier_load, lanthier_preprocess, lanthier_query = 0.0;
 
     true_FMM_query_time = 0.0;
 
@@ -194,8 +198,8 @@ struct State {
   }
 };
 
-
-void fillTimeTable(State &gs, const string& method_name, double load_time, double preprocess_time, double query_time) {
+void fillTimeTable(State &gs, const string &method_name, double load_time,
+                   double preprocess_time, double query_time) {
   if (method_name == "VTP") {
     gs.vtp_load = load_time;
     // gs.vtp_preprocess = preprocess_time;
@@ -234,7 +238,6 @@ void fillTimeTable(State &gs, const string& method_name, double load_time, doubl
   }
 }
 
-
 void init(GeodesicMethod &m, State &gs, string name) {
   cout << "---------- Initializing method: " << name << " ----------" << endl;
 
@@ -242,7 +245,8 @@ void init(GeodesicMethod &m, State &gs, string name) {
   gs.tic = std::chrono::steady_clock::now();
   m.load(&gs.m);
   gs.toc = std::chrono::steady_clock::now();
-  double load = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+  double load =
+      chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
   cout << "Load time: " << load << " milliseconds" << endl;
 
   // preprocess
@@ -251,40 +255,39 @@ void init(GeodesicMethod &m, State &gs, string name) {
   m.preprocess();
   // gs.toc = std::chrono::steady_clock::now();
   auto end = std::chrono::steady_clock::now();
-  auto preprocess = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
+  auto preprocess =
+      std::chrono::duration_cast<std::chrono::duration<double>>(end - start)
+          .count();
   cout << "Preprocess time: " << preprocess << " seconds" << endl;
 
   // fill time table
   fillTimeTable(gs, name, load, preprocess, 0.0);
 }
 
-
 void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
-  progress.store(1.0f / 8.0f);  
+  progress.store(1.0f / 8.0f);
 
   init(gs.trettner_solver, gs, "Trettner");
-  progress.store(2.0f / 8.0f); 
+  progress.store(2.0f / 8.0f);
 
   init(gs.fast_mar_solver, gs, "Fast Marching");
-  progress.store(3.0f / 8.0f); 
+  progress.store(3.0f / 8.0f);
 
   init(gs.heat_solver, gs, "Heat");
-  progress.store(4.0f / 8.0f);  
+  progress.store(4.0f / 8.0f);
 
   init(gs.geotangle_solver, gs, "Geotangle");
-  progress.store(5.0f / 8.0f);  
+  progress.store(5.0f / 8.0f);
 
   init(gs.edge_solver, gs, "Edge");
-  progress.store(6.0f / 8.0f);  
+  progress.store(6.0f / 8.0f);
 
   init(gs.lanthier_solver, gs, "Lanthier");
-  progress.store(1.0f);
+  progress.store(7.0f / 8.0f);
 
-  // init(gs.extended_solver, gs, "Extended");
-  // progress.store(7.0f / 8.0f);      
-
-
+  init(gs.extended_solver, gs, "Extended");
+  progress.store(8.0f / 8.0f);
 }
 
 // SMAPE calculation
@@ -314,98 +317,96 @@ void init_methods(State &gs, atomic<float> &progress) {
 // }
 
 // Updated SMAPE calculation function
-std::pair<double, std::vector<double>> calculate_smape(const std::vector<double>& gt, const std::vector<double>& est) {
-    std::cout << "GT size: " << gt.size() << ", EST size: " << est.size() << std::endl;
-    if (gt.empty() || est.empty()) {
-        std::cerr << "Ground truth or estimated distances are empty." << std::endl;
-        return {0.0, std::vector<double>()};
+std::pair<double, std::vector<double>>
+calculate_smape(const std::vector<double> &gt, const std::vector<double> &est) {
+  std::cout << "GT size: " << gt.size() << ", EST size: " << est.size()
+            << std::endl;
+  if (gt.empty() || est.empty()) {
+    std::cerr << "Ground truth or estimated distances are empty." << std::endl;
+    return {0.0, std::vector<double>()};
+  }
+
+  double smape_percentage = 0.0;
+  int count = 0;
+  std::vector<double> smape_values(gt.size(),
+                                   0.0); // To store individual SMAPE values
+
+  // Calculate SMAPE for each vertex and overall SMAPE percentage
+  for (size_t i = 0; i < est.size(); ++i) {
+    double denom = std::abs(gt[i]) + std::abs(est[i]);
+    if (denom != 0) {
+      smape_values[i] = std::abs(gt[i] - est[i]) / denom;
+      smape_percentage += smape_values[i];
+      ++count;
     }
+  }
 
-    double smape_percentage = 0.0;
-    int count = 0;
-    std::vector<double> smape_values(gt.size(), 0.0); // To store individual SMAPE values
+  // Convert to overall SMAPE percentage
+  if (count > 0) {
+    smape_percentage = (smape_percentage / count) * 100.0;
+  }
 
-    // Calculate SMAPE for each vertex and overall SMAPE percentage
-    for (size_t i = 0; i < est.size(); ++i) {
-        double denom = std::abs(gt[i]) + std::abs(est[i]);
-        if (denom != 0) {
-            smape_values[i] = std::abs(gt[i] - est[i]) / denom;
-            smape_percentage += smape_values[i];
-            ++count;
-        }
-    }
-
-    // Convert to overall SMAPE percentage
-    if (count > 0) {
-        smape_percentage = (smape_percentage / count) * 100.0;
-    }
-
-    return {smape_percentage, smape_values};
+  return {smape_percentage, smape_values};
 }
-
-
 
 Color interpolate_color(double value) {
-    // Ensure the value is clamped between 0 and 1
-    value = std::max(0.0, std::min(1.0, value));
+  // Ensure the value is clamped between 0 and 1
+  value = std::max(0.0, std::min(1.0, value));
 
-    // Directly assign green to zero error without any transformation
-    if (value == 0) {
-        return Color(0.0f, 1.0f, 0.0f, 1.0f);  // Pure green for zero error
-    }
+  // Directly assign green to zero error without any transformation
+  if (value == 0) {
+    return Color(0.0f, 1.0f, 0.0f, 1.0f); // Pure green for zero error
+  }
 
-    // Apply a transformation to enhance contrast for non-zero values
-    value = pow(value, 0.5);  // Using square root to enhance contrast
+  // Apply a transformation to enhance contrast for non-zero values
+  value = pow(value, 0.5); // Using square root to enhance contrast
 
-    // Define the colors using RGBA format
-    Color green(0.0f, 1.0f, 0.0f, 1.0f);  // Green color for low error
-    Color yellow(1.0f, 1.0f, 0.0f, 1.0f); // Yellow color for medium error
-    Color red(1.0f, 0.0f, 0.0f, 1.0f);    // Red color for high error
+  // Define the colors using RGBA format
+  Color green(0.0f, 1.0f, 0.0f, 1.0f);  // Green color for low error
+  Color yellow(1.0f, 1.0f, 0.0f, 1.0f); // Yellow color for medium error
+  Color red(1.0f, 0.0f, 0.0f, 1.0f);    // Red color for high error
 
-    float r, g, b, a = 1.0f;  // Set alpha to fully opaque
-    if (value < 0.5) {
-        // Interpolate between green and yellow
-        float local_value = value * 2;  // Scale to 0-1 range
-        r = (1.0f - local_value) * green.rgba[0] + local_value * yellow.rgba[0];
-        g = (1.0f - local_value) * green.rgba[1] + local_value * yellow.rgba[1];
-        b = (1.0f - local_value) * green.rgba[2] + local_value * yellow.rgba[2];
-    } else {
-        // Interpolate between yellow and red
-        float local_value = (value - 0.5f) * 2;  // Adjust scale for upper half
-        r = (1.0f - local_value) * yellow.rgba[0] + local_value * red.rgba[0];
-        g = (1.0f - local_value) * yellow.rgba[1] + local_value * red.rgba[1];
-        b = (1.0f - local_value) * yellow.rgba[2] + local_value * red.rgba[2];
-    }
+  float r, g, b, a = 1.0f; // Set alpha to fully opaque
+  if (value < 0.5) {
+    // Interpolate between green and yellow
+    float local_value = value * 2; // Scale to 0-1 range
+    r = (1.0f - local_value) * green.rgba[0] + local_value * yellow.rgba[0];
+    g = (1.0f - local_value) * green.rgba[1] + local_value * yellow.rgba[1];
+    b = (1.0f - local_value) * green.rgba[2] + local_value * yellow.rgba[2];
+  } else {
+    // Interpolate between yellow and red
+    float local_value = (value - 0.5f) * 2; // Adjust scale for upper half
+    r = (1.0f - local_value) * yellow.rgba[0] + local_value * red.rgba[0];
+    g = (1.0f - local_value) * yellow.rgba[1] + local_value * red.rgba[1];
+    b = (1.0f - local_value) * yellow.rgba[2] + local_value * red.rgba[2];
+  }
 
-    return Color(r, g, b, a);
+  return Color(r, g, b, a);
 }
 
+void visualize_smape_on_mesh(State &gs,
+                             const std::vector<double> &smape_values) {
+  // Create a scalar field from the SMAPE values
+  gs.field = ScalarField(smape_values);
 
+  // Normalize the scalar field between 0 and 1 for better visualization
+  gs.field.normalize_in_01();
 
-void visualize_smape_on_mesh(State &gs, const std::vector<double> &smape_values) {
-    // Create a scalar field from the SMAPE values
-    gs.field = ScalarField(smape_values);
+  // Assign colors based on the normalized values using the red-blue gradient
+  for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+    double normalized_value = gs.field[vid]; // Normalized SMAPE value
 
-    // Normalize the scalar field between 0 and 1 for better visualization
-    gs.field.normalize_in_01();
+    // Use the custom interpolation function to get the color
+    Color color = interpolate_color(normalized_value);
 
-    // Assign colors based on the normalized values using the red-blue gradient
-    for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
-        double normalized_value = gs.field[vid]; // Normalized SMAPE value
-        
-        // Use the custom interpolation function to get the color
-        Color color = interpolate_color(normalized_value);
+    // Set the interpolated color to the vertex
+    gs.m.vert_data(vid).color = color;
+  }
 
-        // Set the interpolated color to the vertex
-        gs.m.vert_data(vid).color = color;
-    }
-
-    // Show the vertex colors on the mesh
-    gs.m.show_vert_color();
-    gs.m.updateGL();
+  // Show the vertex colors on the mesh
+  gs.m.show_vert_color();
+  gs.m.updateGL();
 }
-
-
 
 //:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
 void Load_mesh(string filename, GLcanvas &gui, State &gs) {
@@ -416,19 +417,18 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
   gs.coords = extract_coords(gs.m);
   gs.tris = extract_tris(gs.m);
 
-
   for (auto i = 0; i < gs.nverts; i++)
     gs.VV[i] = gs.m.vert_ordered_verts_link(i);
 
   gs.m.normalize_bbox(); // rescale mesh to fit [0,1]^3 box
   gs.m.center_bbox();
-  
+
   gs.m.show_wireframe(gs.SHOW_WIREFRAME);
   gs.m.show_mesh(gs.SHOW_MESH);
   gs.m.updateGL();
 
   if (gs.MESH_IS_LOADED) {
-    
+
     // Clear and reinitialize the vector field for the new mesh
     gs.vec_field = DrawableVectorField();
     gs.show_vecfield = false; // Reset the flag to not show the old vector field
@@ -438,14 +438,14 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     // Clear cache for Heat method
     gs.prefactored_matrices.heat_flow_cache = NULL; // Reset the heat flow cache
 
-    gs.vtp_load,        gs.vtp_preprocess,        gs.vtp_query = 0.0;
-    gs.trettner_load,   gs.trettner_preprocess,   gs.trettner_query = 0.0;
-    gs.fast_mar_load,   gs.fast_mar_preprocess,   gs.fast_mar_query = 0.0;
-    gs.heat_load,       gs.heat_preprocess,       gs.heat_query = 0.0;
-    gs.geotangle_load,  gs.geotangle_preprocess,  gs.geotangle_query = 0.0;
-    gs.edge_load,       gs.edge_preprocess,       gs.edge_query = 0.0;
-    gs.extended_load,   gs.extended_preprocess,   gs.extended_query = 0.0;
-    gs.lanthier_load,   gs.lanthier_preprocess,   gs.lanthier_query = 0.0;
+    gs.vtp_load, gs.vtp_preprocess, gs.vtp_query = 0.0;
+    gs.trettner_load, gs.trettner_preprocess, gs.trettner_query = 0.0;
+    gs.fast_mar_load, gs.fast_mar_preprocess, gs.fast_mar_query = 0.0;
+    gs.heat_load, gs.heat_preprocess, gs.heat_query = 0.0;
+    gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query = 0.0;
+    gs.edge_load, gs.edge_preprocess, gs.edge_query = 0.0;
+    gs.extended_load, gs.extended_preprocess, gs.extended_query = 0.0;
+    gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query = 0.0;
 
     gs.true_FMM_query_time = 0.0;
 
@@ -463,14 +463,16 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     fs::create_directories(new_folder);
     // Construct the new filename
     string new_filename = fs::path(filename).filename().string();
-    string out_normalized_bb_mesh = new_folder + "/" + new_filename.substr(0, new_filename.size() - 4) + "_NORMALIZED.obj";
+    string out_normalized_bb_mesh =
+        new_folder + "/" + new_filename.substr(0, new_filename.size() - 4) +
+        "_NORMALIZED.obj";
     // Save the normalized mesh
     gs.m.save(out_normalized_bb_mesh.c_str());
     // Give to Trettner the normalized mesh
     gs.trettner_solver = TrettnerSolver(out_normalized_bb_mesh);
 
-    //gs.mesh_path = filename;
-    //gs.trettner_solver = TrettnerSolver(gs.mesh_path);
+    // gs.mesh_path = filename;
+    // gs.trettner_solver = TrettnerSolver(gs.mesh_path);
 
     init_methods(gs, progress);
   }
@@ -488,14 +490,16 @@ void Load_mesh(string filename, GLcanvas &gui, State &gs) {
     fs::create_directories(new_folder);
     // Construct the new filename
     string new_filename = fs::path(filename).filename().string();
-    string out_normalized_bb_mesh = new_folder + "/" + new_filename.substr(0, new_filename.size() - 4) + "_NORMALIZED.obj";
+    string out_normalized_bb_mesh =
+        new_folder + "/" + new_filename.substr(0, new_filename.size() - 4) +
+        "_NORMALIZED.obj";
     // Save the normalized mesh
     gs.m.save(out_normalized_bb_mesh.c_str());
     // Give to Trettner the normalized mesh
     gs.trettner_solver = TrettnerSolver(out_normalized_bb_mesh);
 
-    //gs.mesh_path = filename;
-    //gs.trettner_solver = TrettnerSolver(gs.mesh_path);
+    // gs.mesh_path = filename;
+    // gs.trettner_solver = TrettnerSolver(gs.mesh_path);
 
     gui.push(&gs.m);
     gs.MESH_IS_LOADED = true;
@@ -511,7 +515,8 @@ void Load_mesh(GLcanvas &gui, State &gs) {
   Load_mesh(filename, gui, gs);
 }
 
-//:::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
+//::::::::::::::::::::::::::::::::::::::
+//: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
   GLcanvas gui(1600, 800);
   gui.side_bar_width = 0.30;
@@ -522,12 +527,12 @@ GLcanvas Init_GUI() {
 void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
   gui.callback_app_controls = [&]() {
     // New detached window
-    bool show_new_window = true; 
-    
+    bool show_new_window = true;
+
     if (show_new_window) {
       float sidebar_width = gui.side_bar_width * 1500;
       ImVec2 new_window_pos = ImVec2(sidebar_width + 650, 25);
-      ImVec2 window_size = ImVec2(400, 200); 
+      ImVec2 window_size = ImVec2(400, 200);
 
       ImGui::SetNextWindowPos(new_window_pos, ImGuiCond_FirstUseEver);
       ImGui::SetNextWindowSize(window_size, ImGuiCond_FirstUseEver);
@@ -536,106 +541,105 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
       // Define the table headers
       if (ImGui::BeginTable("TimingResults", 4)) {
-          ImGui::TableSetupColumn("Method");
-          ImGui::TableSetupColumn("Load (ms)");
-          ImGui::TableSetupColumn("Preprocess (ms)");
-          ImGui::TableSetupColumn("Query (ms)");
-          ImGui::TableHeadersRow();
+        ImGui::TableSetupColumn("Method");
+        ImGui::TableSetupColumn("Load (ms)");
+        ImGui::TableSetupColumn("Preprocess (ms)");
+        ImGui::TableSetupColumn("Query (ms)");
+        ImGui::TableHeadersRow();
 
-          // VTP Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("VTP");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.vtp_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.vtp_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.vtp_query);
+        // VTP Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("VTP");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.vtp_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.vtp_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.vtp_query);
 
-          // Trettner Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("Trettner");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.trettner_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.trettner_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.trettner_query);
+        // Trettner Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Trettner");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.trettner_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.trettner_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.trettner_query);
 
-          // Fast Marching Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("Fast Marching");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.fast_mar_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.fast_mar_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.fast_mar_query);
+        // Fast Marching Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Fast Marching");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.fast_mar_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.fast_mar_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.fast_mar_query);
 
-          // Heat Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("Heat");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.heat_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.heat_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.heat_query);
+        // Heat Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Heat");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.heat_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.heat_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.heat_query);
 
-          // GeoTangle Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("GeoTangle");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.geotangle_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.geotangle_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.geotangle_query);
+        // GeoTangle Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("GeoTangle");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.geotangle_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.geotangle_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.geotangle_query);
 
-          // Edge Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("Edge");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.edge_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.edge_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.edge_query);
+        // Edge Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Edge");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.edge_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.edge_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.edge_query);
 
-          // Extended Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("Extended");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.extended_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.extended_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.extended_query);
+        // Extended Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Extended");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.extended_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.extended_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.extended_query);
 
-          // Lanthier Method
-          ImGui::TableNextRow();
-          ImGui::TableSetColumnIndex(0);
-          ImGui::Text("Lanthier");
-          ImGui::TableSetColumnIndex(1);
-          ImGui::Text("%.4f", gs.lanthier_load);
-          ImGui::TableSetColumnIndex(2);
-          ImGui::Text("%.4f", gs.lanthier_preprocess);
-          ImGui::TableSetColumnIndex(3);
-          ImGui::Text("%.4f", gs.lanthier_query);
+        // Lanthier Method
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Lanthier");
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("%.4f", gs.lanthier_load);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Text("%.4f", gs.lanthier_preprocess);
+        ImGui::TableSetColumnIndex(3);
+        ImGui::Text("%.4f", gs.lanthier_query);
 
-          ImGui::EndTable();
+        ImGui::EndTable();
       }
 
-    ImGui::End();
-}
-
+      ImGui::End();
+    }
 
     // In your main function or GUI rendering loop
     if (progress < 1.0f) {
@@ -646,7 +650,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
 
       ImGui::Begin("Graph Construction Progress");
-      ImGui::ProgressBar(progress.load(), ImVec2(-1.0f, 0.0f), progress > 1.0f ? "Done" : "Loading...");
+      ImGui::ProgressBar(progress.load(), ImVec2(-1.0f, 0.0f),
+                         progress > 1.0f ? "Done" : "Loading...");
       ImGui::End();
     }
 
@@ -679,7 +684,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PopFont();
       // Assuming Load_mesh successfully loads the mesh into gs.m
       int numVertices = gs.m.num_verts();
-      int numFaces = gs.m.num_polys(); // or num_faces() depending on your mesh type
+      int numFaces =
+          gs.m.num_polys(); // or num_faces() depending on your mesh type
 
       ImGui::Text("Number of vertices: %d", numVertices);
       ImGui::Text("Number of faces: %d", numFaces);
@@ -721,9 +727,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     ImGui::InputInt("Vertex Index", &gs.inputVertexIndex);
     if (ImGui::Button("Set")) {
       if (gs.inputVertexIndex >= 0 && gs.inputVertexIndex < gs.m.num_verts()) {
-        gs.sources.clear(); // Clear existing sources if you only want one source at a time
+        gs.sources.clear(); // Clear existing sources if you only want one
+                            // source at a time
         gs.sources.push_back(gs.inputVertexIndex);
-        std::cout << "Source vertex set to: " << gs.inputVertexIndex << std::endl;
+        std::cout << "Source vertex set to: " << gs.inputVertexIndex
+                  << std::endl;
       } else {
         std::cerr << "Invalid vertex index!" << std::endl;
       }
@@ -880,7 +888,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::SeparatorText("PDE-Based Methods");
       ImGui::PopFont();
 
-      if (ImGui::RadioButton("Fast Marching  ", gs.ssgd_method == State::FAST_MARCHING)) {
+      if (ImGui::RadioButton("Fast Marching  ",
+                             gs.ssgd_method == State::FAST_MARCHING)) {
         gs.ssgd_method = State::FAST_MARCHING;
       }
 
@@ -888,14 +897,13 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::Columns(2, nullptr, false);
       // First column for the radio button
       if (ImGui::RadioButton("Heat  ", gs.ssgd_method == State::HEAT)) {
-          gs.ssgd_method = State::HEAT;
+        gs.ssgd_method = State::HEAT;
       }
       ImGui::NextColumn();
       // Second column for the InputDouble
-      ImGui::SetNextItemWidth(gs.width); 
+      ImGui::SetNextItemWidth(gs.width);
       ImGui::InputDouble("t", &gs.heat_time, 0.1, 1.0, "%.3f");
       ImGui::Columns(1);
-
 
       // Graph-Based Methods
       ImGui::PushFont(lato_bold);
@@ -916,11 +924,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       }
       ImGui::NextColumn();
       // Second column for the InputInt
-      ImGui::SetNextItemWidth(gs.width); 
-      ImGui::InputInt("k", &gs.k, 1, 10); // Add an input integer for parameter k
+      ImGui::SetNextItemWidth(gs.width);
+      ImGui::InputInt("k", &gs.k, 1,
+                      10); // Add an input integer for parameter k
       ImGui::Columns(1);
       gs.k = std::max(gs.k, 1);
-
 
       ImGui::Columns(2, nullptr, false);
       if (ImGui::RadioButton("Lanthier  ", gs.ssgd_method == State::LANTHIER)) {
@@ -928,12 +936,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       }
       ImGui::NextColumn();
       // Second column for the InputInt
-      ImGui::SetNextItemWidth(gs.width); 
+      ImGui::SetNextItemWidth(gs.width);
       ImGui::InputInt("Steiner points", &gs.n_steiner, 1, 10);
       ImGui::Columns(1);
       gs.n_steiner = std::max(gs.n_steiner, 1);
-      //cout << "Number of Steiner points: " << gs.n_steiner << endl;
-
+      // cout << "Number of Steiner points: " << gs.n_steiner << endl;
 
       ImGui::TreePop();
     } else {
@@ -966,7 +973,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
-          gs.vtp_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.vtp_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
           // for (int i = 0; i < gs.res.size(); i++) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
@@ -978,28 +987,38 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   // cout << i << "," << gs.res[i] << endl;
           //   cout << gs.res[i] << "," << endl;
           // }
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count();
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
-          fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess, gs.vtp_query);
+          fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess,
+                        gs.vtp_query);
           break;
         }
 
         case State::TRETTNER: {
           gs.tic = std::chrono::steady_clock::now();
           gs.trettner_solver.query(gs.sources[0], gs.res);
-          gs.toc = std::chrono::steady_clock::now(); 
-          gs.trettner_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.toc = std::chrono::steady_clock::now();
+          gs.trettner_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
           // cout << "---------------" << endl;
           // cout << "TRETTNER: " << endl;
           // cout << "---------------" << endl;
           // for (int i = 0; i < gs.res.size(); i++) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count();
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
-          fillTimeTable(gs, "Trettner", gs.trettner_load, gs.trettner_preprocess, gs.trettner_query);
+          fillTimeTable(gs, "Trettner", gs.trettner_load,
+                        gs.trettner_preprocess, gs.trettner_query);
           break;
         }
 
@@ -1007,7 +1026,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           gs.fast_mar_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
-          gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.fast_mar_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
           // cout << "---------------" << endl;
           // cout << "FAST MAR: " << endl;
           // cout << "---------------" << endl;
@@ -1020,11 +1041,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "Query function time: " << gs.fast_mar_query << endl;
           cout << "True FMM query time: " << gs.true_FMM_query_time << endl;
 
-
-          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load, gs.fast_mar_preprocess, gs.true_FMM_query_time);
+          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load,
+                        gs.fast_mar_preprocess, gs.true_FMM_query_time);
           break;
         }
-              
+
         case State::HEAT: {
           if (gs.heat_time != gs.heat_time_prev) {
             cout << "Heat time has changed to: " << gs.heat_time << endl;
@@ -1033,25 +1054,31 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           }
 
           double time_scalar = 1;
-          
+
           cout << "Time scalar: " << time_scalar << endl;
           gs.heat_solver.set_t(time_scalar);
-
 
           gs.tic = std::chrono::steady_clock::now();
           gs.heat_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
-          gs.heat_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.heat_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
           // cout << "---------------" << endl;
           // cout << "HEAT: " << endl;
           // cout << "---------------" << endl;
           // for (int i = 0; i < gs.res.size(); i++) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count();
-          cout << "QUERY TIME: " << seconds << " seconds" << std::endl;;
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
+          cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
+          ;
 
-          fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess, gs.heat_query);
+          fillTimeTable(gs, "Heat", gs.heat_load, gs.heat_preprocess,
+                        gs.heat_query);
           break;
         }
 
@@ -1059,7 +1086,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           gs.geotangle_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
-          gs.geotangle_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.geotangle_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
 
           // cout << "---------------" << endl;
           // cout << "GEOTANGLE: " << endl;
@@ -1067,10 +1096,14 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           // for (int i = 0; i < gs.res.size(); i++) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count();
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
-          fillTimeTable(gs, "Geotangle", gs.geotangle_load, gs.geotangle_preprocess, gs.geotangle_query);
+          fillTimeTable(gs, "Geotangle", gs.geotangle_load,
+                        gs.geotangle_preprocess, gs.geotangle_query);
           break;
         }
 
@@ -1085,12 +1118,18 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   cout << gs.res[i] << endl;
           // }
           gs.toc = std::chrono::steady_clock::now();
-          gs.edge_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.edge_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
 
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count();
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
-          fillTimeTable(gs, "Edge", gs.edge_load, gs.edge_preprocess, gs.edge_query);
+          fillTimeTable(gs, "Edge", gs.edge_load, gs.edge_preprocess,
+                        gs.edge_query);
           break;
         }
 
@@ -1103,8 +1142,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             gs.toc = std::chrono::steady_clock::now();
 
             // Calculate the time taken for preprocessing
-            gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+            gs.extended_preprocess =
+                chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                    .count();
+            fillTimeTable(gs, "Extended", gs.extended_load,
+                          gs.extended_preprocess, gs.extended_query);
 
             gs.prev_k = gs.k;
           }
@@ -1118,30 +1160,39 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   cout << gs.res[i] << endl;
           // }
           gs.toc = std::chrono::steady_clock::now();
-          gs.extended_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-          
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count(); 
+          gs.extended_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
+
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
-          fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+          fillTimeTable(gs, "Extended", gs.extended_load,
+                        gs.extended_preprocess, gs.extended_query);
           break;
         }
 
         case State::LANTHIER: {
-          if(gs.n_steiner != gs.prev_n_steiner) {
-            cout << "Number of Steiner points has changed to: " << gs.n_steiner << endl;
+          if (gs.n_steiner != gs.prev_n_steiner) {
+            cout << "Number of Steiner points has changed to: " << gs.n_steiner
+                 << endl;
 
             gs.tic = std::chrono::steady_clock::now();
             gs.lanthier_solver.set_n_steiner(gs.n_steiner);
             gs.toc = std::chrono::steady_clock::now();
 
             // Calculate the time taken for preprocessing
-            gs.lanthier_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-            fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
+            gs.lanthier_preprocess =
+                chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                    .count();
+            fillTimeTable(gs, "Lanthier", gs.lanthier_load,
+                          gs.lanthier_preprocess, gs.lanthier_query);
 
             gs.prev_n_steiner = gs.n_steiner;
           }
-          
 
           gs.tic = std::chrono::steady_clock::now();
           cout << "Source vertex: " << gs.sources[0] << endl;
@@ -1153,26 +1204,31 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
           gs.toc = std::chrono::steady_clock::now();
-          gs.lanthier_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.lanthier_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
 
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count(); 
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
-          fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
+          fillTimeTable(gs, "Lanthier", gs.lanthier_load,
+                        gs.lanthier_preprocess, gs.lanthier_query);
           break;
         }
-        
+
         default:
           cout << "No SSGD method selected" << endl;
           break;
         }
-          gs.field = ScalarField(gs.res);
-          gs.field.normalize_in_01();
-          gs.field.copy_to_mesh(gs.m);
-          gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
-          }
+        gs.field = ScalarField(gs.res);
+        gs.field.normalize_in_01();
+        gs.field.copy_to_mesh(gs.m);
+        gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+      }
     }
-
 
     static float displayed_smape = 0.0f;
     // Button for Compute SMAPE error
@@ -1191,7 +1247,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
@@ -1213,15 +1270,15 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.trettner_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
           cout << "SMAPE ERROR for Trettner: " << gs.smape << endl;
-        
 
           gs.ground_truth.clear();
-          //gs.smape = 0.0;
+          // gs.smape = 0.0;
 
           break;
         }
@@ -1232,7 +1289,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.fast_mar_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
@@ -1243,7 +1301,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
           break;
         }
-              
+
         case State::HEAT: {
           if (gs.heat_time != gs.heat_time_prev) {
             cout << "Heat time has changed to: " << gs.heat_time << endl;
@@ -1252,7 +1310,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           }
 
           double time_scalar = 1;
-          
+
           cout << "Time scalar: " << time_scalar << endl;
           gs.heat_solver.set_t(time_scalar);
 
@@ -1261,7 +1319,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.heat_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
@@ -1269,7 +1328,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
           gs.ground_truth.clear();
           // gs.smape = 0.0;
-          
+
           break;
         }
 
@@ -1279,7 +1338,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.geotangle_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
@@ -1297,7 +1357,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.edge_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
@@ -1318,8 +1379,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             gs.toc = std::chrono::steady_clock::now();
 
             // Calculate the time taken for preprocessing
-            gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
+            gs.extended_preprocess =
+                chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                    .count();
+            fillTimeTable(gs, "Extended", gs.extended_load,
+                          gs.extended_preprocess, gs.extended_query);
 
             gs.prev_k = gs.k;
           }
@@ -1329,7 +1393,8 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.extended_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
@@ -1342,26 +1407,31 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::LANTHIER: {
-          if(gs.n_steiner != gs.prev_n_steiner) {
-            cout << "Number of Steiner points has changed to: " << gs.n_steiner << endl;
+          if (gs.n_steiner != gs.prev_n_steiner) {
+            cout << "Number of Steiner points has changed to: " << gs.n_steiner
+                 << endl;
 
             gs.tic = std::chrono::steady_clock::now();
             gs.lanthier_solver.set_n_steiner(gs.n_steiner);
             gs.toc = std::chrono::steady_clock::now();
 
             // Calculate the time taken for preprocessing
-            gs.lanthier_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
-            fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
+            gs.lanthier_preprocess =
+                chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                    .count();
+            fillTimeTable(gs, "Lanthier", gs.lanthier_load,
+                          gs.lanthier_preprocess, gs.lanthier_query);
 
             gs.prev_n_steiner = gs.n_steiner;
           }
-          
+
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.lanthier_solver.query(gs.sources[0], gs.res);
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] =
+              calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
           visualize_smape_on_mesh(gs, smape_values);
 
@@ -1372,16 +1442,16 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
           break;
         }
-        
+
         default:
           cout << "No SSGD method selected" << endl;
           break;
         }
-          // QUI VOLGIO VISUALIZZARE L'ERRORE COME UNA HEATMAP SULLA MESH PERCHE' L'ERRORE E' UNO SCALAR
-          // gs.field = ScalarField(gs.res);
-          // gs.field.normalize_in_01();
-          // gs.field.copy_to_mesh(gs.m);
-          // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
+        // QUI VOLGIO VISUALIZZARE L'ERRORE COME UNA HEATMAP SULLA MESH PERCHE'
+        // L'ERRORE E' UNO SCALAR gs.field = ScalarField(gs.res);
+        // gs.field.normalize_in_01();
+        // gs.field.copy_to_mesh(gs.m);
+        // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
       }
     }
     // Display SMAPE error next to the button
@@ -1464,7 +1534,6 @@ void Setup_Mouse_Callback(GLcanvas &gui, State &gs) {
   };
 }
 
-
 //=============================== MAIN =========================================
 
 int main(int argc, char **argv) {
@@ -1501,7 +1570,7 @@ int main(int argc, char **argv) {
 
     // XCODE
     string s = "../../pymeshlab/Esperimento_2/data/15_spot.obj";
-    
+
     gs.mesh_path = s;
     Load_mesh(s, gui, gs);
   }

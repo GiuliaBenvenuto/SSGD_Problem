@@ -13,13 +13,11 @@ geodesic_solver extended_solver(const DrawableTrimesh<> &m,
     // cout << "Vertex " << i << " has " << nbr.size() << " neighbors" << endl;
     result.graph[i].resize(nbr.size());
     for (size_t j = 0; j < nbr.size(); ++j) {
-      auto tic = chrono::high_resolution_clock::now();
       mesh_point src = get_point_from_vert(m, i);
       mesh_point tgt = get_point_from_vert(m, nbr[j]);
       // cout << "Computing SHORTEST PATH between " << i << " and " << nbr[j] <<
       // endl;
       vector<vec3d> path = shortest_path(src, tgt, m, solver);
-      auto toc = chrono::high_resolution_clock::now();
       // cout time high_resolution_clock in microseconds
 
       // cout << "SHORTEST PATH computed" << endl;
