@@ -108,9 +108,9 @@ void init_methods(State &gs) {
     // init(gs.trettner_solver, gs, "Trettner");
     // init(gs.fast_mar_solver, gs, "Fast Marching");
     // init(gs.heat_solver, gs, "Heat");
-    // init(gs.geotangle_solver, gs, "Geotangle");
+    init(gs.geotangle_solver, gs, "Geotangle");
     // init(gs.edge_solver, gs, "Edge");
-    init(gs.extended_solver, gs, "Extended");
+    // init(gs.extended_solver, gs, "Extended");
     // init(gs.lanthier_solver, gs, "Lanthier");
 }
 
@@ -191,12 +191,12 @@ void run_ssgd_method(State &gs, int vertex, vector<double> &ground_truth, vector
     // smape = 0.0;
 
 
-    // cout << "----- GEOTANGLE -----" << endl;
-    // gs.geotangle_solver.query(vertex, gs.res);
-    // smape = smape_error(gs.res, ground_truth, gs);
-    // smape_errors.push_back(smape);
-    // gs.res.clear();
-    // smape = 0.0;
+    cout << "----- GEOTANGLE -----" << endl;
+    gs.geotangle_solver.query(vertex, gs.res);
+    smape = smape_error(gs.res, ground_truth, gs);
+    smape_errors.push_back(smape);
+    gs.res.clear();
+    smape = 0.0;
 
 
     // cout << "----- EDGE -----" << endl;
@@ -207,12 +207,12 @@ void run_ssgd_method(State &gs, int vertex, vector<double> &ground_truth, vector
     // smape = 0.0;
 
     
-    cout << "----- EXTENDED -----" << endl;
-    gs.extended_solver.query(vertex, gs.res);
-    smape = smape_error(gs.res, ground_truth, gs);
-    smape_errors.push_back(smape);
-    gs.res.clear();
-    smape = 0.0;
+    // cout << "----- EXTENDED -----" << endl;
+    // gs.extended_solver.query(vertex, gs.res);
+    // smape = smape_error(gs.res, ground_truth, gs);
+    // smape_errors.push_back(smape);
+    // gs.res.clear();
+    // smape = 0.0;
 
 
     // cout << "----- LANTHIER -----" << endl;
@@ -299,15 +299,19 @@ int main(int argc, char **argv) {
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/bunny_gt_distances.csv";
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/bob500f_gt_distances.csv";
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/Trettner_gt/bunny_gt_trettner.csv";
-    // std::filesystem::path csv_path = "../pymeshlab/Esperimento_Drago/Dragon_with_decimation/ground_truth/dragon_decimated_gt.csv";
-    std::filesystem::path csv_path = "../pymeshlab/Esperimento_Thai/ground_truth/thai_decimated_gt.csv";
+    std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Thai/ground_truth/thai_decimated_gt.csv";
+    // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/spot500f_gt_distances.csv";
+    // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/ground_truth/dragon_decimated_gt.csv";
 
     // vector<int> vv_bob = {100};
-    // vector<int> vv_spot = {174};
     // vector<int> vv_spot = {100};
-    // vector<int> vv_dragon = {16, 167, 163, 194, 66};
-
-    vector<int> vv_thai = {48, 50, 56, 49, 2};
+    // vector<int> vv_spot500 = {100};
+    // vector<int> vv_spot = {174};
+    // vector<int> vv_dragon = {16, 66, 163, 167, 194};
+    // vector<int> vv_spot = {174, 283, 395, 1876, 2794};
+    // vector<int> vv_bob = {482, 1710, 2005, 3782, 4757};
+    vector<int> vv_thai = {2, 48, 49, 50, 56};
+    
 
     vector<double> ground_truth;
 
@@ -318,10 +322,12 @@ int main(int argc, char **argv) {
       // Prepare CSV file
       // ofstream csvFile("../pymeshlab/Esperimento_1/data/simplified/smape_BUNNY_TRETTNER_" + to_string(vertex) + ".csv");
       // ofstream csvFile("../pymeshlab/Esperimento_Drago/Dragon_with_decimation/SMAPE/smape_DRAGON_extended_" + to_string(vertex) + ".csv");
-      ofstream csvFile("../pymeshlab/Esperimento_Thai/SMAPE/smape_THAI_EXT" + to_string(vertex) + ".csv");
+      // ofstream csvFile("../pymeshlab/Esperimento_1/data/SMAPE_RESULTS_BOB/smape_spot_VTP_" + to_string(vertex) + ".csv");
+      ofstream csvFile("../pymeshlab/Esperimento_1_Thai/SMAPE/smape_Thai_GEO_" + to_string(vertex) + ".csv");
+
 
       // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier" << endl;
-      csvFile << "MeshName,NumVertices,SMAPE_Extended" << endl;
+      csvFile << "MeshName,NumVertices,SMAPE_GEO" << endl;
 
       if (!read_ground_truth(csv_path.string(), vertex, ground_truth)) {
         cerr << "Failed to read ground truth from " << csv_path << endl;

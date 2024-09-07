@@ -309,10 +309,14 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m,
       if (!geo_tangle)
         continue;
       // connect opposite nodes
-      auto neighbor = m.adj_p2p(face)[k];
+      // auto neighbor = m.adj_p2p(face)[k];
+      
+      uint eid = m.edge_id(a, b);
+      uint neighbor = m.polys_adjacent_along(face, eid)[0];
+
       if (face < neighbor) {
         connect_opposite_nodes(solver, m.vector_verts(), m.adj_p2v(face),
-                               m.adj_p2v(neighbor), vec2i{(int)a, (int)b});
+                              m.adj_p2v(neighbor), vec2i{(int)a, (int)b});
         edge_count++;
       }
     }

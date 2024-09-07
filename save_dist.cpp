@@ -30,7 +30,7 @@ namespace fs = std::filesystem;
 using namespace matlab::engine;
 
 
-const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/mechanical/distances";
+const string OUTPUT_PATH = "../pymeshlab/Esperimento_1/data/DISTANCES";
 
 
 struct State {
@@ -143,7 +143,7 @@ void init_methods(State &gs) {
     init(gs.geotangle_solver, gs, "Geotangle");
     init(gs.edge_solver, gs, "Edge");
     init(gs.lanthier_solver, gs, "Lanthier");
-    init(gs.extended_solver, gs, "Extended");
+    // init(gs.extended_solver, gs, "Extended");
     
 }
 
@@ -209,25 +209,107 @@ auto run_method = [&](auto& solver, const string& method_name) {
     run_method(gs.geotangle_solver, "Geotangle");
     run_method(gs.edge_solver, "Edge");
     run_method(gs.lanthier_solver, "Lanthier");
-    run_method(gs.extended_solver, "Extended");
+    // run_method(gs.extended_solver, "Extended");
 }
+
+
+// ----------- ORIGINALE CHE FUNZIONA -----------
+// int main(int argc, char **argv) {
+//     State gs;
+
+//     if (argc < 2) {
+//         cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
+//         return 1;
+//     }
+//     string folder_path = argv[1];
+
+//     // Create output directory if it doesn't exist
+//     fs::create_directories(OUTPUT_PATH);
+
+//     // vector<int> vv_sources = {100};
+//     vector<int> vv_sources = {16};
+//     // vector<int> vv_sources = {221, 236, 128, 32, 278};
+//     // vector<int> vv_sources = {93, 475, 729, 1989, 2519};
+//     // vector<int> vv_sources = {32, 128, 221, 236, 278};
+
+
+
+//     for(int vertex : vv_sources) {
+//         for (const auto &entry : fs::directory_iterator(folder_path)) {
+//             if (entry.path().extension() == ".obj") {
+//                 string mesh_path = entry.path().string();
+//                 string mesh_name = entry.path().stem().string();
+//                 cout << "Processing mesh: " << mesh_path << endl;
+
+//                 Load_mesh(mesh_path, gs);
+            
+//                 init_methods(gs);
+
+//                 run_ssgd_method(gs, vertex, mesh_name);
+//             }
+//         } 
+//     }
+
+//     return 0;
+// }
+
 
 int main(int argc, char **argv) {
     State gs;
 
-    if (argc < 2) {
-        cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
-        return 1;
-    }
-    string folder_path = argv[1];
+    // if (argc < 2) {
+    //     cerr << "Usage: " << argv[0] << " <folder_path>" << endl;
+    //     return 1;
+    // }
+    // string folder_path = argv[1];
 
     // Create output directory if it doesn't exist
     fs::create_directories(OUTPUT_PATH);
+    string folder_path = "";
+    vector<int> vv_sources = {};
 
-    // vector<int> vv_sources = {100};
-    vector<int> vv_sources = {221, 236, 128, 32, 278};
+    folder_path = "../pymeshlab/Esperimento_1/data/blub";
+    vv_sources = {663};
 
+    for(int vertex : vv_sources) {
+        for (const auto &entry : fs::directory_iterator(folder_path)) {
+            if (entry.path().extension() == ".obj") {
+                string mesh_path = entry.path().string();
+                string mesh_name = entry.path().stem().string();
+                cout << "Processing mesh: " << mesh_path << endl;
 
+                Load_mesh(mesh_path, gs);
+            
+                init_methods(gs);
+
+                run_ssgd_method(gs, vertex, mesh_name);
+            }
+        } 
+    }
+
+    folder_path = "../pymeshlab/Esperimento_1/data/bob";
+    vv_sources.clear();
+    vv_sources = {482};
+
+    for(int vertex : vv_sources) {
+        for (const auto &entry : fs::directory_iterator(folder_path)) {
+            if (entry.path().extension() == ".obj") {
+                string mesh_path = entry.path().string();
+                string mesh_name = entry.path().stem().string();
+                cout << "Processing mesh: " << mesh_path << endl;
+
+                Load_mesh(mesh_path, gs);
+            
+                init_methods(gs);
+
+                run_ssgd_method(gs, vertex, mesh_name);
+            }
+        } 
+    }
+
+    folder_path = "../pymeshlab/Esperimento_1/data/spot";
+    vv_sources.clear();
+    vv_sources = {174};
 
     for(int vertex : vv_sources) {
         for (const auto &entry : fs::directory_iterator(folder_path)) {
