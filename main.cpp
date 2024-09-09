@@ -268,26 +268,26 @@ void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
   progress.store(1.0f / 8.0f);
 
-  init(gs.trettner_solver, gs, "Trettner");
-  progress.store(2.0f / 8.0f);
+  // init(gs.trettner_solver, gs, "Trettner");
+  // progress.store(2.0f / 8.0f);
 
-  init(gs.fast_mar_solver, gs, "Fast Marching");
-  progress.store(3.0f / 8.0f);
+  // init(gs.fast_mar_solver, gs, "Fast Marching");
+  // progress.store(3.0f / 8.0f);
 
-  init(gs.heat_solver, gs, "Heat");
-  progress.store(4.0f / 8.0f);
+  // init(gs.heat_solver, gs, "Heat");
+  // progress.store(4.0f / 8.0f);
 
-  init(gs.geotangle_solver, gs, "Geotangle");
-  progress.store(5.0f / 8.0f);
+  // init(gs.geotangle_solver, gs, "Geotangle");
+  // progress.store(5.0f / 8.0f);
 
-  init(gs.edge_solver, gs, "Edge");
-  progress.store(6.0f / 8.0f);
+  // init(gs.edge_solver, gs, "Edge");
+  // progress.store(6.0f / 8.0f);
 
-  init(gs.lanthier_solver, gs, "Lanthier");
-  progress.store(7.0f / 8.0f);
+  // init(gs.lanthier_solver, gs, "Lanthier");
+  // progress.store(7.0f / 8.0f);
 
-  init(gs.extended_solver, gs, "Extended");
-  progress.store(8.0f / 8.0f);
+  // init(gs.extended_solver, gs, "Extended");
+  // progress.store(8.0f / 8.0f);
 }
 
 // SMAPE calculation
@@ -973,9 +973,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
-          gs.vtp_query =
-              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
-                  .count();
+          gs.vtp_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           // for (int i = 0; i < gs.res.size(); i++) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
@@ -987,14 +985,15 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   // cout << i << "," << gs.res[i] << endl;
           //   cout << gs.res[i] << "," << endl;
           // }
-          double seconds =
-              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
-                                                                        gs.tic)
-                  .count();
+          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
-          fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess,
-                        gs.vtp_query);
+          // I want to write gs.res in a .txt file one value at row
+          // Create the file in this directory 
+  
+          
+
+          fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess, gs.vtp_query);
           break;
         }
 

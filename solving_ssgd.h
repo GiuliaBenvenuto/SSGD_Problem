@@ -218,7 +218,7 @@ public:
 
   gc_mesh gc_m;
   unique_ptr<HeatMethodDistanceSolver> heatSolverGC;
-  double time_scalar = 1.0;
+  double time_scalar = 2.0;
 
   void load(DrawableTrimesh<>*mesh) override {
     gc_m = make_gc_mesh(extract_tris(*mesh), mesh->vector_verts());

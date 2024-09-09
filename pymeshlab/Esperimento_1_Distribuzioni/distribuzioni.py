@@ -193,6 +193,10 @@ def plot_percentage_errors(percentage_errors, reference_key):
             # where μ is the mean and σ is the standard deviation.
             # This formula creates a bell-shaped curve centered at the mean, with its width determined by the standard deviation.
             p = 1 / (std * np.sqrt(2 * np.pi)) * np.exp(-((x_range - mean) ** 2) / (2 * std**2))
+            
+            # tell me the x value for which y is maximum
+            print(f"Max value for {key}: {x_range[np.argmax(p)]}")
+
 
             line, = ax.plot(x_range, p, linewidth=2, label=f"{key} (μ={mean:.2f}, σ={std:.2f})", color=colors[i % len(colors)])
             lines.append(line)
@@ -285,7 +289,7 @@ def toggle_visibility(event, fig, lined):
 # directory_path = 'data/distances_asian_dragon'
 directory_path = 'data/distances_dragon_decimated'
 
-key_string = 'Trettner'  # Filter criteria for non-reference files
+key_string = 'VTP'  # Filter criteria for non-reference files
 # reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file - GROUND TRUTH
 reference_key = 'M7_reordered_VTP_16.txt'
 

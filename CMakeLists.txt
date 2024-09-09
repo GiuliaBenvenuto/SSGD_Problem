@@ -137,7 +137,7 @@ add_executable(mesh_analysis_app mesh_analysis.cpp solving_ssgd.h solving_ssgd.c
 set_target_properties(mesh_analysis_app PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
 
 # CINOLIB
-set(cinolib_DIR /Users/claudiomancinelli/Documents/GitHub/cinolib)
+set(cinolib_DIR /Users/giuliabenvenuto/Documents/GitHub/cinolib)
 set(CINOLIB_USES_OPENGL_GLFW_IMGUI ON)
 find_package(cinolib REQUIRED)
 
