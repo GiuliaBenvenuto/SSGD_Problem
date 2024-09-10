@@ -15,14 +15,10 @@ geodesic_solver extended_solver(const DrawableTrimesh<> &m,
     for (size_t j = 0; j < nbr.size(); ++j) {
       mesh_point src = get_point_from_vert(m, i);
       mesh_point tgt = get_point_from_vert(m, nbr[j]);
-      // cout << "Computing SHORTEST PATH between " << i << " and " << nbr[j] <<
-      // endl;
-      vector<vec3d> path = shortest_path(src, tgt, m, solver);
-      // cout time high_resolution_clock in microseconds
 
-      // cout << "SHORTEST PATH computed" << endl;
       result.graph[i][j].node = nbr[j];
-      result.graph[i][j].length = path_length(path);
+      result.graph[i][j].length =
+          shortest_path_polyhedral_distance(src, tgt, m, solver);
       // cout << "Time: " << chrono::duration_cast<chrono::microseconds>(toc -
       // tic).count() << " microseconds" << endl;
     }

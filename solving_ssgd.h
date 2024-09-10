@@ -54,6 +54,24 @@ inline vector<uint> extract_tris(const DrawableTrimesh<> &mesh) {
   return tris;
 }
 
+inline bool check_sp_polyhedral_distance(const DrawableTrimesh<> &m,
+                                         const geodesic_solver &solver) {
+  for (size_t i = 0; i < solver.graph.size(); ++i) {
+    vector<double> d =
+        exact_geodesic_distance(m.vector_polys(), m.vector_verts(), i);
+    for (size_t j = 0; j < solver.graph[i].size(); ++j) {
+      double len = solver.graph[i][j].length;
+      int nei = solver.graph[i][j].node;
+      double real_len = d[nei];
+      if (std::abs(len - real_len) > 1e-2) {
+        assert(false);
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 class GeodesicMethod {
 public:
   explicit GeodesicMethod() {}

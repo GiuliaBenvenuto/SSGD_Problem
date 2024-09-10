@@ -827,7 +827,8 @@ vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
   vector<double> lerps = funnel(portals, max_index);
 
   straighten_path(portals, lerps, strip, src, tgt, max_index, m);
-
+  if (strip.size() < 2)
+    return {mesh_point_pos(m, src), mesh_point_pos(m, tgt)};
   vector<vec3d> result(strip.size() + 1);
   result[0] = mesh_point_pos(m, src);
   for (uint i = 1; i < strip.size(); ++i)
@@ -836,6 +837,45 @@ vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
   result.back() = mesh_point_pos(m, tgt);
 
   return result;
+}
+double shortest_path_polyhedral_distance(mesh_point &src, mesh_point &tgt,
+                                         const DrawableTrimesh<> &m,
+                                         const dual_geodesic_solver &solver) {
+  auto get_point_pos = [&m](const double lerp, const int curr_tid,
+                            const int next_tid) {
+    vec2i edge = oriented_edge(m, curr_tid, next_tid);
+    return (1 - lerp) * m.vert(edge.x()) + lerp * m.vert(edge.y());
+  };
+  vector<int> strip = compute_strip_tlv(m, solver, tgt.tid, src.tid);
+
+  assert(check_strip(m, strip));
+  clean_strip(strip, src, tgt, m);
+  if (strip.size() < 2)
+    return (mesh_point_pos(m, src) - mesh_point_pos(m, tgt)).norm();
+
+  vector<array<vec2d, 2>> portals = unfold_strip(m, strip, src, tgt);
+  size_t max_index = 0;
+  vector<double> lerps = funnel(portals, max_index);
+
+  straighten_path(portals, lerps, strip, src, tgt, max_index, m);
+  // after the straighthening we may end up with a degenerate strip
+  if (strip.size() < 2)
+    return (mesh_point_pos(m, src) - mesh_point_pos(m, tgt)).norm();
+  vector<vec3d> result(strip.size() + 1);
+  double len =
+      (mesh_point_pos(m, src) - get_point_pos(lerps[0], strip[0], strip[1]))
+          .norm();
+  for (size_t i = 1; i < strip.size() - 1; ++i) {
+    vec3d p0 = get_point_pos(lerps[i - 1], strip[i - 1], strip[i]);
+    vec3d p1 = get_point_pos(lerps[i], strip[i], strip[i + 1]);
+    len += (p0 - p1).norm();
+  }
+
+  len += (mesh_point_pos(m, tgt) -
+          get_point_pos(lerps.back(), strip.rbegin()[1], strip.back()))
+             .norm();
+
+  return len;
 }
 
 double path_length(const vector<vec3d> &path) {

@@ -197,7 +197,20 @@ struct State {
     heat_time_prev = 1.0;
   }
 };
-
+void export_field(const vector<double> &field, const string &filename) {
+  string name = "/Users/claudiomancinelli/Documents/GitHub/"
+                "SSGD_Problem/";
+  name.append(filename);
+  std::ofstream outfile;
+  outfile.open(name);
+  assert(outfile.is_open());
+  outfile << "SCALARFIELD"
+          << " " << field.size() << "\n";
+  for (auto i = 0; i < field.size(); ++i) {
+    outfile << field[i] << "\n";
+  }
+  outfile.close();
+}
 void fillTimeTable(State &gs, const string &method_name, double load_time,
                    double preprocess_time, double query_time) {
   if (method_name == "VTP") {
@@ -286,7 +299,7 @@ void init_methods(State &gs, atomic<float> &progress) {
   // init(gs.lanthier_solver, gs, "Lanthier");
   // progress.store(7.0f / 8.0f);
 
-  // init(gs.extended_solver, gs, "Extended");
+  init(gs.extended_solver, gs, "Extended");
   // progress.store(8.0f / 8.0f);
 }
 
@@ -335,6 +348,7 @@ calculate_smape(const std::vector<double> &gt, const std::vector<double> &est) {
   for (size_t i = 0; i < est.size(); ++i) {
     double denom = std::abs(gt[i]) + std::abs(est[i]);
     if (denom != 0) {
+      assert(gt[i] <= est[i]);
       smape_values[i] = std::abs(gt[i] - est[i]) / denom;
       smape_percentage += smape_values[i];
       ++count;
@@ -973,7 +987,9 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.tic = std::chrono::steady_clock::now();
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
-          gs.vtp_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          gs.vtp_query =
+              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
+                  .count();
           // for (int i = 0; i < gs.res.size(); i++) {
           //   cout << i << "," << gs.res[i] << endl;
           // }
@@ -985,15 +1001,17 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   // cout << i << "," << gs.res[i] << endl;
           //   cout << gs.res[i] << "," << endl;
           // }
-          double seconds = std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc - gs.tic).count();
+          double seconds =
+              std::chrono::duration_cast<std::chrono::duration<double>>(gs.toc -
+                                                                        gs.tic)
+                  .count();
           cout << "QUERY TIME: " << seconds << " seconds" << std::endl;
 
           // I want to write gs.res in a .txt file one value at row
-          // Create the file in this directory 
-  
-          
+          // Create the file in this directory
 
-          fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess, gs.vtp_query);
+          fillTimeTable(gs, "VTP", gs.vtp_load, gs.vtp_preprocess,
+                        gs.vtp_query);
           break;
         }
 
@@ -1159,6 +1177,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   cout << gs.res[i] << endl;
           // }
           gs.toc = std::chrono::steady_clock::now();
+          export_field(gs.res, "Extended");
           gs.extended_query =
               chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
                   .count();
@@ -1244,6 +1263,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.vtp_solver.query(gs.sources[0], gs.res);
+
           // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
           auto [smape_percentage, smape_values] =

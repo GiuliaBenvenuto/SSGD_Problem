@@ -43,6 +43,10 @@ vector<vec3d> shortest_path(mesh_point &src, mesh_point &tgt,
                             const DrawableTrimesh<> &m,
                             const dual_geodesic_solver &solver);
 
+double shortest_path_polyhedral_distance(mesh_point &src, mesh_point &tgt,
+                                         const DrawableTrimesh<> &m,
+                                         const dual_geodesic_solver &solver);
+
 double path_length(const vector<vec3d> &path);
 
 template <typename T>
