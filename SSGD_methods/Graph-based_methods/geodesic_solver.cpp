@@ -140,7 +140,6 @@ void visit_geodesic_graph(vector<double> &field,
     in_queue[node] = false;
     cumulative_weight -= field[node];
 
-
     for (auto i = 0; i < (int)solver.graph[node].size(); i++) {
       // Distance of neighbor through this node
       double new_distance = field[node] + solver.graph[node][i].length;
@@ -183,7 +182,7 @@ void update_geodesic_distances(vector<double> &distances,
                                double max_distance) {
 
   auto update = [](int node, int neighbor) {};
-  auto stop = [&](int node) { };
+  auto stop = [&](int node) {};
   auto exit = [](int node) { return false; };
   for (auto source : sources)
     distances[source] = 0.0;
@@ -233,7 +232,63 @@ void connect_nodes(geodesic_solver &solver, int a, int b, float length) {
   solver.graph[a].push_back({b, length});
   solver.graph[b].push_back({a, length});
 }
+vec2d intersect_circles(const vec2d &c2, const double &R2, const vec2d &c1,
+                        const double &R1) {
+  auto R = (c2 - c1).norm_sqrd();
+  assert(R > 0);
+  auto invR = double(1) / R;
+  vec2d result = c1 + c2;
 
+  result = result + (c2 - c1) * ((R1 - R2) * invR);
+  auto A = 2 * (R1 + R2) * invR;
+  auto B = (R1 - R2) * invR;
+  auto s = A - B * B - 1;
+  assert(s >= 0);
+  result = result + vec2d(c2.y() - c1.y(), c1.x() - c2.x()) * sqrt(s);
+  return result / 2.;
+}
+array<vec2d, 3> init_flat_triangle(const DrawableTrimesh<> &m, const uint tid) {
+
+  array<vec2d, 3> result;
+  vector<vec3d> verts = m.poly_verts(tid);
+  result[0] = vec2d(0., 0.);
+  result[1] = vec2d(0., (verts[1] - verts[0]).norm());
+  double r0 = (verts[2] - verts[0]).norm_sqrd();
+  double r1 = (verts[2] - verts[1]).norm_sqrd();
+  result[2] = intersect_circles(result[0], r0, result[1], r1);
+
+  return result;
+}
+array<vec2d, 3> unfold_face(const DrawableTrimesh<> &m, const uint tid,
+                            const uint adj, const array<vec2d, 3> &flat_tid) {
+
+  array<vec2d, 3> result;
+  uint eid = m.edge_shared(tid, adj);
+  uint vid0 = m.edge_vert_id(eid, 0);
+  uint vid1 = m.edge_vert_id(eid, 1);
+  int k = vert_offset(m, tid, vid0);
+
+  if (k == -1)
+    std::cout << "You are messing something up" << std::endl;
+
+  if (m.poly_vert_id(tid, (k + 1) % 3) != vid1) {
+    k = (k + 2) % 3;
+    swap(vid0, vid1);
+  }
+  uint opp = m.vert_opposite_to(adj, vid0, vid1);
+  double r1 = (m.vert(vid1) - m.vert(opp)).norm_sqrd();
+  double r0 = (m.vert(vid0) - m.vert(opp)).norm_sqrd();
+
+  vec2d flat_opp =
+      intersect_circles(flat_tid[(k + 1) % 3], r1, flat_tid[k], r0);
+
+  int h = vert_offset(m, adj, vid0);
+  result[h] = flat_tid[k];
+  result[(h + 1) % 3] = flat_opp;
+  result[(h + 2) % 3] = flat_tid[(k + 1) % 3];
+
+  return result;
+}
 double opposite_nodes_arc_length(const vector<vec3d> &positions, int a, int c,
                                  const vec2i &edge) {
   // Triangles (a, b, d) and (b, d, c) are connected by (b, d) edge
@@ -267,7 +322,20 @@ double opposite_nodes_arc_length(const vector<vec3d> &positions, int a, int c,
   else
     return sqrt(len);
 }
+// a and b are the endpoints of the edge shared by tid0 and tid1
+static void connect_opposite_nodes(geodesic_solver &solver,
+                                   const DrawableTrimesh<> &m, const int tid0,
+                                   const int tid1, const int a, const int b) {
+  auto flat_tid = init_flat_triangle(m, tid0);
+  auto flat_nei = unfold_face(m, tid0, tid1, flat_tid);
+  uint v0 = m.vert_opposite_to(tid0, a, b);
+  uint v1 = m.vert_opposite_to(tid1, a, b);
 
+  uint k0 = vert_offset(m, tid0, v0);
+  uint k1 = vert_offset(m, tid1, v1);
+  double len = (flat_tid[k0] - flat_nei[k1]).norm();
+  connect_nodes(solver, v0, v1, len);
+}
 static void connect_opposite_nodes(geodesic_solver &solver,
                                    const vector<vec3d> &positions,
                                    const vector<uint> &tr0,
@@ -310,13 +378,15 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m,
         continue;
       // connect opposite nodes
       // auto neighbor = m.adj_p2p(face)[k];
-      
+
       uint eid = m.edge_id(a, b);
       uint neighbor = m.polys_adjacent_along(face, eid)[0];
 
       if (face < neighbor) {
-        connect_opposite_nodes(solver, m.vector_verts(), m.adj_p2v(face),
-                              m.adj_p2v(neighbor), vec2i{(int)a, (int)b});
+        // connect_opposite_nodes(solver, m.vector_verts(), m.adj_p2v(face),
+        //                        m.adj_p2v(neighbor), vec2i{(int)a, (int)b});
+        connect_opposite_nodes(solver, m, face, neighbor, a, b);
+
         edge_count++;
       }
     }
@@ -326,176 +396,182 @@ geodesic_solver make_geodesic_solver(const DrawableTrimesh<> &m,
   else
     std::cout << "Number of edges edge graph: " << edge_count << std::endl;
 
-  //solver.print_graph();
+  // solver.print_graph();
   return solver;
 }
 
-
-
 // ---------- Lanthier ----------
-std::vector<cinolib::vec3d> sample_uniform(DrawableTrimesh<> & m, uint e, float step)
+std::vector<cinolib::vec3d> sample_uniform(DrawableTrimesh<> &m, uint e,
+                                           float step)
 // sample points on edge e distributed uniformly along the edge:
 {
-    std::vector<cinolib::vec3d> samples;
-    cinolib::vec3d v0 = m.edge_vert(e,0);
-    cinolib::vec3d v1 = m.edge_vert(e,1);
-    double d = v0.dist(v1);                 // edge length
-    uint ns = (uint)(d/step+0.5);           // #steiner pts on this edge
-    double mystep = d/ns;                   // actual step on this edge
-    for (uint s=0;s<ns;s++)         // generate all Steiner points on e
-    {
-        samples.push_back( (1.0-(mystep+s*mystep)/d)*v0+((mystep+s*mystep)/d)*v1 );
-    }
-    return samples;
+  std::vector<cinolib::vec3d> samples;
+  cinolib::vec3d v0 = m.edge_vert(e, 0);
+  cinolib::vec3d v1 = m.edge_vert(e, 1);
+  double d = v0.dist(v1);           // edge length
+  uint ns = (uint)(d / step + 0.5); // #steiner pts on this edge
+  double mystep = d / ns;           // actual step on this edge
+  for (uint s = 0; s < ns; s++)     // generate all Steiner points on e
+  {
+    samples.push_back((1.0 - (mystep + s * mystep) / d) * v0 +
+                      ((mystep + s * mystep) / d) * v1);
+  }
+  return samples;
 }
 
-
-void sample_mesh_uniform(DrawableTrimesh<> & m, uint pxedge,
-                         std::vector<cinolib::vec3d> & SteinerPoints, std::vector< std::pair< uint,uint > > & SteinerPerEdge)
-{
-    float step = m.edge_avg_length()/(pxedge+1);    // step on avg edge
-    SteinerPoints.reserve(pxedge*m.num_edges());
-    SteinerPerEdge.resize(m.num_edges());
-    // sample Steiner points on edges
-    for (uint e=0;e<m.num_edges();e++)
-    {
-        std::vector<cinolib::vec3d> e_samp = sample_uniform(m,e,step);  // generate all Steiner points on e
-        uint fst = SteinerPoints.size();                                // index of first point on this edge
-        for (uint s=0;s<e_samp.size();s++)                              // add all Steinter points
-            SteinerPoints.push_back(e_samp[s]);
-        SteinerPerEdge[e] = std::make_pair(fst,SteinerPoints.size()-fst);
-    }
-
+void sample_mesh_uniform(DrawableTrimesh<> &m, uint pxedge,
+                         std::vector<cinolib::vec3d> &SteinerPoints,
+                         std::vector<std::pair<uint, uint>> &SteinerPerEdge) {
+  float step = m.edge_avg_length() / (pxedge + 1); // step on avg edge
+  SteinerPoints.reserve(pxedge * m.num_edges());
+  SteinerPerEdge.resize(m.num_edges());
+  // sample Steiner points on edges
+  for (uint e = 0; e < m.num_edges(); e++) {
+    std::vector<cinolib::vec3d> e_samp =
+        sample_uniform(m, e, step);  // generate all Steiner points on e
+    uint fst = SteinerPoints.size(); // index of first point on this edge
+    for (uint s = 0; s < e_samp.size(); s++) // add all Steinter points
+      SteinerPoints.push_back(e_samp[s]);
+    SteinerPerEdge[e] = std::make_pair(fst, SteinerPoints.size() - fst);
+  }
 }
 
-
-void sample_mesh_Steiner(DrawableTrimesh<> & m, uint pxedge,
-                         std::vector<cinolib::vec3d> & SteinerPoints, std::vector< std::pair< uint,uint > > & SteinerPerEdge)
-{ sample_mesh_uniform(m,pxedge,SteinerPoints,SteinerPerEdge); } 
-
-
+void sample_mesh_Steiner(DrawableTrimesh<> &m, uint pxedge,
+                         std::vector<cinolib::vec3d> &SteinerPoints,
+                         std::vector<std::pair<uint, uint>> &SteinerPerEdge) {
+  sample_mesh_uniform(m, pxedge, SteinerPoints, SteinerPerEdge);
+}
 
 // ------ add_node function ------
 void add_node(geodesic_solver &solver) {
-  std::vector<geodesic_solver::graph_edge> adj_list; 
-  solver.graph.push_back(adj_list); 
+  std::vector<geodesic_solver::graph_edge> adj_list;
+  solver.graph.push_back(adj_list);
 }
 
 // ------ add_directed_arc function ------
 void add_directed_arc(geodesic_solver &solver, int a, int b, float length) {
-    if (a >= 0 && a < solver.graph.size() && b >= 0 && b < solver.graph.size()) {
-      solver.graph[a].push_back({b, length});
-    } else {
-      cout << "ERROR: invalid node index" << endl;
-    }
+  if (a >= 0 && a < solver.graph.size() && b >= 0 && b < solver.graph.size()) {
+    solver.graph[a].push_back({b, length});
+  } else {
+    cout << "ERROR: invalid node index" << endl;
+  }
 }
 
-// ------ add_undirected_arc function -> is connect_nodes already implemented ------
-
+// ------ add_undirected_arc function -> is connect_nodes already implemented
+// ------
 
 geodesic_solver compute_fine_graph(DrawableTrimesh<> &m, uint pxedge) {
-    auto solver = geodesic_solver{};
-    solver.graph.clear();
+  auto solver = geodesic_solver{};
+  solver.graph.clear();
 
-    std::vector<cinolib::vec3d> SteinerPoints;
-    std::vector<std::pair<uint, uint>> SteinerPerEdge;
-    sample_mesh_Steiner(m, pxedge, SteinerPoints, SteinerPerEdge);
-    //cout << "Steiner points: " << SteinerPoints.size() << endl;
-    //cout << "Steiner per edge: " << SteinerPerEdge.size() << endl;
+  std::vector<cinolib::vec3d> SteinerPoints;
+  std::vector<std::pair<uint, uint>> SteinerPerEdge;
+  sample_mesh_Steiner(m, pxedge, SteinerPoints, SteinerPerEdge);
+  // cout << "Steiner points: " << SteinerPoints.size() << endl;
+  // cout << "Steiner per edge: " << SteinerPerEdge.size() << endl;
 
-    // Add nodes to graph: vertices + Steiner points
-    uint offset = m.num_verts();
-    uint numn = offset + SteinerPoints.size();
-    // reserve number of nodes to speedup insertion
-    solver.graph.reserve(numn);             
+  // Add nodes to graph: vertices + Steiner points
+  uint offset = m.num_verts();
+  uint numn = offset + SteinerPoints.size();
+  // reserve number of nodes to speedup insertion
+  solver.graph.reserve(numn);
 
-    for (uint i = 0; i < offset; i++) {
-      add_node(solver);  // Add each vertex as a node
-    }
-    for (uint i = 0; i < SteinerPoints.size(); i++) {
-      add_node(solver);
-    }
+  for (uint i = 0; i < offset; i++) {
+    add_node(solver); // Add each vertex as a node
+  }
+  for (uint i = 0; i < SteinerPoints.size(); i++) {
+    add_node(solver);
+  }
 
-    for (uint i = 0; i < m.num_polys(); i++) {  // For all tris (face)
-        for (uint j = 0; j < 3; j++) {          // For all edges of the face
+  for (uint i = 0; i < m.num_polys(); i++) { // For all tris (face)
+    for (uint j = 0; j < 3; j++) {           // For all edges of the face
 
-            uint e = m.poly_edge_id(i, j);
-            uint lastk = SteinerPerEdge[e].first + SteinerPerEdge[e].second;
-            for (uint k = SteinerPerEdge[e].first; k < lastk; k++) {
-                uint e1 = m.poly_edge_id(i, (j + 1) % 3);
-                uint e2 = m.poly_edge_id(i, (j + 2) % 3);
+      uint e = m.poly_edge_id(i, j);
+      uint lastk = SteinerPerEdge[e].first + SteinerPerEdge[e].second;
+      for (uint k = SteinerPerEdge[e].first; k < lastk; k++) {
+        uint e1 = m.poly_edge_id(i, (j + 1) % 3);
+        uint e2 = m.poly_edge_id(i, (j + 2) % 3);
 
-                // Connect to Steiner points on the next edge
-                uint lasth = SteinerPerEdge[e1].first + SteinerPerEdge[e1].second;
-                for (uint h = SteinerPerEdge[e1].first; h < lasth; h++) {
-                    float w = SteinerPoints[k].dist(SteinerPoints[h]);
-                    add_directed_arc(solver, k + offset, h + offset, w);
-                }
-
-                // Connect to Steiner points on the following edge
-                lasth = SteinerPerEdge[e2].first + SteinerPerEdge[e2].second;
-                for (uint h = SteinerPerEdge[e2].first; h < lasth; h++) {
-                    float w = SteinerPoints[k].dist(SteinerPoints[h]);
-                    add_directed_arc(solver, k + offset, h + offset, w);
-                }
-            }
-        }
-    }
-
-    // Add arcs to vertices and along edges    
-    for (uint e = 0; e < m.num_edges(); e++) {
-        // Get endpoints and opposite vertices
-        uint v0, v1, v2, v3;
-        v0 = m.edge_vert_id(e, 0);
-        v1 = m.edge_vert_id(e, 1);
-        
-        connect_nodes(solver, v0, v1, m.vert(v0).dist(m.vert(v1)));
-
-        if (SteinerPerEdge[e].second == 0) continue;
-
-        std::vector<uint> ff = m.adj_e2p(e);
-        v2 = m.vert_opposite_to(ff[0], v0, v1);
-        v3 = m.vert_opposite_to(ff[1], v0, v1);
-
-        uint firstk = SteinerPerEdge[e].first;
-        uint lastk = firstk + SteinerPerEdge[e].second - 1;
-
-        float w0 = SteinerPoints[firstk].dist(m.vert(v0));
-        float w1 = SteinerPoints[firstk].dist(m.vert(v1));
-
-        // Ensure v0 is closer to the first Steiner point
-        if (w1 < w0) {
-            int v=v0; v0=v1; v1=v;
-            w0=w1;
+        // Connect to Steiner points on the next edge
+        uint lasth = SteinerPerEdge[e1].first + SteinerPerEdge[e1].second;
+        for (uint h = SteinerPerEdge[e1].first; h < lasth; h++) {
+          float w = SteinerPoints[k].dist(SteinerPoints[h]);
+          add_directed_arc(solver, k + offset, h + offset, w);
         }
 
-        // Connect the first and last Steiner points        
-        add_directed_arc(solver, firstk + offset, v0, w0);
-        add_directed_arc(solver, lastk + offset, v1, SteinerPoints[lastk].dist(m.vert(v1)));
-
-        // Connect first and last Steiner points to v2 and v3
-        connect_nodes(solver, firstk + offset, v2, SteinerPoints[firstk].dist(m.vert(v2)));
-        connect_nodes(solver, firstk + offset, v3, SteinerPoints[firstk].dist(m.vert(v3)));
-        connect_nodes(solver, lastk + offset, v2, SteinerPoints[lastk].dist(m.vert(v2)));
-        connect_nodes(solver, lastk + offset, v3, SteinerPoints[lastk].dist(m.vert(v3)));
-        
-        if (SteinerPerEdge[e].second > 1) {
-            add_directed_arc(solver, firstk + offset, firstk + offset + 1, SteinerPoints[firstk].dist(SteinerPoints[firstk + 1]));
-            add_directed_arc(solver, lastk + offset, lastk + offset - 1, SteinerPoints[lastk].dist(SteinerPoints[lastk - 1]));
+        // Connect to Steiner points on the following edge
+        lasth = SteinerPerEdge[e2].first + SteinerPerEdge[e2].second;
+        for (uint h = SteinerPerEdge[e2].first; h < lasth; h++) {
+          float w = SteinerPoints[k].dist(SteinerPoints[h]);
+          add_directed_arc(solver, k + offset, h + offset, w);
         }
-        firstk++;
-
-        // Connect all other Steiner points
-        for (uint k = firstk; k < lastk; k++) {
-            connect_nodes(solver, k + offset, v2, SteinerPoints[k].dist(m.vert(v2)));
-            connect_nodes(solver, k + offset, v3, SteinerPoints[k].dist(m.vert(v3)));
-            add_directed_arc(solver, k + offset, k + offset - 1, SteinerPoints[k].dist(SteinerPoints[k - 1]));
-            add_directed_arc(solver, k + offset, k + offset + 1, SteinerPoints[k].dist(SteinerPoints[k + 1]));
-        }
+      }
     }
-    //solver.print_graph();
-    return solver;
+  }
 
+  // Add arcs to vertices and along edges
+  for (uint e = 0; e < m.num_edges(); e++) {
+    // Get endpoints and opposite vertices
+    uint v0, v1, v2, v3;
+    v0 = m.edge_vert_id(e, 0);
+    v1 = m.edge_vert_id(e, 1);
+
+    connect_nodes(solver, v0, v1, m.vert(v0).dist(m.vert(v1)));
+
+    if (SteinerPerEdge[e].second == 0)
+      continue;
+
+    std::vector<uint> ff = m.adj_e2p(e);
+    v2 = m.vert_opposite_to(ff[0], v0, v1);
+    v3 = m.vert_opposite_to(ff[1], v0, v1);
+
+    uint firstk = SteinerPerEdge[e].first;
+    uint lastk = firstk + SteinerPerEdge[e].second - 1;
+
+    float w0 = SteinerPoints[firstk].dist(m.vert(v0));
+    float w1 = SteinerPoints[firstk].dist(m.vert(v1));
+
+    // Ensure v0 is closer to the first Steiner point
+    if (w1 < w0) {
+      int v = v0;
+      v0 = v1;
+      v1 = v;
+      w0 = w1;
+    }
+
+    // Connect the first and last Steiner points
+    add_directed_arc(solver, firstk + offset, v0, w0);
+    add_directed_arc(solver, lastk + offset, v1,
+                     SteinerPoints[lastk].dist(m.vert(v1)));
+
+    // Connect first and last Steiner points to v2 and v3
+    connect_nodes(solver, firstk + offset, v2,
+                  SteinerPoints[firstk].dist(m.vert(v2)));
+    connect_nodes(solver, firstk + offset, v3,
+                  SteinerPoints[firstk].dist(m.vert(v3)));
+    connect_nodes(solver, lastk + offset, v2,
+                  SteinerPoints[lastk].dist(m.vert(v2)));
+    connect_nodes(solver, lastk + offset, v3,
+                  SteinerPoints[lastk].dist(m.vert(v3)));
+
+    if (SteinerPerEdge[e].second > 1) {
+      add_directed_arc(solver, firstk + offset, firstk + offset + 1,
+                       SteinerPoints[firstk].dist(SteinerPoints[firstk + 1]));
+      add_directed_arc(solver, lastk + offset, lastk + offset - 1,
+                       SteinerPoints[lastk].dist(SteinerPoints[lastk - 1]));
+    }
+    firstk++;
+
+    // Connect all other Steiner points
+    for (uint k = firstk; k < lastk; k++) {
+      connect_nodes(solver, k + offset, v2, SteinerPoints[k].dist(m.vert(v2)));
+      connect_nodes(solver, k + offset, v3, SteinerPoints[k].dist(m.vert(v3)));
+      add_directed_arc(solver, k + offset, k + offset - 1,
+                       SteinerPoints[k].dist(SteinerPoints[k - 1]));
+      add_directed_arc(solver, k + offset, k + offset + 1,
+                       SteinerPoints[k].dist(SteinerPoints[k + 1]));
+    }
+  }
+  // solver.print_graph();
+  return solver;
 }
-
-

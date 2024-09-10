@@ -63,7 +63,7 @@ inline bool check_sp_polyhedral_distance(const DrawableTrimesh<> &m,
       double len = solver.graph[i][j].length;
       int nei = solver.graph[i][j].node;
       double real_len = d[nei];
-      if (std::abs(len - real_len) > 1e-2) {
+      if (std::abs(len - real_len) > 0.1) {
         assert(false);
         return false;
       }

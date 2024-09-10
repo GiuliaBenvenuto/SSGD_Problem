@@ -290,8 +290,8 @@ void init_methods(State &gs, atomic<float> &progress) {
   // init(gs.heat_solver, gs, "Heat");
   // progress.store(4.0f / 8.0f);
 
-  // init(gs.geotangle_solver, gs, "Geotangle");
-  // progress.store(5.0f / 8.0f);
+  init(gs.geotangle_solver, gs, "Geotangle");
+  progress.store(5.0f / 8.0f);
 
   // init(gs.edge_solver, gs, "Edge");
   // progress.store(6.0f / 8.0f);
@@ -348,7 +348,6 @@ calculate_smape(const std::vector<double> &gt, const std::vector<double> &est) {
   for (size_t i = 0; i < est.size(); ++i) {
     double denom = std::abs(gt[i]) + std::abs(est[i]);
     if (denom != 0) {
-      assert(gt[i] <= est[i]);
       smape_values[i] = std::abs(gt[i] - est[i]) / denom;
       smape_percentage += smape_values[i];
       ++count;

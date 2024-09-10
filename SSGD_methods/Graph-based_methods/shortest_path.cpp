@@ -1,14 +1,5 @@
 #include "shortest_path.h"
 
-int vert_offset(const DrawableTrimesh<> &m, const int tid, const int vid) {
-  int k = -1;
-  vector<uint> vids = m.poly_verts_id(tid);
-  for (uint j = 0; j < 3; ++j)
-    if (vids[j] == vid)
-      return j;
-
-  return k;
-}
 vec3d mesh_point_pos(const DrawableTrimesh<> &m, const mesh_point &p) {
   vector<vec3d> verts = m.poly_verts(p.tid);
   return interpolate(verts[0], verts[1], verts[2], p.bary);
@@ -172,22 +163,6 @@ double intersect_segments(const vec2d &start1, const vec2d &end1,
   auto det = a.x() * b.y() - a.y() * b.x();
   assert(det);
   return (a.x() * d.y() - a.y() * d.x()) / det;
-}
-
-vec2d intersect_circles(const vec2d &c2, const double &R2, const vec2d &c1,
-                        const double &R1) {
-  auto R = (c2 - c1).norm_sqrd();
-  assert(R > 0);
-  auto invR = double(1) / R;
-  vec2d result = c1 + c2;
-
-  result = result + (c2 - c1) * ((R1 - R2) * invR);
-  auto A = 2 * (R1 + R2) * invR;
-  auto B = (R1 - R2) * invR;
-  auto s = A - B * B - 1;
-  assert(s >= 0);
-  result = result + vec2d(c2.y() - c1.y(), c1.x() - c2.x()) * sqrt(s);
-  return result / 2.;
 }
 
 void clean_strip(vector<int> &strip, mesh_point &src, mesh_point &tgt,
@@ -602,48 +577,6 @@ vector<int> k_ring(const DrawableTrimesh<> &m, const int vid, const int k,
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // Geodesic Solver
-array<vec2d, 3> init_flat_triangle(const DrawableTrimesh<> &m, const uint tid) {
-
-  array<vec2d, 3> result;
-  vector<vec3d> verts = m.poly_verts(tid);
-  result[0] = vec2d(0., 0.);
-  result[1] = vec2d(0., (verts[1] - verts[0]).norm());
-  double r0 = (verts[2] - verts[0]).norm_sqrd();
-  double r1 = (verts[2] - verts[1]).norm_sqrd();
-  result[2] = intersect_circles(result[0], r0, result[1], r1);
-
-  return result;
-}
-array<vec2d, 3> unfold_face(const DrawableTrimesh<> &m, const uint tid,
-                            const uint adj, const array<vec2d, 3> &flat_tid) {
-
-  array<vec2d, 3> result;
-  uint eid = m.edge_shared(tid, adj);
-  uint vid0 = m.edge_vert_id(eid, 0);
-  uint vid1 = m.edge_vert_id(eid, 1);
-  int k = vert_offset(m, tid, vid0);
-
-  if (k == -1)
-    std::cout << "You are messing something up" << std::endl;
-
-  if (m.poly_vert_id(tid, (k + 1) % 3) != vid1) {
-    k = (k + 2) % 3;
-    swap(vid0, vid1);
-  }
-  uint opp = m.vert_opposite_to(adj, vid0, vid1);
-  double r1 = (m.vert(vid1) - m.vert(opp)).norm_sqrd();
-  double r0 = (m.vert(vid0) - m.vert(opp)).norm_sqrd();
-
-  vec2d flat_opp =
-      intersect_circles(flat_tid[(k + 1) % 3], r1, flat_tid[k], r0);
-
-  int h = vert_offset(m, adj, vid0);
-  result[h] = flat_tid[k];
-  result[(h + 1) % 3] = flat_opp;
-  result[(h + 2) % 3] = flat_tid[(k + 1) % 3];
-
-  return result;
-}
 
 dual_geodesic_solver make_dual_geodesic_solver(const DrawableTrimesh<> &m) {
   uint F = m.num_polys();
