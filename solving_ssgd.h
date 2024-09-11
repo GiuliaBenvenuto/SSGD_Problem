@@ -295,6 +295,7 @@ public:
     // }
   }
 };
+
 // ---------- FMM GEOMETRY CENTRAL ----------
 class FastMarchingGC : public GeodesicMethod {
 public:

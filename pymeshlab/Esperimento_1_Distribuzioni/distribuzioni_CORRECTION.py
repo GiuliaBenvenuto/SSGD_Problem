@@ -242,7 +242,7 @@ def toggle_visibility(event, fig, lined):
 directory_path = 'data/DISTANCES_dragon_reordered'
 # directory_path = 'data/blub500f_distances'
 
-key_string = 'VTP'  # Filter criteria for non-reference files
+key_string = 'Edge'  # Filter criteria for non-reference files
 # reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file - GROUND TRUTH
 reference_key = 'M7_reordered_VTP_16.txt'
 # reference_key = '5_blub_VTP_663.txt'

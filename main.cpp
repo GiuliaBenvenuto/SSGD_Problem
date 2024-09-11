@@ -130,6 +130,8 @@ struct State {
   ExtendedSolver extended_solver;
   LanthierSolver lanthier_solver;
 
+  FastMarchingGC fast_mar_solver_gc;
+
   // Timer
   std::chrono::steady_clock::time_point tic;
   std::chrono::steady_clock::time_point toc;
@@ -281,26 +283,32 @@ void init_methods(State &gs, atomic<float> &progress) {
   init(gs.vtp_solver, gs, "VTP");
   progress.store(1.0f / 8.0f);
 
-  // init(gs.trettner_solver, gs, "Trettner");
-  // progress.store(2.0f / 8.0f);
+  init(gs.trettner_solver, gs, "Trettner");
+  progress.store(2.0f / 8.0f);
 
-  // init(gs.fast_mar_solver, gs, "Fast Marching");
-  // progress.store(3.0f / 8.0f);
+  init(gs.fast_mar_solver, gs, "Fast Marching");
+  progress.store(3.0f / 8.0f);
 
-  // init(gs.heat_solver, gs, "Heat");
-  // progress.store(4.0f / 8.0f);
+  init(gs.heat_solver, gs, "Heat");
+  progress.store(4.0f / 8.0f);
 
   init(gs.geotangle_solver, gs, "Geotangle");
   progress.store(5.0f / 8.0f);
 
-  // init(gs.edge_solver, gs, "Edge");
-  // progress.store(6.0f / 8.0f);
+  init(gs.edge_solver, gs, "Edge");
+  progress.store(6.0f / 8.0f);
 
-  // init(gs.lanthier_solver, gs, "Lanthier");
-  // progress.store(7.0f / 8.0f);
+  init(gs.lanthier_solver, gs, "Lanthier");
+  progress.store(7.0f / 8.0f);
 
   init(gs.extended_solver, gs, "Extended");
+<<<<<<< Updated upstream
   // progress.store(8.0f / 8.0f);
+=======
+  progress.store(8.0f / 8.0f);
+
+  init(gs.fast_mar_solver_gc, gs, "Fast Marching GC");
+>>>>>>> Stashed changes
 }
 
 // SMAPE calculation
@@ -328,6 +336,7 @@ void init_methods(State &gs, atomic<float> &progress) {
 //     }
 //     return smape;
 // }
+
 
 // Updated SMAPE calculation function
 std::pair<double, std::vector<double>>
@@ -1039,12 +1048,11 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         }
 
         case State::FAST_MARCHING: {
+          cout << "QUERY MATLAB" << endl;
           gs.tic = std::chrono::steady_clock::now();
           gs.fast_mar_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
-          gs.fast_mar_query =
-              chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
-                  .count();
+          gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           // cout << "---------------" << endl;
           // cout << "FAST MAR: " << endl;
           // cout << "---------------" << endl;
@@ -1057,8 +1065,15 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "Query function time: " << gs.fast_mar_query << endl;
           cout << "True FMM query time: " << gs.true_FMM_query_time << endl;
 
-          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load,
-                        gs.fast_mar_preprocess, gs.true_FMM_query_time);
+          fillTimeTable(gs, "Fast Marching", gs.fast_mar_load,gs.fast_mar_preprocess, gs.true_FMM_query_time);
+
+          cout << "QUERY GC" << endl;
+          gs.tic = std::chrono::steady_clock::now();
+          gs.fast_mar_solver_gc.query(gs.sources[0], gs.res);
+          gs.toc = std::chrono::steady_clock::now();
+          gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+          cout << "Query function time GC: " << gs.fast_mar_query << endl;
+
           break;
         }
 
