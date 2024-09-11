@@ -26,7 +26,7 @@ def calculate_smape(gt, est):
     est = est[:min_length]
 
     # Calculate SMAPE
-    denom = np.abs(gt) + np.abs(est)
+    denom = (np.abs(gt) + np.abs(est)) / 2
     nonzero = denom != 0
     smape = np.abs(gt[nonzero] - est[nonzero]) / denom[nonzero]
     smape = np.mean(smape) * 100
@@ -67,7 +67,7 @@ def process_folder(folder_path):
 
     # Convert results dictionary to DataFrame and save to CSV
     df = pd.DataFrame(list(results.values()))
-    df.to_csv(os.path.join("./corretti", 'SMAPE_2519_corretto.csv'), index=False)
+    df.to_csv(os.path.join("./GEO_EXT_FM_corretti", 'SMAPE_organic_2519.csv'), index=False)
 
 # Replace 'path_to_folder' with the path to your folder containing the txt files
-process_folder('../distances/2519')
+process_folder('../DISTANCES_OK/2519')

@@ -30,7 +30,9 @@ namespace fs = std::filesystem;
 using namespace matlab::engine;
 
 
-const string OUTPUT_PATH = "../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/dist_EXT";
+// const string OUTPUT_PATH = "../pymeshlab/Esperimento_1/data/DISTANCES/BUNNY500_GEO_EXT";
+// const string OUTPUT_PATH = "../pymeshlab/Esperimento_1_Thai/DIST_GEO_EXT";
+const string OUTPUT_PATH = "../pymeshlab/Esperimento_2/mechanical/distances/GEO_EXT_FM";
 
 
 struct State {
@@ -46,7 +48,10 @@ struct State {
 
     VTPSolver vtp_solver;
     TrettnerSolver trettner_solver;
-    FastMarchingSolver fast_mar_solver;
+
+    // FastMarchingSolver fast_mar_solver;     // Fast Marching Matlab
+    FastMarchingGC fast_mar_solver_gc;      // Fast Marching Geometry Central
+    
     HeatSolver heat_solver;
     GeotangleSolver geotangle_solver;
     EdgeSolver edge_solver;
@@ -138,9 +143,10 @@ void init(GeodesicMethod &method, State &gs, const string &name) {
 void init_methods(State &gs) {
     // init(gs.vtp_solver, gs, "VTP");
     // init(gs.trettner_solver, gs, "Trettner");
-    // init(gs.fast_mar_solver, gs, "Fast Marching");
+    // init(gs.fast_mar_solver, gs, "Fast Marching");   // Matlab
+    init(gs.fast_mar_solver_gc, gs, "Fast Marching");   // Geometry Central
     // init(gs.heat_solver, gs, "Heat");
-    // init(gs.geotangle_solver, gs, "Geotangle");
+    init(gs.geotangle_solver, gs, "Geotangle");
     // init(gs.edge_solver, gs, "Edge");
     // init(gs.lanthier_solver, gs, "Lanthier");
     init(gs.extended_solver, gs, "Extended");
@@ -193,10 +199,11 @@ auto run_method = [&](auto& solver, const string& method_name) {
         auto end = std::chrono::steady_clock::now();
         gs.query_time = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
 
-        if (method_name == "Fast Marching") {
-            cout << "Getting true FMM query time..." << endl;
-            gs.query_time = gs.fast_mar_solver.get_time();
-        }
+        // USE IT FOR FAST MARCHING MATLAB ONLY
+        // if (method_name == "Fast Marching") {
+        //     cout << "Getting true FMM query time..." << endl;
+        //     gs.query_time = gs.fast_mar_solver.get_time();
+        // }
         
         write_results_to_file(mesh_name, method_name, vertex, gs, gs.res);
         gs.res.clear();
@@ -204,9 +211,9 @@ auto run_method = [&](auto& solver, const string& method_name) {
 
     // run_method(gs.vtp_solver, "VTP");
     // run_method(gs.trettner_solver, "Trettner");
-    // run_method(gs.fast_mar_solver, "Fast Marching");
+    run_method(gs.fast_mar_solver_gc, "Fast Marching");
     // run_method(gs.heat_solver, "Heat");
-    // run_method(gs.geotangle_solver, "Geotangle");
+    run_method(gs.geotangle_solver, "Geotangle");
     // run_method(gs.edge_solver, "Edge");
     // run_method(gs.lanthier_solver, "Lanthier");
     run_method(gs.extended_solver, "Extended");
@@ -227,13 +234,15 @@ int main(int argc, char **argv) {
     fs::create_directories(OUTPUT_PATH);
 
     // vector<int> vv_sources = {100};
-    vector<int> vv_sources = {16};
+    // vector<int> vv_sources = {16};
+    // vector<int> vv_sources = {663};
+    // vector<int> vv_sources = {482};
+    // vector<int> vv_sources = {2};
     // vector<int> vv_sources = {221, 236, 128, 32, 278};
     // vector<int> vv_sources = {93, 475, 729, 1989, 2519};
-    // vector<int> vv_sources = {32, 128, 221, 236, 278};
-
-
-
+    vector<int> vv_sources = {32, 128, 221, 236, 278};
+    
+    
     for(int vertex : vv_sources) {
         for (const auto &entry : fs::directory_iterator(folder_path)) {
             if (entry.path().extension() == ".obj") {

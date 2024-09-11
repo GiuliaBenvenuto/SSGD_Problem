@@ -26,7 +26,7 @@ def calculate_smape(gt, est):
     est = est[:min_length]
 
     # Calculate SMAPE
-    denom = np.abs(gt) + np.abs(est)
+    denom = (np.abs(gt) + np.abs(est))/2
     nonzero = denom != 0
     smape = np.abs(gt[nonzero] - est[nonzero]) / denom[nonzero]
     smape = np.mean(smape) * 100

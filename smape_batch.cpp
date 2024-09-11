@@ -130,7 +130,7 @@ double smape_error(const vector<double> &res, const vector<double> &gt, State &g
 
     for (int i = 0; i < res.size(); i++) {
         double num = abs(res[i] - gt[i]);
-        double den = (abs(res[i]) + abs(gt[i]));
+        double den = (abs(res[i]) + abs(gt[i])) / 2;
         if (den != 0) {
             smape += num / den;
             count++;

@@ -329,7 +329,7 @@ public:
     for (size_t i = 0; i < distances.size(); ++i) {
       res[i] = distances[Vertex(gc_m.topology.get(), i)];
     }
-    cout << "? FMM RES size: " << res.size() << endl;
+    // cout << "? FMM RES size: " << res.size() << endl;
 
     // // print the results
     // for (int i = 0; i < res.size(); i++) {
