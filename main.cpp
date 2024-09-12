@@ -110,10 +110,10 @@ struct State {
   // Sources for SSGD
   std::vector<uint> sources_heat;
   // // vector<int> vertices_idx = {1, 651, 1301, 1951, 2601};
-  // vector<int> sources;
+  vector<int> sources;
 
   // TODO: DA TOGLIERE
-  vector<int> sources = {1680};
+  // vector<int> sources = {1680};
   int inputVertexIndex; // to store user input for vertex index
   // vector<int> sources;
 
@@ -1578,7 +1578,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources.clear();
 
       // TODO: DA TOGLIEREEEEE
-      gs.sources = {1680};
+      // gs.sources = {1680};
 
       gs.vtp_query = 0.0;
       gs.trettner_query = 0.0;

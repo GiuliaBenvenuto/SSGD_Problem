@@ -10,7 +10,7 @@ def calculate_smape(gt, est):
     min_length = min(len(gt), len(est))
     gt = gt[:min_length]
     est = est[:min_length]
-    denom = np.abs(gt) + np.abs(est)
+    denom = (np.abs(gt) + np.abs(est)) / 2
     nonzero = denom != 0
     smape = np.abs(gt[nonzero] - est[nonzero]) / denom[nonzero]
     smape = np.mean(smape) * 100
