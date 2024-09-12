@@ -427,6 +427,7 @@ public:
   }
 
   void preprocess() override {
+    cout << "K: " << k << endl;
     cout << "Make dual geodesic solver START" << endl;
     dual_solver = make_dual_geodesic_solver(*m);
     cout << "Make dual geodesic solver END" << endl;
@@ -457,7 +458,7 @@ public:
 
   DrawableTrimesh<> *m;
   geodesic_solver solver;
-  int n_steiner = 1;
+  int n_steiner = 9;
 
   void load(DrawableTrimesh<> *mesh) override { m = mesh; }
 

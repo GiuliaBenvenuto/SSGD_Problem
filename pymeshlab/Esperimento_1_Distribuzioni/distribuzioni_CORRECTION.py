@@ -259,7 +259,7 @@ import numpy as np
 
 def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_name="plot_result"):
     global fig, ax
-    fig, ax = plt.subplots(figsize=(14, 8))
+    fig, ax = plt.subplots(figsize=(15, 8))
     lines = []
     
     x_range = np.linspace(-100, 100, 100000)  # Error range from -100% to 100%
@@ -272,7 +272,8 @@ def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_nam
             continue  # This skips the first iteration
 
         # JUMP M4, M5, M6 FOR HEAT METHOD
-        # if i == 4 or i == 5 or i == 6:
+        # if i == 6:
+        # if i == 5 or i == 6 or i == 7 or i == 8 or i == 9:
         #     continue
 
         if key != reference_key and len(errors) > 0:
@@ -297,8 +298,8 @@ def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_nam
     # ax.set_title(f'Dragon Mesh Set Created with Decimation\n'
     #              f'Distribution of Percentage Errors for "Dragon" meshes with {key_string} Method',
     #              fontweight='bold')
-    ax.set_title(f'Blub Mesh Set Created with Subdivision\n'
-                f'Distribution of Percentage Errors for "Blub" meshes with {key_string} Method',
+    ax.set_title(f'Thai Statue Mesh Set Created with Decimation\n'
+                f'Distribution of Percentage Errors for "Thai Statue" meshes with {key_string} Method',
                 fontweight='bold')
     ax.set_xlabel('Percentage Error going from -100% to 100%\n (Zoom between -15% and 15%)')
     ax.set_ylabel('Density')
@@ -320,7 +321,7 @@ def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_nam
     
     # Determine save path and create directory if needed
     script_directory = os.path.dirname(os.path.realpath(__file__))  # Get the directory of the script
-    save_directory = os.path.join(script_directory, 'plot_blub')
+    save_directory = os.path.join(script_directory, 'plot_thai')
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
@@ -346,13 +347,15 @@ def toggle_visibility(event, fig, lined):
 # directory_path = 'data/distances_bob_500f'
 # directory_path = 'data/distances_bob_500f'
 # directory_path = 'data/distances_asian_dragon'
-directory_path = 'data/DIST_BLUB_OK/663'
+directory_path = 'data/DIST_THAI_DECIMATION'
 # directory_path = 'data/blub500f_distances'
 
 key_string = 'Heat'  # Filter criteria for non-reference files
 # reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file - GROUND TRUTH
 # reference_key = 'M7_reordered_VTP_16.txt'
-reference_key = '5_blub_VTP_663.txt'
+# reference_key = '5_blub_VTP_663.txt'
+# reference_key = '6_bunny500_VTP_100.txt'
+reference_key = '8_thai_VTP_2.txt'
 
 
 # Process directory, ensuring reference file is included
@@ -368,6 +371,6 @@ if reference_key in file_data:
             print(errors)
             print(f"Mean: {np.mean(errors):.2f}%, Std: {np.std(errors):.2f}%")
             print()
-    plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_name=f"blub_{key_string}")
+    plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_name=f"thai_{key_string}")
 else:
     print(f"Reference file {reference_key} was not found.")

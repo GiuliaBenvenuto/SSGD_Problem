@@ -58,7 +58,7 @@ for folder in os.listdir(base_folder):
 df = pd.DataFrame(results)
 
 # Write the detailed times data to a CSV file
-df.to_csv("times_mech_FINAL.csv", index=False)
+df.to_csv("times_mech_ORIGINAL.csv", index=False)
 
 # Calculate the mean preprocessing and query times for each mesh and method
 # Keep vertices and faces as additional columns by taking the first value (assuming they are the same for each mesh-method combination)
@@ -68,7 +68,7 @@ mean_times = df.groupby(['Mesh', 'Method', 'Vertices', 'Faces'], as_index=False)
 mean_times.fillna(0, inplace=True)
 
 # Save the resulting mean times DataFrame to another CSV file
-output_csv = "mean_times_mech_FINAL.csv"
+output_csv = "mean_times_mech_ORIGINAL.csv"
 mean_times.to_csv(output_csv, index=False)
 
 print(f"CSV file has been saved as {output_csv}")

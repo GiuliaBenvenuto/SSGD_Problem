@@ -284,7 +284,7 @@ bool read_ground_truth(const string& csv_gt, int vertex, vector<double>& ground_
 }
 
 
-/*
+
 // ----- MAIN FOR THE QUERY ------
 int main(int argc, char **argv) {
     State gs;
@@ -298,17 +298,18 @@ int main(int argc, char **argv) {
 
     // Read the ground truth from the CSV file we just created
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/bunny_gt_distances.csv";
-    // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/bob500f_gt_distances.csv";
+    std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/bunny_gt_distances.csv";
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/Trettner_gt/bunny_gt_trettner.csv";
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Thai/ground_truth/thai_decimated_gt.csv";
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/spot500f_gt_distances.csv";
-    std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/ground_truth/dragon_decimated_gt.csv";
+    // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/ground_truth/dragon_decimated_gt.csv";
 
     // vector<int> vv_bob = {100};
     // vector<int> vv_spot = {100};
     // vector<int> vv_spot500 = {100};
+    vector<int> vv_bunny = {100};
     // vector<int> vv_spot = {174};
-    vector<int> vv_dragon = {16};
+    // vector<int> vv_dragon = {16};
     // vector<int> vv_dragon = {16, 66, 163, 167, 194};
     // vector<int> vv_spot = {174, 283, 395, 1876, 2794};
     // vector<int> vv_bob = {482, 1710, 2005, 3782, 4757};
@@ -317,7 +318,7 @@ int main(int argc, char **argv) {
 
     vector<double> ground_truth;
 
-    for(int vertex : vv_dragon) {
+    for(int vertex : vv_bunny) {
 
       ground_truth.clear();
 
@@ -325,11 +326,12 @@ int main(int argc, char **argv) {
       // ofstream csvFile("../pymeshlab/Esperimento_1/data/simplified/smape_BUNNY_TRETTNER_" + to_string(vertex) + ".csv");
       // ofstream csvFile("../pymeshlab/Esperimento_Drago/Dragon_with_decimation/SMAPE/smape_DRAGON_extended_" + to_string(vertex) + ".csv");
       // ofstream csvFile("../pymeshlab/Esperimento_1/data/SMAPE_RESULTS_BOB/smape_spot_VTP_" + to_string(vertex) + ".csv");
-      ofstream csvFile("../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/SMAPE/smape_drago_HEAT_" + to_string(vertex) + ".csv");
+      // ofstream csvFile("../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/SMAPE/smape_drago_HEAT_" + to_string(vertex) + ".csv");
+      ofstream csvFile("../pymeshlab/Esperimento_1/data/SMAPE_500f/SMAPE_EXT_GEO_BUNNY/smape_bunny_" + to_string(vertex) + ".csv");
 
 
       // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier" << endl;
-      csvFile << "MeshName,NumVertices,SMAPE_Heat" << endl;
+      csvFile << "MeshName,NumVertices,SMAPE_Geotangle,SMAPE_Extended" << endl;
 
       if (!read_ground_truth(csv_path.string(), vertex, ground_truth)) {
         cerr << "Failed to read ground truth from " << csv_path << endl;
@@ -369,9 +371,9 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-*/
 
 
+/*
 int main(int argc, char **argv) {
     State gs;
 
@@ -500,5 +502,6 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+*/
 
 
