@@ -376,6 +376,7 @@ int main(int argc, char **argv) {
     State gs;
 
     string folder_path = "";
+    std::filesystem::path csv_path = "";
 
     // ------- DRAGO PER DECIMAZIONE -------
     folder_path = "../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/dragon_ordered";
@@ -386,7 +387,7 @@ int main(int argc, char **argv) {
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/Trettner_gt/bunny_gt_trettner.csv";
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Thai/ground_truth/thai_decimated_gt.csv";
     // std::filesystem::path csv_path = "../pymeshlab/Esperimento_1/data/gt/spot500f_gt_distances.csv";
-    std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/ground_truth/dragon_decimated_gt.csv";
+    csv_path = "../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/ground_truth/dragon_decimated_gt.csv";
 
     // vector<int> vv_bob = {100};
     // vector<int> vv_spot = {100};
@@ -447,11 +448,11 @@ int main(int argc, char **argv) {
 
     // ------- THAI -------
     folder_path = "../pymeshlab/Esperimento_1_Thai/thai_ordered";
-    std::filesystem::path csv_path = "../pymeshlab/Esperimento_1_Thai/ground_truth/thai_decimated_gt.csv";
+    csv_path = "../pymeshlab/Esperimento_1_Thai/ground_truth/thai_decimated_gt.csv";
     vector<int> vv_thai = {2, 48, 49, 50, 56};
     
 
-    vector<double> ground_truth;
+    ground_truth.clear();
 
     for(int vertex : vv_thai) {
 

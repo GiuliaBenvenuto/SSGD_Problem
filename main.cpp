@@ -199,6 +199,7 @@ struct State {
     heat_time_prev = 1.0;
   }
 };
+
 void export_field(const vector<double> &field, const string &filename) {
   string name = "/Users/claudiomancinelli/Documents/GitHub/"
                 "SSGD_Problem/";
@@ -213,6 +214,7 @@ void export_field(const vector<double> &field, const string &filename) {
   }
   outfile.close();
 }
+
 void fillTimeTable(State &gs, const string &method_name, double load_time,
                    double preprocess_time, double query_time) {
   if (method_name == "VTP") {
@@ -302,45 +304,13 @@ void init_methods(State &gs, atomic<float> &progress) {
   progress.store(7.0f / 8.0f);
 
   init(gs.extended_solver, gs, "Extended");
-<<<<<<< Updated upstream
-  // progress.store(8.0f / 8.0f);
-=======
   progress.store(8.0f / 8.0f);
-
-  init(gs.fast_mar_solver_gc, gs, "Fast Marching GC");
->>>>>>> Stashed changes
 }
-
-// SMAPE calculation
-// double calculate_smape(const vector<double>& gt, const vector<double>& est) {
-//     cout << "GT size: " << gt.size() << ", EST size: " << est.size() << endl;
-//     if (gt.empty() || est.empty()) {
-//         cerr << "Ground truth or estimated distances are empty." << endl;
-//         return 0.0;
-//     }
-
-//     double smape = 0.0;
-//     int count = 0;
-
-//     // for (size_t i = 0; i < gt.size() && i < est.size(); ++i) {
-//     for (size_t i = 0; i < est.size(); ++i) {
-//         double denom = std::abs(gt[i]) + std::abs(est[i]);
-//         if (denom != 0) {
-//             smape += std::abs(gt[i] - est[i]) / denom;
-//             ++count;
-//         }
-//     }
-
-//     if (count > 0) {
-//         smape = (smape / count) * 100.0;  // Convert to percentage
-//     }
-//     return smape;
-// }
 
 
 // Updated SMAPE calculation function
-std::pair<double, std::vector<double>>
-calculate_smape(const std::vector<double> &gt, const std::vector<double> &est) {
+// ------ SMAPE WITHOUT SIGN ------
+std::pair<double, std::vector<double>> calculate_smape(const std::vector<double> &gt, const std::vector<double> &est) {
   std::cout << "GT size: " << gt.size() << ", EST size: " << est.size()
             << std::endl;
   if (gt.empty() || est.empty()) {
@@ -350,12 +320,11 @@ calculate_smape(const std::vector<double> &gt, const std::vector<double> &est) {
 
   double smape_percentage = 0.0;
   int count = 0;
-  std::vector<double> smape_values(gt.size(),
-                                   0.0); // To store individual SMAPE values
+  std::vector<double> smape_values(gt.size(),0.0); // To store individual SMAPE values
 
   // Calculate SMAPE for each vertex and overall SMAPE percentage
   for (size_t i = 0; i < est.size(); ++i) {
-    double denom = std::abs(gt[i]) + std::abs(est[i]);
+    double denom = (std::abs(gt[i]) + std::abs(est[i])) / 2;
     if (denom != 0) {
       smape_values[i] = std::abs(gt[i] - est[i]) / denom;
       smape_percentage += smape_values[i];
@@ -370,6 +339,32 @@ calculate_smape(const std::vector<double> &gt, const std::vector<double> &est) {
 
   return {smape_percentage, smape_values};
 }
+
+// ------ SMAPE WITH SIGN ------
+std::pair<double, std::vector<double>> 
+calculate_signed_smape(const std::vector<double> &gt, const std::vector<double> &est) {
+  std::cout << "GT size: " << gt.size() << ", EST size: " << est.size()
+            << std::endl;
+  if (gt.empty() || est.empty()) {
+    std::cerr << "Ground truth or estimated distances are empty." << std::endl;
+    return {0.0, std::vector<double>()};
+  }
+
+  std::vector<double> smape_values(gt.size(), 0.0); // To store individual SMAPE values
+
+  for (size_t i = 0; i < std::min(gt.size(), est.size()); ++i) {
+    double denom = (std::abs(gt[i]) + std::abs(est[i])) / 2;
+    if (denom != 0) {
+      double error = (gt[i] - est[i]) / denom; // Keep the sign
+      smape_values[i] = error;
+    }
+  }
+
+  return {0.0, smape_values}; // Omit overall percentage calculation
+}
+
+
+
 
 Color interpolate_color(double value) {
   // Ensure the value is clamped between 0 and 1
@@ -406,7 +401,38 @@ Color interpolate_color(double value) {
   return Color(r, g, b, a);
 }
 
-void visualize_smape_on_mesh(State &gs,
+Color interpolate_signed_color(double value, double min_error, double max_error) {
+  // Normalize value between -1 and 1
+  // double normalized_value = (value - min_error) / (max_error - min_error);
+  // normalized_value = std::max(0.0, std::min(1.0, normalized_value)); // Clamp between 0 and 1
+  double normalized_value = 2 * ((value - min_error) / (max_error - min_error)) - 1;
+  normalized_value = std::max(-1.0, std::min(1.0, normalized_value)); // Clamp between -1 and +1
+
+
+  Color blue(0.0f, 0.0f, 1.0f);
+  Color green(0.0f, 1.0f, 0.0f);
+  Color red(1.0f, 0.0f, 0.0f);
+
+  float r, g, b;
+  if (value < 0) {
+    // Interpolate between blue and green
+    float local_value = normalized_value; // Scale to 0-1 range
+    r = (1.0f - local_value) * blue.rgba[0] + local_value * green.rgba[0];
+    g = (1.0f - local_value) * blue.rgba[1] + local_value * green.rgba[1];
+    b = (1.0f - local_value) * blue.rgba[2] + local_value * green.rgba[2];
+  } else {
+    // Interpolate between green and red
+    float local_value = normalized_value;
+    r = (1.0f - local_value) * green.rgba[0] + local_value * red.rgba[0];
+    g = (1.0f - local_value) * green.rgba[1] + local_value * red.rgba[1];
+    b = (1.0f - local_value) * green.rgba[2] + local_value * red.rgba[2];
+  }
+
+  return Color(r, g, b);
+}
+
+
+void visualize_smape_on_mesh_no_sign(State &gs,
                              const std::vector<double> &smape_values) {
   // Create a scalar field from the SMAPE values
   gs.field = ScalarField(smape_values);
@@ -429,6 +455,24 @@ void visualize_smape_on_mesh(State &gs,
   gs.m.show_vert_color();
   gs.m.updateGL();
 }
+
+
+void visualize_smape_on_mesh_with_sign(State &gs, const std::vector<double> &smape_values) {
+  // Find min and max errors for normalization
+  double min_error = *std::min_element(smape_values.begin(), smape_values.end());
+  double max_error = *std::max_element(smape_values.begin(), smape_values.end());
+
+  // Normalize and apply colors
+  for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+    double normalized_value = (smape_values[vid] - min_error) / (max_error - min_error);
+    Color color = interpolate_signed_color(smape_values[vid], min_error, max_error);
+    gs.m.vert_data(vid).color = color;
+  }
+
+  gs.m.show_vert_color();
+  gs.m.updateGL();
+}
+
 
 //:::::::::::::::::::::::::::::::::::: I/O ::::::::::::::::::::::::::::::::::::
 void Load_mesh(string filename, GLcanvas &gui, State &gs) {
@@ -1262,10 +1306,17 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       }
     }
 
+
+    // ----- Button for Compute SMAPE error without sign -----
     static float displayed_smape = 0.0f;
+    static bool with_sign = false; 
+    ImGui::Checkbox("Compute SMAPE with sign", &with_sign);
+
     // Button for Compute SMAPE error
     if (ImGui::Button("Compute SMAPE")) {
       // Based on the selected SSGD method, perform different actions
+      cout << "Button pressed. With sign: " << with_sign << endl;
+
       if (gs.sources_heat.empty() && gs.sources.empty()) {
         // Open a warning popup if no source is selected
         ImGui::OpenPopup("Warning");
@@ -1277,19 +1328,13 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.vtp_solver.query(gs.sources[0], gs.res);
-
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
-
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] = calculate_smape(gs.ground_truth, gs.res);
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
+          visualize_smape_on_mesh_no_sign(gs, smape_values);
 
           cout << "SMAPE ERROR for VTP: " << gs.smape << endl;
 
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
         }
 
@@ -1301,18 +1346,21 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.trettner_solver.load(&gs.m);
           gs.trettner_solver.preprocess();
           gs.trettner_solver.query(gs.sources[0], gs.res);
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] = with_sign ? 
+            calculate_signed_smape(gs.ground_truth, gs.res) :
+            calculate_smape(gs.ground_truth, gs.res);
+
+          if (with_sign) {
+              cout << "Visualizing SMAPE with sign" << endl;
+              visualize_smape_on_mesh_with_sign(gs, smape_values);
+          } else {
+              cout << "Visualizing SMAPE without sign" << endl;
+              visualize_smape_on_mesh_no_sign(gs, smape_values);
+          }
+
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
-
-          cout << "SMAPE ERROR for Trettner: " << gs.smape << endl;
-
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
         }
 
@@ -1320,19 +1368,23 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.fast_mar_solver.query(gs.sources[0], gs.res);
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] = with_sign ? 
+            calculate_signed_smape(gs.ground_truth, gs.res) :
+            calculate_smape(gs.ground_truth, gs.res);
+
+          if (with_sign) {
+              cout << "Visualizing SMAPE with sign" << endl;
+              visualize_smape_on_mesh_with_sign(gs, smape_values);
+          } else {
+              cout << "Visualizing SMAPE without sign" << endl;
+              visualize_smape_on_mesh_no_sign(gs, smape_values);
+          }
+
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
-
-          cout << "SMAPE ERROR for Fast Marching: " << gs.smape << endl;
-
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
+
         }
 
         case State::HEAT: {
@@ -1350,18 +1402,21 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.heat_solver.query(gs.sources[0], gs.res);
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] = with_sign ? 
+            calculate_signed_smape(gs.ground_truth, gs.res) :
+            calculate_smape(gs.ground_truth, gs.res);
+
+          if (with_sign) {
+              cout << "Visualizing SMAPE with sign" << endl;
+              visualize_smape_on_mesh_with_sign(gs, smape_values);
+          } else {
+              cout << "Visualizing SMAPE without sign" << endl;
+              visualize_smape_on_mesh_no_sign(gs, smape_values);
+          }
+
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
-
-          cout << "SMAPE ERROR for Heat: " << gs.smape << endl;
-
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
         }
 
@@ -1369,18 +1424,21 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.geotangle_solver.query(gs.sources[0], gs.res);
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] = with_sign ? 
+            calculate_signed_smape(gs.ground_truth, gs.res) :
+            calculate_smape(gs.ground_truth, gs.res);
+
+          if (with_sign) {
+              cout << "Visualizing SMAPE with sign" << endl;
+              visualize_smape_on_mesh_with_sign(gs, smape_values);
+          } else {
+              cout << "Visualizing SMAPE without sign" << endl;
+              visualize_smape_on_mesh_no_sign(gs, smape_values);
+          }
+
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
-
-          cout << "SMAPE ERROR for Geotangle: " << gs.smape << endl;
-
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
         }
 
@@ -1388,18 +1446,21 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.edge_solver.query(gs.sources[0], gs.res);
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] = with_sign ? 
+            calculate_signed_smape(gs.ground_truth, gs.res) :
+            calculate_smape(gs.ground_truth, gs.res);
+
+          if (with_sign) {
+              cout << "Visualizing SMAPE with sign" << endl;
+              visualize_smape_on_mesh_with_sign(gs, smape_values);
+          } else {
+              cout << "Visualizing SMAPE without sign" << endl;
+              visualize_smape_on_mesh_no_sign(gs, smape_values);
+          }
+
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
-
-          cout << "SMAPE ERROR for Edge: " << gs.smape << endl;
-
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
         }
 
@@ -1412,30 +1473,30 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             gs.toc = std::chrono::steady_clock::now();
 
             // Calculate the time taken for preprocessing
-            gs.extended_preprocess =
-                chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
-                    .count();
-            fillTimeTable(gs, "Extended", gs.extended_load,
-                          gs.extended_preprocess, gs.extended_query);
-
+            gs.extended_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Extended", gs.extended_load, gs.extended_preprocess, gs.extended_query);
             gs.prev_k = gs.k;
           }
 
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.extended_solver.query(gs.sources[0], gs.res);
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+
+          auto [smape_percentage, smape_values] = with_sign ? 
+            calculate_signed_smape(gs.ground_truth, gs.res) :
+            calculate_smape(gs.ground_truth, gs.res);
+
+          if (with_sign) {
+              cout << "Visualizing SMAPE with sign" << endl;
+              visualize_smape_on_mesh_with_sign(gs, smape_values);
+          } else {
+              cout << "Visualizing SMAPE without sign" << endl;
+              visualize_smape_on_mesh_no_sign(gs, smape_values);
+          }
+
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
-
-          cout << "SMAPE ERROR for Extended: " << gs.smape << endl;
-
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
         }
 
@@ -1449,30 +1510,29 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
             gs.toc = std::chrono::steady_clock::now();
 
             // Calculate the time taken for preprocessing
-            gs.lanthier_preprocess =
-                chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
-                    .count();
-            fillTimeTable(gs, "Lanthier", gs.lanthier_load,
-                          gs.lanthier_preprocess, gs.lanthier_query);
-
+            gs.lanthier_preprocess = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
+            fillTimeTable(gs, "Lanthier", gs.lanthier_load, gs.lanthier_preprocess, gs.lanthier_query);
             gs.prev_n_steiner = gs.n_steiner;
           }
 
           gs.vtp_solver.query(gs.sources[0], gs.res);
           gs.ground_truth = gs.res;
           gs.lanthier_solver.query(gs.sources[0], gs.res);
-          // gs.smape = calculate_smape(gs.ground_truth, gs.res);
 
-          auto [smape_percentage, smape_values] =
-              calculate_smape(gs.ground_truth, gs.res);
+          auto [smape_percentage, smape_values] = with_sign ? 
+            calculate_signed_smape(gs.ground_truth, gs.res) :
+            calculate_smape(gs.ground_truth, gs.res);
+
+          if (with_sign) {
+              cout << "Visualizing SMAPE with sign" << endl;
+              visualize_smape_on_mesh_with_sign(gs, smape_values);
+          } else {
+              cout << "Visualizing SMAPE without sign" << endl;
+              visualize_smape_on_mesh_no_sign(gs, smape_values);
+          }
+
           gs.smape = smape_percentage;
-          visualize_smape_on_mesh(gs, smape_values);
-
-          cout << "SMAPE ERROR for Lanthier: " << gs.smape << endl;
-
           gs.ground_truth.clear();
-          // gs.smape = 0.0;
-
           break;
         }
 
@@ -1480,11 +1540,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           cout << "No SSGD method selected" << endl;
           break;
         }
-        // QUI VOLGIO VISUALIZZARE L'ERRORE COME UNA HEATMAP SULLA MESH PERCHE'
-        // L'ERRORE E' UNO SCALAR gs.field = ScalarField(gs.res);
-        // gs.field.normalize_in_01();
-        // gs.field.copy_to_mesh(gs.m);
-        // gs.m.show_texture1D(TEXTURE_1D_HSV_W_ISOLINES);
       }
     }
     // Display SMAPE error next to the button
@@ -1497,6 +1552,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
     ImGui::SameLine();
     ImGui::Text("%.6f%%", gs.smape);
+
 
     // Popup modal for warning if no source is selected
     if (ImGui::BeginPopupModal("Warning", NULL,
