@@ -113,9 +113,9 @@ struct State {
   // vector<int> sources;
 
   // TODO: DA TOGLIERE
-  // vector<int> sources = {93};
+  vector<int> sources = {1680};
   int inputVertexIndex; // to store user input for vertex index
-  vector<int> sources;
+  // vector<int> sources;
 
   // Trettner
   string mesh_path;
@@ -341,15 +341,15 @@ std::pair<double, std::vector<double>> calculate_smape(const std::vector<double>
 }
 
 // ------ SMAPE WITH SIGN ------
-std::pair<double, std::vector<double>> 
-calculate_signed_smape(const std::vector<double> &gt, const std::vector<double> &est) {
-  std::cout << "GT size: " << gt.size() << ", EST size: " << est.size()
-            << std::endl;
+std::pair<double, std::vector<double>> calculate_signed_smape(const std::vector<double> &gt, const std::vector<double> &est) {
+  std::cout << "GT size: " << gt.size() << ", EST size: " << est.size() << std::endl;
   if (gt.empty() || est.empty()) {
     std::cerr << "Ground truth or estimated distances are empty." << std::endl;
     return {0.0, std::vector<double>()};
   }
 
+  double signed_smape_percentage = 0.0;
+  int count = 0;
   std::vector<double> smape_values(gt.size(), 0.0); // To store individual SMAPE values
 
   for (size_t i = 0; i < std::min(gt.size(), est.size()); ++i) {
@@ -357,12 +357,18 @@ calculate_signed_smape(const std::vector<double> &gt, const std::vector<double> 
     if (denom != 0) {
       double error = (gt[i] - est[i]) / denom; // Keep the sign
       smape_values[i] = error;
+      signed_smape_percentage += std::abs(error); // Accumulate absolute errors for overall percentage
+      ++count;
     }
   }
 
-  return {0.0, smape_values}; // Omit overall percentage calculation
-}
+  // Convert to overall signed SMAPE percentage
+  if (count > 0) {
+    signed_smape_percentage = (signed_smape_percentage / count) * 100.0;
+  }
 
+  return {signed_smape_percentage, smape_values};
+}
 
 
 
@@ -1572,7 +1578,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       gs.sources.clear();
 
       // TODO: DA TOGLIEREEEEE
-      // gs.sources = {93};
+      gs.sources = {1680};
 
       gs.vtp_query = 0.0;
       gs.trettner_query = 0.0;
