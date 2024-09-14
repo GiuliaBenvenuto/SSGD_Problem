@@ -587,14 +587,16 @@ void Load_mesh(GLcanvas &gui, State &gs) {
   Load_mesh(filename, gui, gs);
 }
 
-//::::::::::::::::::::::::::::::::::::::
-//: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
+
+//::::::::::::::::::::::::::::::::::::::: GUI:::::::::::::::::::::::::::::::::::::::::::::::::
 GLcanvas Init_GUI() {
   GLcanvas gui(1600, 800);
   gui.side_bar_width = 0.30;
   gui.show_side_bar = true;
   return gui;
 }
+
+
 
 void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
   gui.callback_app_controls = [&]() {
