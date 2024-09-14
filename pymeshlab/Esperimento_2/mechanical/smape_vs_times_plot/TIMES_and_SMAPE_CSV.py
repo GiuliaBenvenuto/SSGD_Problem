@@ -1,136 +1,3 @@
-# import os
-# import re
-# import pandas as pd
-# import numpy as np
-
-# def read_file_data(file_path):
-#     try:
-#         with open(file_path, 'r') as file:
-#             content = file.read()
-        
-#         # Extract number of vertices and faces
-#         match = re.search(r"Number of vertices: (\d+), Number of faces: (\d+)", content)
-#         if not match:
-#             print(f"Warning: Couldn't extract vertices and faces from file {file_path}")
-#             return None
-#         vertices = int(match.group(1))
-#         faces = int(match.group(2))
-        
-#         # Extract preprocessing and query times
-#         time_match = re.search(r"Preprocessing time: ([\d\.e-]+)\n# Query time: ([\d\.e-]+)", content)
-#         if not time_match:
-#             print(f"Warning: Couldn't extract times from file {file_path}")
-#             return None
-#         preprocessing_time = float(time_match.group(1))
-#         query_time = float(time_match.group(2))
-        
-#         # Extract distances
-#         distances = list(map(float, re.findall(r"^[\d\.e-]+$", content, re.MULTILINE)))
-        
-#         if not distances:
-#             print(f"Warning: No distances found in file {file_path}")
-#             return None
-
-#         return vertices, faces, preprocessing_time, query_time, distances
-#     except Exception as e:
-#         print(f"Error processing file {file_path}: {str(e)}")
-#         return None
-
-# def calculate_smape(gt, est):
-#     gt = np.array(gt)
-#     est = np.array(est)
-    
-#     if len(gt) == 0 or len(est) == 0:
-#         return 0.0
-    
-#     min_length = min(len(gt), len(est))
-#     gt = gt[:min_length]
-#     est = est[:min_length]
-    
-#     denom = (np.abs(gt) + np.abs(est))/2
-#     nonzero = denom != 0
-#     smape = np.abs(gt[nonzero] - est[nonzero]) / denom[nonzero]
-#     smape = np.mean(smape) * 100
-    
-#     return round(smape, 5)
-
-# # Define the path to the main folder
-# base_folder = "."
-
-# results = []
-
-# # Iterate through each folder in the base folder
-# for folder in os.listdir(base_folder):
-#     folder_path = os.path.join(base_folder, folder)
-
-#     if os.path.isdir(folder_path):
-#         print(f"Processing folder: {folder}")
-        
-#         # First, read the ground truth file
-#         gt_file_path = os.path.join(folder_path, "5_blub_VTP_663.txt")
-#         if not os.path.exists(gt_file_path):
-#             print(f"Ground truth file not found in folder {folder}. Skipping this folder.")
-#             continue
-        
-#         gt_data = read_file_data(gt_file_path)
-#         if gt_data is None:
-#             print(f"Failed to read ground truth file in folder {folder}. Skipping this folder.")
-#             continue
-        
-#         gt_vertices, gt_faces, gt_preprocessing_time, gt_query_time, gt_distances = gt_data
-        
-#         # Now process all other .txt files in the folder
-#         for filename in os.listdir(folder_path):
-#             if filename.endswith(".txt") and filename != "5_blub_VTP_663.txt":
-#                 file_path = os.path.join(folder_path, filename)
-#                 print(f"Processing file: {filename}")
-                
-#                 # Extract mesh name and method from filename
-#                 parts = filename.split('_')
-#                 if len(parts) < 3:
-#                     print(f"Warning: Filename {filename} does not match expected format. Skipping.")
-#                     continue
-#                 # mesh name schould be part 0 and part 1
-#                 mesh_name = parts[0] + "_" + parts[1]
-#                 # mesh_name = parts[1]
-#                 method = parts[2].split('.')[0]
-                
-#                 # Read file data
-#                 file_data = read_file_data(file_path)
-#                 if file_data is None:
-#                     continue
-                
-#                 vertices, faces, preprocessing_time, query_time, distances = file_data
-                
-#                 # Calculate SMAPE
-#                 smape = calculate_smape(gt_distances, distances)
-                
-#                 # Append results
-#                 results.append({
-#                     "Folder": folder,
-#                     "Mesh": mesh_name,
-#                     "Method": method,
-#                     "Vertices": vertices,
-#                     "Faces": faces,
-#                     "Preprocessing Time": preprocessing_time,
-#                     "Query Time": query_time,
-#                     "SMAPE": smape
-#                 })
-
-# print(f"Generated results for {len(results)} files")
-
-# # Convert results to a DataFrame
-# df = pd.DataFrame(results)
-
-# # Save the DataFrame with SMAPE values
-# output_csv = "smape_times_comparison.csv"
-# df.to_csv(output_csv, index=False)
-
-# print(f"CSV file has been saved as {output_csv} with {len(df)} rows.")
-# if len(df) == 0:
-#     print("Warning: The CSV file is empty. No valid data was processed.")
-
-
 import os
 import re
 import pandas as pd
@@ -188,7 +55,7 @@ def calculate_smape(gt, est):
     return round(smape, 5)
 
 # Define the path to the folder where the script should work
-base_folder = "../DISTANCES_OK/32"  # Modify this to your desired path
+base_folder = "../DISTANCES_OK/32"  
 
 results = []
 
@@ -213,6 +80,17 @@ for filename in os.listdir(base_folder):
                 continue
             
             gt_vertices, gt_faces, gt_preprocessing_time, gt_query_time, gt_distances = gt_data
+            
+            # Append the VTP method as its own line in the results
+            results.append({
+                "Mesh": mesh_name,
+                "Method": "VTP",
+                "Vertices": gt_vertices,
+                "Faces": gt_faces,
+                "Preprocessing Time": gt_preprocessing_time,
+                "Query Time": gt_query_time,
+                "SMAPE": 0.0  # SMAPE with itself is zero
+            })
             
             # Now compare this ground truth with all other methods for the same mesh
             for compare_filename in os.listdir(base_folder):
@@ -246,7 +124,7 @@ print(f"Generated results for {len(results)} files")
 df = pd.DataFrame(results)
 
 # Save the DataFrame with SMAPE values
-output_csv = "smape_times_comparison.csv"
+output_csv = "smape_times_with_VTP.csv"
 df.to_csv(output_csv, index=False)
 
 print(f"CSV file has been saved as {output_csv} with {len(df)} rows.")
