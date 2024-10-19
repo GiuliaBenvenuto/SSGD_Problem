@@ -10,7 +10,7 @@ mean_times_df = pd.read_csv('../DISTANCES_OK/mean_times_mech_FINAL.csv')  # Make
 mean_times_df['Mesh Size'] = mean_times_df['Vertices']
 
 # Set up the plotting environment
-sns.set(style="whitegrid")
+# sns.set(style="whitegrid")
 
 # Define color mapping
 color_mapping = {
@@ -30,13 +30,15 @@ sns.scatterplot(data=mean_times_df, x='Mesh Size', y='Query Time', hue='Method',
 plt.xscale('log')  # Set the x-axis to a logarithmic scale
 plt.yscale('log')  # Set the y-axis to a logarithmic scale
 plt.title('Mesh Size vs Query Time')
+plt.grid(True, linestyle='--', alpha=0.6, which='both')
 plt.xlabel('Mesh Size (Vertices)')
 plt.ylabel('Query Time')
 plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_query_FINAL.png')
+plt.savefig('mesh_size_vs_query_FINAL.png', dpi=300)
+
 
 # Show the plot
 plt.show()
@@ -50,13 +52,14 @@ sns.scatterplot(data=filtered_df, x='Mesh Size', y='Preprocessing Time', hue='Me
 plt.xscale('log')  # Set the x-axis to a logarithmic scale
 plt.yscale('log')  # Set the y-axis to a logarithmic scale
 plt.title('Mesh Size vs Preprocessing Time')
+plt.grid(True, linestyle='--', alpha=0.6, which='both')
 plt.xlabel('Mesh Size (Vertices)')
 plt.ylabel('Preprocessing Time')
 plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_preprocessing_FINAL.png')
+plt.savefig('mesh_size_vs_preprocessing_FINAL.png', dpi=300)
 
 # Show the plot
 plt.show()

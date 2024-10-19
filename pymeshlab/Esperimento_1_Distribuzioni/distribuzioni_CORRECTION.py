@@ -326,7 +326,7 @@ def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_nam
         os.makedirs(save_directory)
 
     save_path = os.path.join(save_directory, f'{plot_name}.png')
-    plt.savefig(save_path)
+    plt.savefig(save_path, dpi=300)
     plt.show()
     print(f"Plot saved to {save_path}")
 
@@ -347,15 +347,16 @@ def toggle_visibility(event, fig, lined):
 # directory_path = 'data/distances_bob_500f'
 # directory_path = 'data/distances_bob_500f'
 # directory_path = 'data/distances_asian_dragon'
-directory_path = 'data/DIST_THAI_DECIMATION'
+# directory_path = 'data/DIST_THAI_DECIMATION'
 # directory_path = 'data/blub500f_distances'
+directory_path = 'DIST_BUNNY_500'
 
 key_string = 'Heat'  # Filter criteria for non-reference files
 # reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file - GROUND TRUTH
 # reference_key = 'M7_reordered_VTP_16.txt'
 # reference_key = '5_blub_VTP_663.txt'
-# reference_key = '6_bunny500_VTP_100.txt'
-reference_key = '8_thai_VTP_2.txt'
+reference_key = '6_bunny500_VTP_100.txt'
+# reference_key = '8_thai_VTP_2.txt'
 
 
 # Process directory, ensuring reference file is included

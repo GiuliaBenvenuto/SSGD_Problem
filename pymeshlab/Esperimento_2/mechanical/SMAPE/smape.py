@@ -67,7 +67,8 @@ def process_folder(folder_path):
 
     # Convert results dictionary to DataFrame and save to CSV
     df = pd.DataFrame(list(results.values()))
-    df.to_csv(os.path.join("./corretti", 'SMAPE_278_corretto.csv'), index=False)
+    df.to_csv(os.path.join("./corretti", 'SMAPE_278_corretto_x2.csv'), index=False)
 
 # Replace 'path_to_folder' with the path to your folder containing the txt files
-process_folder('../distances/278')
+# process_folder('../distances/278')
+process_folder('../DISTANCES_OK/278')

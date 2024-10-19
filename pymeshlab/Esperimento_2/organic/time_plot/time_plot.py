@@ -20,22 +20,20 @@ color_mapping = {
     'VTP': '#7f7f7f'
 }
 
-# Set up the plotting environment
-sns.set(style="whitegrid")
-
 # Create a scatter plot for Query Time with logarithmic scales on both axes
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=mean_times_df, x='Mesh Size', y='Query Time', hue='Method', palette=color_mapping, s=50, marker='o')
 plt.xscale('log')  # Set the x-axis to a logarithmic scale
 plt.yscale('log')  # Set the y-axis to a logarithmic scale
 plt.title('Mesh Size vs Query Time')
+plt.grid(True, linestyle='--', alpha=0.6, which='both')
 plt.xlabel('Mesh Size (Vertices)')
 plt.ylabel('Query Time')
 plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_query_FINAL.png')
+plt.savefig('mesh_size_vs_query_FINAL.png', dpi=300)
 
 # Show the plot
 plt.show()
@@ -49,13 +47,14 @@ sns.scatterplot(data=filtered_df, x='Mesh Size', y='Preprocessing Time', hue='Me
 plt.xscale('log')  # Set the x-axis to a logarithmic scale
 plt.yscale('log')  # Set the y-axis to a logarithmic scale
 plt.title('Mesh Size vs Preprocessing Time')
+plt.grid(True, linestyle='--', alpha=0.6, which='both')
 plt.xlabel('Mesh Size (Vertices)')
 plt.ylabel('Preprocessing Time')
 plt.legend(title='Method', bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('mesh_size_vs_preprocessing_FINAL.png')
+plt.savefig('mesh_size_vs_preprocessing_FINAL.png', dpi=300)
 
 # Show the plot
 plt.show()

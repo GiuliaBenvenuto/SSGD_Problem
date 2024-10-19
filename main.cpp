@@ -192,11 +192,13 @@ struct State {
     k = 3;
     prev_k = 3;
 
-    n_steiner = 3;
-    prev_n_steiner = 3;
+    n_steiner = 1;
+    prev_n_steiner = 1;
 
     heat_time = 1.0;
     heat_time_prev = 1.0;
+
+    inputVertexIndex = 0;
   }
 };
 
@@ -763,7 +765,13 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
       ImGui::Text("Number of vertices: %d", numVertices);
       ImGui::Text("Number of faces: %d", numFaces);
+      
+      // compute average edge length in cinolib there is the avg_edge_length method
+      double avg_edge_length = 0.0;
+      avg_edge_length = gs.m.edge_avg_length();
+      ImGui::Text("Average edge length: %.6f", avg_edge_length);
       ImGui::Text("");
+
 
       // Modal popup for loading files
       ImVec2 center = ImGui::GetMainViewport()->GetCenter();
@@ -795,20 +803,6 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::TreePop();
     } else {
       ImGui::PopFont();
-    }
-
-    ImGui::Text("Set Source Vertex:");
-    ImGui::InputInt("Vertex Index", &gs.inputVertexIndex);
-    if (ImGui::Button("Set")) {
-      if (gs.inputVertexIndex >= 0 && gs.inputVertexIndex < gs.m.num_verts()) {
-        gs.sources.clear(); // Clear existing sources if you only want one
-                            // source at a time
-        gs.sources.push_back(gs.inputVertexIndex);
-        std::cout << "Source vertex set to: " << gs.inputVertexIndex
-                  << std::endl;
-      } else {
-        std::cerr << "Invalid vertex index!" << std::endl;
-      }
     }
     ImGui::Separator();
 
@@ -945,6 +939,20 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
     ImGui::PushFont(lato_bold);
     if (ImGui::TreeNode("SSGD Method")) {
       ImGui::PopFont();
+
+      ImGui::Text("Set Source Vertex:");
+      ImGui::InputInt("Vertex Index", &gs.inputVertexIndex);
+      if (ImGui::Button("Set")) {
+        if (gs.inputVertexIndex >= 0 && gs.inputVertexIndex < gs.m.num_verts()) {
+          gs.sources.clear(); // Clear existing sources if you only want one
+                              // source at a time
+          gs.sources.push_back(gs.inputVertexIndex);
+          std::cout << "Source vertex set to: " << gs.inputVertexIndex
+                    << std::endl;
+        } else {
+          std::cerr << "Invalid vertex index!" << std::endl;
+        }
+      }
 
       // Exact Polyhedral Methods
       ImGui::PushFont(lato_bold);

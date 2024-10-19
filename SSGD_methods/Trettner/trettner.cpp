@@ -482,9 +482,6 @@ vector<double> distance_field_trettner(const HalfEdge &mesh,
     dist_trettner.push_back(min_vertex_dis[size_t(v)] * mesh.avg_edge_length);
 
 
-
-
-
   return dist_trettner;
   // return sc_trettner;
 }
