@@ -123,14 +123,13 @@ struct State {
 
   VTPSolver vtp_solver;
   TrettnerSolver trettner_solver;
-  FastMarchingSolver fast_mar_solver;
+  FastMarchingGC fast_mar_solver;
   HeatSolver heat_solver;
   GeotangleSolver geotangle_solver;
   EdgeSolver edge_solver;
   ExtendedSolver extended_solver;
   LanthierSolver lanthier_solver;
 
-  FastMarchingGC fast_mar_solver_gc;
 
   // Timer
   std::chrono::steady_clock::time_point tic;
@@ -1121,15 +1120,15 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           // }
 
           // take query time
-          gs.true_FMM_query_time = gs.fast_mar_solver.get_time();
-          cout << "Query function time: " << gs.fast_mar_query << endl;
-          cout << "True FMM query time: " << gs.true_FMM_query_time << endl;
+          // gs.true_FMM_query_time = gs.fast_mar_solver.get_time();
+          // cout << "Query function time: " << gs.fast_mar_query << endl;
+          // cout << "True FMM query time: " << gs.true_FMM_query_time << endl;
 
           fillTimeTable(gs, "Fast Marching", gs.fast_mar_load,gs.fast_mar_preprocess, gs.true_FMM_query_time);
 
           cout << "QUERY GC" << endl;
           gs.tic = std::chrono::steady_clock::now();
-          gs.fast_mar_solver_gc.query(gs.sources[0], gs.res);
+          gs.fast_mar_solver.query(gs.sources[0], gs.res);
           gs.toc = std::chrono::steady_clock::now();
           gs.fast_mar_query = chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic).count();
           cout << "Query function time GC: " << gs.fast_mar_query << endl;
