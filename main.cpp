@@ -637,7 +637,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         // Trettner Method
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Trettner");
+        ImGui::Text("GSP");
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("%.4f", gs.trettner_load);
         ImGui::TableSetColumnIndex(2);
@@ -648,7 +648,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         // Fast Marching Method
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Fast Marching");
+        ImGui::Text("FMM");
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("%.4f", gs.fast_mar_load);
         ImGui::TableSetColumnIndex(2);
@@ -670,7 +670,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         // GeoTangle Method
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
-        ImGui::Text("GeoTangle");
+        ImGui::Text("Primal-Dual Graph");
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("%.4f", gs.geotangle_load);
         ImGui::TableSetColumnIndex(2);
@@ -692,7 +692,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
         // Extended Method
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Extended");
+        ImGui::Text("k-Ring Graph");
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("%.4f", gs.extended_load);
         ImGui::TableSetColumnIndex(2);
@@ -961,7 +961,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       if (ImGui::RadioButton("VTP ", gs.ssgd_method == State::VTP)) {
         gs.ssgd_method = State::VTP;
       }
-      if (ImGui::RadioButton("Trettner ", gs.ssgd_method == State::TRETTNER)) {
+      if (ImGui::RadioButton("GSP ", gs.ssgd_method == State::TRETTNER)) {
         gs.ssgd_method = State::TRETTNER;
       }
 
@@ -970,7 +970,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::SeparatorText("PDE-Based Methods");
       ImGui::PopFont();
 
-      if (ImGui::RadioButton("Fast Marching  ",
+      if (ImGui::RadioButton("FMM  ",
                              gs.ssgd_method == State::FAST_MARCHING)) {
         gs.ssgd_method = State::FAST_MARCHING;
       }
@@ -991,7 +991,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
       ImGui::PushFont(lato_bold);
       ImGui::SeparatorText("Graph-Based Methods");
       ImGui::PopFont();
-      if (ImGui::RadioButton("GeoTangle  ",
+      if (ImGui::RadioButton("Primal-Dual Graph  ",
                              gs.ssgd_method == State::GEOTANGLE)) {
         gs.ssgd_method = State::GEOTANGLE;
       }
@@ -1001,7 +1001,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
 
       ImGui::Columns(2, nullptr, false);
       // First column for the radio button
-      if (ImGui::RadioButton("Extended  ", gs.ssgd_method == State::EXTENDED)) {
+      if (ImGui::RadioButton("k-Ring Graph  ", gs.ssgd_method == State::EXTENDED)) {
         gs.ssgd_method = State::EXTENDED;
       }
       ImGui::NextColumn();

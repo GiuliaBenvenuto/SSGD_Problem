@@ -110,8 +110,8 @@ void init_methods(State &gs) {
     // init(gs.heat_solver, gs, "Heat");
     init(gs.geotangle_solver, gs, "Geotangle");
     // init(gs.edge_solver, gs, "Edge");
-    init(gs.extended_solver, gs, "Extended");
-    // init(gs.lanthier_solver, gs, "Lanthier");
+    // init(gs.extended_solver, gs, "Extended");
+    init(gs.lanthier_solver, gs, "Lanthier");
 }
 
 double smape_error(const vector<double> &res, const vector<double> &gt, State &gs) {
@@ -207,21 +207,21 @@ void run_ssgd_method(State &gs, int vertex, vector<double> &ground_truth, vector
     // smape = 0.0;
 
     
-    cout << "----- EXTENDED -----" << endl;
-    gs.extended_solver.query(vertex, gs.res);
-    smape = smape_error(gs.res, ground_truth, gs);
-    smape_errors.push_back(smape);
-    gs.res.clear();
-    smape = 0.0;
-
-
-    // cout << "----- LANTHIER -----" << endl;
-    // gs.lanthier_solver.query(vertex, gs.res);
-    // gs.res.resize(gs.nverts);
+    // cout << "----- EXTENDED -----" << endl;
+    // gs.extended_solver.query(vertex, gs.res);
     // smape = smape_error(gs.res, ground_truth, gs);
     // smape_errors.push_back(smape);
     // gs.res.clear();
     // smape = 0.0;
+
+
+    cout << "----- LANTHIER -----" << endl;
+    gs.lanthier_solver.query(vertex, gs.res);
+    gs.res.resize(gs.nverts);
+    smape = smape_error(gs.res, ground_truth, gs);
+    smape_errors.push_back(smape);
+    gs.res.clear();
+    smape = 0.0;
 
 }
 
@@ -330,11 +330,11 @@ int main(int argc, char **argv) {
       // ofstream csvFile("../pymeshlab/Esperimento_Drago/Dragon_with_decimation/SMAPE/smape_DRAGON_extended_" + to_string(vertex) + ".csv");
       // ofstream csvFile("../pymeshlab/Esperimento_1/data/SMAPE_RESULTS_BOB/smape_spot_VTP_" + to_string(vertex) + ".csv");
       // ofstream csvFile("../pymeshlab/Esperimento_1_Drago/Dragon_with_decimation/SMAPE/smape_drago_HEAT_" + to_string(vertex) + ".csv");
-      ofstream csvFile("../pymeshlab/Esperimento_1/data/SMAPE_RESULTS_SPOT/SMAPE_EXT_GEO_" + to_string(vertex) + ".csv");
+      ofstream csvFile("../pymeshlab/Esperimento_1/data/SMAPE_RESULTS_SPOT/SMAPE_LANTH_GEO_" + to_string(vertex) + ".csv");
 
 
       // csvFile << "MeshName,NumVertices,SMAPE_VTP,SMAPE_Trettner,SMAPE_FastMarching,SMAPE_Heat,SMAPE_Geotangle,SMAPE_Edge,SMAPE_Lanthier" << endl;
-      csvFile << "MeshName,NumVertices,SMAPE_Geo,SMAPE_Ext" << endl;
+      csvFile << "MeshName,NumVertices,SMAPE_Geot,SMAPE_Lanth" << endl;
 
       if (!read_ground_truth(csv_path.string(), vertex, ground_truth)) {
         cerr << "Failed to read ground truth from " << csv_path << endl;

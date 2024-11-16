@@ -458,7 +458,7 @@ public:
 
   DrawableTrimesh<> *m;
   geodesic_solver solver;
-  int n_steiner = 9;
+  int n_steiner = 1;
 
   void load(DrawableTrimesh<> *mesh) override { m = mesh; }
 
