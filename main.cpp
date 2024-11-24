@@ -202,7 +202,7 @@ struct State {
 };
 
 void export_field(const vector<double> &field, const string &filename) {
-  string name = "/Users/claudiomancinelli/Documents/GitHub/"
+  string name = "/Users/giuliabenvenuto/Documents/GitHub/"
                 "SSGD_Problem/";
   name.append(filename);
   std::ofstream outfile;
@@ -408,6 +408,52 @@ Color interpolate_color(double value) {
   return Color(r, g, b, a);
 }
 
+// SPECIFIC TO CREATE THE IMAGES OF k-RING SMAPE VALUES 
+
+// Color interpolate_color(double value, double fixed_max_threshold = 0.079339) {
+//   // Clamp the value to the fixed max threshold
+//   value = std::min(value, fixed_max_threshold);
+  
+//   // Normalize the value relative to the fixed max threshold
+//   double normalized_value = value / fixed_max_threshold;
+  
+//   // Define the colors using RGBA format
+//   Color green(0.0f, 1.0f, 0.0f, 1.0f);   // Green color for low error
+//   Color yellow(1.0f, 1.0f, 0.0f, 1.0f);  // Yellow color for medium error
+//   Color orange(1.0f, 0.5f, 0.0f, 1.0f);  // Orange color 
+//   Color red(1.0f, 0.0f, 0.0f, 1.0f);     // Red color for high error
+
+//   float r, g, b, a = 1.0f; // Set alpha to fully opaque
+
+//   // If normalized value is very low, return green
+//   if (normalized_value <= 0.1) {
+//     return green;
+//   }
+
+//   // Interpolate between green, yellow, orange, and red based on normalized value
+//   if (normalized_value < 0.33) {
+//     // Interpolate between green and yellow
+//     float local_value = normalized_value * 3; // Scale to 0-1 range
+//     r = (1.0f - local_value) * green.rgba[0] + local_value * yellow.rgba[0];
+//     g = (1.0f - local_value) * green.rgba[1] + local_value * yellow.rgba[1];
+//     b = (1.0f - local_value) * green.rgba[2] + local_value * yellow.rgba[2];
+//   } else if (normalized_value < 0.66) {
+//     // Interpolate between yellow and orange
+//     float local_value = (normalized_value - 0.33f) * 3; // Adjust scale
+//     r = (1.0f - local_value) * yellow.rgba[0] + local_value * orange.rgba[0];
+//     g = (1.0f - local_value) * yellow.rgba[1] + local_value * orange.rgba[1];
+//     b = (1.0f - local_value) * yellow.rgba[2] + local_value * orange.rgba[2];
+//   } else {
+//     // Interpolate between orange and red
+//     float local_value = (normalized_value - 0.66f) * 3; // Adjust scale for upper half
+//     r = (1.0f - local_value) * orange.rgba[0] + local_value * red.rgba[0];
+//     g = (1.0f - local_value) * orange.rgba[1] + local_value * red.rgba[1];
+//     b = (1.0f - local_value) * orange.rgba[2] + local_value * red.rgba[2];
+//   }
+
+//   return Color(r, g, b, a);
+// }
+
 Color interpolate_signed_color(double value, double min_error, double max_error) {
   // Normalize value between -1 and 1
   // double normalized_value = (value - min_error) / (max_error - min_error);
@@ -441,6 +487,13 @@ Color interpolate_signed_color(double value, double min_error, double max_error)
 
 void visualize_smape_on_mesh_no_sign(State &gs,
                              const std::vector<double> &smape_values) {
+
+  double max_smape = *std::max_element(smape_values.begin(), smape_values.end());
+    
+  // Now you can use max_smape for your visualization or any other purpose.
+  // Example usage:
+  std::cout << "Maximum SMAPE value: " << max_smape << std::endl;
+
   // Create a scalar field from the SMAPE values
   gs.field = ScalarField(smape_values);
 
@@ -462,6 +515,33 @@ void visualize_smape_on_mesh_no_sign(State &gs,
   gs.m.show_vert_color();
   gs.m.updateGL();
 }
+
+// SPECIFIC TO CREATE THE IMAGES OF k-RING SMAPE VALUES 
+
+// void visualize_smape_on_mesh_no_sign(State &gs,
+//                              const std::vector<double> &smape_values) {
+//   // Fixed maximum threshold from k=1
+//   double fixed_max_threshold = 0.079339;
+
+//   // Create a scalar field from the SMAPE values
+//   gs.field = ScalarField(smape_values);
+
+//   // Instead of normalizing to 0-1, scale to the fixed max threshold
+//   for (uint vid = 0; vid < gs.m.num_verts(); ++vid) {
+//     // Scale the SMAPE value relative to the fixed max threshold
+//     double scaled_value = std::min(smape_values[vid], fixed_max_threshold);
+
+//     // Use the custom interpolation function to get the color
+//     Color color = interpolate_color(scaled_value, fixed_max_threshold);
+
+//     // Set the interpolated color to the vertex
+//     gs.m.vert_data(vid).color = color;
+//   }
+
+//   // Show the vertex colors on the mesh
+//   gs.m.show_vert_color();
+//   gs.m.updateGL();
+// }
 
 
 void visualize_smape_on_mesh_with_sign(State &gs, const std::vector<double> &smape_values) {
@@ -596,7 +676,6 @@ GLcanvas Init_GUI() {
   gui.show_side_bar = true;
   return gui;
 }
-
 
 
 void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
@@ -1250,7 +1329,7 @@ void Setup_GUI_Callbacks(GLcanvas &gui, State &gs) {
           //   cout << gs.res[i] << endl;
           // }
           gs.toc = std::chrono::steady_clock::now();
-          export_field(gs.res, "Extended");
+          // export_field(gs.res, "Extended");
           gs.extended_query =
               chrono::duration_cast<chrono::milliseconds>(gs.toc - gs.tic)
                   .count();

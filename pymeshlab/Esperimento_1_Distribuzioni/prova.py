@@ -79,9 +79,6 @@ def compute_percentage_errors(data, reference_key):
 
 
 # CON LIMITE SULLE Y
-import matplotlib.pyplot as plt
-import numpy as np
-
 def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_name="plot_result"):
     global fig, ax
     fig, ax = plt.subplots(figsize=(12, 8))
@@ -90,57 +87,49 @@ def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_nam
     x_range = np.linspace(-100, 100, 100000)  # Error range from -100% to 100%
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
 
-
     for i, (key, errors) in enumerate(percentage_errors.items()):
         if i == 0:
             continue  # This skips the first iteration
-        
-        # JUMP M4, M5, M6 FOR HEAT METHOD
-        # if i == 5 or i == 6 or i == 7:
-        #     continue;
-
 
         if key != reference_key and len(errors) > 0:
             mean, std = np.mean(errors), np.std(errors)
             # Calculate PDF of a normal (Gaussian) distribution
             p = 1 / (std * np.sqrt(2 * np.pi)) * np.exp(-((x_range - mean) ** 2) / (2 * std**2))
             
-            # Trim the filename for display in the legend
-            corrected_index = i  # Adjust index by starting from 1
-            trimmed_key = f"thai_{corrected_index}"
-            vertices_label = f"Vertices: {mesh_info[key]:,}" if key in mesh_info and mesh_info[key] is not None else ""
-            label = f"{trimmed_key} (μ={mean:.2f}, σ={std:.2f}) [{vertices_label}]"
+            vertices_label = f"#V: {mesh_info[key]:,}" if key in mesh_info and mesh_info[key] is not None else ""
+            label = f"(μ={mean:.2f}, σ={std:.2f}) {vertices_label}"
             
             line, = ax.plot(x_range, p, linewidth=2, label=label, color=colors[i % len(colors)])
             lines.append(line)
-
-            
 
     if not lines:
         print("No valid data to plot.")
         return
 
     # Draw the x and y axis lines prominently
-    ax.axhline(0, color='black', linewidth=1)
-    ax.axvline(0, color='black', linewidth=1)
+    ax.axhline(0, color='black', linewidth=2)
+    ax.axvline(0, color='black', linewidth=2)
 
-    # ax.set_title(f'Dragon Mesh Set Created with Decimation\n'
-    #              f'Distribution of Percentage Errors for "Dragon" meshes with {key_string} Method',
-    #              fontweight='bold')
-    ax.set_title(f'Thai Statue Mesh Set Created with Decimation\n'
-                f'Distribution of Percentage Errors for "Thai Statue" meshes with k-Ring Graph Method',
-                fontweight='bold')
-    ax.set_xlabel('Percentage Error going from -100% to 100%\n (Zoom between -15% and 15%)')
-    ax.set_ylabel('Density')
+    # Set title with increased font size
+    ax.set_title(f'Thai Statue Mesh Set \n Distribution of Percentage Errors with k-Ring Graph Method',
+                 fontsize=20, fontweight='bold', pad = 10)
+
+    # Set axis labels with larger font size
+    ax.set_xlabel('Percentage Error going from -100% to 100%\n(Zoom between -15% and 15%)', fontsize=17)
+    ax.set_ylabel('Density', fontsize=17)
+
+    # Adjust axis limits for better visualization
     ax.set_xlim(-15, 15)
-    
-    # Set visualization limits for y-axis
-    ax.set_ylim(0, 2)  # Limits visualization to y-values between 0 and 3
+    ax.set_ylim(0, 2)
 
-    # Add a grey grid
-    ax.grid(True, which='both', linestyle='--', linewidth=0.5, color='grey')
+    # Increase tick label size
+    ax.tick_params(axis='both', labelsize=16)
 
-    leg = ax.legend(fancybox=True, shadow=True)
+    # Add a grey grid with finer lines
+    ax.grid(True, which='both', linestyle='--', linewidth=1, color='grey')
+
+    # Modify legend with larger text
+    leg = ax.legend(fancybox=True, shadow=True, fontsize=15)
     lined = {}
     for legline, origline in zip(leg.get_lines(), lines):
         legline.set_picker(5)
@@ -155,7 +144,7 @@ def plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_nam
         os.makedirs(save_directory)
 
     save_path = os.path.join(save_directory, f'{plot_name}.png')
-    plt.savefig(save_path, dpi=300)
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.show()
     print(f"Plot saved to {save_path}")
 
@@ -171,8 +160,22 @@ def toggle_visibility(event, fig, lined):
 
 
 # Directory and reference setup
-directory_path = 'DIST_THAI_DECIMATION'
+# directory_path = 'data/distances_bob_500f'
+# directory_path = 'data/distances_bob_500f'
+# directory_path = 'data/distances_asian_dragon'
+# directory_path = 'data/DIST_THAI_DECIMATION'
+# directory_path = 'data/blub500f_distances'
+# directory_path = 'data/DIST_BLUB/663'
+# directory_path = 'data/DIST_BUNNY_500'
+# directory_path = 'data/DIST_DRAGO_DECIMATION'
+directory_path = 'RIFACCIO_PER_TESI/THAI/DIST_THAI_DECIMATION'
+
 key_string = 'Extended'  # Filter criteria for non-reference files
+
+# reference_key = 'bob_500f_6_VTP_100.txt'  # Reference file - GROUND TRUTH
+# reference_key = 'M7_reordered_VTP_16.txt'
+# reference_key = '5_blub_VTP_663.txt'
+# reference_key = '6_bunny500_VTP_100.txt'
 reference_key = '8_thai_VTP_2.txt'
 
 
@@ -189,6 +192,6 @@ if reference_key in file_data:
             print(errors)
             print(f"Mean: {np.mean(errors):.2f}%, Std: {np.std(errors):.2f}%")
             print()
-    plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_name=f"thai_p{key_string}")
+    plot_percentage_errors(percentage_errors, reference_key, mesh_info, plot_name=f"thai_{key_string}")
 else:
     print(f"Reference file {reference_key} was not found.")
